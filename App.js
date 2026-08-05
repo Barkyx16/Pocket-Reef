@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Image, Linking, Pressable, Share, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Linking, Pressable, Share, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,6 +7,8 @@ import { styles, theme } from "./styles";
 import { tapHaptic, getTodayKey, getSpecies } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pushSnapshot, pullSnapshot } from "./lib/cloudSync";
+import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage";
+import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
 import { t, setLanguage } from "./lib/i18n";
@@ -49,7 +51,14 @@ const MORE_IDS = MORE_ITEMS.map((m) => m.id);
 
 const EMPTY_TANK = { name: "My Tank", gallons: 20, water: "fresh", emoji: "🐠", stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: null };
 const newTank = (name, gallons = 20, water = "fresh", emoji = "🐠") => ({ id: String(Date.now()) + Math.random().toString(36).slice(2, 6), name, gallons, water, emoji, stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: new Date().toISOString() });
-const persistTanks = (next) => AsyncStorage.setItem("pr_tanks", JSON.stringify(next)).catch(() => {});
+// Tanks hold everything a user would actually mourn, so they get the two-phase
+// write: a crash mid-save can never leave truncated JSON as the only copy.
+// Every save also stamps pr_lastEdit, which is what stops an older cloud
+// snapshot from silently overwriting newer work on this device.
+const persistTanks = (next) => {
+  setRaw("pr_lastEdit", String(Date.now()));
+  return safeSetJSON("pr_tanks", next);
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -61,6 +70,8 @@ export default function App() {
   const [activeDays, setActiveDays] = useState([]);
   const [careDone, setCareDone] = useState({});
   const [premiumUnlocked, setPremiumUnlocked] = useState(false);
+  // True when a schema migration failed — the pre-migration backup is intact.
+  const [migrationFailed, setMigrationFailed] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [reminderPrefs, setReminderPrefs] = useState({ waterTest: "weekly", waterChange: "weekly", feeding: "off" });
   const [tankSheet, setTankSheet] = useState(null); // null | {mode:"new"} | {mode:"edit", id}
@@ -102,69 +113,72 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
+     try {
+      // Bring data written by an older build up to the current schema before
+      // anything reads it. Backs the whole store up first, so a bad migration in
+      // some future release is recoverable rather than terminal.
       try {
-        const keys = ["pr_xp", "pr_activeDays", "pr_premium", "pr_reminders", "pr_onboarded", "pr_careDone", "pr_lang", "pr_unit", "pr_wishlist"];
-        const [x, a, pm, rm, ob, cd, lg, un, wl] = await Promise.all(keys.map((k) => AsyncStorage.getItem(k)));
-        if (x) setXp(Number(x) || 0);
-        if (a) setActiveDays(JSON.parse(a) || []);
-        if (pm === "1") setPremiumUnlocked(true);
-        if (wl) setWishlist(JSON.parse(wl) || []);
-        if (rm) setReminderPrefs(JSON.parse(rm));
-        if (ob === "1") setSeenOnboarding(true);
-        if (cd) setCareDone(JSON.parse(cd) || {});
-        if (lg) { setLanguage(lg); setLangState(lg); }
-        if (un) { setUnit(un); setUnitState(un); }
-        const [pn, sinceRaw, lb] = await Promise.all(["pr_profileName", "pr_since", "pr_lastBackup"].map((k) => AsyncStorage.getItem(k)));
-        if (pn) setProfileName(pn);
-        if (lb) setLastBackup(Number(lb) || null);
-        const rc = await AsyncStorage.getItem("pr_recent");
-        if (rc) setRecent(JSON.parse(rc) || []);
-        const sn = await AsyncStorage.getItem("pr_speciesNotes");
-        if (sn) setSpeciesNotes(JSON.parse(sn) || {});
-        const fsd = await AsyncStorage.getItem("pr_fodSeen");
-        if (fsd) setFodSeen(fsd);
-        const chd = await AsyncStorage.getItem("pr_challengesDone");
-        if (chd) { const p = JSON.parse(chd); if (p && p.date === getTodayKey()) setChallengesDone(p.ids || []); }
-        const bn = await AsyncStorage.getItem("pr_banner");
-        if (bn) setBannerId(bn);
-        if (sinceRaw) setSince(Number(sinceRaw));
-        else { const now = Date.now(); setSince(now); AsyncStorage.setItem("pr_since", String(now)).catch(() => {}); }
+        const result = await runMigrations();
+        if (result.failed.length) setMigrationFailed(true);
+      } catch (e) {
+        setMigrationFailed(true);
+      }
 
-        // Tanks: load, else migrate legacy single-tank keys, else create a default.
-        const tanksRaw = await AsyncStorage.getItem("pr_tanks");
-        if (tanksRaw) {
-          const parsed = JSON.parse(tanksRaw) || [];
-          // Backfill createdAt on tanks saved before age tracking existed —
-          // use the oldest logged activity if we have it, else start the clock now.
-          let changed = false;
-          const list = (parsed.length ? parsed : [newTank("My Tank")]).map((tk) => {
-            if (tk.createdAt) return tk;
-            changed = true;
-            const dates = [
-              ...(tk.waterTests || []).map((e) => e.date),
-              ...(tk.journal || []).map((e) => e.date),
-            ].filter(Boolean).sort();
-            return { ...tk, createdAt: dates.length ? new Date(dates[0]).toISOString() : new Date().toISOString() };
-          });
-          setTanks(list);
-          const at = await AsyncStorage.getItem("pr_activeTank");
-          setActiveTankId(list.find((tk) => tk.id === at) ? at : list[0].id);
-          if (!parsed.length || changed) persistTanks(list);
-        } else {
-          const [og, ot, ow, oj, oco, omt, oqt] = await Promise.all(
-            ["pr_tankGallons", "pr_tank", "pr_waterTests", "pr_journal", "pr_costs", "pr_maint", "pr_qt"].map((k) => AsyncStorage.getItem(k))
-          );
-          const d = newTank("My Tank", og ? Number(og) : 20);
-          if (ot) d.stock = JSON.parse(ot) || [];
-          if (ow) d.waterTests = JSON.parse(ow) || [];
-          if (oj) d.journal = JSON.parse(oj) || [];
-          if (oco) d.costs = JSON.parse(oco) || [];
-          if (omt) d.maintenance = JSON.parse(omt) || {};
-          if (oqt) d.quarantine = JSON.parse(oqt) || [];
-          setTanks([d]); setActiveTankId(d.id); persistTanks([d]);
-          AsyncStorage.setItem("pr_activeTank", d.id).catch(() => {});
-        }
-      } catch (e) {} finally { setHydrated(true); }
+      // Each read below is individually fault-tolerant — getJSON/getRaw never
+      // throw, and quarantine anything they can't parse under <key>__corrupt.
+      // A single unreadable value costs the user that one setting; it can no
+      // longer abort hydration and boot the app looking factory-fresh.
+      const [x, a, pm, rm, ob, lg, un] = await Promise.all(
+        ["pr_xp", "pr_activeDays", "pr_premium", "pr_reminders", "pr_onboarded", "pr_lang", "pr_unit"].map((k) => getRaw(k))
+      );
+      if (x) setXp(Number(x) || 0);
+      if (pm === "1") setPremiumUnlocked(true);
+      if (ob === "1") setSeenOnboarding(true);
+      if (lg) { setLanguage(lg); setLangState(lg); }
+      if (un) { setUnit(un); setUnitState(un); }
+      if (a) setActiveDays((await getJSON("pr_activeDays", [])) || []);
+      if (rm) { const p = await getJSON("pr_reminders", null); if (p) setReminderPrefs(p); }
+
+      setWishlist(await getJSON("pr_wishlist", []));
+      setCareDone(await getJSON("pr_careDone", {}));
+      setRecent(await getJSON("pr_recent", []));
+      setSpeciesNotes(await getJSON("pr_speciesNotes", {}));
+
+      const [pn, sinceRaw, lb, fsd, bn] = await Promise.all(
+        ["pr_profileName", "pr_since", "pr_lastBackup", "pr_fodSeen", "pr_banner"].map((k) => getRaw(k))
+      );
+      if (pn) setProfileName(pn);
+      if (lb) setLastBackup(Number(lb) || null);
+      if (fsd) setFodSeen(fsd);
+      if (bn) setBannerId(bn);
+      if (sinceRaw) setSince(Number(sinceRaw));
+      else { const now = Date.now(); setSince(now); setRaw("pr_since", String(now)); }
+
+      const chd = await getJSON("pr_challengesDone", null);
+      if (chd && chd.date === getTodayKey()) setChallengesDone(chd.ids || []);
+
+      // Tanks come through the commit log, so an interrupted save falls back to
+      // the staged copy instead of reading as "no tanks". Shape normalization
+      // fills in any field this build expects that the stored data predates.
+      const stored = await commitJSON("pr_tanks", null);
+      const list = ensureTanksShape(stored);
+      if (list.length) {
+        setTanks(list);
+        const at = await getRaw("pr_activeTank");
+        setActiveTankId(list.find((tk) => tk.id === at) ? at : list[0].id);
+        // Only rewrite when normalization actually changed something.
+        if (JSON.stringify(list) !== JSON.stringify(stored)) persistTanks(list);
+      } else {
+        const d = newTank("My Tank");
+        setTanks([d]);
+        setActiveTankId(d.id);
+        await persistTanks([d]);
+        setRaw("pr_activeTank", d.id);
+      }
+     } finally {
+      // Never leave the app stuck behind the splash, whatever happened above.
+      setHydrated(true);
+     }
     })();
   }, []);
 
@@ -255,6 +269,39 @@ export default function App() {
       const res = await pullSnapshot(user.id);
       if (!alive) return;
       if (res.ok) {
+        // The cloud copy is not automatically the right copy. If this device has
+        // been edited more recently than the account was last written — someone
+        // reinstalled and kept logging offline, or a second device wrote an older
+        // snapshot — applying it blind destroys the newer work. Ask instead.
+        const localEdit = Number(await getRaw("pr_lastEdit", "0")) || 0;
+        const cloudEdit = res.updatedAt ? new Date(res.updatedAt).getTime() : 0;
+        const localHasData = tanks.some((tk) => (tk.stock || []).length || (tk.journal || []).length || (tk.waterTests || []).length);
+        const cloudIsStale = localHasData && localEdit > cloudEdit + 60000;
+
+        if (res.data && cloudIsStale) {
+          Alert.alert(
+            "Which copy should we keep?",
+            "This device has newer changes than your account's saved copy. Keeping the cloud copy will replace what's on this device.",
+            [
+              {
+                text: "Keep this device",
+                // Push local up, making the device the new source of truth.
+                onPress: () => { cloudLoaded.current = true; syncNow(); },
+              },
+              {
+                text: "Use cloud copy",
+                style: "destructive",
+                onPress: () => { applySnapshot(res.data); cloudLoaded.current = true; },
+              },
+            ],
+            { cancelable: false }
+          );
+          setSyncError(false);
+          setLastSyncedAt(cloudEdit || Date.now());
+          setSyncing(false);
+          return; // cloudLoaded is set by whichever branch the user picks
+        }
+
         if (res.data) applySnapshot(res.data);
         setSyncError(false);
         setLastSyncedAt(res.updatedAt ? new Date(res.updatedAt).getTime() : Date.now());
