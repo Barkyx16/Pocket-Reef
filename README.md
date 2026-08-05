@@ -143,7 +143,9 @@ into your stock, curated Tank Ideas, and a share card with health score, latest 
 and tank age.
 
 ### Log
-- **Water testing** — graded against safe ranges, with since-last-test deltas
+- **Water testing** — graded against your stock's own temperature and pH window, not a generic range, with since-last-test deltas
+- **Forecasting** — fits a trend per parameter and projects when it leaves the safe band ("nitrate rising 8/week, out of range in ~9 days"). Conservative by design: a weak fit reports a drift but never a countdown
+- **Water-change impact** — what a given % change actually does to each parameter, and the smallest change that gets you back in range
 - **Water insights** — per-parameter averages, testing cadence, in-range percentage, CSV export
 - **Nitrogen cycle tracker** — know when the tank is actually ready
 - **Water-change calculator** — with one-tap logging into maintenance and the journal
@@ -155,6 +157,10 @@ Everything logged earns XP.
 ### Health
 Illustrated disease guides, a **symptom checker** that works backward from what you're
 actually seeing, and an emergency troubleshooter for the moments that matter.
+
+**Treatment plans** for all 10 diseases — day-by-day courses that track progress and
+flag the mistake that causes most relapses: stopping when the symptoms disappear, which
+for ich is exactly when the parasite has dropped off to breed.
 
 ### Profile
 Cloud save and backup, lifetime stats, a collection breakdown by water type and kind,
@@ -182,6 +188,9 @@ already keep it, wishlist toggle, "more like this," and associated health risks.
 | `data/troubleshooting.js` | Emergency scenario flows |
 | `screens/` | Home · Species · Tank · Log · Health · Journal · Games · Profile · More · Premium · Auth |
 | `components/` | 61 cards and primitives |
+| `data/treatments.js` | Day-by-day treatment courses for every disease |
+| `lib/dosing.js` | Reef Alk/Ca/Mg dosing, with safe daily limits |
+| `lib/search.js` | Typo-tolerant, alias-aware species search |
 | `lib/` | i18n, units, Supabase client, cloud sync, biometric auth |
 
 ### The compatibility engine
@@ -225,7 +234,7 @@ last write wins. Photos stay on the device; only their references sync.
 npm test
 ```
 
-80 tests over `core.js` and the search engine — bioload, warnings, compatibility, the nitrogen cycle,
+112 tests over `core.js`, search, dosing, forecasting, and treatment plans — bioload, warnings, compatibility, the nitrogen cycle,
 Today actions, health scoring, achievements, streaks, and catalog integrity.
 They pin behaviour rather than implementation, so they survive a refactor and
 fail on a wrong answer. Worth running before each batch of changes: a babel

@@ -6,10 +6,11 @@ import { DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySym
 import { PARAMS, assessParam } from "./data/waterParams";
 import { ACHIEVEMENTS } from "./data/achievements";
 import { TROUBLESHOOTING } from "./data/troubleshooting";
+import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatments";
 
 export const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export { SPECIES, getCompatibility, DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom, PARAMS, assessParam, ACHIEVEMENTS, TROUBLESHOOTING };
+export { SPECIES, getCompatibility, DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom, PARAMS, assessParam, ACHIEVEMENTS, TROUBLESHOOTING, TREATMENTS, getTreatment, getTreatableDiseases };
 
 const byName = Object.fromEntries(SPECIES.map((s) => [s.name, s]));
 export function getSpecies(name) {
@@ -368,6 +369,236 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
 // ── Achievements ─────────────────────────────────────────────────────────────
 // Aggregates signals across ALL tanks + user progress into one state object the
 // 62 badge checks read from.
+// ── What a water change actually does ────────────────────────────────────────
+// The calculator gives a volume. The question a keeper actually has is "will
+// that fix my nitrate?" — and the answer is arithmetic they shouldn't have to
+// do: swapping X% of the water dilutes anything the tap doesn't contain by X%.
+//
+// Honest about its limits. Dilution is only valid for what accumulates in the
+// water: nitrate, phosphate, ammonia, nitrite. Temperature, pH, salinity,
+// alkalinity, calcium and magnesium all depend on what's going IN, so the model
+// says nothing about them rather than guessing.
+const DILUTES = new Set(["nitrate", "phosphate", "ammonia", "nitrite"]);
+
+export function getWaterChangeEffect({ waterTests = [], waterType = "fresh", percent = 25, sourceValues = {}, stockedNames = [] } = {}) {
+  const latest = waterTests[0];
+  if (!latest || !latest.values) return { ok: false, reason: "No water test logged yet", changes: [] };
+
+  const pct = Math.max(0, Math.min(100, Number(percent) || 0));
+  if (!pct) return { ok: false, reason: "Set a change percentage", changes: [] };
+
+  const params = PARAMS[waterType] || PARAMS.fresh;
+  const frac = pct / 100;
+  const changes = [];
+
+  params.forEach((p) => {
+    if (!DILUTES.has(p.key)) return;
+    const before = Number(latest.values[p.key]);
+    if (Number.isNaN(before) || latest.values[p.key] == null || latest.values[p.key] === "") return;
+
+    // Replacement water usually isn't pure — tap nitrate is common, and RO is 0.
+    // Default to 0 but let the caller say otherwise.
+    const source = Number(sourceValues[p.key]);
+    const src = Number.isNaN(source) ? 0 : source;
+
+    const after = Math.round((before * (1 - frac) + src * frac) * 100) / 100;
+    const beforeStatus = assessParamForStock(p, before, stockedNames).status;
+    const afterStatus = assessParamForStock(p, after, stockedNames).status;
+
+    changes.push({
+      key: p.key,
+      label: p.label,
+      unit: p.unit,
+      before,
+      after,
+      drop: Math.round((before - after) * 100) / 100,
+      beforeStatus,
+      afterStatus,
+      // The bit that matters: does this change actually get you back in range?
+      fixes: beforeStatus !== "good" && afterStatus === "good",
+      stillHigh: afterStatus !== "good",
+    });
+  });
+
+  return { ok: changes.length > 0, percent: pct, changes, reason: changes.length ? null : "Nothing logged that a water change dilutes" };
+}
+
+// Smallest change that brings every diluting parameter back into range.
+// Returns null when even a full change wouldn't do it — which is itself the
+// answer: the source water or the bioload is the problem, not the schedule.
+export function getRecommendedChangePercent({ waterTests = [], waterType = "fresh", sourceValues = {}, stockedNames = [] } = {}) {
+  for (let pct = 10; pct <= 90; pct += 5) {
+    const res = getWaterChangeEffect({ waterTests, waterType, percent: pct, sourceValues, stockedNames });
+    if (!res.ok) return null;
+    if (res.changes.every((c) => c.afterStatus === "good")) return pct;
+  }
+  return null;
+}
+
+// ── Treatment progress ───────────────────────────────────────────────────────
+// Turns a plan plus a start date into "what do I do today". The stopping-early
+// problem is the one this exists to solve: people quit when the symptoms go,
+// which for ich is precisely when the parasite has dropped off to breed.
+export function getTreatmentProgress(diseaseName, startedAt, doneStepIds = []) {
+  const plan = getTreatment(diseaseName);
+  if (!plan || !startedAt) return null;
+
+  const started = new Date(startedAt).getTime();
+  if (Number.isNaN(started)) return null;
+
+  // Day 1 is the start day, not 24 hours later — that's how the steps read.
+  const dayNow = Math.floor((Date.now() - started) / 86400000) + 1;
+  const done = new Set(doneStepIds);
+
+  const steps = plan.steps.map((s, i) => {
+    const id = `${s.day}-${i}`;
+    return {
+      ...s,
+      id,
+      done: done.has(id),
+      due: s.day <= dayNow,
+      overdue: s.day < dayNow && !done.has(id),
+      daysAway: s.day - dayNow,
+    };
+  });
+
+  const dueToday = steps.filter((s) => s.day === dayNow);
+  const overdue = steps.filter((s) => s.overdue);
+  const next = steps.find((s) => !s.done);
+
+  const completed = steps.filter((s) => s.done).length;
+  const finished = dayNow > plan.durationDays;
+
+  return {
+    disease: diseaseName,
+    day: Math.max(1, dayNow),
+    durationDays: plan.durationDays,
+    urgency: plan.urgency,
+    keyPoint: plan.keyPoint,
+    steps,
+    dueToday,
+    overdue,
+    next: next || null,
+    completed,
+    total: steps.length,
+    pct: steps.length ? Math.round((completed / steps.length) * 100) : 0,
+    // Past the end date but with steps outstanding — the exact failure mode
+    // that lets an infection come back.
+    finished,
+    abandonedEarly: finished && completed < steps.length,
+    daysRemaining: Math.max(0, plan.durationDays - dayNow + 1),
+  };
+}
+
+// ── Parameter forecasting ────────────────────────────────────────────────────
+// Every water test is already stored; nothing ever looked forward. A keeper who
+// tests weekly can see nitrate at 20, then 30, then 40 and still not register
+// that they're eight days from trouble — the numbers are individually fine, and
+// only the slope is alarming.
+//
+// This fits a simple least-squares trend per parameter and projects when it
+// crosses out of its safe band. Deliberately conservative:
+//   * At least MIN_POINTS readings, or noise reads as a trend.
+//   * Readings older than MAX_AGE_DAYS are ignored — a reading from three
+//     months ago says nothing about this week.
+//   * A forecast further out than HORIZON_DAYS isn't shown; predicting two
+//     months ahead from four data points is fiction.
+//   * A weak fit (low R²) is reported as a trend but never as a countdown.
+const FORECAST_MIN_POINTS = 3;
+const FORECAST_MAX_AGE_DAYS = 60;
+const FORECAST_HORIZON_DAYS = 45;
+const FORECAST_MIN_FIT = 0.5;
+
+function leastSquares(points) {
+  const n = points.length;
+  const sx = points.reduce((a, p) => a + p.x, 0);
+  const sy = points.reduce((a, p) => a + p.y, 0);
+  const mx = sx / n, my = sy / n;
+  let num = 0, den = 0;
+  points.forEach((p) => { num += (p.x - mx) * (p.y - my); den += (p.x - mx) ** 2; });
+  if (den === 0) return null;
+  const slope = num / den;
+  const intercept = my - slope * mx;
+  // R²: how much of the variation the line actually explains.
+  let ssRes = 0, ssTot = 0;
+  points.forEach((p) => { ssRes += (p.y - (slope * p.x + intercept)) ** 2; ssTot += (p.y - my) ** 2; });
+  const fit = ssTot === 0 ? 1 : Math.max(0, 1 - ssRes / ssTot);
+  return { slope, intercept, fit };
+}
+
+// Returns one forecast per parameter that has enough data, newest-first input.
+export function getParamForecasts(waterTests = [], waterType = "fresh", stockedNames = []) {
+  const params = PARAMS[waterType] || PARAMS.fresh;
+  const now = Date.now();
+  const out = [];
+
+  params.forEach((p) => {
+    const points = [];
+    waterTests.forEach((t) => {
+      const v = t && t.values ? t.values[p.key] : undefined;
+      if (v == null || v === "") return;
+      const num = Number(v);
+      if (Number.isNaN(num)) return;
+      const ageDays = (now - new Date(t.date).getTime()) / 86400000;
+      if (!(ageDays >= 0) || ageDays > FORECAST_MAX_AGE_DAYS) return;
+      points.push({ x: -ageDays, y: num }); // x = days relative to now
+    });
+
+    if (points.length < FORECAST_MIN_POINTS) return;
+
+    const fitted = leastSquares(points);
+    if (!fitted) return;
+
+    // Per-week change is what a keeper can actually reason about.
+    const perWeek = Math.round(fitted.slope * 7 * 100) / 100;
+    const latest = points.reduce((a, b) => (b.x > a.x ? b : a));
+    const current = latest.y;
+
+    // Where's the edge? Use the stock-aware window when there is one.
+    const assessed = assessParamForStock(p, current, stockedNames);
+    const lo = assessed.source === "stock" ? assessed.lo : p.good[0];
+    const hi = assessed.source === "stock" ? assessed.hi : p.good[1];
+
+    let daysToEdge = null, direction = null;
+    if (Math.abs(perWeek) > 0.001 && assessed.status === "good") {
+      const edge = fitted.slope > 0 ? hi : lo;
+      const days = (edge - current) / fitted.slope;
+      if (days > 0 && days <= FORECAST_HORIZON_DAYS && fitted.fit >= FORECAST_MIN_FIT) {
+        daysToEdge = Math.round(days);
+        direction = fitted.slope > 0 ? "rising" : "falling";
+      }
+    }
+
+    // Flat enough not to matter — don't manufacture a story from noise.
+    const meaningful = Math.abs(perWeek) >= (p.good[1] - p.good[0]) * 0.05;
+    if (!meaningful && daysToEdge == null) return;
+
+    out.push({
+      key: p.key,
+      label: p.label,
+      unit: p.unit,
+      current,
+      perWeek,
+      trend: perWeek > 0 ? "up" : perWeek < 0 ? "down" : "flat",
+      fit: Math.round(fitted.fit * 100) / 100,
+      confident: fitted.fit >= FORECAST_MIN_FIT,
+      daysToEdge,
+      direction,
+      status: assessed.status,
+      n: points.length,
+    });
+  });
+
+  // Most urgent first: an imminent crossing beats a vague drift.
+  out.sort((a, b) => {
+    if (a.daysToEdge != null && b.daysToEdge != null) return a.daysToEdge - b.daysToEdge;
+    if (a.daysToEdge != null) return -1;
+    if (b.daysToEdge != null) return 1;
+    return Math.abs(b.perWeek) - Math.abs(a.perWeek);
+  });
+  return out;
+}
+
 // ── "How do I raise my score?" ───────────────────────────────────────────────
 // getTankHealthScore already reports WHICH factors are down, but a number with
 // no next step is just a grade. This turns the same factors into ranked, costed

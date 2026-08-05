@@ -8,6 +8,7 @@ import { Pill } from "./Pill";
 import { ProgressBar } from "./ProgressBar";
 import { GearGuideCard } from "./GearGuideCard";
 import { AcclimationCard } from "./AcclimationCard";
+import { AcclimationTimer } from "./AcclimationTimer";
 import { QuarantineCard } from "./QuarantineCard";
 
 // Tank tools folded behind a button row (the Pocket Planter pattern, like the
@@ -90,7 +91,15 @@ export function TankToolboxCard({
     { id: "room", emoji: "🧮", label: "Room", render: roomTool },
     { id: "window", emoji: "🌡️", label: "Window", render: window },
     { id: "gear", emoji: "🛠️", label: "Gear", render: () => <GearGuideCard tankGallons={tankGallons} tank={tank} tankWater={tankWater} /> },
-    { id: "newfish", emoji: "🆕", label: "New Fish", render: () => <AcclimationCard /> },
+    { id: "newfish", emoji: "🆕", label: "New Fish", render: () => (
+      // The reference steps stay — the timer is for when you're actually doing
+      // it, one hand on the bag.
+      <View>
+        <AcclimationTimer />
+        <View style={{ height: 1, backgroundColor: theme.border, marginVertical: 18 }} />
+        <AcclimationCard />
+      </View>
+    ) },
     { id: "quarantine", emoji: "⏳", label: "Quarantine", render: () => <QuarantineCard items={quarantine} onAdd={onAddQuarantine} onRemove={onRemoveQuarantine} onGraduate={onGraduateQuarantine} /> },
   ];
 
