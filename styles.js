@@ -1,4 +1,14 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+// ── Large screens ────────────────────────────────────────────────────────────
+// app.json sets supportsTablet, so this already ships on iPad — where a
+// phone layout simply stretches, giving 1000px-wide cards and lines of text
+// far too long to read comfortably. Capping the content column and centring it
+// keeps the design at the width it was drawn for, with the background filling
+// the rest.
+const { width: SCREEN_W } = Dimensions.get("window");
+export const IS_LARGE_SCREEN = SCREEN_W >= 768;
+const CONTENT_MAX_WIDTH = 700;
 
 // Ocean/reef design system — deep teal-on-navy "glass". Same design language as
 // Pocket Planter (rounded glass cards, accent glow, floating tab bar), recolored
@@ -34,7 +44,7 @@ const ACCENT_LIGHT = theme.accentLight;
 
 export const styles = StyleSheet.create({
   safe: { flex: 1 },
-  scroll: { padding: 16, paddingBottom: 132 },
+  scroll: { padding: 16, paddingBottom: 132, ...(IS_LARGE_SCREEN ? { maxWidth: CONTENT_MAX_WIDTH, width: "100%", alignSelf: "center" } : null) },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 28, padding: 24, marginBottom: 18, overflow: "hidden", justifyContent: "flex-end", minHeight: 158, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
@@ -119,7 +129,7 @@ export const styles = StyleSheet.create({
   accountDangerText: { color: theme.danger, fontSize: 14, fontWeight: "900" },
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
-  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 }, elevation: 24 },
+  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 , ...(IS_LARGE_SCREEN ? { maxWidth: 560, alignSelf: "center", width: "100%" } : null) }, elevation: 24 },
   bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 9, borderRadius: 18, gap: 3 },
   bottomTabButtonActive: { backgroundColor: ACCENT, shadowColor: ACCENT, shadowOpacity: 0.5, shadowRadius: 16, shadowOffset: { width: 0, height: 6 }, elevation: 12 },
   bottomTabEmoji: { fontSize: 20 },

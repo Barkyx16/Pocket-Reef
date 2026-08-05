@@ -307,7 +307,9 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
   const add = (label, state, weight, detail) => {
     if (state === true) score += weight;
     else if (state === "partial") score += weight / 2;
-    factors.push({ label, state, detail });
+    // weight travels with the factor so getHealthImprovements can price the
+    // remaining points without re-deriving them.
+    factors.push({ label, state, detail, weight });
   };
 
   // Compatibility (25)
@@ -333,7 +335,9 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
     for (const p of params) {
       if (latest.values[p.key] != null) {
         any = true;
-        const s = assessParam(p, latest.values[p.key]).status;
+        // Grade against what this tank actually keeps, so a Discus tank at 84°F
+        // isn't marked down for being exactly right.
+        const s = assessParamForStock(p, latest.values[p.key], tank).status;
         if (s === "danger") danger = true; else if (s === "caution") cautionP = true;
       }
     }
@@ -364,6 +368,51 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
 // ── Achievements ─────────────────────────────────────────────────────────────
 // Aggregates signals across ALL tanks + user progress into one state object the
 // 62 badge checks read from.
+// ── "How do I raise my score?" ───────────────────────────────────────────────
+// getTankHealthScore already reports WHICH factors are down, but a number with
+// no next step is just a grade. This turns the same factors into ranked, costed
+// actions — "log a water test: +25" — so the score becomes something a keeper
+// can act on rather than something they're judged by.
+//
+// Ranked by points available, because the biggest win should be the first
+// suggestion. Ties break toward the cheapest action.
+const IMPROVEMENT_HINTS = {
+  "Water quality": { action: "Log a water test", to: "log", effort: 1, why: "A current reading is the single biggest part of the score." },
+  "Cycle": { action: "Track your nitrogen cycle", to: "log", effort: 1, why: "Ammonia and nitrite at zero with nitrate present means the tank is ready." },
+  "Maintenance": { action: "Log your maintenance", to: "log", effort: 1, why: "Water changes, filter cleans and gravel vacs all count here." },
+  "Stocking": { action: "Review your stock", to: "tank", effort: 2, why: "Overstocking or an incompatible pairing pulls this down." },
+  "Compatibility": { action: "Check the compatibility matrix", to: "tank", effort: 2, why: "A conflicting pair is worth fixing before it costs you a fish." },
+  "Tank size": { action: "Check your tank size fits your stock", to: "tank", effort: 3, why: "A fish that outgrows the tank can't be fixed later with maintenance." },
+};
+
+export function getHealthImprovements(healthScore, limit = 3) {
+  if (!healthScore || !Array.isArray(healthScore.factors)) return [];
+
+  const out = [];
+  healthScore.factors.forEach((f) => {
+    // state === true means full marks already — nothing to suggest.
+    if (f.state === true) return;
+
+    // "partial" credit earns roughly half, so only half the points remain.
+    const available = f.state === "partial" ? Math.round((f.weight || 0) / 2) : (f.weight || 0);
+    if (available <= 0) return;
+
+    const hint = IMPROVEMENT_HINTS[f.label];
+    out.push({
+      label: f.label,
+      points: available,
+      detail: f.detail || "",
+      action: hint ? hint.action : `Improve ${String(f.label).toLowerCase()}`,
+      why: hint ? hint.why : "",
+      to: hint ? hint.to : "tank",
+      effort: hint ? hint.effort : 2,
+    });
+  });
+
+  out.sort((a, b) => b.points - a.points || a.effort - b.effort);
+  return out.slice(0, limit);
+}
+
 export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist = [], gameStats = {} } = {}) {
   // Default parameters only cover `undefined`, not `null` — and a null here
   // used to throw on wishlist.length, which takes the whole Profile tab down.
@@ -472,6 +521,50 @@ export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist 
 // The overlapping temperature & pH range that keeps EVERY stocked species happy
 // — the intersection of their individual tolerances. If the ranges don't overlap
 // the stock is fundamentally mismatched (flagged so the keeper can rehome).
+// ── Stock-aware parameter grading ────────────────────────────────────────────
+// Generic safe ranges are the right default, but they're wrong for a specific
+// tank more often than you'd think. 84°F is ideal for Discus and lethal for a
+// goldfish; pH 8.2 suits Rift Lake cichlids and cooks a cardinal tetra. Grading
+// every tank against one range means the app tells a Discus keeper their
+// perfect water is too warm — which is worse than saying nothing.
+//
+// Where the stock defines a tighter window (temperature and pH), grade against
+// THAT. Everything else — ammonia, nitrite, nitrate — is a water-quality
+// measure with no species opinion, so the generic range stands.
+const STOCK_GRADED = { temp: ["tempLo", "tempHi"], ph: ["phLo", "phHi"] };
+
+export function assessParamForStock(param, value, stockedNames = []) {
+  const generic = assessParam(param, value);
+  const keys = STOCK_GRADED[param.key];
+  if (!keys || generic.status === "none") return generic;
+
+  const window = getTankParamWindow(stockedNames);
+  // No stock, or a stock whose ranges don't overlap at all — the tank has a
+  // bigger problem than this reading, and an impossible window would grade
+  // everything as bad. Fall back to the generic verdict.
+  if (!window) return generic;
+  if (param.key === "temp" && !window.tempOk) return generic;
+  if (param.key === "ph" && !window.phOk) return generic;
+
+  const lo = window[keys[0]];
+  const hi = window[keys[1]];
+  if (typeof lo !== "number" || typeof hi !== "number") return generic;
+
+  const v = Number(value);
+  if (Number.isNaN(v)) return generic;
+
+  // Inside every stocked species' range.
+  if (v >= lo && v <= hi) return { status: "good", source: "stock", lo, hi };
+
+  // A small margin outside is a caution, not an emergency — fish tolerate a
+  // little drift, and crying danger over half a degree trains people to ignore
+  // the app.
+  const margin = param.key === "temp" ? 2 : 0.3;
+  if (v >= lo - margin && v <= hi + margin) return { status: "caution", source: "stock", lo, hi };
+
+  return { status: "danger", source: "stock", lo, hi };
+}
+
 export function getTankParamWindow(stockedNames = []) {
   const st = stockedNames.map(getSpecies).filter(Boolean);
   if (!st.length) return null;

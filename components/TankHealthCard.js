@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { theme } from "../styles";
-import { tapHaptic } from "../core";
+import { tapHaptic, getHealthImprovements } from "../core";
 
 // The overall reef-health score with a factor breakdown. The score ring shows at
 // a glance; tap the header to expand or collapse the six-factor breakdown so the
@@ -9,7 +9,10 @@ import { tapHaptic } from "../core";
 const ICON = { true: "✓", partial: "~", false: "✕" };
 const CLR = { true: "#38e1c6", partial: "#ffd86b", false: "#ff7b7b" };
 
-export function TankHealthCard({ health, defaultOpen = false }) {
+export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
+  // A score with no next step is just a grade. These are the same factors,
+  // priced and ranked, so the number becomes something you can act on.
+  const improvements = getHealthImprovements(health, 3);
   const [open, setOpen] = useState(defaultOpen);
   if (!health) return null;
   return (
@@ -41,6 +44,34 @@ export function TankHealthCard({ health, defaultOpen = false }) {
               <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700" }}>{f.detail}</Text>
             </View>
           ))}
+
+          {improvements.length ? (
+            <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.border }}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
+                Raise your score
+              </Text>
+              <View style={{ gap: 10 }}>
+                {improvements.map((imp) => (
+                  <Pressable
+                    key={imp.label}
+                    onPress={() => { if (onGoToTab) { tapHaptic(); onGoToTab(imp.to); } }}
+                    style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10 }, pressed && onGoToTab && { opacity: 0.7 }]}
+                    accessibilityRole={onGoToTab ? "button" : undefined}
+                    accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
+                  >
+                    <View style={{ minWidth: 40, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.34)", alignItems: "center" }}>
+                      <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ color: theme.text, fontSize: 13, fontWeight: "800" }}>{imp.action}</Text>
+                      {imp.why ? <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
+                    </View>
+                    {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontWeight: "900" }}>›</Text> : null}
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+          ) : null}
         </View>
       ) : null}
     </View>

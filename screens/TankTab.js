@@ -76,7 +76,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       {tank.length ? (
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>🩺 Tank Health</Text>
-          <TankHealthCard health={health} />
+          <TankHealthCard health={health} onGoToTab={onGoToTab} />
         </View>
       ) : null}
 

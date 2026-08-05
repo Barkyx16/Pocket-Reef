@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
+import { FlatList, Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
 import { styles, theme } from "../styles";
 import { SPECIES, DISEASES, getSpecies, getCompatibility, speciesFitsTank, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
@@ -9,6 +9,7 @@ import { CompareCard } from "../components/CompareCard";
 import { EmptyState } from "../components/EmptyState";
 import { Pill } from "../components/Pill";
 import { t } from "../lib/i18n";
+import { matchesQuery, scoreMatch, buildHaystack } from "../lib/search";
 
 const WATER_FILTERS = [
   { id: "all", label: "All" },
@@ -25,6 +26,9 @@ const CARE_RANK = { Easy: 0, Moderate: 1, Advanced: 2 };
 
 // Everything a search query can match — name, what it eats, its kind, water type,
 // and its description — so "peaceful salt shrimp" or "algae" finds the right fish.
+// Built once for the whole catalog, not per keystroke per species.
+const HAY = new Map(SPECIES.map((s) => [s.name, buildHaystack(s)]));
+
 const haystack = (s) =>
   `${s.name} ${s.diet} ${s.kind} ${s.water === "salt" ? "saltwater marine reef" : "freshwater"} ${s.summary || ""}`.toLowerCase();
 
@@ -58,9 +62,17 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       if (temper !== "all" && s.temperament !== temper) return false;
       if (size !== "all" && sizeBand(s.adultInches || 0) !== size) return false;
       if (reefOnly && s.reefSafe !== true) return false;
-      if (q && !haystack(s).includes(q)) return false;
+      if (q && !matchesQuery(s, q, HAY.get(s.name))) return false;
       return true;
     });
+    // With a query active, relevance beats alphabetical — an exact name match
+    // belongs at the top, not wherever the alphabet puts it.
+    if (q) {
+      return [...filtered].sort((a, b) => {
+        const d = scoreMatch(b, q) - scoreMatch(a, q);
+        return d !== 0 ? d : a.name.localeCompare(b.name);
+      });
+    }
     if (sort === "name") return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "size") return [...filtered].sort((a, b) => (a.adultInches || 0) - (b.adultInches || 0));
     if (sort === "care") return [...filtered].sort((a, b) => (CARE_RANK[a.careLevel] ?? 3) - (CARE_RANK[b.careLevel] ?? 3));
@@ -109,8 +121,12 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
     </View>
   );
 
-  return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+  // The catalog is virtualized. Previously every visible card was mounted inside
+  // a ScrollView — with Premium and "show more" that reached 316 mounted rows,
+  // and each keystroke in search re-laid-out all of them. FlatList keeps only
+  // what's near the viewport alive; the header holds everything above the list.
+  const ListHeader = (
+    <View>
       <HeroBanner
         eyebrow={t("species.eyebrow", { count: SPECIES.length })}
         title={t("species.title")}
@@ -237,21 +253,11 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
         {list.length ? `Showing ${Math.min(shown, list.length)} of ${list.length} species` : "0 species"}
       </Text>
 
-      {list.slice(0, shown).map((s) => {
-        const selected = compareMode && compareSel.includes(s.name);
-        return (
-          <SpeciesCard
-            key={s.name}
-            species={s}
-            onPress={() => onCardPress(s.name)}
-            inTank={tank.includes(s.name)}
-            onToggleTank={compareMode ? undefined : () => toggleTank(s.name)}
-            inWishlist={wishlist.includes(s.name)}
-            onToggleWishlist={compareMode || !onToggleWishlist ? undefined : () => onToggleWishlist(s.name)}
-            note={selected ? "⚖️ Selected for compare" : undefined}
-          />
-        );
-      })}
+    </View>
+  );
+
+  const ListFooter = (
+    <View>
       {!premiumUnlocked && list.length > shown ? (
         // The free preview ends here. Show what's behind the wall rather than
         // just stopping — the number is the pitch.
@@ -278,7 +284,41 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       {list.length === 0 ? (
         <View style={styles.card}><EmptyState emoji="🔍" title="No matches" subtitle="No species fit those filters. Try loosening one, or reset to see the full catalog." /></View>
       ) : null}
-    </ScrollView>
+    </View>
+  );
+
+  const renderItem = ({ item }) => {
+    const selected = compareMode && compareSel.includes(item.name);
+    return (
+      <SpeciesCard
+        species={item}
+        onPress={() => onCardPress(item.name)}
+        inTank={tank.includes(item.name)}
+        onToggleTank={compareMode ? undefined : () => toggleTank(item.name)}
+        inWishlist={wishlist.includes(item.name)}
+        onToggleWishlist={compareMode || !onToggleWishlist ? undefined : () => onToggleWishlist(item.name)}
+        note={selected ? "\u2696\ufe0f Selected for compare" : undefined}
+      />
+    );
+  };
+
+  return (
+    <FlatList
+      data={list.slice(0, shown)}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.name}
+      ListHeaderComponent={ListHeader}
+      ListFooterComponent={ListFooter}
+      contentContainerStyle={styles.scroll}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      // Tuned for rows of roughly even height. removeClippedSubviews is the
+      // setting that actually frees memory on Android.
+      initialNumToRender={10}
+      maxToRenderPerBatch={10}
+      windowSize={9}
+      removeClippedSubviews
+    />
   );
 }
 

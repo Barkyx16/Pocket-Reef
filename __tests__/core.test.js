@@ -392,3 +392,103 @@ describe("catalog copy quality", () => {
     });
   });
 });
+
+describe("stock-aware parameter grading", () => {
+  const { assessParamForStock, PARAMS } = require("../core");
+  const tempParam = PARAMS.fresh.find((p) => p.key === "temp");
+  const ammoniaParam = PARAMS.fresh.find((p) => p.key === "ammonia");
+
+  test("an empty tank falls back to the generic range", () => {
+    const a = assessParamForStock(tempParam, 78, []);
+    expect(a.source).toBeUndefined();
+  });
+
+  test("a Discus tank accepts the warmth Discus need", () => {
+    // The bug this prevents: telling a Discus keeper their correct 84F is wrong.
+    const discus = SPECIES.find((s) => s.name === "Discus");
+    if (!discus) return;
+    const mid = Math.round((discus.tempMinF + discus.tempMaxF) / 2);
+    expect(assessParamForStock(tempParam, mid, ["Discus"]).status).toBe("good");
+  });
+
+  test("the same temperature is flagged for a cold-water fish", () => {
+    const cold = SPECIES.filter((s) => s.water === "fresh").sort((a, b) => a.tempMaxF - b.tempMaxF)[0];
+    const discus = SPECIES.find((s) => s.name === "Discus");
+    if (!cold || !discus || cold.tempMaxF >= discus.tempMinF) return;
+    const hot = discus.tempMaxF;
+    expect(assessParamForStock(tempParam, hot, [cold.name]).status).not.toBe("good");
+  });
+
+  test("a small drift is a caution, not an emergency", () => {
+    const s = SPECIES.find((x) => x.name === "Neon Tetra");
+    const justOver = s.tempMaxF + 1;
+    expect(assessParamForStock(tempParam, justOver, ["Neon Tetra"]).status).toBe("caution");
+  });
+
+  test("ammonia has no species opinion — always the generic range", () => {
+    const withStock = assessParamForStock(ammoniaParam, 4, ["Neon Tetra"]);
+    expect(withStock.source).toBeUndefined();
+    expect(withStock.status).toBe("danger");
+  });
+
+  test("an impossible stock window falls back instead of failing everything", () => {
+    // Fish whose ranges don't overlap: the tank has a bigger problem than this
+    // reading, and grading against an empty window would mark all water bad.
+    const cold = SPECIES.filter((s) => s.water === "fresh").sort((a, b) => a.tempMaxF - b.tempMaxF)[0];
+    const warm = SPECIES.filter((s) => s.water === "fresh").sort((a, b) => b.tempMinF - a.tempMinF)[0];
+    if (!cold || !warm || cold.tempMaxF >= warm.tempMinF) return;
+    const a = assessParamForStock(tempParam, 76, [cold.name, warm.name]);
+    expect(a.source).toBeUndefined();
+  });
+
+  test("never throws on odd input", () => {
+    expect(() => assessParamForStock(tempParam, null, ["Neon Tetra"])).not.toThrow();
+    expect(() => assessParamForStock(tempParam, "abc", ["Neon Tetra"])).not.toThrow();
+    expect(() => assessParamForStock(tempParam, 78, ["Not A Fish"])).not.toThrow();
+  });
+});
+
+describe("health improvements", () => {
+  const { getHealthImprovements } = require("../core");
+
+  test("a brand-new tank is told what to do first", () => {
+    const hs = getTankHealthScore({ tank: [NEON], tankGallons: 29 });
+    const tips = getHealthImprovements(hs);
+    expect(tips.length).toBeGreaterThan(0);
+    tips.forEach((t) => {
+      expect(t.points).toBeGreaterThan(0);
+      expect(typeof t.action).toBe("string");
+      expect(typeof t.to).toBe("string"); // deep-linkable, like Today actions
+    });
+  });
+
+  test("suggestions are ranked by points available", () => {
+    const hs = getTankHealthScore({ tank: [NEON], tankGallons: 29 });
+    const tips = getHealthImprovements(hs, 5);
+    for (let i = 1; i < tips.length; i++) {
+      expect(tips[i - 1].points).toBeGreaterThanOrEqual(tips[i].points);
+    }
+  });
+
+  test("a factor already at full marks is never suggested", () => {
+    const hs = getTankHealthScore({
+      tank: [NEON], tankGallons: 55, quantities: { [NEON]: 6 },
+      waterTests: [{ date: iso(0), values: { ammonia: 0, nitrite: 0, nitrate: 10, ph: 7 } }],
+      maintenance: { waterchange: iso(1), filterclean: iso(2), gravelvac: iso(1), glassclean: iso(1) },
+    });
+    const suggested = getHealthImprovements(hs, 10).map((t) => t.label);
+    const perfect = hs.factors.filter((f) => f.state === true).map((f) => f.label);
+    perfect.forEach((label) => expect(suggested).not.toContain(label));
+  });
+
+  test("a perfect tank has nothing left to suggest", () => {
+    const hs = { score: 100, factors: [{ label: "Water quality", state: true, weight: 25 }] };
+    expect(getHealthImprovements(hs)).toEqual([]);
+  });
+
+  test("handles missing or malformed input", () => {
+    expect(getHealthImprovements(null)).toEqual([]);
+    expect(getHealthImprovements({})).toEqual([]);
+    expect(getHealthImprovements({ factors: "nope" })).toEqual([]);
+  });
+});

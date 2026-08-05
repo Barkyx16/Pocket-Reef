@@ -117,7 +117,11 @@ tank, your wishlist, a daily-care checklist, and live tank warnings.
 Multi-tank throughout — switch, edit, duplicate, or delete, with an all-tanks overview.
 
 ### Species
-Full-text search across name, diet, kind, and description. Filter by water type, care
+Typo-tolerant search that understands how people actually type — `clown fish`,
+`cory`, `oto`, `plecostomus`, `nemo`, `dory`, `sps`, `zoas`, and one-character slips
+like `clownfsh` all resolve. Results rank by relevance, so an exact name is the first
+card. The list is virtualized, so the full 316-species catalog scrolls without
+mounting every row. Filter by water type, care
 level, temperament, size, and reef-safe status. Sort by name, size, or easiest. Then the
 useful ones: **"fits my tank"** narrows to what your current setup can actually hold,
 wishlist hearts save what you're eyeing, **Compare mode** puts two species side by side,
@@ -221,7 +225,7 @@ last write wins. Photos stay on the device; only their references sync.
 npm test
 ```
 
-46 tests over `core.js` — bioload, warnings, compatibility, the nitrogen cycle,
+80 tests over `core.js` and the search engine — bioload, warnings, compatibility, the nitrogen cycle,
 Today actions, health scoring, achievements, streaks, and catalog integrity.
 They pin behaviour rather than implementation, so they survive a refactor and
 fail on a wrong answer. Worth running before each batch of changes: a babel
@@ -240,7 +244,6 @@ the device.
 
 ## Roadmap
 
-- Full list virtualization for the species catalog (cards are memoized; `FlatList` next)
 - Real photography: extend `data/speciesImageMap.js` and `assets/species/`
 - Enrich archetype-based species summaries with per-species detail
 - Swap RevenueCat test keys for production keys and configure store products
