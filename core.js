@@ -365,6 +365,15 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
 // Aggregates signals across ALL tanks + user progress into one state object the
 // 62 badge checks read from.
 export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist = [], gameStats = {} } = {}) {
+  // Default parameters only cover `undefined`, not `null` — and a null here
+  // used to throw on wishlist.length, which takes the whole Profile tab down.
+  // Normalize before anything reads them.
+  tanks = Array.isArray(tanks) ? tanks : [];
+  activeDays = Array.isArray(activeDays) ? activeDays : [];
+  wishlist = Array.isArray(wishlist) ? wishlist : [];
+  gameStats = gameStats && typeof gameStats === "object" ? gameStats : {};
+  xp = Number(xp) || 0;
+
   const allNames = new Set();
   tanks.forEach((t) => (t.stock || []).forEach((n) => allNames.add(n)));
   const species = [...allNames].map(getSpecies).filter(Boolean);

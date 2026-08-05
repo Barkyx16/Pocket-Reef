@@ -200,15 +200,23 @@ last write wins. Photos stay on the device; only their references sync.
 
 ---
 
+## Tests
+
+```bash
+npm test
+```
+
+46 tests over `core.js` — bioload, warnings, compatibility, the nitrogen cycle,
+Today actions, health scoring, achievements, streaks, and catalog integrity.
+They pin behaviour rather than implementation, so they survive a refactor and
+fail on a wrong answer. Worth running before each batch of changes: a babel
+compile can't see a broken calculation.
+
 ## Roadmap
 
-- Wire `expo-notifications` to the existing reminder prefs — the schedule is already
-  stored and cadence-aware, but nothing schedules yet
-- A test suite for `core.js` — it's the brain and currently has no coverage
-- Deploy the `delete-account` Edge Function (body is in `supabase/README.md`)
 - Real photography: extend `data/speciesImageMap.js` and `assets/species/`
-- RevenueCat for the premium gate
 - Enrich archetype-based species summaries with per-species detail
+- Swap RevenueCat test keys for production keys and configure store products
 
 ---
 

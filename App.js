@@ -4,13 +4,16 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "./styles";
-import { tapHaptic, getTodayKey, getSpecies } from "./core";
+import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
-import { pushSnapshot, pullSnapshot } from "./lib/cloudSync";
+import { pushSnapshot, pullSnapshot, fetchServerEntitlement } from "./lib/cloudSync";
+import { queueSnapshot, resumePendingSync, cancelPendingSync, hasPendingSync } from "./lib/syncQueue";
+import { backupTankPhotos, hydrateTankPhotos } from "./lib/photoSync";
 import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage";
 import { runMigrations, ensureTanksShape } from "./lib/migrations";
-import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getPackages, purchasePackage } from "./lib/purchases";
+import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getPackages, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { LockedTab } from "./components/LockedTab";
+import { syncReminders, requestPermission, onReminderTap } from "./lib/notifications";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
 import { t, setLanguage } from "./lib/i18n";
@@ -100,6 +103,8 @@ export default function App() {
   // Store availability + in-flight purchase, for the Premium tab UI.
   const [storeReady, setStoreReady] = useState(false);
   const [buying, setBuying] = useState(false);
+  // True when edits are saved locally but haven't reached the account yet.
+  const [syncPending, setSyncPending] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [reminderPrefs, setReminderPrefs] = useState({ waterTest: "weekly", waterChange: "weekly", feeding: "off" });
   const [tankSheet, setTankSheet] = useState(null); // null | {mode:"new"} | {mode:"edit", id}
@@ -212,6 +217,36 @@ export default function App() {
     })();
   }, []);
 
+  // ── Care reminders ─────────────────────────────────────────────────────────
+  // Rebuilt whenever the inputs change. The body is written from the user's
+  // actual top Today action, so a reminder says what's wrong with THEIR tank
+  // rather than pinging them generically.
+  useEffect(() => {
+    if (!hydrated || !activeTank) return;
+    const actions = getTodayActions({
+      tank: activeTank.stock || [],
+      waterTests: activeTank.waterTests || [],
+      maintenance: activeTank.maintenance || {},
+      quarantine: activeTank.quarantine || [],
+      careDoneCount: (careDone[getTodayKey()] || []).length,
+      reminderPrefs,
+      quantities: activeTank.quantities || {},
+    });
+    const streak = getStreak(activeDays);
+    syncReminders({
+      reminderPrefs,
+      tankName: activeTank.name,
+      topAction: actions && actions.length ? actions[0] : null,
+      // Only nudge when there's a streak to lose and today isn't logged yet.
+      streakAtRisk: streak > 0 && !activeDays.includes(getTodayKey()),
+    }).catch(() => {});
+  }, [hydrated, reminderPrefs, activeTankId, activeTank, activeDays, careDone]);
+
+  // Tapping a reminder lands on the tab where you act on it — same deep-link
+  // contract the Today card uses. jumpTo enforces the paywall, so a reminder
+  // can't be a back door into a locked tab.
+  useEffect(() => onReminderTap((to) => jumpTo(to)), [premiumUnlocked]);
+
   // ── Premium entitlement ────────────────────────────────────────────────────
   // Owned by RevenueCat, never by the app. Configure the SDK, read the current
   // entitlement, then follow it — renewals, expiry, refunds and restores on
@@ -278,6 +313,45 @@ export default function App() {
     // is decided by RevenueCat; accepting it from synced data is what would let
     // a patched client write itself Premium and have it stick forever.
   };
+
+  // Tie the store subscriber to the signed-in account (so webhook events can be
+  // attributed), then consult the server-side entitlement row — the copy the
+  // client cannot write. Either source saying yes grants access: the SDK works
+  // offline, the server survives a patched bundle. Neither can revoke on a
+  // failed lookup, since both return null when they simply don't know.
+  useEffect(() => {
+    if (!user) return;
+    let alive = true;
+    (async () => {
+      await identifyUser(user.id);
+      const server = await fetchServerEntitlement(user.id);
+      if (alive && server === true) setPremiumUnlocked(true);
+    })();
+    return () => { alive = false; };
+  }, [user]);
+
+  // Copy any journal photo that isn't backed up yet into storage. Best-effort
+  // and off the critical path — a failed upload just leaves the entry with its
+  // local photo, and the next pass retries.
+  useEffect(() => {
+    if (!user || !hydrated || !tanks.length) return;
+    let alive = true;
+    backupTankPhotos(user.id, tanks).then(({ tanks: next, uploaded }) => {
+      if (alive && uploaded) { setTanks(next); persistTanks(next); }
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, [user, hydrated, tanks]);
+
+  // Resume a push that a previous session couldn't finish.
+  useEffect(() => {
+    if (!user || !hydrated) return;
+    resumePendingSync(user.id, (r) => {
+      setSyncError(!r.ok);
+      setSyncPending(Boolean(r.pending));
+      if (r.ok) setLastSyncedAt(Date.now());
+    }).catch(() => {});
+    hasPendingSync().then((p) => setSyncPending(p)).catch(() => {});
+  }, [user, hydrated]);
 
   // Restore an existing session on launch and follow sign-in/out after that.
   useEffect(() => {
@@ -374,6 +448,13 @@ export default function App() {
         if (res.data) applySnapshot(res.data);
         setSyncError(false);
         setLastSyncedAt(res.updatedAt ? new Date(res.updatedAt).getTime() : Date.now());
+        // Journal photos arrive as storage paths. Sign them so entries taken on
+        // another device actually render here instead of showing as broken.
+        if (res.data && Array.isArray(res.data.tanks)) {
+          hydrateTankPhotos(res.data.tanks).then((withUrls) => {
+            if (alive && withUrls !== res.data.tanks) { setTanks(withUrls); persistTanks(withUrls); }
+          }).catch(() => {});
+        }
       } else {
         setSyncError(true);
       }
@@ -389,13 +470,18 @@ export default function App() {
     if (syncTimer.current) clearTimeout(syncTimer.current);
     syncTimer.current = setTimeout(async () => {
       setSyncing(true);
-      const res = await pushSnapshot(user.id, {
+      // Goes through the queue: the snapshot is written to disk before the
+      // network attempt, so a failed or interrupted push is retried with
+      // backoff instead of being silently dropped.
+      await queueSnapshot(user.id, {
         tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
         profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+      }, (r) => {
+        setSyncing(false);
+        setSyncError(!r.ok);
+        setSyncPending(Boolean(r.pending));
+        if (r.ok) setLastSyncedAt(Date.now());
       });
-      setSyncing(false);
-      if (res.ok) { setSyncError(false); setLastSyncedAt(Date.now()); }
-      else setSyncError(true);
     }, 2500);
     return () => { if (syncTimer.current) clearTimeout(syncTimer.current); };
   }, [user, tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs, profileName, recent, speciesNotes, challengesDone, bannerId, lang, unit]);
@@ -403,22 +489,29 @@ export default function App() {
   const syncNow = async () => {
     if (!supabase || !user) return;
     setSyncing(true);
-    const res = await pushSnapshot(user.id, {
+    await queueSnapshot(user.id, {
       tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
       profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+    }, (r) => {
+      setSyncing(false);
+      setSyncError(!r.ok);
+      setSyncPending(Boolean(r.pending));
+      if (r.ok) setLastSyncedAt(Date.now());
     });
-    setSyncing(false);
-    if (res.ok) { setSyncError(false); setLastSyncedAt(Date.now()); }
-    else setSyncError(true);
   };
 
   // Sign-out drops back to the auth gate. Local data stays on the device — the
   // next account to sign in pulls its own copy over it.
   const handleSignOut = () => {
     cloudLoaded.current = false;
+    // Stop retrying this account's pending push, and detach the RevenueCat
+    // subscriber so the next account on this device can't inherit entitlement.
+    cancelPendingSync();
+    forgetUser().catch(() => {});
     setUser(null);
     setLastSyncedAt(null);
     setSyncError(false);
+    setSyncPending(false);
     setActiveTab("home");
   };
 
@@ -446,7 +539,14 @@ export default function App() {
   // ── User-level settings ──
   const changeUnit = (u) => { setUnit(u); setUnitState(u); AsyncStorage.setItem("pr_unit", u).catch(() => {}); };
   const changeLanguage = (code) => { setLanguage(code); setLangState(code); AsyncStorage.setItem("pr_lang", code).catch(() => {}); };
-  const changeReminders = (next) => { setReminderPrefs(next); AsyncStorage.setItem("pr_reminders", JSON.stringify(next)).catch(() => {}); };
+  // Turning a reminder on is the moment a permission prompt makes sense — the
+  // user has just asked to be reminded, so the ask has obvious context.
+  const changeReminders = (next) => {
+    setReminderPrefs(next);
+    setRaw("pr_reminders", JSON.stringify(next));
+    const wantsAny = ["waterTest", "waterChange", "feeding"].some((k) => next[k] && next[k] !== "off");
+    if (wantsAny) requestPermission().catch(() => {});
+  };
   // Buys Premium. The app never sets entitlement itself — it asks the store,
   // and the resulting CustomerInfo is what flips the flag.
   const buyPremium = async (planId) => {

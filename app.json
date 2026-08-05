@@ -27,6 +27,13 @@
       "bundler": "metro"
     },
     "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#38e1c6",
+          "defaultChannel": "reef-care"
+        }
+      ],
       "expo-secure-store",
       [
         "expo-local-authentication",
