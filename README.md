@@ -82,6 +82,17 @@ tab bar, the More sheet, `jumpTo()` and the render guard all read it, so a tab
 can't end up half-protected and a deep link can't route around it. Locked tabs
 are never mounted — the wall renders instead of the screen, not on top of it.
 
+Prices, trial length, and the yearly saving all come from the store at runtime —
+never hardcoded, since they're localized per country and change without a
+release. The paywall carries the auto-renew disclosure, terms, privacy, and
+restore that App Store review requires.
+
+The paywall is **contextual**: hitting the 5-fish cap, tapping a locked disease
+guide, or opening a locked tab each produce copy about that specific thing
+rather than a generic pitch. Onboarding runs the real recommendation engine on
+the tank you just described and shows actual species before it ever mentions
+money.
+
 In-app purchases need a device build; in Expo Go the SDK is absent and the app
 stays on the free tier.
 

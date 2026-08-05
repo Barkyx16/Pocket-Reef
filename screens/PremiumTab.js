@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
@@ -16,20 +16,67 @@ const FEATURES = [
   { icon: "☁️", title: "Cloud backup & sync", body: "Your tanks, logs, and journal safe across devices." },
 ];
 
-const PLANS = [
-  { id: "monthly", name: "Monthly", price: "$2.99", per: "/mo", badge: "POPULAR", badgeBg: theme.accent, badgeColor: "#04202a" },
-  { id: "yearly", name: "Yearly", price: "$19.99", per: "/yr", badge: "BEST VALUE", badgeBg: theme.warn, badgeColor: "#3d2c00", save: "Save 44%" },
-];
+// Legal links are not optional: App Store review rejects a subscription
+// paywall that doesn't surface terms, privacy, and the auto-renew disclosure.
+const TERMS_URL = "https://pocketplanter.app/terms";
+const PRIVACY_URL = "https://pocketplanter.app/privacy";
 
-export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false }) {
-  const [plan, setPlan] = useState("yearly");
+// Works out the yearly saving from the real store prices, so the badge can't
+// advertise a discount that doesn't exist.
+function savingLabel(plans) {
+  const monthly = plans.find((p) => !p.annual);
+  const annual = plans.find((p) => p.annual);
+  if (!monthly || !annual || !monthly.price || !annual.price) return null;
+  const pct = Math.round((1 - annual.price / (monthly.price * 12)) * 100);
+  return pct > 0 ? `Save ${pct}%` : null;
+}
+
+// The paywall answers the question the user just asked. A wall that says
+// "you tried to add a 6th fish" converts far better than one that says
+// "upgrade for more features" — it's already about them.
+const REASON_COPY = {
+  stockCap: { eyebrow: "You've filled the free tank", title: "Room for the whole tank", subtitle: "Free saves 5 fish. Premium is unlimited — plus live compatibility and bioload as you stock." },
+  species: { eyebrow: "309 more species", title: "The full catalog", subtitle: "Free previews 7. Premium opens all 316 with care guides, compatibility, and your wishlist." },
+  disease: { eyebrow: "Something looks wrong?", title: "Find out what it is", subtitle: "Every illustrated disease guide, a symptom checker, and an emergency troubleshooter." },
+  tankIdea: { eyebrow: "One-tap stocking", title: "22 tanks, already planned", subtitle: "Curated stocking plans verified conflict-free — load one and you're done." },
+  secondTank: { eyebrow: "More than one tank?", title: "Track them all", subtitle: "Premium keeps unlimited tanks, each with its own stock, water history, and journal." },
+  tank: { eyebrow: "Your tank", title: "See the whole picture", subtitle: "Live compatibility, bioload, the stocking planner, and your ideal parameter window." },
+  log: { eyebrow: "Your logbook", title: "Track what matters", subtitle: "Water chemistry with trends, the cycle tracker, maintenance, feeding, and costs." },
+  health: { eyebrow: "Health toolkit", title: "Know what to do", subtitle: "Disease guides, symptom checker, and an emergency troubleshooter when it counts." },
+  journal: { eyebrow: "Your journal", title: "Remember every stage", subtitle: "A dated, searchable photo record of your tank — backed up to your account." },
+  games: { eyebrow: "Reef games", title: "Play and learn", subtitle: "Every mini-game, with XP toward your reef-keeper level." },
+  profile: { eyebrow: "Your progress", title: "Never lose a thing", subtitle: "Cloud save across devices, 86 achievements, and lifetime stats." },
+};
+
+export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false, loadPlans, reason }) {
+  const [plans, setPlans] = useState([]);
+  const [plan, setPlan] = useState(null);
+  const [loadingPlans, setLoadingPlans] = useState(true);
+
+  // Pull real, localized prices from the store.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const list = loadPlans ? await loadPlans() : [];
+      if (!alive) return;
+      setPlans(list);
+      // Default to yearly — it's the better deal and the better retention.
+      setPlan((list.find((p) => p.annual) || list[0] || null));
+      setLoadingPlans(false);
+    })();
+    return () => { alive = false; };
+  }, [loadPlans, storeReady]);
+
+  const ctx = reason ? REASON_COPY[reason] : null;
+  const save = savingLabel(plans);
+  const trialDays = plan && plan.freeTrialDays ? plan.freeTrialDays : 0;
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
-        eyebrow={premiumUnlocked ? "Premium active" : "Premium"}
-        title={premiumUnlocked ? "You're all in 🐠" : "Keep a healthier reef"}
-        subtitle={premiumUnlocked ? "Every feature is unlocked — thanks for supporting Pocket Reef." : "Unlock the full toolkit to plan, stock, and keep thriving tanks."}
+        eyebrow={premiumUnlocked ? "Premium active" : ctx ? ctx.eyebrow : "Premium"}
+        title={premiumUnlocked ? "You're all in 🐠" : ctx ? ctx.title : "Keep a healthier reef"}
+        subtitle={premiumUnlocked ? "Every feature is unlocked — thanks for supporting Pocket Reef." : ctx ? ctx.subtitle : "Unlock the full toolkit to plan, stock, and keep thriving tanks."}
         emoji="👑"
         colors={["#3a2f12", "#20320f", "#08202f"]}
       />
@@ -69,24 +116,36 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Choose your plan</Text>
           <View style={{ flexDirection: "row", gap: 10 }}>
-            {PLANS.map((p) => {
-              const on = plan === p.id;
+            {plans.map((p) => {
+              const on = plan && plan.id === p.id;
+              const badge = p.annual ? "BEST VALUE" : "POPULAR";
+              const badgeBg = p.annual ? theme.warn : theme.accent;
+              const badgeColor = p.annual ? "#3d2c00" : "#04202a";
               return (
-                <Pressable key={p.id} onPress={() => setPlan(p.id)} style={({ pressed }) => [{ flex: 1, borderRadius: 16, padding: 14, backgroundColor: on ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }, pressed && { opacity: 0.9 }]} accessibilityRole="button">
-                  <View style={{ alignSelf: "flex-start", backgroundColor: p.badgeBg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 8 }}>
-                    <Text style={{ color: p.badgeColor, fontSize: 9, fontWeight: "900" }}>{p.badge}</Text>
+                <Pressable key={p.id} onPress={() => setPlan(p)} style={({ pressed }) => [{ flex: 1, borderRadius: 16, padding: 14, backgroundColor: on ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }, pressed && { opacity: 0.9 }]} accessibilityRole="button">
+                  <View style={{ alignSelf: "flex-start", backgroundColor: badgeBg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 8 }}>
+                    <Text style={{ color: badgeColor, fontSize: 9, fontWeight: "900" }}>{badge}</Text>
                   </View>
                   <Text style={{ color: on ? theme.accent : "#fff", fontSize: 15, fontWeight: "900" }}>{p.name}</Text>
-                  <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", marginTop: 2, fontVariant: ["tabular-nums"] }}>{p.price}<Text style={{ color: theme.secondaryText, fontSize: 12 }}> {p.per}</Text></Text>
-                  {p.save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: 10, fontWeight: "900" }}>{p.save}</Text></View> : null}
+                  {/* Localized and formatted by the store — never hardcoded. */}
+                  <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", marginTop: 2, fontVariant: ["tabular-nums"] }}>{p.priceString}<Text style={{ color: theme.secondaryText, fontSize: 12 }}> {p.per}</Text></Text>
+                  {p.annual && save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: 10, fontWeight: "900" }}>{save}</Text></View> : null}
+                  {p.freeTrialDays ? <Text style={{ color: theme.accent, fontSize: 10, fontWeight: "900", marginTop: 6 }}>{p.freeTrialDays} days free</Text> : null}
                 </Pressable>
               );
             })}
           </View>
+          {loadingPlans ? (
+            <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", textAlign: "center", marginTop: 14 }}>Loading plans…</Text>
+          ) : !plans.length ? (
+            <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", textAlign: "center", marginTop: 14, lineHeight: 18 }}>
+              Plans aren't available right now. Check your connection and try again.
+            </Text>
+          ) : null}
           <GradientButton
-            label={buying ? "Opening…" : storeReady ? "Unlock Premium" : "Store unavailable"}
-            onPress={() => storeReady && !buying && onPurchase && onPurchase(plan)}
-            style={{ marginTop: 16, opacity: storeReady && !buying ? 1 : 0.6 }}
+            label={buying ? "Opening…" : !storeReady ? "Store unavailable" : trialDays ? `Start ${trialDays} days free` : "Unlock Premium"}
+            onPress={() => storeReady && !buying && plan && onPurchase && onPurchase(plan)}
+            style={{ marginTop: 16, opacity: storeReady && !buying && plan ? 1 : 0.6 }}
           />
           {!storeReady ? (
             <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
@@ -98,6 +157,22 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           <Pressable onPress={() => onRestore && onRestore()} style={({ pressed }) => [{ marginTop: 12, paddingVertical: 8 }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
             <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "800", textAlign: "center" }}>Restore purchases</Text>
           </Pressable>
+          {/* Auto-renew disclosure. App Store review requires this verbatim-ish
+              wording next to the CTA, along with reachable terms and privacy. */}
+          <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "600", textAlign: "center", marginTop: 10, lineHeight: 15 }}>
+            {trialDays ? `Free for ${trialDays} days, then ` : ""}
+            {plan ? `${plan.priceString}${plan.per}` : "the listed price"}. Subscriptions renew automatically
+            unless cancelled at least 24 hours before the period ends. Manage or cancel in your
+            {" "}{"App Store"} settings.
+          </Text>
+          <View style={{ flexDirection: "row", justifyContent: "center", gap: 18, marginTop: 8 }}>
+            <Pressable onPress={() => Linking.openURL(TERMS_URL).catch(() => {})} hitSlop={8}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", textDecorationLine: "underline" }}>Terms</Text>
+            </Pressable>
+            <Pressable onPress={() => Linking.openURL(PRIVACY_URL).catch(() => {})} hitSlop={8}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", textDecorationLine: "underline" }}>Privacy</Text>
+            </Pressable>
+          </View>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 16, marginTop: 12 }}>
             {[["🔒", "Secure"], ["↩️", "Cancel anytime"], ["☁️", "Cloud sync"]].map(([i, l]) => (
               <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>

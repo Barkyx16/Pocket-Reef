@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, tapHaptic } from "../core";
+import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic } from "../core";
+import { PremiumTeaserCard } from "../components/PremiumTeaserCard";
 import { HeroBanner } from "../components/HeroBanner";
 import { CollapsibleCard } from "../components/CollapsibleCard";
 import { SpeciesCard } from "../components/SpeciesCard";
@@ -89,6 +90,17 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
             ))}
           </View>
         </View>
+      ) : null}
+
+      {/* What Premium is holding — their real numbers, not a generic pitch. */}
+      {!premiumUnlocked ? (
+        <PremiumTeaserCard
+          warnings={warnings}
+          healthScore={getTankHealthScore({ tank, tankGallons, waterTests, maintenance, quantities }).score}
+          tankName={(tanks.find((t) => t.id === activeTankId) || {}).name || "your tank"}
+          lockedSpecies={Math.max(0, SPECIES.length - 7)}
+          onOpenPremium={onOpenPremium}
+        />
       ) : null}
 
       {/* TODAY — only shown when something actually needs attention */}

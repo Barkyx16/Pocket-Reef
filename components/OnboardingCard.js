@@ -3,7 +3,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles, theme } from "../styles";
-import { tapHaptic } from "../core";
+import { tapHaptic, getRecommended, SPECIES } from "../core";
 import { GradientButton } from "./GradientButton";
 import { Pill } from "./Pill";
 
@@ -55,16 +55,33 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
   const [gallons, setGallons] = useState(20);
   const [water, setWater] = useState("fresh");
 
-  const total = SLIDES.length + 2; // feature slides + size + premium
+  // Feature slides → tank setup → RESULT → premium.
+  //
+  // The result step is the whole point: it runs the real recommendation engine
+  // on the tank they just described and shows actual species. Asking for money
+  // before proving the app can do anything is the fastest way to be dismissed;
+  // asking right after it has told you something useful about YOUR tank is a
+  // completely different conversation.
+  const total = SLIDES.length + 3;
   const sizeStep = SLIDES.length;
-  const premiumStep = SLIDES.length + 1;
+  const resultStep = SLIDES.length + 1;
+  const premiumStep = SLIDES.length + 2;
   const isSize = step === sizeStep;
+  const isResult = step === resultStep;
   const isPremium = step === premiumStep;
+
+  // Computed from the real catalog — nothing here is mocked.
+  const picks = isResult || isPremium ? getRecommended(gallons, [], 4, water) : [];
+  const fitCount = isResult
+    ? SPECIES.filter((sp) => sp.water === water && sp.minGallons <= gallons).length
+    : 0;
   const current = SLIDES[step];
 
   const finish = () => onFinish({ gallons, water });
   const hero = isPremium
     ? { emoji: "👑", eyebrow: "One more thing", title: "Go Premium", text: "Unlock the full reef toolkit — free to try anytime.", colors: ["#3a2f12", "#20320f", "#08202f"], glow: "rgba(255,211,114,0.20)" }
+    : isResult
+      ? { emoji: "✨", eyebrow: "Your tank, analyzed", title: `${fitCount} species fit`, text: `Out of ${SPECIES.length} in the catalog, here's what suits a ${gallons} gallon ${water === "salt" ? "saltwater" : "freshwater"} tank.`, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" }
     : isSize
       ? { emoji: "📏", eyebrow: "Last bit of setup", title: "Your tank", text: "Pick your water type and size — you can change it anytime.", colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" }
       : { emoji: current.emoji, eyebrow: current.eyebrow, title: current.title, text: current.text, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" };
@@ -115,6 +132,27 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                 ))}
               </View>
             </View>
+          ) : isResult ? (
+            <View style={styles.card}>
+              <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Recommended for you</Text>
+              <View style={{ gap: 12 }}>
+                {picks.map((sp) => (
+                  <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+                    <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{sp.emoji}</Text></View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{sp.name}</Text>
+                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 1 }}>
+                        {sp.careLevel} · {sp.temperament} · {sp.minGallons}gal min
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+              <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
+                Every pairing is checked against the compatibility engine — water type, temperament,
+                predator size, and parameter overlap.
+              </Text>
+            </View>
           ) : (
             <View style={styles.card}>
               {current.features.map((f) => (
@@ -146,7 +184,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             </>
           ) : (
             <>
-              <GradientButton label={isSize ? "Almost there →" : "Next"} onPress={() => setStep((s) => s + 1)} />
+              <GradientButton label={isResult ? "See what else it does →" : isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
               <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
                 <Text style={{ color: theme.secondaryText, fontSize: 14, fontWeight: "800" }}>Skip</Text>
               </Pressable>
