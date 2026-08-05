@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import { careLevelColor, temperamentColor } from "../core";
@@ -8,10 +9,14 @@ import { Chip } from "./Chip";
 // A tappable species row styled exactly like Pocket Planter's plant card:
 // a 54px image well, bold name, meta line, care/temperament chips, and an
 // add/remove control.
-export function SpeciesCard({ species, onPress, inTank, onToggleTank, note, inWishlist, onToggleWishlist }) {
+// Memoized: the Species tab can hold hundreds of these mounted at once, and
+// without this every card re-renders when any single filter, search keystroke,
+// or wishlist toggle changes. The comparator lists exactly the props that
+// change what this row draws.
+function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishlist, onToggleWishlist }) {
   const img = getSpeciesImage(species.name);
   return (
-    <Pressable style={({ pressed }) => [styles.cleanRow, { borderLeftWidth: 3, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }, pressed && { transform: [{ scale: 0.985 }], opacity: 0.9, borderColor: theme.accent, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }]} onPress={onPress} accessibilityRole="button" accessibilityLabel={`${species.name} details`}>
+    <Pressable style={({ pressed }) => [styles.cleanRow, { borderLeftWidth: 3, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }, pressed && { transform: [{ scale: 0.985 }], opacity: 0.9, borderColor: theme.accent, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }]} onPress={onPress} accessibilityRole="button" accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${species.minGallons} gallons.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`} accessibilityHint="Opens care details">
       <View style={styles.cleanImageWrap}>
         {img ? (
           <Image source={img} style={styles.cleanImage} resizeMode="cover" />
@@ -61,3 +66,12 @@ export function SpeciesCard({ species, onPress, inTank, onToggleTank, note, inWi
     </Pressable>
   );
 }
+
+export const SpeciesCard = memo(SpeciesCardBase, (a, b) => (
+  a.species === b.species &&
+  a.inTank === b.inTank &&
+  a.inWishlist === b.inWishlist &&
+  a.note === b.note &&
+  a.onToggleTank === b.onToggleTank &&
+  a.onToggleWishlist === b.onToggleWishlist
+));

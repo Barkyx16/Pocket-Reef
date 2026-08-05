@@ -13,6 +13,8 @@ import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage"
 import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { LockedTab } from "./components/LockedTab";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { track, EVENTS } from "./lib/analytics";
 import { syncReminders, requestPermission, onReminderTap } from "./lib/notifications";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
@@ -88,7 +90,18 @@ const persistTanks = (next) => {
   return safeSetJSON("pr_tanks", next);
 };
 
+// The exported root wraps the app in an error boundary, so a render crash
+// anywhere inside shows a recovery screen that says the data is safe — instead
+// of a white screen, which is what makes people delete and reinstall.
 export default function App() {
+  return (
+    <ErrorBoundary>
+      <PocketReef />
+    </ErrorBoundary>
+  );
+}
+
+function PocketReef() {
   const [activeTab, setActiveTab] = useState("home");
   // Per-tank data now lives inside tank profiles.
   const [tanks, setTanks] = useState([]);
@@ -278,6 +291,7 @@ export default function App() {
   const restorePremium = async () => {
     const res = await restorePurchases();
     if (res.entitled) {
+      track(EVENTS.RESTORE_SUCCESS);
       setPremiumUnlocked(true);
       Alert.alert("Premium restored", "Welcome back — everything's unlocked.");
     } else if (res.ok) {
@@ -556,9 +570,12 @@ export default function App() {
     if (buying || !plan || !plan.pkg) return;
     setBuying(true);
     try {
+      track(EVENTS.PAYWALL_CTA, paywallReason);
       const res = await purchasePackage(plan.pkg);
-      if (res.cancelled) return;
+      if (res.cancelled) { track(EVENTS.PURCHASE_CANCELLED); return; }
+      if (!res.ok) track(EVENTS.PURCHASE_FAILED);
       if (res.entitled) {
+        track(EVENTS.PURCHASE_SUCCESS);
         setPremiumUnlocked(true);
         Alert.alert("Welcome to Premium 👑", "Everything's unlocked. Thanks for supporting Pocket Reef.");
       } else if (!res.ok) {
@@ -585,7 +602,10 @@ export default function App() {
     });
   };
   const goPremium = (reason) => {
-    setPaywallReason(typeof reason === "string" ? reason : null);
+    const r = typeof reason === "string" ? reason : null;
+    if (r) track(EVENTS.GATE_HIT, r);
+    track(EVENTS.PAYWALL_VIEW, r);
+    setPaywallReason(r);
     setSelectedSpecies(null);
     setSelectedDisease(null);
     setActiveTab("premium");
@@ -628,6 +648,7 @@ export default function App() {
     // a cap that traps you above it is worse than no cap.
     const stocked = (activeTank.stock || []).includes(name);
     if (!premiumUnlocked && !stocked && (activeTank.stock || []).length >= FREE_STOCK_LIMIT) {
+      track(EVENTS.STOCK_CAP_HIT);
       Alert.alert(
         "Free plan holds 5 fish",
         `You've saved ${FREE_STOCK_LIMIT} — upgrade to Premium for unlimited stock, plus compatibility, bioload, and the full logging toolkit.`,

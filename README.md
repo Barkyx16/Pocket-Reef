@@ -44,9 +44,13 @@ Every entry carries: `name`, `kind` (fish/invert/coral), `water` (fresh/salt), m
 tank size, temperature range, pH range, temperament, care level, diet, adult size,
 reef-safe flag, schooling minimum, and a plain-English summary.
 
-Care data is **archetype-based** — species are family-classified and share a tuned
+Care *stats* are **archetype-based** — species are family-classified and share a tuned
 baseline, which is how the catalog scales to 316 without 316 hand-written care sheets.
-Individual entries can be refined freely.
+
+**Summaries are not.** 120 of the 316 entries now carry their own distinguishing
+one-liner — what makes that fish different from the rest of its family — and the test
+suite caps how far the remaining archetype text can spread (no summary shared by more
+than 10 species, and a ratchet on the distinct-summary count that may never fall).
 
 ### Water parameters tracked
 
@@ -223,8 +227,21 @@ They pin behaviour rather than implementation, so they survive a refactor and
 fail on a wrong answer. Worth running before each batch of changes: a babel
 compile can't see a broken calculation.
 
+## Reliability
+
+The app is wrapped in an error boundary, so a render crash shows a recovery screen that
+says the data is safe — rather than a white screen, which is what makes people delete and
+reinstall the app holding their tank records.
+
+A local, privacy-respecting conversion funnel (`lib/analytics.js`) records paywall views,
+CTA taps, purchase outcomes, and which gate sent people there. Counts and coarse timings
+only — no tank names, species, journal text, or free text of any kind, and nothing leaves
+the device.
+
 ## Roadmap
 
+- Full list virtualization for the species catalog (cards are memoized; `FlatList` next)
+- Finish replacing archetype summaries for the remaining ~196 species
 - Real photography: extend `data/speciesImageMap.js` and `assets/species/`
 - Enrich archetype-based species summaries with per-species detail
 - Swap RevenueCat test keys for production keys and configure store products
