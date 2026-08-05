@@ -1,0 +1,68 @@
+import { useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
+import { styles, theme } from "../styles";
+import { PARAMS, assessParam, paramStatusColor, tapHaptic } from "../core";
+
+// A unified tank timeline — the reef version of Pocket Planter's Garden Timeline.
+// Merges journal entries and water tests into one chronological feed with a
+// connector line, so the whole history of the tank reads as a single story.
+export function TimelineCard({ journal = [], waterTests = [] }) {
+  const [visible, setVisible] = useState(8);
+  const events = [
+    ...journal.map((e) => ({ kind: "journal", date: e.date, sort: e.id || e.date, mood: e.mood, text: e.text, photo: e.photo })),
+    ...waterTests.map((t, i) => ({ kind: "test", date: t.date, sort: `${t.date}-${i}`, water: t.water, values: t.values })),
+  ].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+  if (!events.length) {
+    return <Text style={styles.cardText}>Your tank's story starts here — log a water test or a journal note and it'll appear on the timeline.</Text>;
+  }
+
+  const shown = events.slice(0, visible);
+
+  return (
+    <View>
+      {shown.map((ev, i) => {
+        const last = i === shown.length - 1;
+        return (
+          <View key={i} style={{ flexDirection: "row", gap: 12 }}>
+            {/* Rail */}
+            <View style={{ alignItems: "center", width: 30 }}>
+              <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: ev.kind === "test" ? "rgba(56,225,198,0.16)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: ev.kind === "test" ? "rgba(56,225,198,0.4)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 15 }}>{ev.kind === "test" ? "🧪" : ev.mood || "📓"}</Text>
+              </View>
+              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 3, minHeight: 16 }} /> : null}
+            </View>
+            {/* Content */}
+            <View style={{ flex: 1, paddingBottom: 16 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginBottom: 3 }}>{ev.date}</Text>
+              {ev.kind === "journal" ? (
+                <View>
+                  {ev.text ? <Text style={{ color: theme.text, fontSize: 14, fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
+                  {ev.photo ? <Image source={{ uri: ev.photo }} style={{ width: "100%", height: 140, borderRadius: 10, marginTop: 8 }} resizeMode="cover" /> : null}
+                </View>
+              ) : (
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                  {(PARAMS[ev.water] || PARAMS.fresh).map((p) => {
+                    if (!ev.values || ev.values[p.key] == null) return null;
+                    const c = paramStatusColor(assessParam(p, ev.values[p.key]).status);
+                    return (
+                      <View key={p.key} style={{ flexDirection: "row", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 }}>
+                        <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800" }}>{p.label}</Text>
+                        <Text style={{ color: c, fontSize: 10, fontWeight: "900" }}>{ev.values[p.key]}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              )}
+            </View>
+          </View>
+        );
+      })}
+      {events.length > visible ? (
+        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 12, events.length)); }} style={styles.ghostBtn} accessibilityRole="button">
+          <Text style={styles.ghostBtnText}>Show more ({events.length - visible})</Text>
+        </Pressable>
+      ) : null}
+    </View>
+  );
+}

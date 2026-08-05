@@ -1,0 +1,71 @@
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { styles, theme } from "../styles";
+import { getDisease, getSpecies } from "../core";
+import { getDiseaseImage } from "../data/diseaseImageMap";
+import { SpeciesThumb } from "./SpeciesThumb";
+
+// Disease guide detail — the analog of Pocket Planter's DiseaseDetailScreen.
+export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies }) {
+  const d = getDisease(name);
+  if (!d) return null;
+  const img = getDiseaseImage(name);
+  const atRisk = tank.map(getSpecies).filter(Boolean).filter((s) => d.water === "both" || s.water === d.water);
+  return (
+    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
+        <Text style={{ color: theme.accent, fontSize: 15, fontWeight: "900" }}>‹ Back</Text>
+      </Pressable>
+
+      <View style={styles.detailHeroWrap}>
+        <View style={{ position: "absolute", top: 6, width: 170, height: 170, borderRadius: 85, backgroundColor: "rgba(255,216,107,0.10)" }} />
+        <View style={{ width: 108, height: 108, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,216,107,0.28)", overflow: "hidden" }}>
+          {img ? (
+            <Image source={img} style={{ width: 108, height: 108 }} resizeMode="cover" />
+          ) : (
+            <Text style={{ fontSize: 56 }}>{d.emoji}</Text>
+          )}
+        </View>
+        <Text style={styles.detailName}>{d.name}</Text>
+        <View style={{ backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 4, marginTop: 8 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5 }}>
+            {d.water === "salt" ? "🌊 Saltwater" : d.water === "fresh" ? "💧 Freshwater" : "💧🌊 Fresh & salt"}
+          </Text>
+        </View>
+      </View>
+
+      <Section icon="🔍" title="What it is" text={d.description} color={theme.accent} />
+      <Section icon="👀" title="Signs & symptoms" text={d.signs} color={theme.warn} />
+      <Section icon="🛡️" title="How to prevent it" text={d.prevent} color={theme.accent} />
+      <Section icon="✅" title="How to treat it" text={d.treat} color="#5cff89" />
+
+      {/* AT RISK IN YOUR TANK */}
+      {atRisk.length ? (
+        <View style={styles.card}>
+          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>🐠 AT RISK IN YOUR TANK</Text>
+          <Text style={[styles.cardText, { marginBottom: 10 }]}>These species you're keeping can be affected — watch them closely.</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {atRisk.map((s) => (
+              <Pressable key={s.name} onPress={() => onOpenSpecies && onOpenSpecies(s.name)} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 999, paddingLeft: 5, paddingRight: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,216,107,0.32)" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
+                <SpeciesThumb species={s} size={20} radius={10} />
+                <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>{s.name}</Text>
+                <Text style={{ color: theme.warn, fontSize: 13, fontWeight: "900" }}>›</Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      ) : null}
+    </ScrollView>
+  );
+}
+
+function Section({ icon, title, text, color }) {
+  return (
+    <View style={[styles.card, { flexDirection: "row", gap: 12 }]}>
+      <View style={{ width: 4, borderRadius: 999, backgroundColor: color, opacity: 0.7 }} />
+      <View style={{ flex: 1 }}>
+        <Text style={[styles.cardEyebrow, { color }]}>{icon} {title.toUpperCase()}</Text>
+        <Text style={styles.cardText}>{text}</Text>
+      </View>
+    </View>
+  );
+}

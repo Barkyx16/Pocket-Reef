@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Pocket Reef",
+    "slug": "pocket-reef",
+    "scheme": "pocketreef",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#061826",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "backgroundColor": "#061826"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alexrafalski.pocketreef",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.alexrafalski.pocketreef",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#061826"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Pocket Reef to use Face ID to sign you in."
+        }
+      ],
+      "expo-font"
+    ]
+  }
+}

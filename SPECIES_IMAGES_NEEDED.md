@@ -1,0 +1,338 @@
+# Pocket Reef — species images needed (316 total)
+
+Drop each PNG into `assets/species/` using the exact filename below. Square (~1:1),
+max ~600px. Filenames on the left, species on the right.
+
+## FRESHWATER FISH (160)
+
+- `neon-tetra.png`  — Neon Tetra
+- `cardinal-tetra.png`  — Cardinal Tetra
+- `ember-tetra.png`  — Ember Tetra
+- `black-neon-tetra.png`  — Black Neon Tetra
+- `rummy-nose-tetra.png`  — Rummy-nose Tetra
+- `glowlight-tetra.png`  — Glowlight Tetra
+- `serpae-tetra.png`  — Serpae Tetra
+- `black-skirt-tetra.png`  — Black Skirt Tetra
+- `bloodfin-tetra.png`  — Bloodfin Tetra
+- `congo-tetra.png`  — Congo Tetra
+- `lemon-tetra.png`  — Lemon Tetra
+- `diamond-tetra.png`  — Diamond Tetra
+- `buenos-aires-tetra.png`  — Buenos Aires Tetra
+- `silver-tip-tetra.png`  — Silver Tip Tetra
+- `penguin-tetra.png`  — Penguin Tetra
+- `head-and-tail-light-tetra.png`  — Head and Tail Light Tetra
+- `green-neon-tetra.png`  — Green Neon Tetra
+- `flame-tetra.png`  — Flame Tetra
+- `emperor-tetra.png`  — Emperor Tetra
+- `pristella-tetra.png`  — Pristella Tetra
+- `colombian-tetra.png`  — Colombian Tetra
+- `x-ray-tetra.png`  — X-ray Tetra
+- `harlequin-rasbora.png`  — Harlequin Rasbora
+- `chili-rasbora.png`  — Chili Rasbora
+- `lambchop-rasbora.png`  — Lambchop Rasbora
+- `dwarf-rasbora.png`  — Dwarf Rasbora
+- `scissortail-rasbora.png`  — Scissortail Rasbora
+- `brilliant-rasbora.png`  — Brilliant Rasbora
+- `clown-rasbora.png`  — Clown Rasbora
+- `neon-green-rasbora.png`  — Neon Green Rasbora
+- `zebra-danio.png`  — Zebra Danio
+- `celestial-pearl-danio.png`  — Celestial Pearl Danio
+- `pearl-danio.png`  — Pearl Danio
+- `giant-danio.png`  — Giant Danio
+- `glowlight-danio.png`  — Glowlight Danio
+- `leopard-danio.png`  — Leopard Danio
+- `rosy-danio.png`  — Rosy Danio
+- `tiger-barb.png`  — Tiger Barb
+- `cherry-barb.png`  — Cherry Barb
+- `rosy-barb.png`  — Rosy Barb
+- `gold-barb.png`  — Gold Barb
+- `odessa-barb.png`  — Odessa Barb
+- `tinfoil-barb.png`  — Tinfoil Barb
+- `denison-barb.png`  — Denison Barb
+- `five-banded-barb.png`  — Five-banded Barb
+- `black-ruby-barb.png`  — Black Ruby Barb
+- `checker-barb.png`  — Checker Barb
+- `guppy.png`  — Guppy
+- `endlers-livebearer.png`  — Endler's Livebearer
+- `platy.png`  — Platy
+- `molly.png`  — Molly
+- `sailfin-molly.png`  — Sailfin Molly
+- `swordtail.png`  — Swordtail
+- `mosquitofish.png`  — Mosquitofish
+- `least-killifish.png`  — Least Killifish
+- `variatus-platy.png`  — Variatus Platy
+- `black-molly.png`  — Black Molly
+- `dwarf-gourami.png`  — Dwarf Gourami
+- `pearl-gourami.png`  — Pearl Gourami
+- `honey-gourami.png`  — Honey Gourami
+- `three-spot-gourami.png`  — Three-spot Gourami
+- `sparkling-gourami.png`  — Sparkling Gourami
+- `kissing-gourami.png`  — Kissing Gourami
+- `moonlight-gourami.png`  — Moonlight Gourami
+- `chocolate-gourami.png`  — Chocolate Gourami
+- `paradise-fish.png`  — Paradise Fish
+- `betta.png`  — Betta
+- `crowntail-betta.png`  — Crowntail Betta
+- `halfmoon-betta.png`  — Halfmoon Betta
+- `plakat-betta.png`  — Plakat Betta
+- `german-blue-ram.png`  — German Blue Ram
+- `bolivian-ram.png`  — Bolivian Ram
+- `apistogramma-cacatuoides.png`  — Apistogramma Cacatuoides
+- `kribensis.png`  — Kribensis
+- `electric-blue-ram.png`  — Electric Blue Ram
+- `checkerboard-cichlid.png`  — Checkerboard Cichlid
+- `panda-dwarf-cichlid.png`  — Panda Dwarf Cichlid
+- `rainbow-cichlid.png`  — Rainbow Cichlid
+- `angelfish.png`  — Angelfish
+- `discus.png`  — Discus
+- `oscar.png`  — Oscar
+- `convict-cichlid.png`  — Convict Cichlid
+- `jack-dempsey.png`  — Jack Dempsey
+- `firemouth-cichlid.png`  — Firemouth Cichlid
+- `green-terror.png`  — Green Terror
+- `severum.png`  — Severum
+- `blood-parrot-cichlid.png`  — Blood Parrot Cichlid
+- `electric-blue-acara.png`  — Electric Blue Acara
+- `yellow-lab-cichlid.png`  — Yellow Lab Cichlid
+- `demasoni-cichlid.png`  — Demasoni Cichlid
+- `auratus-cichlid.png`  — Auratus Cichlid
+- `peacock-cichlid.png`  — Peacock Cichlid
+- `frontosa.png`  — Frontosa
+- `kenyi-cichlid.png`  — Kenyi Cichlid
+- `bumblebee-cichlid.png`  — Bumblebee Cichlid
+- `red-zebra-cichlid.png`  — Red Zebra Cichlid
+- `acei-cichlid.png`  — Acei Cichlid
+- `venustus-cichlid.png`  — Venustus Cichlid
+- `julidochromis.png`  — Julidochromis
+- `multies-shell-dweller.png`  — Multies Shell Dweller
+- `bronze-cory.png`  — Bronze Cory
+- `panda-cory.png`  — Panda Cory
+- `albino-cory.png`  — Albino Cory
+- `julii-cory.png`  — Julii Cory
+- `sterbai-cory.png`  — Sterbai Cory
+- `pygmy-cory.png`  — Pygmy Cory
+- `emerald-cory.png`  — Emerald Cory
+- `peppered-cory.png`  — Peppered Cory
+- `otocinclus.png`  — Otocinclus
+- `glass-catfish.png`  — Glass Catfish
+- `bristlenose-pleco.png`  — Bristlenose Pleco
+- `common-pleco.png`  — Common Pleco
+- `clown-pleco.png`  — Clown Pleco
+- `rubber-lip-pleco.png`  — Rubber Lip Pleco
+- `zebra-pleco.png`  — Zebra Pleco
+- `gold-nugget-pleco.png`  — Gold Nugget Pleco
+- `snowball-pleco.png`  — Snowball Pleco
+- `sailfin-pleco.png`  — Sailfin Pleco
+- `pictus-catfish.png`  — Pictus Catfish
+- `upside-down-catfish.png`  — Upside-down Catfish
+- `bumblebee-catfish.png`  — Bumblebee Catfish
+- `raphael-catfish.png`  — Raphael Catfish
+- `kuhli-loach.png`  — Kuhli Loach
+- `clown-loach.png`  — Clown Loach
+- `yoyo-loach.png`  — Yoyo Loach
+- `zebra-loach.png`  — Zebra Loach
+- `dojo-loach.png`  — Dojo Loach
+- `hillstream-loach.png`  — Hillstream Loach
+- `dwarf-chain-loach.png`  — Dwarf Chain Loach
+- `horseface-loach.png`  — Horseface Loach
+- `skunk-loach.png`  — Skunk Loach
+- `boesemani-rainbowfish.png`  — Boesemani Rainbowfish
+- `neon-rainbowfish.png`  — Neon Rainbowfish
+- `turquoise-rainbowfish.png`  — Turquoise Rainbowfish
+- `red-rainbowfish.png`  — Red Rainbowfish
+- `madagascar-rainbowfish.png`  — Madagascar Rainbowfish
+- `celebes-rainbowfish.png`  — Celebes Rainbowfish
+- `threadfin-rainbowfish.png`  — Threadfin Rainbowfish
+- `golden-wonder-killifish.png`  — Golden Wonder Killifish
+- `clown-killifish.png`  — Clown Killifish
+- `american-flagfish.png`  — American Flagfish
+- `blue-gularis.png`  — Blue Gularis
+- `gardneri-killifish.png`  — Gardneri Killifish
+- `common-goldfish.png`  — Common Goldfish
+- `fancy-goldfish.png`  — Fancy Goldfish
+- `oranda.png`  — Oranda
+- `ryukin.png`  — Ryukin
+- `black-moor.png`  — Black Moor
+- `shubunkin.png`  — Shubunkin
+- `white-cloud-mountain-minnow.png`  — White Cloud Mountain Minnow
+- `bala-shark.png`  — Bala Shark
+- `red-tail-shark.png`  — Red Tail Shark
+- `rainbow-shark.png`  — Rainbow Shark
+- `silver-dollar.png`  — Silver Dollar
+- `rope-fish.png`  — Rope Fish
+- `senegal-bichir.png`  — Senegal Bichir
+- `elephant-nose-fish.png`  — Elephant Nose Fish
+- `african-butterflyfish.png`  — African Butterflyfish
+- `dwarf-puffer.png`  — Dwarf Puffer
+- `figure-8-puffer.png`  — Figure 8 Puffer
+
+## FRESHWATER INVERTS (shrimp & snails) (14)
+
+- `cherry-shrimp.png`  — Cherry Shrimp
+- `amano-shrimp.png`  — Amano Shrimp
+- `ghost-shrimp.png`  — Ghost Shrimp
+- `crystal-red-shrimp.png`  — Crystal Red Shrimp
+- `blue-velvet-shrimp.png`  — Blue Velvet Shrimp
+- `bamboo-shrimp.png`  — Bamboo Shrimp
+- `vampire-shrimp.png`  — Vampire Shrimp
+- `blue-dream-shrimp.png`  — Blue Dream Shrimp
+- `nerite-snail.png`  — Nerite Snail
+- `mystery-snail.png`  — Mystery Snail
+- `rabbit-snail.png`  — Rabbit Snail
+- `ramshorn-snail.png`  — Ramshorn Snail
+- `malaysian-trumpet-snail.png`  — Malaysian Trumpet Snail
+- `assassin-snail.png`  — Assassin Snail
+
+## SALTWATER FISH (93)
+
+- `ocellaris-clownfish.png`  — Ocellaris Clownfish
+- `percula-clownfish.png`  — Percula Clownfish
+- `maroon-clownfish.png`  — Maroon Clownfish
+- `tomato-clownfish.png`  — Tomato Clownfish
+- `clarkii-clownfish.png`  — Clarkii Clownfish
+- `pink-skunk-clownfish.png`  — Pink Skunk Clownfish
+- `black-ocellaris-clownfish.png`  — Black Ocellaris Clownfish
+- `snowflake-clownfish.png`  — Snowflake Clownfish
+- `saddleback-clownfish.png`  — Saddleback Clownfish
+- `blue-damsel.png`  — Blue Damsel
+- `yellowtail-damsel.png`  — Yellowtail Damsel
+- `domino-damsel.png`  — Domino Damsel
+- `three-stripe-damsel.png`  — Three-stripe Damsel
+- `azure-damsel.png`  — Azure Damsel
+- `talbots-damsel.png`  — Talbot's Damsel
+- `green-chromis.png`  — Green Chromis
+- `blue-reef-chromis.png`  — Blue Reef Chromis
+- `yellow-tang.png`  — Yellow Tang
+- `blue-tang.png`  — Blue Tang
+- `sailfin-tang.png`  — Sailfin Tang
+- `kole-tang.png`  — Kole Tang
+- `powder-blue-tang.png`  — Powder Blue Tang
+- `naso-tang.png`  — Naso Tang
+- `purple-tang.png`  — Purple Tang
+- `convict-tang.png`  — Convict Tang
+- `chevron-tang.png`  — Chevron Tang
+- `achilles-tang.png`  — Achilles Tang
+- `six-line-wrasse.png`  — Six Line Wrasse
+- `cleaner-wrasse.png`  — Cleaner Wrasse
+- `melanurus-wrasse.png`  — Melanurus Wrasse
+- `fairy-wrasse.png`  — Fairy Wrasse
+- `yellow-coris-wrasse.png`  — Yellow Coris Wrasse
+- `flasher-wrasse.png`  — Flasher Wrasse
+- `leopard-wrasse.png`  — Leopard Wrasse
+- `pink-streaked-wrasse.png`  — Pink Streaked Wrasse
+- `radiant-wrasse.png`  — Radiant Wrasse
+- `mccoskers-flasher-wrasse.png`  — McCosker's Flasher Wrasse
+- `clown-goby.png`  — Clown Goby
+- `yellow-watchman-goby.png`  — Yellow Watchman Goby
+- `neon-goby.png`  — Neon Goby
+- `firefish-goby.png`  — Firefish Goby
+- `diamond-goby.png`  — Diamond Goby
+- `randalls-goby.png`  — Randall's Goby
+- `court-jester-goby.png`  — Court Jester Goby
+- `purple-firefish.png`  — Purple Firefish
+- `two-spot-goby.png`  — Two-spot Goby
+- `lawnmower-blenny.png`  — Lawnmower Blenny
+- `tailspot-blenny.png`  — Tailspot Blenny
+- `midas-blenny.png`  — Midas Blenny
+- `bicolor-blenny.png`  — Bicolor Blenny
+- `canary-blenny.png`  — Canary Blenny
+- `starry-blenny.png`  — Starry Blenny
+- `banggai-cardinalfish.png`  — Banggai Cardinalfish
+- `pajama-cardinalfish.png`  — Pajama Cardinalfish
+- `longspine-cardinalfish.png`  — Longspine Cardinalfish
+- `flame-cardinalfish.png`  — Flame Cardinalfish
+- `coral-beauty-angelfish.png`  — Coral Beauty Angelfish
+- `flame-angelfish.png`  — Flame Angelfish
+- `cherub-angelfish.png`  — Cherub Angelfish
+- `lemonpeel-angelfish.png`  — Lemonpeel Angelfish
+- `bicolor-angelfish.png`  — Bicolor Angelfish
+- `potters-angelfish.png`  — Potter's Angelfish
+- `emperor-angelfish.png`  — Emperor Angelfish
+- `queen-angelfish.png`  — Queen Angelfish
+- `majestic-angelfish.png`  — Majestic Angelfish
+- `french-angelfish.png`  — French Angelfish
+- `koran-angelfish.png`  — Koran Angelfish
+- `copperband-butterflyfish.png`  — Copperband Butterflyfish
+- `raccoon-butterflyfish.png`  — Raccoon Butterflyfish
+- `longnose-butterflyfish.png`  — Longnose Butterflyfish
+- `pyramid-butterflyfish.png`  — Pyramid Butterflyfish
+- `lyretail-anthias.png`  — Lyretail Anthias
+- `bartletts-anthias.png`  — Bartlett's Anthias
+- `dispar-anthias.png`  — Dispar Anthias
+- `square-anthias.png`  — Square Anthias
+- `royal-gramma.png`  — Royal Gramma
+- `chalk-bass.png`  — Chalk Bass
+- `blackcap-basslet.png`  — Blackcap Basslet
+- `swissguard-basslet.png`  — Swissguard Basslet
+- `flame-hawkfish.png`  — Flame Hawkfish
+- `longnose-hawkfish.png`  — Longnose Hawkfish
+- `orchid-dottyback.png`  — Orchid Dottyback
+- `neon-dottyback.png`  — Neon Dottyback
+- `springers-dottyback.png`  — Springer's Dottyback
+- `diadema-dottyback.png`  — Diadema Dottyback
+- `volitans-lionfish.png`  — Volitans Lionfish
+- `dwarf-fuzzy-lionfish.png`  — Dwarf Fuzzy Lionfish
+- `valentini-puffer.png`  — Valentini Puffer
+- `porcupine-puffer.png`  — Porcupine Puffer
+- `picasso-triggerfish.png`  — Picasso Triggerfish
+- `niger-triggerfish.png`  — Niger Triggerfish
+- `snowflake-eel.png`  — Snowflake Eel
+- `foxface-rabbitfish.png`  — Foxface Rabbitfish
+
+## SALTWATER INVERTS (shrimp, snails, crabs, stars) (23)
+
+- `cleaner-shrimp.png`  — Cleaner Shrimp
+- `fire-shrimp.png`  — Fire Shrimp
+- `peppermint-shrimp.png`  — Peppermint Shrimp
+- `coral-banded-shrimp.png`  — Coral Banded Shrimp
+- `sexy-shrimp.png`  — Sexy Shrimp
+- `turbo-snail.png`  — Turbo Snail
+- `nassarius-snail.png`  — Nassarius Snail
+- `astrea-snail.png`  — Astrea Snail
+- `cerith-snail.png`  — Cerith Snail
+- `trochus-snail.png`  — Trochus Snail
+- `blue-leg-hermit-crab.png`  — Blue Leg Hermit Crab
+- `scarlet-hermit-crab.png`  — Scarlet Hermit Crab
+- `emerald-crab.png`  — Emerald Crab
+- `sally-lightfoot-crab.png`  — Sally Lightfoot Crab
+- `porcelain-crab.png`  — Porcelain Crab
+- `chocolate-chip-starfish.png`  — Chocolate Chip Starfish
+- `sand-sifting-starfish.png`  — Sand Sifting Starfish
+- `brittle-star.png`  — Brittle Star
+- `feather-duster-worm.png`  — Feather Duster Worm
+- `tuxedo-urchin.png`  — Tuxedo Urchin
+- `maxima-clam.png`  — Maxima Clam
+- `derasa-clam.png`  — Derasa Clam
+- `crocea-clam.png`  — Crocea Clam
+
+## CORALS & CLAMS (29)
+
+- `green-star-polyp.png`  — Green Star Polyp
+- `zoanthids.png`  — Zoanthids
+- `mushroom-coral.png`  — Mushroom Coral
+- `kenya-tree-coral.png`  — Kenya Tree Coral
+- `pulsing-xenia.png`  — Pulsing Xenia
+- `toadstool-leather-coral.png`  — Toadstool Leather Coral
+- `devils-hand-coral.png`  — Devil's Hand Coral
+- `colt-coral.png`  — Colt Coral
+- `ricordea-mushroom.png`  — Ricordea Mushroom
+- `hammer-coral.png`  — Hammer Coral
+- `torch-coral.png`  — Torch Coral
+- `frogspawn-coral.png`  — Frogspawn Coral
+- `candy-cane-coral.png`  — Candy Cane Coral
+- `duncan-coral.png`  — Duncan Coral
+- `acan-coral.png`  — Acan Coral
+- `favia-coral.png`  — Favia Coral
+- `open-brain-coral.png`  — Open Brain Coral
+- `bubble-coral.png`  — Bubble Coral
+- `blastomussa.png`  — Blastomussa
+- `acropora.png`  — Acropora
+- `montipora.png`  — Montipora
+- `birdsnest-coral.png`  — Birdsnest Coral
+- `stylophora.png`  — Stylophora
+- `digitata.png`  — Digitata
+- `green-slimer.png`  — Green Slimer
+- `hydnophora.png`  — Hydnophora
+- `maxima-clam.png`  — Maxima Clam
+- `derasa-clam.png`  — Derasa Clam
+- `crocea-clam.png`  — Crocea Clam

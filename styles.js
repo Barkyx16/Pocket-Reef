@@ -1,0 +1,128 @@
+import { StyleSheet } from "react-native";
+
+// Ocean/reef design system — deep teal-on-navy "glass". Same design language as
+// Pocket Planter (rounded glass cards, accent glow, floating tab bar), recolored
+// for reef water and refined with a consistent token set, elevation, and type
+// scale. Colors, spacing, and radii are tokenized so the whole app moves together.
+export const theme = {
+  background: "#061826",
+  card: "rgba(255, 255, 255, 0.055)",
+  cardSolid: "#0c2739",
+  well: "#0a2334",
+  border: "rgba(96, 230, 210, 0.16)",
+  hairline: "rgba(255, 255, 255, 0.07)",
+  text: "#eaf7ff",
+  secondaryText: "#9fc4d8",
+  accent: "#38e1c6", // teal
+  accentLight: "#7ff0dd",
+  accentDeep: "#1fb6a0",
+  coral: "#ff8a6a",
+  warn: "#ffd372",
+  danger: "#ff7b7b",
+  glow: "rgba(56, 225, 198, 0.45)",
+  isDark: true,
+};
+
+// Accent gradient stops, reused by buttons, bars, and rings.
+export const accentGradient = ["#7ff0dd", "#38e1c6", "#1fb6a0"];
+
+// 4pt spacing scale.
+export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 };
+
+const ACCENT = theme.accent;
+const ACCENT_LIGHT = theme.accentLight;
+
+export const styles = StyleSheet.create({
+  safe: { flex: 1 },
+  scroll: { padding: 16, paddingBottom: 132 },
+
+  // ── Hero banner (per-tab header) ───────────────────────────────────────────
+  heroBanner: { borderRadius: 28, padding: 24, marginBottom: 18, overflow: "hidden", justifyContent: "flex-end", minHeight: 158, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+  heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 5, marginBottom: 10 },
+  heroEyebrow: { color: ACCENT_LIGHT, fontSize: 11.5, fontWeight: "900", letterSpacing: 1.1, textTransform: "uppercase" },
+  heroTitle: { color: "#ffffff", fontSize: 32, fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
+  heroSub: { color: "#d3ecf6", fontSize: 14, fontWeight: "700", marginTop: 7, lineHeight: 20 },
+
+  // ── Profile hero (uncropped banner art + solid info panel below) ───────────
+  profileHero: { borderRadius: 28, marginBottom: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+  profileHeroPanel: { padding: 18, backgroundColor: "#0a2233", borderTopWidth: 1, borderTopColor: "rgba(127, 240, 221, 0.18)" },
+  profileHeroName: { flexShrink: 1, color: "#ffffff", fontSize: 22, fontWeight: "900", letterSpacing: -0.4 },
+  profileHeroBannerPill: { backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, maxWidth: "50%" },
+  profileHeroBannerPillText: { color: ACCENT_LIGHT, fontSize: 11, fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" },
+  profileHeroLevelBadge: { width: 54, height: 54, borderRadius: 17, backgroundColor: "rgba(6,20,32,0.55)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)", alignItems: "center", justifyContent: "center" },
+
+  // ── Card (glass chrome) ────────────────────────────────────────────────────
+  card: { backgroundColor: theme.card, borderRadius: 22, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: theme.border, shadowColor: "#000", shadowOpacity: 0.22, shadowRadius: 22, shadowOffset: { width: 0, height: 10 }, elevation: 5 },
+  // A primary/feature card with a soft accent glow to draw the eye.
+  cardElevated: { backgroundColor: "rgba(56, 225, 198, 0.055)", borderRadius: 22, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
+  cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
+  cardEyebrow: { fontSize: 11.5, fontWeight: "900", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
+  cardTitle: { fontSize: 22, fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
+  cardText: { marginTop: 8, fontSize: 14, lineHeight: 22, color: theme.secondaryText },
+  iconSquare: { width: 32, height: 32, borderRadius: 10, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56, 225, 198, 0.16)", borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.22)" },
+  primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: 999, backgroundColor: ACCENT, marginBottom: 12 },
+
+  // ── Species / list row (glass) ─────────────────────────────────────────────
+  listGap: { gap: 12 },
+  cleanRow: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(255, 255, 255, 0.055)", borderRadius: 20, padding: 12, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: 12 },
+  cleanImageWrap: { width: 56, height: 56, borderRadius: 16, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: theme.hairline },
+  cleanImage: { width: 56, height: 56 },
+  cleanEmoji: { fontSize: 28 },
+  cleanName: { color: "#ffffff", fontSize: 16, fontWeight: "900", letterSpacing: -0.2 },
+  cleanMeta: { color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 3 },
+  cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, fontWeight: "900" },
+
+  // ── Chips & pills ──────────────────────────────────────────────────────────
+  chip: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, borderWidth: 1 },
+  chipText: { fontSize: 10, fontWeight: "900" },
+  pill: { paddingHorizontal: 13, paddingVertical: 9, borderRadius: 999, borderWidth: 1 },
+
+  // ── Buttons ──────────────────────────────────────────────────────────────
+  primaryBtn: { backgroundColor: ACCENT, borderRadius: 16, paddingVertical: 14, alignItems: "center", shadowColor: ACCENT, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 },
+  primaryBtnText: { color: "#04202a", fontSize: 15, fontWeight: "900", letterSpacing: 0.2 },
+  ghostBtn: { borderRadius: 16, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border },
+  ghostBtnText: { color: ACCENT, fontSize: 15, fontWeight: "900", letterSpacing: 0.2 },
+
+  // ── Stat tiles ─────────────────────────────────────────────────────────────
+  statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
+  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56, 225, 198, 0.06)", borderRadius: 16, padding: 13, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.14)" },
+  statLabel: { color: theme.secondaryText, fontSize: 11, fontWeight: "800", letterSpacing: 0.2 },
+  statValue: { color: "#ffffff", fontSize: 16, fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
+
+  // ── Search input ───────────────────────────────────────────────────────────
+  search: { backgroundColor: theme.card, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 13, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15 },
+
+  // ── Detail ─────────────────────────────────────────────────────────────────
+  detailHeroWrap: { alignItems: "center", paddingVertical: 12 },
+  detailImageWrap: { width: 136, height: 136, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", shadowColor: ACCENT, shadowOpacity: 0.18, shadowRadius: 20, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
+  detailEmoji: { fontSize: 68 },
+  detailName: { color: "#ffffff", fontSize: 27, fontWeight: "900", letterSpacing: -0.5, marginTop: 12, textAlign: "center" },
+  backBtn: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", paddingVertical: 8, paddingHorizontal: 4 },
+  backText: { color: ACCENT, fontSize: 16, fontWeight: "900" },
+
+  // ── Auth (sign in / sign up) ───────────────────────────────────────────────
+  authInput: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 14, borderWidth: 1, borderColor: theme.border, color: theme.text, fontSize: 15, fontWeight: "700", paddingHorizontal: 16, paddingVertical: 14 },
+  authLinkBtn: { paddingVertical: 12, alignItems: "center" },
+  authLinkText: { color: ACCENT, fontSize: 13.5, fontWeight: "800" },
+  authError: { color: theme.danger, fontSize: 12.5, fontWeight: "800", lineHeight: 18, marginTop: 10 },
+  authNotice: { color: ACCENT_LIGHT, fontSize: 12.5, fontWeight: "800", lineHeight: 18, marginTop: 10 },
+
+  // ── Account / cloud card ───────────────────────────────────────────────────
+  accountInfoBox: { backgroundColor: theme.well, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: theme.border, marginBottom: 10 },
+  accountInfoLabel: { color: ACCENT_LIGHT, fontSize: 10.5, fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" },
+  accountInfoValue: { color: "#ffffff", fontSize: 15, fontWeight: "900", marginTop: 5 },
+  // Hairline separator between two merged sections inside one card.
+  sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: 18 },
+  accountSignOutBtn: { borderRadius: 16, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, marginTop: 10 },
+  accountSignOutText: { color: "#ffffff", fontSize: 14, fontWeight: "900" },
+  accountDangerBtn: { borderRadius: 16, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,123,123,0.08)", borderWidth: 1, borderColor: "rgba(255,123,123,0.45)", marginTop: 10 },
+  accountDangerText: { color: theme.danger, fontSize: 14, fontWeight: "900" },
+
+  // ── Floating bottom tab bar ────────────────────────────────────────────────
+  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 }, elevation: 24 },
+  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 9, borderRadius: 18, gap: 3 },
+  bottomTabButtonActive: { backgroundColor: ACCENT, shadowColor: ACCENT, shadowOpacity: 0.5, shadowRadius: 16, shadowOffset: { width: 0, height: 6 }, elevation: 12 },
+  bottomTabEmoji: { fontSize: 20 },
+  bottomTabLabel: { fontSize: 10, fontWeight: "800", color: "#7ea6bd" },
+  bottomTabLabelActive: { color: "#04202a" },
+});

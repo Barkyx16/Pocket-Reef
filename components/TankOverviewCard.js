@@ -1,0 +1,31 @@
+import { Pressable, Text, View } from "react-native";
+import { styles, theme } from "../styles";
+import { getTankHealthScore, tapHaptic } from "../core";
+import { formatVolume } from "../lib/units";
+
+// A cross-tank dashboard — every tank's health score and stock at a glance. Tap
+// one to make it active. Only shown when you keep more than one tank.
+export function TankOverviewCard({ tanks = [], activeTankId, onSwitch }) {
+  return (
+    <View style={{ gap: 10 }}>
+      {tanks.map((tk) => {
+        const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities });
+        const on = tk.id === activeTankId;
+        return (
+          <Pressable key={tk.id} onPress={() => { tapHaptic(); onSwitch(tk.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
+            <Text style={{ fontSize: 22 }}>{tk.emoji || "🐠"}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{tk.name}{on ? "  ·  active" : ""}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginTop: 2 }}>
+                {formatVolume(tk.gallons)} · {tk.stock ? tk.stock.length : 0} species · {tk.water === "salt" ? "🌊 Salt" : "💧 Fresh"}
+              </Text>
+            </View>
+            <View style={{ width: 44, height: 44, borderRadius: 22, borderWidth: 3, borderColor: h.color, backgroundColor: `${h.color}14`, alignItems: "center", justifyContent: "center", shadowColor: h.color, shadowOpacity: 0.4, shadowRadius: 10, shadowOffset: { width: 0, height: 0 } }}>
+              <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{h.score}</Text>
+            </View>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
