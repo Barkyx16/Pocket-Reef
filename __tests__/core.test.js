@@ -340,27 +340,27 @@ describe("misc guards", () => {
 });
 
 describe("catalog copy quality", () => {
-  // Care data is archetype-based by design — families share tuned stats, and
-  // that's how 316 species stay maintainable. Summaries are different: they're
-  // what the user reads on every card, and an Angelfish that describes itself
-  // exactly like an Oscar reads as an app that doesn't know fish.
+  // Care STATS stay archetype-based by design — families share a tuned baseline,
+  // and that's how 316 species remain maintainable. Summaries are different:
+  // they're what the user reads on every card, and an Angelfish that described
+  // itself exactly like an Oscar was the tell that made the app look like it
+  // didn't know fish.
   //
-  // These cap how far the sharing can go, so the remaining archetype summaries
-  // get replaced over time instead of quietly multiplying.
+  // Every species now has its own. These tests make that a permanent property
+  // rather than a one-off cleanup.
   const summaries = {};
   SPECIES.forEach((s) => { (summaries[s.summary] = summaries[s.summary] || []).push(s.name); });
   const groups = Object.values(summaries);
 
-  test("no summary is shared by more than 10 species", () => {
-    const tooShared = groups
-      .filter((g) => g.length > 10)
-      .map((g) => `${g.length}x: ${g.slice(0, 3).join(", ")}…`);
-    expect(tooShared).toEqual([]);
+  test("every species has a unique summary", () => {
+    const shared = groups
+      .filter((g) => g.length > 1)
+      .map((g) => `${g.length}x: ${g.join(", ")}`);
+    expect(shared).toEqual([]);
   });
 
-  test("the catalog keeps at least 110 distinct summaries", () => {
-    // Ratchet: raise this as more archetype text is replaced. It may never fall.
-    expect(groups.length).toBeGreaterThanOrEqual(110);
+  test("the distinct-summary count matches the catalog size", () => {
+    expect(groups.length).toBe(SPECIES.length);
   });
 
   test("every summary is a real sentence, not a placeholder", () => {
@@ -368,14 +368,27 @@ describe("catalog copy quality", () => {
     expect(bad.map((s) => s.name)).toEqual([]);
   });
 
-  test("the best-known species each have their own summary", () => {
-    // The ones people search for first. If any of these regress to shared
-    // archetype text, the app looks generic exactly where it's judged.
-    const headliners = ["Neon Tetra", "Betta", "Discus", "Oscar", "Blue Tang", "Ocellaris Clownfish", "Bristlenose Pleco"];
-    headliners.forEach((name) => {
-      const s = SPECIES.find((x) => x.name === name);
-      if (!s) return;
-      expect(summaries[s.summary].length).toBe(1);
+  test("summaries stay short enough to read on a card", () => {
+    // The card gives this two lines. Much past ~120 chars and it truncates.
+    const tooLong = SPECIES.filter((s) => s.summary.length > 125).map((s) => `${s.name} (${s.summary.length})`);
+    expect(tooLong).toEqual([]);
+  });
+
+  test("a summary actually mentions its own species, not just its family", () => {
+    // Spot-check that near-identical relatives read differently — the specific
+    // failure this whole pass existed to fix.
+    const pairs = [
+      ["Angelfish", "Oscar"],
+      ["Neon Tetra", "Cardinal Tetra"],
+      ["Yellow Tang", "Blue Tang"],
+      ["Percula Clownfish", "Maroon Clownfish"],
+      ["Acropora", "Montipora"],
+    ];
+    pairs.forEach(([a, b]) => {
+      const sa = SPECIES.find((x) => x.name === a);
+      const sb = SPECIES.find((x) => x.name === b);
+      if (!sa || !sb) return;
+      expect(sa.summary).not.toBe(sb.summary);
     });
   });
 });

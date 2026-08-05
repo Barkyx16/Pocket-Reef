@@ -47,10 +47,10 @@ reef-safe flag, schooling minimum, and a plain-English summary.
 Care *stats* are **archetype-based** — species are family-classified and share a tuned
 baseline, which is how the catalog scales to 316 without 316 hand-written care sheets.
 
-**Summaries are not.** 120 of the 316 entries now carry their own distinguishing
-one-liner — what makes that fish different from the rest of its family — and the test
-suite caps how far the remaining archetype text can spread (no summary shared by more
-than 10 species, and a ratchet on the distinct-summary count that may never fall).
+**Summaries are not.** All **316** species carry their own distinguishing one-liner —
+what makes that particular fish different from the rest of its family. The test suite
+enforces it: every summary must be unique, the distinct count must equal the catalog
+size, and each must be a real sentence short enough to read on a card.
 
 ### Water parameters tracked
 
@@ -241,7 +241,6 @@ the device.
 ## Roadmap
 
 - Full list virtualization for the species catalog (cards are memoized; `FlatList` next)
-- Finish replacing archetype summaries for the remaining ~196 species
 - Real photography: extend `data/speciesImageMap.js` and `assets/species/`
 - Enrich archetype-based species summaries with per-species detail
 - Swap RevenueCat test keys for production keys and configure store products
