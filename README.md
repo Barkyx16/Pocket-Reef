@@ -60,6 +60,33 @@ health score.
 
 ---
 
+## Free vs Premium
+
+| | Free | Premium |
+|---|---|---|
+| Home tab | ✅ | ✅ |
+| Species catalog | 7-species preview | All 316 |
+| Fish saved to a tank | 5 | Unlimited |
+| Tank, Log, Health, Journal, Games, Profile | 🔒 | ✅ |
+| Disease guides & symptom checker | 🔒 | ✅ |
+| Curated tank ideas | 🔒 | ✅ |
+| Cloud save & achievements | 🔒 | ✅ |
+
+Entitlement is owned by **RevenueCat** (`lib/purchases.js`) — the app reads it
+and never writes it. That's what makes a subscription survive reinstalls, new
+devices, refunds, and expiry, and it's why `premiumUnlocked` is deliberately
+absent from the cloud-sync field list.
+
+`PREMIUM_TAB_IDS` in `App.js` is the single list that decides paid access. The
+tab bar, the More sheet, `jumpTo()` and the render guard all read it, so a tab
+can't end up half-protected and a deep link can't route around it. Locked tabs
+are never mounted — the wall renders instead of the screen, not on top of it.
+
+In-app purchases need a device build; in Expo Go the SDK is absent and the app
+stays on the free tier.
+
+---
+
 ## Features
 
 ### Home

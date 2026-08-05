@@ -4,7 +4,8 @@ import { tapHaptic } from "../core";
 
 // The "More" menu — styled like Pocket Planter's More sheet: a big title, a close
 // button, and a list of green icon-tile rows for the secondary sections.
-export function MoreTab({ items = [], onNavigate, onClose }) {
+export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
+  const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 22 }}>
@@ -25,10 +26,15 @@ export function MoreTab({ items = [], onNavigate, onClose }) {
             accessibilityRole="button"
             accessibilityLabel={it.label}
           >
-            <View style={{ width: 52, height: 52, borderRadius: 15, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center" }}>
+            <View style={{ width: 52, height: 52, borderRadius: 15, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center", opacity: isLocked(it.id) ? 0.5 : 1 }}>
               <Text style={{ fontSize: 26 }}>{it.emoji}</Text>
             </View>
-            <Text style={{ flex: 1, color: "#fff", fontSize: 20, fontWeight: "900" }}>{it.label}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
+              {isLocked(it.id) ? (
+                <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "800", marginTop: 2 }}>🔒 Premium</Text>
+              ) : null}
+            </View>
             <Text style={{ color: theme.accent, fontSize: 22, fontWeight: "900" }}>›</Text>
           </Pressable>
         ))}

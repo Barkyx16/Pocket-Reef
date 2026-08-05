@@ -21,7 +21,7 @@ const PLANS = [
   { id: "yearly", name: "Yearly", price: "$19.99", per: "/yr", badge: "BEST VALUE", badgeBg: theme.warn, badgeColor: "#3d2c00", save: "Save 44%" },
 ];
 
-export function PremiumTab({ premiumUnlocked, onSetPremium }) {
+export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false }) {
   const [plan, setPlan] = useState("yearly");
 
   return (
@@ -83,7 +83,21 @@ export function PremiumTab({ premiumUnlocked, onSetPremium }) {
               );
             })}
           </View>
-          <GradientButton label="Unlock Premium" onPress={() => onSetPremium(true)} style={{ marginTop: 16 }} />
+          <GradientButton
+            label={buying ? "Opening…" : storeReady ? "Unlock Premium" : "Store unavailable"}
+            onPress={() => storeReady && !buying && onPurchase && onPurchase(plan)}
+            style={{ marginTop: 16, opacity: storeReady && !buying ? 1 : 0.6 }}
+          />
+          {!storeReady ? (
+            <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
+              In-app purchases need a device build — they don't run in Expo Go.
+            </Text>
+          ) : null}
+          {/* The App Store requires restore to be reachable, and it's how a
+              reinstall or a new device gets an existing subscription back. */}
+          <Pressable onPress={() => onRestore && onRestore()} style={({ pressed }) => [{ marginTop: 12, paddingVertical: 8 }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
+            <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "800", textAlign: "center" }}>Restore purchases</Text>
+          </Pressable>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 16, marginTop: 12 }}>
             {[["🔒", "Secure"], ["↩️", "Cancel anytime"], ["☁️", "Cloud sync"]].map(([i, l]) => (
               <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
@@ -95,14 +109,17 @@ export function PremiumTab({ premiumUnlocked, onSetPremium }) {
         </View>
       ) : null}
 
-      {/* Developer toggle */}
+      {/* Developer toggle — __DEV__ only. This must never ship in a release
+          build: a premium switch the app can flip is a premium switch anyone
+          can flip. Entitlement in production comes from RevenueCat alone. */}
+      {__DEV__ ? (
       <View style={{ borderRadius: 18, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
         <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>🔧 Developer</Text>
         <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
-          Toggle the premium gate for testing. This stands in for the real store purchase.
+          Toggle the premium gate for testing. Debug builds only — stripped from release.
         </Text>
         <Pressable
-          onPress={() => onSetPremium(!premiumUnlocked)}
+          onPress={() => onSetPremium && onSetPremium(!premiumUnlocked)}
           style={({ pressed }) => [{ marginTop: 12, borderRadius: 14, paddingVertical: 12, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.4)" }, pressed && { opacity: 0.8 }]}
           accessibilityRole="button"
         >
@@ -111,6 +128,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium }) {
           </Text>
         </Pressable>
       </View>
+      ) : null}
     </ScrollView>
   );
 }

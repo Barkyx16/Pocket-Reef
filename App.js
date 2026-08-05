@@ -9,6 +9,8 @@ import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pushSnapshot, pullSnapshot } from "./lib/cloudSync";
 import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage";
 import { runMigrations, ensureTanksShape } from "./lib/migrations";
+import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getPackages, purchasePackage } from "./lib/purchases";
+import { LockedTab } from "./components/LockedTab";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
 import { t, setLanguage } from "./lib/i18n";
@@ -49,6 +51,29 @@ const MORE_ITEMS = [
 ];
 const MORE_IDS = MORE_ITEMS.map((m) => m.id);
 
+// ── The paywall ──────────────────────────────────────────────────────────────
+// This is the ONE list that decides paid access. The tab bar, the More sheet,
+// jumpTo() and the render guard all read it, so a tab can't end up
+// half-protected — and a Today-card deep link can't route around it either.
+//
+// Free tier: Home, plus a preview of Species. "more" is the menu shell and
+// "premium" is where you pay, so neither can be locked.
+const PREMIUM_TAB_IDS = new Set(["tank", "log", "health", "journal", "games", "profile"]);
+
+// What a free account gets.
+const FREE_STOCK_LIMIT = 5;   // fish saved to a tank
+const FREE_SPECIES_LIMIT = 7; // species visible in the catalog
+
+// Copy for each locked tab — what they'd get, so the wall sells rather than scolds.
+const LOCKED_COPY = {
+  tank: { emoji: "🌊", title: "Your tank, unlocked", blurb: "Track your full stock with live compatibility, bioload, and stocking guidance.", perks: ["Unlimited fish per tank", "Real-time compatibility matrix", "Bioload & stocking planner", "Multiple tanks, quarantine & tank ideas"] },
+  log: { emoji: "🧪", title: "Log everything", blurb: "Water chemistry, maintenance, feeding, costs — all tracked and trended.", perks: ["Water tests with trends & deltas", "Nitrogen cycle tracker", "Water-change calculator", "Cost tracking & CSV export"] },
+  health: { emoji: "🩺", title: "Health toolkit", blurb: "Find out what's wrong and what to do about it.", perks: ["10 illustrated disease guides", "Symptom checker", "Emergency troubleshooter"] },
+  journal: { emoji: "📓", title: "Your reef journal", blurb: "A dated, searchable record of your tank with photos.", perks: ["Photo journal & gallery", "Search and mood filters", "Timeline view"] },
+  games: { emoji: "🎮", title: "Reef games", blurb: "Play, learn, and earn XP toward your reef-keeper level.", perks: ["Every reef mini-game", "Earn XP and records"] },
+  profile: { emoji: "👤", title: "Profile & cloud save", blurb: "Your stats, achievements, and your reef backed up to your account.", perks: ["Cloud save across devices", "86 achievements", "Lifetime stats & collection insights", "Export and import your data"] },
+};
+
 const EMPTY_TANK = { name: "My Tank", gallons: 20, water: "fresh", emoji: "🐠", stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: null };
 const newTank = (name, gallons = 20, water = "fresh", emoji = "🐠") => ({ id: String(Date.now()) + Math.random().toString(36).slice(2, 6), name, gallons, water, emoji, stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: new Date().toISOString() });
 // Tanks hold everything a user would actually mourn, so they get the two-phase
@@ -72,6 +97,9 @@ export default function App() {
   const [premiumUnlocked, setPremiumUnlocked] = useState(false);
   // True when a schema migration failed — the pre-migration backup is intact.
   const [migrationFailed, setMigrationFailed] = useState(false);
+  // Store availability + in-flight purchase, for the Premium tab UI.
+  const [storeReady, setStoreReady] = useState(false);
+  const [buying, setBuying] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [reminderPrefs, setReminderPrefs] = useState({ waterTest: "weekly", waterChange: "weekly", feeding: "off" });
   const [tankSheet, setTankSheet] = useState(null); // null | {mode:"new"} | {mode:"edit", id}
@@ -128,11 +156,13 @@ export default function App() {
       // throw, and quarantine anything they can't parse under <key>__corrupt.
       // A single unreadable value costs the user that one setting; it can no
       // longer abort hydration and boot the app looking factory-fresh.
-      const [x, a, pm, rm, ob, lg, un] = await Promise.all(
-        ["pr_xp", "pr_activeDays", "pr_premium", "pr_reminders", "pr_onboarded", "pr_lang", "pr_unit"].map((k) => getRaw(k))
+      // pr_premium is deliberately NOT read here. Entitlement comes from
+      // RevenueCat, which keeps its own offline-capable cache — a local flag the
+      // app can write is a local flag a patched build can write too.
+      const [x, a, rm, ob, lg, un] = await Promise.all(
+        ["pr_xp", "pr_activeDays", "pr_reminders", "pr_onboarded", "pr_lang", "pr_unit"].map((k) => getRaw(k))
       );
       if (x) setXp(Number(x) || 0);
-      if (pm === "1") setPremiumUnlocked(true);
       if (ob === "1") setSeenOnboarding(true);
       if (lg) { setLanguage(lg); setLangState(lg); }
       if (un) { setUnit(un); setUnitState(un); }
@@ -182,6 +212,43 @@ export default function App() {
     })();
   }, []);
 
+  // ── Premium entitlement ────────────────────────────────────────────────────
+  // Owned by RevenueCat, never by the app. Configure the SDK, read the current
+  // entitlement, then follow it — renewals, expiry, refunds and restores on
+  // another device all arrive through the listener.
+  //
+  // checkEntitlement() returns null when a lookup fails, distinct from false.
+  // A paying subscriber must never be locked out by a flaky network, so null
+  // leaves the current state alone.
+  useEffect(() => {
+    let alive = true;
+    let unsubscribe = () => {};
+    (async () => {
+      const ready = await initPurchases();
+      if (!alive) return;
+      setStoreReady(ready);
+      if (!ready) return; // Expo Go has no native module — stays free
+      const entitled = await checkEntitlement();
+      if (alive && entitled !== null) setPremiumUnlocked(entitled);
+      unsubscribe = onEntitlementChange((on) => { if (alive) setPremiumUnlocked(on); });
+    })();
+    return () => { alive = false; unsubscribe(); };
+  }, []);
+
+  // App Store policy requires restore to be reachable, and it's what gets a
+  // subscriber their access back after a reinstall or on a new device.
+  const restorePremium = async () => {
+    const res = await restorePurchases();
+    if (res.entitled) {
+      setPremiumUnlocked(true);
+      Alert.alert("Premium restored", "Welcome back — everything's unlocked.");
+    } else if (res.ok) {
+      Alert.alert("Nothing to restore", "No active subscription was found for this store account.");
+    } else {
+      Alert.alert("Couldn't restore", res.error || "Please try again in a moment.");
+    }
+  };
+
   // ── Cloud save ─────────────────────────────────────────────────────────────
   // Writes a pulled snapshot into state and mirrors it to AsyncStorage, so the
   // device copy matches the account even if the next launch is offline.
@@ -207,7 +274,9 @@ export default function App() {
     if (snap.bannerId) { setBannerId(snap.bannerId); put("pr_banner", snap.bannerId); }
     if (snap.lang) { setLanguage(snap.lang); setLangState(snap.lang); put("pr_lang", snap.lang); }
     if (snap.unit) { setUnit(snap.unit); setUnitState(snap.unit); put("pr_unit", snap.unit); }
-    if (typeof snap.premiumUnlocked === "boolean") { setPremiumUnlocked(snap.premiumUnlocked); put("pr_premium", snap.premiumUnlocked ? "1" : "0"); }
+    // premiumUnlocked is deliberately NOT applied from the snapshot. Entitlement
+    // is decided by RevenueCat; accepting it from synced data is what would let
+    // a patched client write itself Premium and have it stick forever.
   };
 
   // Restore an existing session on launch and follow sign-in/out after that.
@@ -322,21 +391,21 @@ export default function App() {
       setSyncing(true);
       const res = await pushSnapshot(user.id, {
         tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-        profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, premiumUnlocked,
+        profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
       });
       setSyncing(false);
       if (res.ok) { setSyncError(false); setLastSyncedAt(Date.now()); }
       else setSyncError(true);
     }, 2500);
     return () => { if (syncTimer.current) clearTimeout(syncTimer.current); };
-  }, [user, tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs, profileName, recent, speciesNotes, challengesDone, bannerId, lang, unit, premiumUnlocked]);
+  }, [user, tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs, profileName, recent, speciesNotes, challengesDone, bannerId, lang, unit]);
 
   const syncNow = async () => {
     if (!supabase || !user) return;
     setSyncing(true);
     const res = await pushSnapshot(user.id, {
       tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, premiumUnlocked,
+      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
     });
     setSyncing(false);
     if (res.ok) { setSyncError(false); setLastSyncedAt(Date.now()); }
@@ -378,9 +447,40 @@ export default function App() {
   const changeUnit = (u) => { setUnit(u); setUnitState(u); AsyncStorage.setItem("pr_unit", u).catch(() => {}); };
   const changeLanguage = (code) => { setLanguage(code); setLangState(code); AsyncStorage.setItem("pr_lang", code).catch(() => {}); };
   const changeReminders = (next) => { setReminderPrefs(next); AsyncStorage.setItem("pr_reminders", JSON.stringify(next)).catch(() => {}); };
-  const unlockPremium = () => { setPremiumUnlocked(true); AsyncStorage.setItem("pr_premium", "1").catch(() => {}); };
-  // Set premium on/off — powers the CTA (on) and the dev unlock/lock toggle.
-  const setPremium = (on) => { tapHaptic("medium"); setPremiumUnlocked(!!on); AsyncStorage.setItem("pr_premium", on ? "1" : "0").catch(() => {}); };
+  // Buys Premium. The app never sets entitlement itself — it asks the store,
+  // and the resulting CustomerInfo is what flips the flag.
+  const buyPremium = async (planId) => {
+    if (buying) return;
+    setBuying(true);
+    try {
+      const packages = await getPackages();
+      if (!packages.length) {
+        Alert.alert("Nothing to buy yet", "No subscription products are configured for this build. Check the RevenueCat offering and your store products.");
+        return;
+      }
+      // Match the selected plan to a package by billing period, falling back to
+      // the first available so a mismatch can't leave the button dead.
+      const wantAnnual = String(planId).toLowerCase().includes("year") || String(planId).toLowerCase().includes("annual");
+      const pick = packages.find((p) => {
+        const id = String(p.identifier || "").toLowerCase();
+        return wantAnnual ? id.includes("annual") || id.includes("year") : id.includes("month");
+      }) || packages[0];
+
+      const res = await purchasePackage(pick);
+      if (res.cancelled) return;
+      if (res.entitled) { setPremiumUnlocked(true); Alert.alert("Welcome to Premium 👑", "Everything's unlocked. Thanks for supporting Pocket Reef."); }
+      else if (!res.ok) Alert.alert("Purchase failed", res.error || "Please try again.");
+    } finally {
+      setBuying(false);
+    }
+  };
+  // Debug-only entitlement override, for testing gated screens without a
+  // sandbox purchase. __DEV__ is compile-time, so this is dead code in release.
+  const setPremium = (on) => {
+    if (!__DEV__) return;
+    tapHaptic("medium");
+    setPremiumUnlocked(!!on);
+  };
   const toggleWishlist = (name) => {
     tapHaptic("light");
     setWishlist((prev) => {
@@ -424,6 +524,17 @@ export default function App() {
   const changeTankGallons = (g) => updateActiveTank({ gallons: g });
   const toggleTank = (name) => {
     tapHaptic();
+    // Free accounts stop at FREE_STOCK_LIMIT fish. Removing is always allowed —
+    // a cap that traps you above it is worse than no cap.
+    const stocked = (activeTank.stock || []).includes(name);
+    if (!premiumUnlocked && !stocked && (activeTank.stock || []).length >= FREE_STOCK_LIMIT) {
+      Alert.alert(
+        "Free plan holds 5 fish",
+        `You've saved ${FREE_STOCK_LIMIT} — upgrade to Premium for unlimited stock, plus compatibility, bioload, and the full logging toolkit.`,
+        [{ text: "Maybe later", style: "cancel" }, { text: "See Premium", onPress: goPremium }]
+      );
+      return;
+    }
     updateActiveTank((tk) => {
       const has = tk.stock.includes(name);
       const stock = has ? tk.stock.filter((n) => n !== name) : [...tk.stock, name];
@@ -451,7 +562,14 @@ export default function App() {
   });
   const addFeeding = (entry) => { updateActiveTank((tk) => ({ feedings: [entry, ...(tk.feedings || [])].slice(0, 300) })); recordActivity(2); };
   const deleteFeeding = (id) => updateActiveTank((tk) => ({ feedings: (tk.feedings || []).filter((f) => f.id !== id) }));
-  const loadTankIdea = (idea) => { tapHaptic("medium"); updateActiveTank({ gallons: idea.gallons, stock: idea.species, quantities: {} }); setActiveTab("tank"); };
+  // Tank ideas write a whole stock list at once, so they'd walk straight past
+  // the per-fish cap. Premium only.
+  const loadTankIdea = (idea) => {
+    if (!premiumUnlocked) { goPremium(); return; }
+    tapHaptic("medium");
+    updateActiveTank({ gallons: idea.gallons, stock: idea.species, quantities: {} });
+    setActiveTab("tank");
+  };
   const clearStock = () => { tapHaptic("medium"); updateActiveTank({ stock: [], quantities: {} }); };
 
   // ── Tank management (multiple tanks) ──
@@ -558,8 +676,24 @@ export default function App() {
       return next;
     });
   };
-  const openDisease = (name) => { tapHaptic(); setSelectedDisease(name); };
-  const jumpTo = (id) => { tapHaptic(); setSelectedSpecies(null); setSelectedDisease(null); setActiveTab(id); };
+  // Disease guides are Health-tab content, but they're also reachable from the
+  // free Species tab's search results and from species detail. Gate the opener
+  // itself, or locking the tab would only lock the front door.
+  const openDisease = (name) => {
+    tapHaptic();
+    if (!premiumUnlocked) { goPremium(); return; }
+    setSelectedDisease(name);
+  };
+  // Every navigation in the app funnels through here — the tab bar, the More
+  // sheet, Today-card deep links, and each screen's onGoToTab. Gating at this
+  // one choke point is why a locked tab can't be reached by any route.
+  const jumpTo = (id) => {
+    tapHaptic();
+    if (PREMIUM_TAB_IDS.has(id) && !premiumUnlocked) { goPremium(); return; }
+    setSelectedSpecies(null);
+    setSelectedDisease(null);
+    setActiveTab(id);
+  };
   const detailOpen = selectedSpecies || selectedDisease || tankSheet || showImport;
 
   return (
@@ -589,7 +723,7 @@ export default function App() {
             <AuthScreen onContinueOffline={() => setOfflineMode(true)} />
           </SafeAreaView>
         ) : !seenOnboarding ? (
-          <OnboardingCard onFinish={finishOnboarding} onStartPremium={() => setPremium(true)} />
+          <OnboardingCard onFinish={finishOnboarding} onStartPremium={goPremium} />
         ) : (
         <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
           <StatusBar style="light" />
@@ -618,6 +752,19 @@ export default function App() {
               note={speciesNotes[selectedSpecies] || ""}
               onChangeNote={(text) => setSpeciesNote(selectedSpecies, text)}
             />
+          ) : PREMIUM_TAB_IDS.has(activeTab) && !premiumUnlocked ? (
+            // Belt and braces behind jumpTo(): if activeTab ever lands on a
+            // locked tab by any other route — a stale state restore, a future
+            // setActiveTab call that forgets the gate — the tab still doesn't
+            // render. The paid screen is never mounted, so its data never
+            // reaches the tree at all.
+            <LockedTab
+              emoji={(LOCKED_COPY[activeTab] || {}).emoji}
+              title={(LOCKED_COPY[activeTab] || {}).title || "Premium feature"}
+              blurb={(LOCKED_COPY[activeTab] || {}).blurb || "Upgrade to unlock this part of Pocket Reef."}
+              perks={(LOCKED_COPY[activeTab] || {}).perks || []}
+              onOpenPremium={goPremium}
+            />
           ) : (
             <>
               {activeTab === "home" && (
@@ -633,15 +780,15 @@ export default function App() {
                   challengesDone={challengesDone} onCompleteChallenge={completeChallenge}
                 />
               )}
-              {activeTab === "species" && <SpeciesTab tankGallons={tankGallons} tank={tank} toggleTank={toggleTank} openSpecies={openSpecies} openDisease={openDisease} wishlist={wishlist} onToggleWishlist={toggleWishlist} recent={recent} />}
+              {activeTab === "species" && <SpeciesTab tankGallons={tankGallons} tank={tank} toggleTank={toggleTank} openSpecies={openSpecies} openDisease={openDisease} wishlist={wishlist} onToggleWishlist={toggleWishlist} recent={recent} premiumUnlocked={premiumUnlocked} freeLimit={FREE_SPECIES_LIMIT} onOpenPremium={goPremium} />}
               {activeTab === "tank" && <TankTab tankGallons={tankGallons} setTankGallons={changeTankGallons} tank={tank} tankWater={activeTank.water} tankCreatedAt={activeTank.createdAt} tankNotes={activeTank.notes} waterTests={waterTests} maintenance={maintenance} quantities={quantities} onSetQuantity={setQuantity} toggleTank={toggleTank} openSpecies={openSpecies} onLoadIdea={loadTankIdea} onClearStock={clearStock} quarantine={quarantine} onAddQuarantine={addQuarantine} onRemoveQuarantine={removeQuarantine} onGraduateQuarantine={graduateQuarantine} tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onGoToTab={jumpTo} />}
               {activeTab === "log" && <LogTab tank={tank} tankGallons={tankGallons} waterTests={waterTests} journal={journal} activeDays={activeDays} costs={costs} feedings={feedings} onLogTest={logTest} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} onAddCost={addCost} onDeleteCost={deleteCost} onAddFeeding={addFeeding} onDeleteFeeding={deleteFeeding} maintenance={maintenance} onLogMaintenance={logMaintenance} premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} />}
-              {activeTab === "more" && <MoreTab items={MORE_ITEMS} onNavigate={jumpTo} onClose={() => jumpTo("home")} />}
+              {activeTab === "more" && <MoreTab items={MORE_ITEMS} onNavigate={jumpTo} onClose={() => jumpTo("home")} lockedIds={premiumUnlocked ? null : PREMIUM_TAB_IDS} />}
               {activeTab === "games" && <GamesTab onEarnXp={addXp} />}
               {activeTab === "journal" && <JournalTab journal={journal} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} />}
               {activeTab === "health" && <HealthTab openDisease={openDisease} />}
               {activeTab === "premium" && (
-                <PremiumTab premiumUnlocked={premiumUnlocked} onSetPremium={setPremium} />
+                <PremiumTab premiumUnlocked={premiumUnlocked} onSetPremium={setPremium} onPurchase={buyPremium} onRestore={restorePremium} storeReady={storeReady} buying={buying} />
               )}
               {activeTab === "profile" && (
                 <ProfileTab
@@ -650,7 +797,7 @@ export default function App() {
                   bannerId={bannerId} onSetBanner={setBanner}
                   user={user} lastSyncedAt={lastSyncedAt} syncing={syncing} syncError={syncError}
                   onSyncNow={syncNow} onSignOut={handleSignOut}
-                  onExport={exportData} onImport={() => setShowImport(true)} onUnlock={unlockPremium} onOpenPremium={goPremium}
+                  onExport={exportData} onImport={() => setShowImport(true)} onUnlock={goPremium} onOpenPremium={goPremium}
                   reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit}
                 />
               )}
@@ -662,17 +809,23 @@ export default function App() {
               {TABS.map((tab) => {
                 const on = activeTab === tab.id || (tab.id === "more" && MORE_IDS.includes(activeTab));
                 const label = t(`tabs.${tab.id}`);
+                const locked = PREMIUM_TAB_IDS.has(tab.id) && !premiumUnlocked;
                 return (
                   <Pressable
                     key={tab.id}
                     style={({ pressed }) => [styles.bottomTabButton, on && styles.bottomTabButtonActive, pressed && { opacity: 0.85, transform: [{ scale: 0.96 }] }]}
                     onPress={() => jumpTo(tab.id)}
                     accessibilityRole="button"
-                    accessibilityLabel={label}
+                    accessibilityLabel={locked ? `${label}, Premium` : label}
                     accessibilityState={{ selected: on }}
                   >
-                    <Text style={[styles.bottomTabEmoji, on && { transform: [{ scale: 1.12 }] }]}>{tab.emoji}</Text>
-                    <Text style={[styles.bottomTabLabel, on && styles.bottomTabLabelActive]}>{label}</Text>
+                    <View>
+                      <Text style={[styles.bottomTabEmoji, on && { transform: [{ scale: 1.12 }] }, locked && { opacity: 0.45 }]}>{tab.emoji}</Text>
+                      {locked ? (
+                        <Text style={{ position: "absolute", right: -8, top: -3, fontSize: 11 }}>🔒</Text>
+                      ) : null}
+                    </View>
+                    <Text style={[styles.bottomTabLabel, on && styles.bottomTabLabelActive, locked && { opacity: 0.55 }]}>{label}</Text>
                   </Pressable>
                 );
               })}

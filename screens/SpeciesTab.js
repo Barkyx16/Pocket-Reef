@@ -28,7 +28,7 @@ const CARE_RANK = { Easy: 0, Moderate: 1, Advanced: 2 };
 const haystack = (s) =>
   `${s.name} ${s.diet} ${s.kind} ${s.water === "salt" ? "saltwater marine reef" : "freshwater"} ${s.summary || ""}`.toLowerCase();
 
-export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [] }) {
+export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium }) {
   const [query, setQuery] = useState("");
   const [water, setWater] = useState("all");
   const [fitsOnly, setFitsOnly] = useState(false);
@@ -91,6 +91,10 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
   // Reset the visible window whenever the filters/search change.
   useEffect(() => { setVisible(PAGE); }, [q, water, wishOnly, fitsOnly, compatOnly, care, temper, size, reefOnly]);
+
+  // How many cards actually render. Free accounts see a fixed preview no matter
+  // how they search or filter, so the cap can't be paged or filtered around.
+  const shown = premiumUnlocked ? Math.min(visible, list.length) : Math.min(freeLimit, list.length);
 
   const resetFilters = () => { setCare("all"); setTemper("all"); setSize("all"); setReefOnly(false); };
 
@@ -230,10 +234,10 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       ) : null}
 
       <Text style={[styles.cleanMeta, { marginTop: 12, marginBottom: 10 }]}>
-        {list.length ? `Showing ${Math.min(visible, list.length)} of ${list.length} species` : "0 species"}
+        {list.length ? `Showing ${Math.min(shown, list.length)} of ${list.length} species` : "0 species"}
       </Text>
 
-      {list.slice(0, visible).map((s) => {
+      {list.slice(0, shown).map((s) => {
         const selected = compareMode && compareSel.includes(s.name);
         return (
           <SpeciesCard
@@ -248,9 +252,27 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
           />
         );
       })}
-      {list.length > visible ? (
+      {!premiumUnlocked && list.length > shown ? (
+        // The free preview ends here. Show what's behind the wall rather than
+        // just stopping — the number is the pitch.
+        <Pressable
+          onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }}
+          style={({ pressed }) => [styles.card, { marginTop: 6, alignItems: "center" }, pressed && { opacity: 0.85 }]}
+          accessibilityRole="button"
+          accessibilityLabel="Unlock the full species catalog with Premium"
+        >
+          <Text style={{ fontSize: 30 }}>🔒</Text>
+          <Text style={{ color: "#fff", fontSize: 17, fontWeight: "900", marginTop: 10, textAlign: "center" }}>
+            {list.length - shown} more species
+          </Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+            Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
+          </Text>
+          <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
+        </Pressable>
+      ) : list.length > shown ? (
         <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 20, list.length)); }} style={[styles.ghostBtn, { marginTop: 4 }]} accessibilityRole="button">
-          <Text style={styles.ghostBtnText}>Show more ({list.length - visible})</Text>
+          <Text style={styles.ghostBtnText}>Show more ({list.length - shown})</Text>
         </Pressable>
       ) : null}
       {list.length === 0 ? (
