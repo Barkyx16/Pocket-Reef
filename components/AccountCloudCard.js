@@ -207,7 +207,7 @@ export function AccountCloudCard({
 
       {configured && onSyncNow ? (
         <Pressable onPress={() => { tapHaptic(); onSyncNow(); }} style={[styles.ghostBtn, { marginBottom: 14 }]} accessibilityRole="button">
-          <Text style={styles.ghostBtnText}>☁️ Sync now</Text>
+          <Text style={styles.ghostBtnText}>Sync now</Text>
         </Pressable>
       ) : null}
 
@@ -354,7 +354,7 @@ export function AccountCloudCard({
 
           {/* Fallback for a password you can't remember — goes through email. */}
           <Pressable onPress={sendPasswordReset} disabled={busy === "password"} style={styles.ghostBtn} accessibilityRole="button">
-            {busy === "password" ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>🔒 Email me a reset link instead</Text>}
+            {busy === "password" ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>Email me a reset link instead</Text>}
           </Pressable>
         </>
       ) : null}
@@ -367,7 +367,7 @@ export function AccountCloudCard({
           <Text style={styles.primaryBtnText}>📤 Export</Text>
         </Pressable>
         <Pressable onPress={() => onImport && onImport()} style={[styles.ghostBtn, { flex: 1 }]} accessibilityRole="button">
-          <Text style={styles.ghostBtnText}>📥 Restore</Text>
+          <Text style={styles.ghostBtnText}>Restore</Text>
         </Pressable>
       </View>
 

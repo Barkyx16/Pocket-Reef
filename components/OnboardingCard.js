@@ -177,7 +177,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           {/* ACTIONS */}
           {isPremium ? (
             <>
-              <GradientButton label="Start Premium 👑" onPress={() => { onStartPremium && onStartPremium(); finish(); }} />
+              <GradientButton label="Start Premium" icon="star" onPress={() => { onStartPremium && onStartPremium(); finish(); }} />
               <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
                 <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Continue with the free version</Text>
               </Pressable>
@@ -187,7 +187,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               {isResult ? (
                 // The plan is right there and already proven compatible —
                 // making them rebuild it by hand is a pointless first task.
-                <GradientButton label="Start my tank with these 🐠" onPress={() => finish(true)} />
+                <GradientButton label="Start my tank with these" icon="fish" onPress={() => finish(true)} />
               ) : (
                 <GradientButton label={isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
               )}

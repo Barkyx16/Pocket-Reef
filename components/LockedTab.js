@@ -43,7 +43,7 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
           </View>
         ) : null}
 
-        <GradientButton label="See Premium 👑" onPress={onOpenPremium} style={{ marginTop: 32, alignSelf: "stretch" }} />
+        <GradientButton label="See Premium" icon="star" onPress={onOpenPremium} style={{ marginTop: 32, alignSelf: "stretch" }} />
       </View>
     </ScrollView>
   );

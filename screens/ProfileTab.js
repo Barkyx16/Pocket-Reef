@@ -227,7 +227,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
             <Text style={styles.ghostBtnText}>📤 Export</Text>
           </Pressable>
           <Pressable onPress={() => onImport && onImport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
-            <Text style={styles.ghostBtnText}>📥 Restore</Text>
+            <Text style={styles.ghostBtnText}>Restore</Text>
           </Pressable>
         </View>
       </CollapsibleCard>

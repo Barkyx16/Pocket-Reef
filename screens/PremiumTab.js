@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTabBarScroll } from "../lib/tabBarScroll";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
@@ -8,13 +9,15 @@ import { GradientButton } from "../components/GradientButton";
 // A self-contained Premium tab: what's included, a plan picker, the unlock CTA,
 // and — at the very bottom — a developer toggle to unlock/lock the gate while
 // building (wire RevenueCat in a real dev build to replace it).
+// Vector icons here matter more than anywhere else: this is the screen that
+// asks for money, and six mismatched emoji in accent squares undercut it.
 const FEATURES = [
-  { icon: "🐠", title: "Unlimited tanks", body: "Plan and track every aquarium you keep." },
-  { icon: "📈", title: "Parameter trends & alerts", body: "Charts for each reading, with drift warnings." },
-  { icon: "🤝", title: "Advanced compatibility", body: "Full pairing reasons and stocking limits." },
-  { icon: "🩺", title: "Complete disease library", body: "Every illustrated guide, plus symptom lookup." },
-  { icon: "🔔", title: "Smart care reminders", body: "Water tests, changes, and feedings on schedule." },
-  { icon: "☁️", title: "Cloud backup & sync", body: "Your tanks, logs, and journal safe across devices." },
+  { icon: "fish-outline", title: "Unlimited tanks", body: "Plan and track every aquarium you keep." },
+  { icon: "trending-up-outline", title: "Parameter trends & alerts", body: "Charts for each reading, with drift warnings." },
+  { icon: "grid-outline", title: "Advanced compatibility", body: "Full pairing reasons and stocking limits." },
+  { icon: "medkit-outline", title: "Complete disease library", body: "Every illustrated guide, plus symptom lookup." },
+  { icon: "notifications-outline", title: "Smart care reminders", body: "Water tests, changes, and feedings on schedule." },
+  { icon: "cloud-outline", title: "Cloud backup & sync", body: "Your tanks, logs, and journal safe across devices." },
 ];
 
 // Legal links are not optional: App Store review rejects a subscription
@@ -104,7 +107,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
         <View style={{ gap: 12 }}>
           {FEATURES.map((f) => (
             <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-              <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
+              <View style={styles.iconSquare}><Ionicons name={f.icon} size={16} color={theme.accent} /></View>
               <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
                   <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
@@ -187,7 +190,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
             </Pressable>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 16, marginTop: 12 }}>
-            {[["🔒", "Secure"], ["↩️", "Cancel anytime"], ["☁️", "Cloud sync"]].map(([i, l]) => (
+            {[["", "Secure"], ["", "Cancel anytime"], ["", "Cloud sync"]].map(([i, l]) => (
               <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                 <Text style={{ fontSize: 13 }}>{i}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{l}</Text>
@@ -212,7 +215,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           accessibilityRole="button"
         >
           <Text style={{ color: premiumUnlocked ? theme.danger : theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
-            {premiumUnlocked ? "🔒 Lock premium (dev)" : "🔓 Unlock premium (dev)"}
+            {premiumUnlocked ? " Lock premium (dev)" : "🔓 Unlock premium (dev)"}
           </Text>
         </Pressable>
       </View>

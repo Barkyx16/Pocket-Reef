@@ -84,7 +84,7 @@ export function AcclimationTimer({ onComplete }) {
           A guided {TOTAL_MINUTES}-minute acclimation. Float, mix, and move — the timer tells you
           when each step is up so you can keep both hands on the bag.
         </Text>
-        <GradientButton label="Start acclimation ⏱" onPress={start} style={{ marginTop: 14 }} />
+        <GradientButton label="Start acclimation" icon="stopwatch-outline" onPress={start} style={{ marginTop: 14 }} />
       </View>
     );
   }

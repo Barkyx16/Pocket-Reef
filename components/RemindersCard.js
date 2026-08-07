@@ -32,9 +32,9 @@ export function RemindersCard({ prefs, onChange }) {
     <View>
       <Text style={styles.cardText}>Set your care schedule. Reminders arrive as notifications once you build the app to your device.</Text>
       <View style={{ marginTop: 14 }}>
-        <Row label="🧪 Test water" value={p.waterTest || "weekly"} onChange={(v) => set("waterTest", v)} />
-        <Row label="🔁 Water change" value={p.waterChange || "weekly"} onChange={(v) => set("waterChange", v)} />
-        <Row label="🍤 Feeding check-in" value={p.feeding || "off"} onChange={(v) => set("feeding", v)} />
+        <Row label="Test water" value={p.waterTest || "weekly"} onChange={(v) => set("waterTest", v)} />
+        <Row label="Water change" value={p.waterChange || "weekly"} onChange={(v) => set("waterChange", v)} />
+        <Row label="Feeding check-in" value={p.feeding || "off"} onChange={(v) => set("feeding", v)} />
       </View>
     </View>
   );
