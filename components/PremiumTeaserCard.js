@@ -60,16 +60,16 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
           <View key={l.text} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
             <View style={styles.iconSquare}><Text style={{ fontSize: 15 }}>{l.icon}</Text></View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900", lineHeight: 19 }}>{l.text}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
+              <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", lineHeight: 19 }}>{l.text}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
             </View>
           </View>
         ))}
       </View>
 
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.border }}>
-        <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>Unlock with Premium</Text>
-        <Text style={{ color: theme.accent, fontSize: 18, fontWeight: "900" }}>›</Text>
+        <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Unlock with Premium</Text>
+        <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
       </View>
     </Pressable>
   );

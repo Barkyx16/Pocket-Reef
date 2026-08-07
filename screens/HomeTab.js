@@ -61,8 +61,8 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {streak > 0 && !loggedToday ? (
         <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
           <Text style={{ fontSize: 22 }}>🔥</Text>
-          <Text style={{ flex: 1, color: theme.warn, fontSize: 13, fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
-          <Text style={{ color: theme.warn, fontSize: 18, fontWeight: "900" }}>›</Text>
+          <Text style={{ flex: 1, color: theme.warn, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
+          <Text style={{ color: theme.warn, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       ) : null}
 
@@ -134,7 +134,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
           <Summary label="Water tests" value={`${weekly.tests}`} />
           <Summary label="Journal notes" value={`${weekly.journal}`} />
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 10, textAlign: "center" }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
           {weekly.activeDays >= 5 ? "Great consistency this week — your reef thanks you! 🐠" : weekly.activeDays === 0 ? "Log a test or a note to start this week off." : "Keep the momentum going — small daily touches add up."}
         </Text>
       </View>
@@ -152,9 +152,9 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
                 accessibilityState={{ checked: false }}
               >
                 <View style={{ width: 26, height: 26, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", borderWidth: 2, borderColor: theme.border }}>
-                  <Text style={{ fontSize: 13, color: theme.secondaryText, fontWeight: "900" }}>{task.icon}</Text>
+                  <Text style={{ fontSize: 13, color: theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{task.icon}</Text>
                 </View>
-                <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontWeight: "700" }}>{task.text}</Text>
+                <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{task.text}</Text>
               </Pressable>
             ))}
           </View>
@@ -183,7 +183,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { color: theme.warn }]}>⚠️ Tank Check</Text>
           {warnings.map((w, i) => (
-            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
+            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
           ))}
         </View>
       ) : null}
@@ -204,7 +204,7 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
         <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", alignItems: "center", justifyContent: "center" }}>
           <Text style={{ fontSize: 17 }}>{c.icon}</Text>
         </View>
-        <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontWeight: "800" }}>{c.title}</Text>
+        <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c.title}</Text>
       </Pressable>
       {onComplete ? (
         <Pressable
@@ -214,7 +214,7 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
           accessibilityRole="button"
           accessibilityLabel={`Mark "${c.title}" complete`}
         >
-          <Text style={{ color: theme.accent, fontSize: 15, fontWeight: "900" }}>✓</Text>
+          <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
         </Pressable>
       ) : null}
     </View>
@@ -224,8 +224,8 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
 function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
-      <Text style={{ color: color || "#fff", fontSize: 15, fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
     </View>
   );
 }

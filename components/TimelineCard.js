@@ -34,10 +34,10 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
             </View>
             {/* Content */}
             <View style={{ flex: 1, paddingBottom: 16 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginBottom: 3 }}>{ev.date}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 3 }}>{ev.date}</Text>
               {ev.kind === "journal" ? (
                 <View>
-                  {ev.text ? <Text style={{ color: theme.text, fontSize: 14, fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
+                  {ev.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
                   {ev.photo ? <Image source={{ uri: ev.photo }} style={{ width: "100%", height: 140, borderRadius: 10, marginTop: 8 }} resizeMode="cover" /> : null}
                 </View>
               ) : (
@@ -47,8 +47,8 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
                     const c = paramStatusColor(assessParam(p, ev.values[p.key]).status);
                     return (
                       <View key={p.key} style={{ flexDirection: "row", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 }}>
-                        <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800" }}>{p.label}</Text>
-                        <Text style={{ color: c, fontSize: 10, fontWeight: "900" }}>{ev.values[p.key]}</Text>
+                        <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
+                        <Text style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ev.values[p.key]}</Text>
                       </View>
                     );
                   })}

@@ -19,18 +19,18 @@ export function TankIdeasCard({ onLoad }) {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <Text style={{ fontSize: 22 }}>{idea.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{idea.name}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>
+              <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{idea.name}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                 {idea.gallons} gal · {idea.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {idea.species.length} species
               </Text>
             </View>
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", lineHeight: 18, marginTop: 8 }}>{idea.blurb}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 8 }}>{idea.blurb}</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
             {idea.species.map((n) => (
               <View key={n} style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 999, paddingLeft: 4, paddingRight: 9, paddingVertical: 3 }}>
                 <SpeciesThumb name={n} size={18} radius={9} />
-                <Text style={{ color: theme.text, fontSize: 11, fontWeight: "800" }}>{n}</Text>
+                <Text style={{ color: theme.text, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{n}</Text>
               </View>
             ))}
           </View>

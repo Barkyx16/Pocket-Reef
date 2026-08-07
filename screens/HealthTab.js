@@ -44,7 +44,7 @@ export function HealthTab({ openDisease }) {
         <Text style={styles.cleanName}>{d.name}</Text>
         <Text style={styles.cleanMeta} numberOfLines={2}>{d.description}</Text>
       </View>
-      {badge ? <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "900", marginRight: 6 }}>{badge}</Text> : null}
+      {badge ? <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginRight: 6 }}>{badge}</Text> : null}
       <Text style={styles.cleanArrow}>›</Text>
     </Pressable>
   );
@@ -70,7 +70,7 @@ export function HealthTab({ openDisease }) {
           <Text style={styles.cardEyebrow}>🔎 Symptom checker</Text>
           {symptoms.length ? (
             <Pressable onPress={() => { tapHaptic(); setSymptoms([]); }} accessibilityRole="button">
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "900" }}>Clear</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
             </Pressable>
           ) : null}
         </View>
@@ -80,7 +80,7 @@ export function HealthTab({ openDisease }) {
             const on = symptoms.includes(s);
             return (
               <Pressable key={s} onPress={() => toggleSymptom(s)} style={[styles.pill, { paddingVertical: 7, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
-                <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontWeight: "900" }}>{s}</Text>
+                <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s}</Text>
               </Pressable>
             );
           })}

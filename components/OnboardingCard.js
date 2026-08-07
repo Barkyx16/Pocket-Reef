@@ -110,8 +110,8 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                   <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
                     <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900" }}>{f.title}</Text>
-                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
+                      <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
                     </View>
                   </View>
                 ))}
@@ -140,15 +140,15 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                   <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
                     <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{sp.emoji}</Text></View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{sp.name}</Text>
-                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 1 }}>
+                      <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
+                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
                         {sp.careLevel} · {sp.temperament} · {sp.minGallons}gal min
                       </Text>
                     </View>
                   </View>
                 ))}
               </View>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
                 Every pairing is checked against the compatibility engine — water type, temperament,
                 predator size, and parameter overlap.
               </Text>
@@ -159,8 +159,8 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                 <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
                   <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{f.title}</Text>
-                    <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
+                    <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
                   </View>
                 </View>
               ))}
@@ -179,14 +179,14 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             <>
               <GradientButton label="Start Premium 👑" onPress={() => { onStartPremium && onStartPremium(); finish(); }} />
               <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 14, fontWeight: "800" }}>Continue with the free version</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Continue with the free version</Text>
               </Pressable>
             </>
           ) : (
             <>
               <GradientButton label={isResult ? "See what else it does →" : isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
               <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 14, fontWeight: "800" }}>Skip</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Skip</Text>
               </Pressable>
             </>
           )}

@@ -32,7 +32,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
       <View style={styles.card}>
         <Text style={styles.cardEyebrow}>Name</Text>
         <TextInput value={name} onChangeText={setName} placeholder="e.g. Living Room Reef" placeholderTextColor={theme.secondaryText}
-          style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8 }} />
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8 }} />
 
         <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Water type</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
@@ -56,9 +56,9 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
           {PRESETS.map((g) => <Pill key={g} label={`${g} gal`} active={gallons === g} onPress={() => setGallons(g)} />)}
         </View>
 
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontWeight: "700" }}>(optional)</Text></Text>
+        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
         <TextInput value={notes} onChangeText={setNotes} placeholder="Equipment, dosing, livestock plans…" placeholderTextColor={theme.secondaryText} multiline
-          style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} />
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} />
 
         <Pressable onPress={() => { tapHaptic("medium"); onSave({ name, water, emoji, gallons, notes: notes.trim() }); }} style={[styles.primaryBtn, { marginTop: 20 }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>{mode === "edit" ? "Save changes" : "Create tank"}</Text>

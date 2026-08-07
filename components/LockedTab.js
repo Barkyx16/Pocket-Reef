@@ -23,10 +23,10 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
           <Text style={{ fontSize: 44 }}>{emoji}</Text>
         </View>
 
-        <Text style={{ color: "#fff", fontSize: 26, fontWeight: "900", marginTop: 22, textAlign: "center", letterSpacing: -0.4 }}>
+        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 22, textAlign: "center", letterSpacing: -0.4 }}>
           {title}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 14, fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
           {blurb}
         </Text>
 
@@ -35,9 +35,9 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
             {perks.map((p) => (
               <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                 <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center" }}>
-                  <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "900" }}>✓</Text>
+                  <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
                 </View>
-                <Text style={{ flex: 1, color: theme.text, fontSize: 14, fontWeight: "700", lineHeight: 20 }}>{p}</Text>
+                <Text style={{ flex: 1, color: theme.text, fontSize: 14, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>{p}</Text>
               </View>
             ))}
           </View>

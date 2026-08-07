@@ -15,7 +15,7 @@ const FREQ = [
 function Row({ label, value, onChange }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.text, fontSize: 14, fontWeight: "800", marginBottom: 8 }}>{label}</Text>
+      <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 8 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 8 }}>
         {FREQ.map((f) => (
           <Pill key={f.id} fill label={f.label} active={value === f.id} onPress={() => onChange(f.id)} />

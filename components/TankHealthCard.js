@@ -24,12 +24,12 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
         accessibilityLabel={`Tank health ${health.score} of 100, ${open ? "hide" : "show"} breakdown`}
       >
         <View style={{ width: 76, height: 76, borderRadius: 38, borderWidth: 5, borderColor: health.color, alignItems: "center", justifyContent: "center", backgroundColor: `${health.color}14`, shadowColor: health.color, shadowOpacity: 0.4, shadowRadius: 14, shadowOffset: { width: 0, height: 0 }, elevation: 4 }}>
-          <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score}</Text>
+          <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score}</Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: health.color, fontSize: 20, fontWeight: "900" }}>{health.label}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 2 }}>Overall health, out of 100.</Text>
-          <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "800", marginTop: 4 }}>{open ? "Hide breakdown ▲" : "Tap for breakdown ▾"}</Text>
+          <Text style={{ color: health.color, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{health.label}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Overall health, out of 100.</Text>
+          <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{open ? "Hide breakdown ▲" : "Tap for breakdown ▾"}</Text>
         </View>
       </Pressable>
 
@@ -38,16 +38,16 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
           {health.factors.map((f) => (
             <View key={f.label} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
               <View style={{ width: 22, height: 22, borderRadius: 7, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ color: CLR[String(f.state)], fontSize: 12, fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
+                <Text style={{ color: CLR[String(f.state)], fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
               </View>
-              <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontWeight: "800" }}>{f.label}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700" }}>{f.detail}</Text>
+              <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.label}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.detail}</Text>
             </View>
           ))}
 
           {improvements.length ? (
             <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.border }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
                 Raise your score
               </Text>
               <View style={{ gap: 10 }}>
@@ -60,13 +60,13 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
                   >
                     <View style={{ minWidth: 40, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.34)", alignItems: "center" }}>
-                      <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
+                      <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: theme.text, fontSize: 13, fontWeight: "800" }}>{imp.action}</Text>
-                      {imp.why ? <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
+                      <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{imp.action}</Text>
+                      {imp.why ? <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
                     </View>
-                    {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontWeight: "900" }}>›</Text> : null}
+                    {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
                   </Pressable>
                 ))}
               </View>

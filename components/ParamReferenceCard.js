@@ -12,10 +12,10 @@ export function ParamReferenceCard({ waterType = "fresh" }) {
       {params.map((p) => (
         <View key={p.key} style={{ backgroundColor: theme.well, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: theme.border }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline" }}>
-            <Text style={{ color: theme.text, fontSize: 13, fontWeight: "900" }}>{p.label}</Text>
-            <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "900" }}>{p.ideal}</Text>
+            <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
+            <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.ideal}</Text>
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", lineHeight: 17, marginTop: 4 }}>{p.tip}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 4 }}>{p.tip}</Text>
         </View>
       ))}
     </View>

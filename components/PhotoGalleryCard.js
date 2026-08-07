@@ -18,7 +18,7 @@ export function PhotoGalleryCard({ journal = [], onOpen }) {
         {photos.map((e) => (
           <Pressable key={e.id} onPress={() => onOpen && onOpen(e)} accessibilityRole="button" accessibilityLabel={`Photo from ${e.date}`}>
             <Image source={{ uri: e.photo }} style={{ width: size, height: size, borderRadius: 12, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-            <Text style={{ color: theme.secondaryText, fontSize: 9, fontWeight: "800", marginTop: 3, textAlign: "center" }}>{e.date ? e.date.slice(5) : ""}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 9, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textAlign: "center" }}>{e.date ? e.date.slice(5) : ""}</Text>
           </Pressable>
         ))}
       </View>

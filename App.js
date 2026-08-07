@@ -2,6 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Image, Linking, Pressable, Share, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "./styles";
 import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak } from "./core";
@@ -102,6 +110,16 @@ export default function App() {
 }
 
 function PocketReef() {
+  // Inter, in the weights the design system actually uses. React Native needs a
+  // family per weight — fontWeight alone won't select the right file on Android.
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
+
   const [activeTab, setActiveTab] = useState("home");
   // Per-tank data now lives inside tank profiles.
   const [tanks, setTanks] = useState([]);
@@ -872,7 +890,7 @@ function PocketReef() {
           onCancel={() => setShowResetPassword(false)}
         />
 
-        {(!hydrated || !splashDone || !authChecked) ? (
+        {(!hydrated || !splashDone || !authChecked || !fontsLoaded) ? (
           // The branded loading screen lives here in JS, not in the native splash
           // (app.json's splash is a bare #061826 field, no artwork). That keeps it
           // editable with a reload instead of a native rebuild, and because both

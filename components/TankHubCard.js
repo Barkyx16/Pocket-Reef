@@ -19,7 +19,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
 
   return (
     <View style={styles.card}>
-      <Text style={{ color: "#fff", fontSize: 24, fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
+      <Text style={{ color: "#fff", fontSize: 24, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
 
       <GradientButton label="＋ Add a Tank" onPress={onAdd} />
 
@@ -41,13 +41,13 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                   <Text style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
+                  <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
                 </View>
                 <View style={{ backgroundColor: `${h.color}22`, borderColor: `${h.color}55`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5 }}>
-                  <Text style={{ color: h.color, fontSize: 12, fontWeight: "900" }}>{h.score >= 85 ? "✓ " : ""}{h.score}%</Text>
+                  <Text style={{ color: h.color, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score >= 85 ? "✓ " : ""}{h.score}%</Text>
                 </View>
-                <Text style={{ color: theme.accent, fontSize: 16, fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
+                <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
               </Pressable>
 
               {expanded && renderDetail ? (

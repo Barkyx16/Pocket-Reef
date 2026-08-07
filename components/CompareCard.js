@@ -34,7 +34,7 @@ export function CompareCard({ a, b }) {
         {[sa, sb].map((s, i) => (
           <View key={i} style={{ flex: 1, alignItems: "center" }}>
             <SpeciesThumb species={s} size={44} radius={12} />
-            <Text style={{ color: "#fff", fontSize: 12, fontWeight: "900", textAlign: "center", marginTop: 6 }} numberOfLines={2}>{s.name}</Text>
+            <Text style={{ color: "#fff", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 6 }} numberOfLines={2}>{s.name}</Text>
           </View>
         ))}
       </View>
@@ -43,9 +43,9 @@ export function CompareCard({ a, b }) {
       <View style={{ marginTop: 10 }}>
         {rows.map(([label, va, vb], i) => (
           <View key={label} style={{ flexDirection: "row", alignItems: "center", paddingVertical: 8, borderTopWidth: i ? 1 : 0, borderTopColor: theme.border }}>
-            <Text style={{ width: 96, color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>{label}</Text>
-            <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontWeight: "800", textAlign: "center" }}>{va}</Text>
-            <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontWeight: "800", textAlign: "center" }}>{vb}</Text>
+            <Text style={{ width: 96, color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{label}</Text>
+            <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}>{va}</Text>
+            <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}>{vb}</Text>
           </View>
         ))}
       </View>
@@ -53,7 +53,7 @@ export function CompareCard({ a, b }) {
       {/* Compatibility */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, backgroundColor: `${compatColor(c.level)}18`, borderRadius: 12, borderWidth: 1, borderColor: `${compatColor(c.level)}55`, padding: 12 }}>
         <Chip label={c.level} color={compatColor(c.level)} />
-        <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontWeight: "700", lineHeight: 17 }}>{c.reason}</Text>
+        <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{c.reason}</Text>
       </View>
     </View>
   );

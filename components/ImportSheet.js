@@ -36,7 +36,7 @@ export function ImportSheet({ onImport, onClose }) {
           multiline
           style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: error ? theme.danger : theme.border, fontSize: 12, minHeight: 140, textAlignVertical: "top", marginTop: 12 }}
         />
-        {error ? <Text style={{ color: theme.danger, fontSize: 12, fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
+        {error ? <Text style={{ color: theme.danger, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
         <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button">
           <Text style={raw.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Restore</Text>
         </Pressable>

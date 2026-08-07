@@ -113,9 +113,9 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
                   <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: on ? "rgba(6,20,32,0.15)" : "rgba(6,20,32,0.35)" }} />
                   <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 4 }}>
                     {on ? (
-                      <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "900" }}>✓ Worn</Text>
+                      <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     ) : (
-                      <Text style={{ color: "#fff", fontSize: 10, fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
+                      <Text style={{ color: "#fff", fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
                     )}
                   </View>
                 </Pressable>
@@ -165,13 +165,13 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
                     <Text style={{ fontSize: 18 }}>🔒</Text>
                   ) : on ? (
                     <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 3 }}>
-                      <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "900" }}>✓ Worn</Text>
+                      <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     </View>
                   ) : null}
                 </View>
                 <View style={{ padding: 8, backgroundColor: "rgba(255,255,255,0.03)" }}>
-                  <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: 12, fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
+                  <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
                 </View>
               </Pressable>
             );
@@ -192,7 +192,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
         <AchievementsCard items={achievements} />
         <View style={styles.sectionDivider} />
         <Text style={styles.cardEyebrow}>🎮 Game Records</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
         <GameRecordsCard />
       </CollapsibleCard>
 

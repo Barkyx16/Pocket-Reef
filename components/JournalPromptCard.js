@@ -33,18 +33,18 @@ export function JournalPromptCard({ daysSinceLast }) {
 
   return (
     <View style={{ backgroundColor: "rgba(56, 225, 198, 0.055)", borderRadius: 18, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", padding: 16, marginBottom: 16 }}>
-      <Text style={{ color: theme.accentLight, fontSize: 11.5, fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" }}>
+      <Text style={{ color: theme.accentLight, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" }}>
         {first ? "✍️ Start your log" : `✍️ ${daysSinceLast} days since your last entry`}
       </Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "600", lineHeight: 19, marginTop: 6 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 6 }}>
         {first
           ? "Not sure what to write? Any of these works — a line is better than nothing."
           : "Pick one of these up and get back into it:"}
       </Text>
       {prompts.map((p) => (
         <View key={p} style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
-          <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "900" }}>›</Text>
-          <Text style={{ flex: 1, color: theme.text, fontSize: 13.5, fontWeight: "700", lineHeight: 19 }}>{p}</Text>
+          <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+          <Text style={{ flex: 1, color: theme.text, fontSize: 13.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19 }}>{p}</Text>
         </View>
       ))}
     </View>

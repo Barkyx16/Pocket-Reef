@@ -35,9 +35,9 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       <View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
           <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 3 }}>
-            <Text style={{ color: urgency.color, fontSize: 10, fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase" }}>{urgency.label}</Text>
+            <Text style={{ color: urgency.color, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase" }}>{urgency.label}</Text>
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "800" }}>{plan.durationDays}-day course</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{plan.durationDays}-day course</Text>
         </View>
 
         <Text style={styles.cardText}>
@@ -46,10 +46,10 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
         </Text>
 
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: 14, padding: 12 }}>
-          <Text style={{ color: theme.warn, fontSize: 11, fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 4 }}>
+          <Text style={{ color: theme.warn, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 4 }}>
             Read this first
           </Text>
-          <Text style={{ color: theme.text, fontSize: 12, fontWeight: "600", lineHeight: 18 }}>{plan.keyPoint}</Text>
+          <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{plan.keyPoint}</Text>
         </View>
 
         <GradientButton label="Start treatment" onPress={() => { tapHaptic("medium"); onStart && onStart(diseaseName); }} style={{ marginTop: 14 }} />
@@ -60,10 +60,10 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
   return (
     <View>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>
+        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           Day {progress.day} of {progress.durationDays}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "800" }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
           {progress.completed}/{progress.total} steps
         </Text>
       </View>
@@ -72,13 +72,13 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
 
       {/* The fact that prevents the relapse — kept in front of them all course. */}
       <View style={{ marginTop: 14, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: 14, padding: 12 }}>
-        <Text style={{ color: theme.text, fontSize: 12, fontWeight: "600", lineHeight: 18 }}>{progress.keyPoint}</Text>
+        <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{progress.keyPoint}</Text>
       </View>
 
       {progress.abandonedEarly ? (
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: 14, padding: 12 }}>
-          <Text style={{ color: "#ff7b7b", fontSize: 12, fontWeight: "900" }}>Course ended with steps unfinished</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
+          <Text style={{ color: "#ff7b7b", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
             This is the most common reason an infection returns. If symptoms come back, start again
             and complete the full course.
           </Text>
@@ -104,19 +104,19 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                 borderWidth: 1, borderColor: step.done ? theme.accent : `${color}66`,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text style={{ color, fontSize: 11, fontWeight: "900" }}>{step.done ? "✓" : step.day}</Text>
+                <Text style={{ color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{step.done ? "✓" : step.day}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: 13, fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>
+                <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>
                   {step.title}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (
-                  <Text style={{ color: "#ff7b7b", fontSize: 11, fontWeight: "900", marginTop: 3 }}>Overdue</Text>
+                  <Text style={{ color: "#ff7b7b", fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 3 }}>Overdue</Text>
                 ) : state === "future" ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 3 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
                     In {step.daysAway} day{step.daysAway === 1 ? "" : "s"}
                   </Text>
                 ) : null}
@@ -131,7 +131,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
         style={({ pressed }) => [{ marginTop: 16, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]}
         accessibilityRole="button"
       >
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "800" }}>End treatment</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>End treatment</Text>
       </Pressable>
     </View>
   );

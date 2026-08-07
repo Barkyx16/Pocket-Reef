@@ -30,8 +30,8 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <Text style={{ fontSize: 26 }}>👑</Text>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#fff", fontSize: 16, fontWeight: "900" }}>Premium active</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700" }}>Thanks for supporting Pocket Reef — every feature is unlocked.</Text>
+            <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>Premium active</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Thanks for supporting Pocket Reef — every feature is unlocked.</Text>
           </View>
         </View>
         <Pressable onPress={() => tapHaptic()} style={[styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button">
@@ -52,15 +52,15 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
           <View style={{ width: 56, height: 56, borderRadius: 18, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.3)", alignItems: "center", justifyContent: "center" }}>
             <Text style={{ fontSize: 30 }}>👑</Text>
           </View>
-          <Text style={{ color: theme.accentLight, fontSize: 12, fontWeight: "900", letterSpacing: 1, marginTop: 12 }}>POCKET REEF PREMIUM</Text>
-          <Text style={{ color: "#fff", fontSize: 26, fontWeight: "900", marginTop: 6, textAlign: "center" }}>Keep a healthier reef.</Text>
-          <Text style={{ color: "#cfe9f5", fontSize: 13, fontWeight: "700", marginTop: 6, textAlign: "center", lineHeight: 19 }}>Everything you need to plan, stock, and keep thriving tanks.</Text>
+          <Text style={{ color: theme.accentLight, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, marginTop: 12 }}>POCKET REEF PREMIUM</Text>
+          <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>Keep a healthier reef.</Text>
+          <Text style={{ color: "#cfe9f5", fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, textAlign: "center", lineHeight: 19 }}>Everything you need to plan, stock, and keep thriving tanks.</Text>
         </View>
         <View style={{ flexDirection: "row", marginTop: 16, borderTopWidth: 1, borderTopColor: theme.border, paddingTop: 14 }}>
           {[{ v: "300+", l: "Species" }, { v: "∞", l: "Tanks" }, { v: "Cancel", l: "Anytime" }].map((s, i) => (
             <View key={s.l} style={{ flex: 1, alignItems: "center", borderLeftWidth: i ? 1 : 0, borderLeftColor: theme.border }}>
-              <Text style={{ color: theme.accent, fontSize: 18, fontWeight: "900" }}>{s.v}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginTop: 2 }}>{s.l}</Text>
+              <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.v}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{s.l}</Text>
             </View>
           ))}
         </View>
@@ -74,8 +74,8 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
             <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
               <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900" }}>{f.title}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{f.body}</Text>
+                <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{f.body}</Text>
               </View>
             </View>
           ))}
@@ -94,27 +94,27 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
             return (
               <Pressable key={p.id} onPress={() => { tapHaptic(); setPlan(p.id); }} style={{ flex: 1, borderRadius: 18, padding: 14, backgroundColor: on ? "rgba(56,225,198,0.16)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }}>
                 <View style={{ alignSelf: "flex-start", backgroundColor: p.badgeBg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 8 }}>
-                  <Text style={{ color: p.badgeColor, fontSize: 9, fontWeight: "900" }}>{p.badge}</Text>
+                  <Text style={{ color: p.badgeColor, fontSize: 9, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.badge}</Text>
                 </View>
-                {on ? <View style={{ position: "absolute", top: 12, right: 12 }}><Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>✓</Text></View> : null}
-                <Text style={{ color: on ? theme.accent : "#fff", fontSize: 16, fontWeight: "900" }}>{p.name}</Text>
-                <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", marginTop: 2 }}>{p.price}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700" }}>{p.per}</Text>
-                {p.save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: 10, fontWeight: "900" }}>{p.save}</Text></View> : null}
+                {on ? <View style={{ position: "absolute", top: 12, right: 12 }}><Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text></View> : null}
+                <Text style={{ color: on ? theme.accent : "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}</Text>
+                <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{p.price}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.per}</Text>
+                {p.save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.save}</Text></View> : null}
               </Pressable>
             );
           })}
         </View>
 
         <GradientButton label="Unlock Premium" onPress={() => onUnlock && onUnlock(plan)} style={{ marginTop: 16 }} />
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", textAlign: "center", marginTop: 10 }}>Cancel anytime. (Demo unlock — wire RevenueCat in a dev build.)</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 10 }}>Cancel anytime. (Demo unlock — wire RevenueCat in a dev build.)</Text>
 
         {/* TRUST BADGES */}
         <View style={{ flexDirection: "row", marginTop: 16, borderTopWidth: 1, borderTopColor: theme.border, paddingTop: 14 }}>
           {TRUST.map((tItem, i) => (
             <View key={tItem.label} style={{ flex: 1, alignItems: "center", gap: 3 }}>
               <Text style={{ fontSize: 16 }}>{tItem.icon}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800" }}>{tItem.label}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{tItem.label}</Text>
             </View>
           ))}
         </View>

@@ -35,16 +35,16 @@ export function TankToolboxCard({
     <>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 10 }}>
         <Text style={styles.cardEyebrow}>Stocking level</Text>
-        <Text style={{ color: bio.color, fontSize: 13, fontWeight: "900" }}>{bio.level} · {bio.pct}%</Text>
+        <Text style={{ color: bio.color, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bio.level} · {bio.pct}%</Text>
       </View>
       <ProgressBar pct={bio.pct} color={bio.color} height={12} />
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
         ~{bio.inches}" of adult fish for {formatVolume(tankGallons)} (guideline: ~1" per gallon). {bio.pct > 100 ? "Consider a bigger tank or fewer fish — and test water often." : "Room to grow — add slowly and watch your parameters."}
       </Text>
       <View style={{ flexDirection: "row", gap: 16, marginTop: 10, flexWrap: "wrap" }}>
-        <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>🐟 {fishN} fish</Text>
-        {invertN ? <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>🦐 {invertN} inverts</Text> : null}
-        {coralN ? <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>🪸 {coralN} corals</Text> : null}
+        <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🐟 {fishN} fish</Text>
+        {invertN ? <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🦐 {invertN} inverts</Text> : null}
+        {coralN ? <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🪸 {coralN} corals</Text> : null}
       </View>
     </>
   );
@@ -54,8 +54,8 @@ export function TankToolboxCard({
       <Text style={styles.cardText}>You're at capacity ({room.pct}%) — adding more will strain water quality. Consider a bigger tank before more fish.</Text>
     ) : (
       <>
-        <Text style={{ color: "#fff", fontSize: 18, fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
+        <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
           Roughly {room.small} more nano fish (~2") {room.medium ? `or ${room.medium} community fish (~4")` : ""} — add slowly and keep testing. Check ✨ Recommended on Home for compatible picks.
         </Text>
       </>
@@ -67,20 +67,20 @@ export function TankToolboxCard({
       <>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View>
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>TEMPERATURE</Text>
-            <Text style={{ color: "#fff", fontSize: 18, fontWeight: "900", marginTop: 2 }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>TEMPERATURE</Text>
+            <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
           </View>
           <View style={{ alignItems: "flex-end" }}>
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>pH</Text>
-            <Text style={{ color: "#fff", fontSize: 18, fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>pH</Text>
+            <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
           </View>
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 10 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
           The overlap that keeps every species in your tank comfortable — aim your heater and buffering here.
         </Text>
       </>
     ) : (
-      <Text style={{ color: theme.danger, fontSize: 13, fontWeight: "700", lineHeight: 20 }}>
+      <Text style={{ color: theme.danger, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>
         Your species don't share a common {(!paramWindow.tempOk && !paramWindow.phOk) ? "temperature or pH" : !paramWindow.tempOk ? "temperature" : "pH"} range — some will always be stressed. Check the compatibility notes and consider rehoming a mismatch.
       </Text>
     )

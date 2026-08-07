@@ -24,7 +24,7 @@ export function AchievementsCard({ items = [] }) {
           const on = filter === id;
           return (
             <Pressable key={id} onPress={() => { tapHaptic("light"); setFilter(id); setVisible(12); }} style={[styles.pill, { flex: 1, alignItems: "center", paddingVertical: 8, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
-              <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 11, fontWeight: "900" }}>{label}</Text>
+              <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
             </Pressable>
           );
         })}
@@ -43,8 +43,8 @@ export function AchievementsCard({ items = [] }) {
             }}
           >
             <Text style={{ fontSize: 26 }}>{a.earned ? a.emoji : "🔒"}</Text>
-            <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: 12, fontWeight: "900", marginTop: 6, textAlign: "center" }}>{a.title}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "600", marginTop: 3, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
+            <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>{a.title}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
           </View>
         ))}
       </View>

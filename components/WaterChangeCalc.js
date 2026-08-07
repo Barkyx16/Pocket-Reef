@@ -32,9 +32,9 @@ export function WaterChangeCalc({ tankGallons = 20, waterTests = [], onLogChange
 
   const field = (label, val, set) => (
     <View style={{ flex: 1 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginBottom: 4 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{label}</Text>
       <TextInput value={val} onChangeText={(t) => set(t.replace(/[^0-9.]/g, ""))} keyboardType="decimal-pad" placeholder="—" placeholderTextColor={theme.secondaryText}
-        style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 16, fontWeight: "800" }} />
+        style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 16, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} />
     </View>
   );
 
@@ -49,13 +49,13 @@ export function WaterChangeCalc({ tankGallons = 20, waterTests = [], onLogChange
       {valid && msg == null ? (
         <View style={{ marginTop: 14, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", shadowColor: theme.accent, shadowOpacity: 0.22, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
           <LinearGradient colors={["rgba(56,225,198,0.18)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 16, alignItems: "center" }}>
-            <Text style={{ color: theme.accent, fontSize: 38, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{pct}%</Text>
-            <Text style={{ color: "#fff", fontSize: 14, fontWeight: "800" }}>≈ {gal} gallons</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 4, textAlign: "center" }}>Change this much to drop nitrate from {c} → {tg} ppm.</Text>
+            <Text style={{ color: theme.accent, fontSize: 38, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{pct}%</Text>
+            <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>≈ {gal} gallons</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, textAlign: "center" }}>Change this much to drop nitrate from {c} → {tg} ppm.</Text>
           </LinearGradient>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "700", marginTop: 14 }}>{msg}</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{msg}</Text>
       )}
 
       {onLogChange ? (
@@ -73,8 +73,8 @@ export function WaterChangeCalc({ tankGallons = 20, waterTests = [], onLogChange
           <Text style={[styles.cardEyebrow, { marginBottom: 6 }]}>Quick changes</Text>
           {[25, 50].map((p) => (
             <View key={p} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderTopWidth: 1, borderTopColor: theme.border }}>
-              <Text style={{ color: theme.text, fontSize: 13, fontWeight: "800" }}>{p}% change ({Math.round((p / 100) * tankGallons * 10) / 10} gal)</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "800" }}>nitrate → {Math.round(c * (1 - p / 100) * 10) / 10} ppm</Text>
+              <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p}% change ({Math.round((p / 100) * tankGallons * 10) / 10} gal)</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>nitrate → {Math.round(c * (1 - p / 100) * 10) / 10} ppm</Text>
             </View>
           ))}
         </View>

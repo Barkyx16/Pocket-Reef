@@ -10,7 +10,7 @@ export function TodayCard({ actions = [], onNavigate }) {
     return (
       <View style={{ alignItems: "center", paddingVertical: 6 }}>
         <Text style={{ fontSize: 28 }}>🎉</Text>
-        <Text style={{ color: "#fff", fontSize: 15, fontWeight: "900", marginTop: 6 }}>All caught up</Text>
+        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>All caught up</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Nothing needs your attention today. Nice work keeping the tank happy.</Text>
       </View>
     );
@@ -28,8 +28,8 @@ export function TodayCard({ actions = [], onNavigate }) {
             accessibilityRole={tappable ? "button" : undefined}
           >
             <Text style={{ fontSize: 15 }}>{a.icon}</Text>
-            <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontWeight: "800" }}>{a.text}</Text>
-            {tappable ? <Text style={{ color: theme.accent, fontSize: 18, fontWeight: "900" }}>›</Text> : null}
+            <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.text}</Text>
+            {tappable ? <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
           </Row>
         );
       })}

@@ -33,7 +33,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
           <Chip label={species.careLevel} color={careLevelColor(species.careLevel)} />
           <Chip label={species.temperament} color={temperamentColor(species.temperament)} />
         </View>
-        {note ? <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
+        {note ? <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
       </View>
       {onToggleWishlist ? (
         <Pressable
@@ -58,7 +58,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
             borderWidth: 1, borderColor: inTank ? theme.coral : theme.accent,
           }}
         >
-          <Text style={{ color: inTank ? theme.coral : theme.accent, fontSize: 20, fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
+          <Text style={{ color: inTank ? theme.coral : theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
         </Pressable>
       ) : (
         <Text style={styles.cleanArrow}>›</Text>

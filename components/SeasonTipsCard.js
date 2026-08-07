@@ -18,8 +18,8 @@ export function SeasonTipsCard() {
         <Text style={{ fontSize: 20 }}>{s.icon}</Text>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900" }}>{s.title} tip</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "600", marginTop: 3, lineHeight: 19 }}>{s.tip}</Text>
+        <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.title} tip</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 19 }}>{s.tip}</Text>
       </View>
     </View>
   );

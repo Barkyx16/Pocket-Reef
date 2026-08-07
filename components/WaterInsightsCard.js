@@ -27,8 +27,8 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
     <View>
       {inRangePct != null ? (
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14, backgroundColor: theme.well, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: theme.border }}>
-          <Text style={{ color: theme.text, fontSize: 13, fontWeight: "800" }}>Tests fully in range</Text>
-          <Text style={{ color: pctColor, fontSize: 18, fontWeight: "900" }}>{inRangePct}%</Text>
+          <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Tests fully in range</Text>
+          <Text style={{ color: pctColor, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inRangePct}%</Text>
         </View>
       ) : null}
       <View style={styles.statGrid}>
@@ -39,7 +39,7 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
           </View>
         ))}
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 12 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
         {stats.count} test{stats.count > 1 ? "s" : ""} logged{stats.cadence != null ? ` · about every ${stats.cadence} day${stats.cadence === 1 ? "" : "s"}` : ""}.
         {stats.cadence != null && stats.cadence > 10 ? " Testing a little more often will catch problems sooner." : stats.cadence != null ? " Great testing habit! 🧪" : ""}
       </Text>

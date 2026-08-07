@@ -33,7 +33,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
           const on = food === f;
           return (
             <Pressable key={f} onPress={() => { tapHaptic("light"); setFood(f); }} style={[styles.pill, { backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
-              <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontWeight: "900" }}>{e} {f}</Text>
+              <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{e} {f}</Text>
             </Pressable>
           );
         })}
@@ -41,7 +41,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
 
       <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
         <TextInput value={note} onChangeText={setNote} placeholder="Note (optional) — e.g. mysis + nori" placeholderTextColor={theme.secondaryText}
-          style={{ flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
         <Pressable onPress={add} style={[styles.primaryBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Log</Text>
         </Pressable>
@@ -53,11 +53,11 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
             <View key={f.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, padding: 10, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: 16 }}>{FOOD_EMOJI[f.food] || "🍽️"}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.text, fontSize: 13, fontWeight: "800" }}>{f.food}{f.note ? ` · ${f.note}` : ""}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700" }}>{f.date}</Text>
+                <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.food}{f.note ? ` · ${f.note}` : ""}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.date}</Text>
               </View>
               <Pressable onPress={() => onDelete(f.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Delete feeding">
-                <Text style={{ color: theme.secondaryText, fontSize: 15, fontWeight: "900" }}>✕</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
               </Pressable>
             </View>
           ))}

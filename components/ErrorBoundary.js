@@ -55,11 +55,11 @@ export class ErrorBoundary extends Component {
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 24 }}>
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 46 }}>🐠</Text>
-            <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", marginTop: 16, textAlign: "center" }}>
+            <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 16, textAlign: "center" }}>
               Something went wrong
             </Text>
             {/* The most important sentence on this screen. */}
-            <Text style={{ color: "#8fb3c7", fontSize: 14, fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21 }}>
+            <Text style={{ color: "#8fb3c7", fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21 }}>
               Your tanks, logs, and journal are safe on this device — nothing was lost.
               Try again, and if it keeps happening, reopening the app usually clears it.
             </Text>
@@ -77,7 +77,7 @@ export class ErrorBoundary extends Component {
             accessibilityRole="button"
             accessibilityLabel="Try again"
           >
-            <Text style={{ color: "#38e1c6", fontSize: 15, fontWeight: "900" }}>Try again</Text>
+            <Text style={{ color: "#38e1c6", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
           </Pressable>
 
           {this.props.onExport ? (
@@ -87,16 +87,16 @@ export class ErrorBoundary extends Component {
               accessibilityRole="button"
               accessibilityLabel="Export a backup of my data"
             >
-              <Text style={{ color: "#8fb3c7", fontSize: 13, fontWeight: "800" }}>Export a backup first</Text>
+              <Text style={{ color: "#8fb3c7", fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Export a backup first</Text>
             </Pressable>
           ) : null}
 
           {/* Shown so a user can tell us what happened, not to explain it. */}
           <View style={{ marginTop: 26, padding: 12, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
-            <Text style={{ color: "#6f93a8", fontSize: 10, fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
+            <Text style={{ color: "#6f93a8", fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
               Details
             </Text>
-            <Text style={{ color: "#8fb3c7", fontSize: 11, fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
+            <Text style={{ color: "#8fb3c7", fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
               {detail}
             </Text>
           </View>

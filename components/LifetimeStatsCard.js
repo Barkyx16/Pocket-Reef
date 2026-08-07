@@ -24,7 +24,7 @@ export function LifetimeStatsCard({ stats }) {
         ))}
       </View>
       {stats.spend > 0 ? (
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
           💰 ~${stats.spend} tracked across all tanks so far.
         </Text>
       ) : null}

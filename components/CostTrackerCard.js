@@ -37,9 +37,9 @@ export function CostTrackerCard({ costs = [], onAdd, onDelete }) {
     <View>
       <View style={{ borderRadius: 18, overflow: "hidden", marginBottom: 14, borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", shadowColor: theme.accent, shadowOpacity: 0.18, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.03)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
-          <Text style={{ color: theme.accentLight, fontSize: 11, fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Total invested</Text>
-          <Text style={{ color: "#fff", fontSize: 34, fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>${total.toFixed(2)}</Text>
-          {monthTotal > 0 ? <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 2 }}>${monthTotal.toFixed(2)} this month</Text> : null}
+          <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Total invested</Text>
+          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>${total.toFixed(2)}</Text>
+          {monthTotal > 0 ? <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>${monthTotal.toFixed(2)} this month</Text> : null}
         </LinearGradient>
       </View>
 
@@ -48,8 +48,8 @@ export function CostTrackerCard({ costs = [], onAdd, onDelete }) {
           {byCat.map(([c, v]) => (
             <View key={c} style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: theme.well, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: 12 }}>{CAT_EMOJI[c]}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>{c}</Text>
-              <Text style={{ color: theme.accent, fontSize: 11, fontWeight: "900" }}>${v.toFixed(0)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c}</Text>
+              <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>${v.toFixed(0)}</Text>
             </View>
           ))}
         </View>
@@ -57,9 +57,9 @@ export function CostTrackerCard({ costs = [], onAdd, onDelete }) {
 
       <View style={{ flexDirection: "row", gap: 8 }}>
         <TextInput value={label} onChangeText={setLabel} placeholder="What did you buy?" placeholderTextColor={theme.secondaryText}
-          style={{ flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
         <TextInput value={amount} onChangeText={(t) => setAmount(t.replace(/[^0-9.]/g, ""))} keyboardType="decimal-pad" placeholder="$0" placeholderTextColor={theme.secondaryText}
-          style={{ width: 84, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontWeight: "800" }} />
+          style={{ width: 84, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} />
       </View>
       <View style={{ flexDirection: "row", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
         {CATS.map((c) => (
@@ -75,10 +75,10 @@ export function CostTrackerCard({ costs = [], onAdd, onDelete }) {
           {costs.slice(0, visible).map((c) => (
             <View key={c.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, padding: 10, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: 16 }}>{CAT_EMOJI[c.category] || "📦"}</Text>
-              <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontWeight: "800" }} numberOfLines={1}>{c.label}</Text>
-              <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>${Number(c.amount).toFixed(2)}</Text>
+              <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{c.label}</Text>
+              <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>${Number(c.amount).toFixed(2)}</Text>
               <Pressable onPress={() => onDelete(c.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Delete expense">
-                <Text style={{ color: theme.secondaryText, fontSize: 15, fontWeight: "900" }}>✕</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
               </Pressable>
             </View>
           ))}

@@ -275,7 +275,7 @@ export function AuthScreen({ onContinueOffline }) {
             ) : null}
 
             {mode === "signup" ? (
-              <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
                 At least 8 characters. You'll get a confirmation email before your first login.
               </Text>
             ) : null}
@@ -308,7 +308,7 @@ export function AuthScreen({ onContinueOffline }) {
                 accessibilityLabel={`Sign in with ${bioLabel}`}
               >
                 <Ionicons name={bioLabel === "Touch ID" ? "finger-print" : "scan-outline"} size={20} color={theme.accent} />
-                <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>Sign in with {bioLabel}</Text>
+                <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Sign in with {bioLabel}</Text>
               </Pressable>
             ) : null}
 
@@ -342,19 +342,19 @@ export function AuthScreen({ onContinueOffline }) {
                 the address, so this points at what the device does remember. */}
             {showEmailHint ? (
               <View style={{ backgroundColor: theme.well, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: theme.border, marginTop: 4 }}>
-                <Text style={{ color: theme.text, fontSize: 13, fontWeight: "900" }}>Finding your account</Text>
+                <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>Finding your account</Text>
                 {lastEmail ? (
                   <Pressable onPress={() => { setEmail(lastEmail); setShowEmailHint(false); tapHaptic(); }} style={{ marginTop: 8 }} accessibilityRole="button">
-                    <Text style={{ color: theme.accent, fontSize: 13, fontWeight: "800" }}>
+                    <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       Last used on this device: {maskEmail(lastEmail)} — tap to use it
                     </Text>
                   </Pressable>
                 ) : (
-                  <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
                     No account has signed in on this device yet.
                   </Text>
                 )}
-                <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
                   Otherwise, search your inbox for “Pocket Reef” — the confirmation email went to the address you signed up with. If none of your addresses work, sign up again and your reef starts fresh.
                 </Text>
                 <Pressable onPress={resendConfirmation} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
@@ -365,7 +365,7 @@ export function AuthScreen({ onContinueOffline }) {
           </View>
         )}
 
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
           Your reef data is stored under your account and only readable by you.
         </Text>
       </ScrollView>

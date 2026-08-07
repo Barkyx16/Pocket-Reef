@@ -112,7 +112,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
   const FilterRow = ({ label, opts, value, onChange }) => (
     <View style={{ marginTop: 12 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "900", marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         {opts.map(([id, lab]) => (
           <Pill key={id} label={String(lab)} active={value === id} onPress={() => onChange(id)} />
@@ -137,10 +137,10 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: 16, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
         <Text style={{ fontSize: 15, marginRight: 8, opacity: 0.8 }}>🔍</Text>
-        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ flex: 1, paddingVertical: 13, color: theme.text, fontSize: 15 }} />
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 13, color: theme.text, fontSize: 15 }} />
         {query ? (
           <Pressable onPress={() => setQuery("")} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear search">
-            <Text style={{ color: theme.secondaryText, fontSize: 15, fontWeight: "900", paddingLeft: 6 }}>✕</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", paddingLeft: 6 }}>✕</Text>
           </Pressable>
         ) : null}
       </View>
@@ -203,7 +203,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
             </Pressable>
             {activeCount ? (
               <Pressable onPress={() => { tapHaptic(); resetFilters(); }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "900" }}>Reset</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Reset</Text>
               </Pressable>
             ) : null}
           </View>
@@ -212,14 +212,14 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       {!compareMode && !q && recent.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "900", marginBottom: 6 }}>🕘 RECENTLY VIEWED</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>🕘 RECENTLY VIEWED</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
               if (!sp) return null;
               return (
                 <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: 7, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
-                  <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>{sp.emoji} {n}</Text>
+                  <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{sp.emoji} {n}</Text>
                 </Pressable>
               );
             })}
@@ -268,13 +268,13 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
           accessibilityLabel="Unlock the full species catalog with Premium"
         >
           <Text style={{ fontSize: 30 }}>🔒</Text>
-          <Text style={{ color: "#fff", fontSize: 17, fontWeight: "900", marginTop: 10, textAlign: "center" }}>
+          <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
             {list.length - shown} more species
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
             Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
           </Text>
-          <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
+          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
         </Pressable>
       ) : list.length > shown ? (
         <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 20, list.length)); }} style={[styles.ghostBtn, { marginTop: 4 }]} accessibilityRole="button">
@@ -323,4 +323,4 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 }
 
 const pillStyle = (on) => ({ backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border });
-const pillText = (on) => ({ color: on ? "#04202a" : theme.text, fontSize: 12, fontWeight: "900" });
+const pillText = (on) => ({ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" });

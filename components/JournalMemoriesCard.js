@@ -52,8 +52,8 @@ function EntryLine({ entry, showDate = true }) {
         </View>
       )}
       <View style={{ flex: 1 }}>
-        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontWeight: "900" }}>{entry.date}</Text> : null}
-        <Text style={{ color: theme.text, fontSize: 13, fontWeight: "600", lineHeight: 18, marginTop: 1 }} numberOfLines={3}>
+        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{entry.date}</Text> : null}
+        <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 1 }} numberOfLines={3}>
           {entry.text || "(photo only)"}
         </Text>
       </View>
@@ -77,7 +77,7 @@ function OnThisDay({ memories }) {
         <View key={m.months} style={{ marginBottom: 14 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <View style={{ height: 1, width: 14, backgroundColor: "rgba(56,225,198,0.4)" }} />
-            <Text style={{ color: theme.accentLight, fontSize: 11, fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
             <View style={{ height: 1, flex: 1, backgroundColor: theme.hairline }} />
           </View>
           {m.entries.slice(0, 3).map((e) => <EntryLine key={e.id || e.date} entry={e} />)}
@@ -113,8 +113,8 @@ function Milestones({ entries }) {
               {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 3, minHeight: 14 }} /> : null}
             </View>
             <View style={{ flex: 1, paddingBottom: 14 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>{e.date}</Text>
-              {e.text ? <Text style={{ color: theme.text, fontSize: 13.5, fontWeight: "600", lineHeight: 19, marginTop: 2 }}>{e.text}</Text> : null}
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
+              {e.text ? <Text style={{ color: theme.text, fontSize: 13.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 2 }}>{e.text}</Text> : null}
               {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 120, borderRadius: 10, marginTop: 8 }} resizeMode="cover" /> : null}
             </View>
           </View>
@@ -167,17 +167,17 @@ function Compare({ photos }) {
         {[{ e: a, label: "Before" }, { e: b, label: "After" }].map(({ e, label }) => (
           <View key={label} style={{ flex: 1 }}>
             <Image source={{ uri: e.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: 14, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-            <Text style={{ color: theme.accentLight, fontSize: 10.5, fontWeight: "900", letterSpacing: 0.6, marginTop: 6, textTransform: "uppercase" }}>{label}</Text>
-            <Text style={{ color: theme.text, fontSize: 12, fontWeight: "800" }}>{e.date}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, marginTop: 6, textTransform: "uppercase" }}>{label}</Text>
+            <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
           </View>
         ))}
       </View>
 
       <View style={{ alignItems: "center", marginTop: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingVertical: 10 }}>
-        <Text style={{ color: "#fff", fontSize: 16, fontWeight: "900" }}>
+        <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {span === 0 ? "Same day" : `${span} ${span === 1 ? "day" : "days"} apart`}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginTop: 2 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
           Tap a photo below to set the {next === "a" ? "before" : "after"} shot
         </Text>
       </View>

@@ -58,7 +58,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       </View>
       {tank.length ? <View style={{ marginTop: 12 }}><ProgressBar pct={bio.pct} color={bio.color} height={8} /></View> : null}
       {maturity && maturity.days < 42 ? (
-        <Text style={{ color: theme.warn, fontSize: 11, fontWeight: "700", marginTop: 8 }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
+        <Text style={{ color: theme.warn, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
       ) : null}
 
       {/* Conflicts / positives */}
@@ -66,7 +66,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={[styles.cardEyebrow, { color: warnings.length ? theme.warn : theme.accent }]}>{warnings.length ? "⚠️ Things to Check" : "✅ All Compatible"}</Text>
           {warnings.length ? warnings.map((w, i) => (
-            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
+            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
           )) : (
             <Text style={[styles.cardText, { marginTop: 6 }]}>Everything in your tank gets along and fits the space. Nice work! 🐠</Text>
           )}
@@ -92,7 +92,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
               <SpeciesCard species={s} onPress={() => openSpecies(s.name)} inTank={true} onToggleTank={() => toggleTank(s.name)} />
               {onSetQuantity ? (
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 10, marginTop: -6, marginBottom: 12, paddingRight: 4 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>How many?{s.minGroup > 1 ? ` · group of ${s.minGroup}+` : ""}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? ` · group of ${s.minGroup}+` : ""}</Text>
                   <Stepper value={qty(s.name)} onDec={() => onSetQuantity(s.name, qty(s.name) - 1)} onInc={() => onSetQuantity(s.name, qty(s.name) + 1)} low={s.minGroup > 1 && qty(s.name) < s.minGroup} />
                 </View>
               ) : null}
@@ -190,8 +190,8 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
 function Stat({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
-      <Text style={{ color: color || "#fff", fontSize: 15, fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 10, fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
     </View>
   );
 }
@@ -203,11 +203,11 @@ function Stepper({ value, onDec, onInc, low }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
       <Pressable onPress={() => { tapHaptic("light"); onDec(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Decrease count">
-        <Text style={{ color: theme.accent, fontSize: 18, fontWeight: "900" }}>−</Text>
+        <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
       </Pressable>
-      <Text style={{ color: low ? theme.warn : "#fff", fontSize: 15, fontWeight: "900", minWidth: 22, textAlign: "center" }}>{value}</Text>
+      <Text style={{ color: low ? theme.warn : "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 22, textAlign: "center" }}>{value}</Text>
       <Pressable onPress={() => { tapHaptic("light"); onInc(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Increase count">
-        <Text style={{ color: theme.accent, fontSize: 18, fontWeight: "900" }}>+</Text>
+        <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text>
       </Pressable>
     </View>
   );

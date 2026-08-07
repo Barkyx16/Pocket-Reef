@@ -21,7 +21,7 @@ export function Pill({ label, active, onPress, haptic = "light", fill = false })
       accessibilityRole="button"
       accessibilityState={{ selected: !!active }}
     >
-      <Text style={{ color: active ? "#04202a" : theme.text, fontSize: 12, fontWeight: "900" }}>{label}</Text>
+      <Text style={{ color: active ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
     </Pressable>
   );
 }

@@ -30,15 +30,15 @@ export function CollectionInsightsCard({ tanks = [] }) {
       {fresh && salt ? (
         <View style={{ marginTop: 14 }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
-            <Text style={{ color: theme.accentLight, fontSize: 11, fontWeight: "800" }}>💧 Fresh {fresh}</Text>
-            <Text style={{ color: theme.coral, fontSize: 11, fontWeight: "800" }}>Salt {salt} 🌊</Text>
+            <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>💧 Fresh {fresh}</Text>
+            <Text style={{ color: theme.coral, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Salt {salt} 🌊</Text>
           </View>
           <View style={{ height: 8, borderRadius: 999, backgroundColor: theme.coral, overflow: "hidden", flexDirection: "row" }}>
             <View style={{ width: `${freshPct}%`, backgroundColor: theme.accent }} />
           </View>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
           You keep {fresh ? "freshwater" : "saltwater"} species — a focused {fresh ? "freshwater" : "reef"} keeper. 🐠
         </Text>
       )}

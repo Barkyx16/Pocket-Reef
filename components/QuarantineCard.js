@@ -24,7 +24,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate }) {
       <Text style={styles.cardText}>Isolate new arrivals for {QT_DAYS} days before adding them to your display tank. Track each one's countdown here.</Text>
       <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
         <TextInput value={name} onChangeText={setName} placeholder="New arrival (e.g. Yellow Tang)" placeholderTextColor={theme.secondaryText}
-          style={{ flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
         <Pressable onPress={add} disabled={!name.trim()} style={[name.trim() ? styles.primaryBtn : styles.ghostBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
           <Text style={name.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Start</Text>
         </Pressable>
@@ -41,19 +41,19 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate }) {
               <View key={it.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: done ? "rgba(56,225,198,0.35)" : theme.border }}>
                 <Text style={{ fontSize: 18 }}>{done ? "✅" : "⏳"}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#fff", fontSize: 14, fontWeight: "800" }}>{it.name}</Text>
-                  <Text style={{ color, fontSize: 11, fontWeight: "800", marginTop: 2, marginBottom: 7 }}>
+                  <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{it.name}</Text>
+                  <Text style={{ color, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2, marginBottom: 7 }}>
                     {done ? "Ready to add to your tank! 🎉" : `${left} day${left === 1 ? "" : "s"} left · day ${elapsed} of ${QT_DAYS}`}
                   </Text>
                   <ProgressBar pct={Math.min(100, (elapsed / QT_DAYS) * 100)} color={done ? theme.accent : theme.warn} height={6} />
                 </View>
                 {done && onGraduate ? (
                   <Pressable onPress={() => { tapHaptic("medium"); onGraduate(it); }} hitSlop={8} style={{ backgroundColor: theme.accent, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7 }} accessibilityRole="button" accessibilityLabel={`Add ${it.name} to tank`}>
-                    <Text style={{ color: "#04202a", fontSize: 12, fontWeight: "900" }}>＋ Add to tank</Text>
+                    <Text style={{ color: "#04202a", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>＋ Add to tank</Text>
                   </Pressable>
                 ) : (
                   <Pressable onPress={() => onRemove(it.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel={`Remove ${it.name}`}>
-                    <Text style={{ color: theme.secondaryText, fontSize: 15, fontWeight: "900" }}>✕</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
                   </Pressable>
                 )}
               </View>

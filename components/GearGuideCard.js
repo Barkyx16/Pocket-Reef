@@ -37,11 +37,11 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
           {equipment.items.map((it) => (
             <View key={it.id} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
               <View style={{ minWidth: 74, paddingHorizontal: 8, paddingVertical: 5, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.12)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
-                <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "900" }}>{it.value}</Text>
+                <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.value}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#fff", fontSize: 13, fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
+                <Text style={{ color: "#fff", fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
               </View>
             </View>
           ))}
@@ -54,8 +54,8 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
           <View key={i} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
             <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{it.icon}</Text></View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900" }}>{it.title}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "600", marginTop: 2, lineHeight: 19 }}>{it.text}</Text>
+              <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 19 }}>{it.text}</Text>
             </View>
           </View>
         ))}

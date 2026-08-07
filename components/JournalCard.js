@@ -70,13 +70,13 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         placeholder="What happened in the tank today?"
         placeholderTextColor={theme.secondaryText}
         multiline
-        style={{ backgroundColor: theme.well, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 60, textAlignVertical: "top" }}
+        style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 60, textAlignVertical: "top" }}
       />
       {photo ? (
         <View style={{ marginTop: 10 }}>
           <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: 14 }} resizeMode="cover" />
           <Pressable onPress={() => setPhoto(null)} hitSlop={8} style={{ position: "absolute", top: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: 999, width: 28, height: 28, alignItems: "center", justifyContent: "center" }} accessibilityRole="button" accessibilityLabel="Remove photo">
-            <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900" }}>✕</Text>
+            <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         </View>
       ) : null}
@@ -102,7 +102,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             onChangeText={setFindText}
             placeholder="Search entries…"
             placeholderTextColor={theme.secondaryText}
-            style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }}
+            style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }}
           />
           <View style={{ flexDirection: "row", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
             {MOODS.map((m) => {
@@ -115,7 +115,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             })}
             {(fq || findMood) ? (
               <Pressable onPress={() => { setFindText(""); setFindMood(null); }} style={{ justifyContent: "center", paddingHorizontal: 8 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "900" }}>Clear</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
               </Pressable>
             ) : null}
           </View>
@@ -132,17 +132,17 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
               <View style={{ flexDirection: "row", gap: 10 }}>
                 <Text style={{ fontSize: 20 }}>{e.mood}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800", marginBottom: 3 }}>{e.date}</Text>
-                  {e.text ? <Text style={{ color: theme.text, fontSize: 14, fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
+                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 3 }}>{e.date}</Text>
+                  {e.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
                 </View>
                 <View style={{ flexDirection: "row", gap: 12 }}>
                   {onEdit ? (
                     <Pressable onPress={() => startEdit(e)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Edit entry">
-                      <Text style={{ color: theme.accent, fontSize: 15, fontWeight: "900" }}>✎</Text>
+                      <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✎</Text>
                     </Pressable>
                   ) : null}
                   <Pressable onPress={() => onDelete(e.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Delete entry">
-                    <Text style={{ color: theme.secondaryText, fontSize: 16, fontWeight: "900" }}>✕</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
                   </Pressable>
                 </View>
               </View>

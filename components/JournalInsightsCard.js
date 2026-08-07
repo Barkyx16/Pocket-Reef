@@ -10,8 +10,8 @@ const DOW = ["S", "M", "T", "W", "T", "F", "S"];
 function Stat({ value, label, tint }) {
   return (
     <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 6, alignItems: "center" }}>
-      <Text style={{ color: tint || "#fff", fontSize: 19, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontWeight: "900", letterSpacing: 0.3, marginTop: 2, textAlign: "center" }}>{label}</Text>
+      <Text style={{ color: tint || "#fff", fontSize: 19, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{value}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.3, marginTop: 2, textAlign: "center" }}>{label}</Text>
     </View>
   );
 }
@@ -58,7 +58,7 @@ export function JournalInsightsCard({ journal = [] }) {
         <Stat value={s.photos} label="PHOTOS" />
         <Stat value={s.longestGap} label="LONGEST GAP" tint={s.longestGap > 14 ? theme.warn : "#fff"} />
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontWeight: "800", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>
         {s.daysSinceLast === 0
           ? "Logged today — nice."
           : s.daysSinceLast === 1
@@ -81,8 +81,8 @@ export function JournalInsightsCard({ journal = [] }) {
             style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 4 }}
           >
             <Text style={{ fontSize: 12 }}>{m.mood}</Text>
-            <Text style={{ color: theme.text, fontSize: 11, fontWeight: "900" }}>{m.label}</Text>
-            <Text style={{ color: m.color, fontSize: 11, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{m.count}</Text>
+            <Text style={{ color: theme.text, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
+            <Text style={{ color: m.color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{m.count}</Text>
           </View>
         ))}
       </View>
@@ -97,11 +97,11 @@ export function JournalInsightsCard({ journal = [] }) {
           accessibilityRole="button"
           accessibilityLabel="Previous month"
         >
-          <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>‹</Text>
+          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹</Text>
         </Pressable>
         <View style={{ alignItems: "center" }}>
-          <Text style={{ color: "#fff", fontSize: 14, fontWeight: "900" }}>{monthLabel}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontWeight: "800", marginTop: 1 }}>
+          <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{monthLabel}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>
             {monthCount} {monthCount === 1 ? "day logged" : "days logged"}
           </Text>
         </View>
@@ -113,13 +113,13 @@ export function JournalInsightsCard({ journal = [] }) {
           accessibilityRole="button"
           accessibilityLabel="Next month"
         >
-          <Text style={{ color: theme.accent, fontSize: 14, fontWeight: "900" }}>›</Text>
+          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       </View>
 
       <View style={{ flexDirection: "row" }}>
         {DOW.map((d, i) => (
-          <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", color: theme.secondaryText, fontSize: 9.5, fontWeight: "900" }}>{d}</Text>
+          <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d}</Text>
         ))}
       </View>
       <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 4 }}>
@@ -146,7 +146,7 @@ export function JournalInsightsCard({ journal = [] }) {
                 {has ? (
                   <Text style={{ fontSize: 12 }}>{c.mood.mood}</Text>
                 ) : (
-                  <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontWeight: "800", opacity: 0.55 }}>{c.day}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", opacity: 0.55 }}>{c.day}</Text>
                 )}
               </View>
             </View>

@@ -52,19 +52,19 @@ export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl,
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 14 }}>
           <View style={styles.profileHeroLevelBadge}>
-            <Text style={{ color: theme.accentLight, fontSize: 8.5, fontWeight: "900", letterSpacing: 0.5 }}>LEVEL</Text>
-            <Text style={{ color: "#fff", fontSize: 22, fontWeight: "900", fontVariant: ["tabular-nums"] }}>{lvl.level}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: 8.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5 }}>LEVEL</Text>
+            <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{lvl.level}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#fff", fontSize: 17, fontWeight: "900" }}>{lvl.title}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontWeight: "800", marginTop: 2 }}>
+            <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900" }}>{lvl.title}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
               {xp.toLocaleString()} XP total · 🔥 {streak}-day streak{longestStreak > streak ? ` · best ${longestStreak}` : ""}
             </Text>
           </View>
         </View>
 
         <View style={{ marginTop: 12 }}><ProgressBar pct={lvl.pct} height={9} glow /></View>
-        <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontWeight: "800", marginTop: 6 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }}>
           {lvl.maxed ? "Max level — you're a Reef Legend! 🐠" : `${lvl.toNext.toLocaleString()} XP to Level ${lvl.nextLevel}`}
         </Text>
       </View>

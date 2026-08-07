@@ -94,15 +94,15 @@ export function AcclimationTimer({ onComplete }) {
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 }}>
         <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{current.emoji}</Text></View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "900" }}>
+          <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {done ? "Acclimation complete" : current.label}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
             {done ? "Net the fish across and discard the bag water." : current.detail}
           </Text>
         </View>
         {!done && current.minutes ? (
-          <Text style={{ color: theme.accent, fontSize: 22, fontWeight: "900", fontVariant: ["tabular-nums"] }}>
+          <Text style={{ color: theme.accent, fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>
             {mmss(phaseRemainingSec)}
           </Text>
         ) : null}
@@ -114,7 +114,7 @@ export function AcclimationTimer({ onComplete }) {
         glow
         label={`Acclimation progress, step ${currentIndex + 1} of ${PHASES.length}`}
       />
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
         Step {currentIndex + 1} of {PHASES.length} · {mmss(elapsedSec)} elapsed of ~{TOTAL_MINUTES} min
       </Text>
 
@@ -130,7 +130,7 @@ export function AcclimationTimer({ onComplete }) {
                 borderWidth: 1, borderColor: isNow ? theme.accent : passed ? "rgba(56,225,198,0.45)" : theme.border,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: 10, fontWeight: "900" }}>
+                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {passed ? "✓" : i + 1}
                 </Text>
               </View>
@@ -138,7 +138,7 @@ export function AcclimationTimer({ onComplete }) {
                 {p.label}
               </Text>
               {p.minutes ? (
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "800" }}>{p.minutes}m</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.minutes}m</Text>
               ) : null}
             </View>
           );
@@ -153,7 +153,7 @@ export function AcclimationTimer({ onComplete }) {
         />
       ) : (
         <Pressable onPress={reset} style={({ pressed }) => [{ marginTop: 14, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
-          <Text style={{ color: theme.secondaryText, fontSize: 13, fontWeight: "800" }}>Cancel</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Cancel</Text>
         </Pressable>
       )}
     </View>

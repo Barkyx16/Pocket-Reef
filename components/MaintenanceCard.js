@@ -36,12 +36,12 @@ export function MaintenanceCard({ maintenance = {}, onLog }) {
           <View key={task.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: theme.border }}>
             <Text style={{ fontSize: 18 }}>{task.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 14, fontWeight: "800" }}>{task.label}</Text>
-              <Text style={{ color, fontSize: 11, fontWeight: "800", marginTop: 2, marginBottom: last ? 7 : 0 }}>{statusText}</Text>
+              <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{task.label}</Text>
+              <Text style={{ color, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2, marginBottom: last ? 7 : 0 }}>{statusText}</Text>
               {last ? <ProgressBar pct={pct} color={color} height={5} /> : null}
             </View>
             <Pressable onPress={() => { tapHaptic(); onLog(task.id); }} style={{ backgroundColor: theme.accent, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 }} accessibilityRole="button" accessibilityLabel={`Mark ${task.label} done`}>
-              <Text style={{ color: "#04202a", fontSize: 12, fontWeight: "900" }}>Done</Text>
+              <Text style={{ color: "#04202a", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Done</Text>
             </Pressable>
           </View>
         );

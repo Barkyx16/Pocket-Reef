@@ -9,10 +9,10 @@ export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 22 }}>
-        <Text style={{ color: "#fff", fontSize: 34, fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
+        <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (
           <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 19, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
-            <Text style={{ color: theme.text, fontSize: 18, fontWeight: "900" }}>✕</Text>
+            <Text style={{ color: theme.text, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         ) : null}
       </View>
@@ -30,12 +30,12 @@ export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
               <Text style={{ fontSize: 26 }}>{it.emoji}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
+              <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
               {isLocked(it.id) ? (
-                <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "800", marginTop: 2 }}>🔒 Premium</Text>
+                <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>🔒 Premium</Text>
               ) : null}
             </View>
-            <Text style={{ color: theme.accent, fontSize: 22, fontWeight: "900" }}>›</Text>
+            <Text style={{ color: theme.accent, fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
           </Pressable>
         ))}
       </View>
