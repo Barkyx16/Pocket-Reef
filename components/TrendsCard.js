@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { PARAMS, assessParam, paramStatusColor, tapHaptic } from "../core";
 
 // Water-parameter trend charts — a premium payoff. Draws a lightweight sparkline
@@ -26,7 +27,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
 
   const withValues = (key) => series.filter((t) => t.values && t.values[key] != null).map((t) => Number(t.values[key]));
   if (series.length < 2) {
-    return <Text style={styles.cardText}>Log at least two water tests and your trends will chart here.</Text>;
+    return <EmptyState emoji="📈" title="Not enough readings" subtitle="Log at least two water tests and your parameter trends chart here." />;
   }
 
   return (
@@ -45,7 +46,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
               <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
               <Text style={{ color: paramStatusColor(status), fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{latest}{p.unit ? ` ${p.unit}` : ""} {trend}</Text>
             </View>
-            <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 3, height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 10, padding: 6, borderWidth: 1, borderColor: theme.hairline }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 4, height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 10, padding: 6, borderWidth: 1, borderColor: theme.hairline }}>
               {(() => { const bars = vals.slice(-16); const n = bars.length; return bars.map((v, i) => {
                 const h = Math.max(3, Math.round((v / scale) * 32));
                 const c = paramStatusColor(assessParam(p, v).status);

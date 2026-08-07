@@ -26,7 +26,7 @@ export function FishOfDayCard({ onOpenSpecies }) {
         <Text style={styles.cleanMeta} numberOfLines={2}>
           {s.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {formatVolume(s.minGallons)}+ · {formatTempRange(s.tempMinF, s.tempMaxF)}
         </Text>
-        <View style={{ flexDirection: "row", gap: 6, marginTop: 7 }}>
+        <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
           <Chip label={s.careLevel} color={careLevelColor(s.careLevel)} />
           <Chip label={s.temperament} color={temperamentColor(s.temperament)} />
         </View>

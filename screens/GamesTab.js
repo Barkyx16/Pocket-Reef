@@ -19,7 +19,7 @@ const IMG_SPECIES = SPECIES.filter((s) => getSpeciesImage(s.name));
 
 function Pill({ label, active, onPress, fill }) {
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => [{ flex: fill ? 1 : undefined, alignItems: "center", paddingVertical: 9, paddingHorizontal: 14, borderRadius: 999, borderWidth: 1, borderColor: active ? theme.accent : theme.border, backgroundColor: active ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.04)" }, pressed && { opacity: 0.7 }]}>
+    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => [{ flex: fill ? 1 : undefined, alignItems: "center", paddingVertical: 8, paddingHorizontal: 14, borderRadius: 999, borderWidth: 1, borderColor: active ? theme.accent : theme.border, backgroundColor: active ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.04)" }, pressed && { opacity: 0.7 }]}>
       <Text style={{ color: active ? theme.accent : theme.secondaryText, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
     </Pressable>
   );
@@ -82,7 +82,7 @@ function GameHost({ gameId, onBack, onEarnXp }) {
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
         <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Games</Text>
       </Pressable>
       <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5 }}>{meta.emoji} {meta.name}</Text>
@@ -142,7 +142,7 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
 
   if (timed && over) {
     return (
-      <View style={[styles.card, { alignItems: "center", paddingVertical: 26 }]}>
+      <View style={[styles.card, { alignItems: "center", paddingVertical: 24 }]}>
         <Text style={{ fontSize: 40 }}>⏱️</Text>
         <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Time's up!</Text>
         <Text style={{ color: theme.accent, fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, fontVariant: ["tabular-nums"] }}>{score}</Text>
@@ -189,7 +189,7 @@ function OptionBtn({ o, answered, selectedKey, onPress }) {
     else { color = theme.secondaryText; }
   }
   return (
-    <Pressable disabled={answered} onPress={onPress} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: bg, borderWidth: 1, borderColor: bc, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 13 }, pressed && !answered && { opacity: 0.8 }]} accessibilityRole="button">
+    <Pressable disabled={answered} onPress={onPress} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: bg, borderWidth: 1, borderColor: bc, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12 }, pressed && !answered && { opacity: 0.8 }]} accessibilityRole="button">
       <Text style={{ flex: 1, color, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.label}</Text>
       {mark ? <Text style={{ color: o.correct ? theme.accent : theme.danger, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{mark}</Text> : null}
     </Pressable>

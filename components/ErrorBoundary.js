@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component {
             onPress={this.retry}
             style={({ pressed }) => [
               {
-                marginTop: 28, borderRadius: 16, paddingVertical: 15, alignItems: "center",
+                marginTop: 28, borderRadius: 16, paddingVertical: 16, alignItems: "center",
                 backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)",
               },
               pressed && { opacity: 0.8 },
@@ -92,7 +92,7 @@ export class ErrorBoundary extends Component {
           ) : null}
 
           {/* Shown so a user can tell us what happened, not to explain it. */}
-          <View style={{ marginTop: 26, padding: 12, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
+          <View style={{ marginTop: 24, padding: 12, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
             <Text style={{ color: "#6f93a8", fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
               Details
             </Text>

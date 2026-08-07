@@ -132,7 +132,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
               <View style={{ flexDirection: "row", gap: 10 }}>
                 <Text style={{ fontSize: 20 }}>{e.mood}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 3 }}>{e.date}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
                   {e.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
                 </View>
                 <View style={{ flexDirection: "row", gap: 12 }}>

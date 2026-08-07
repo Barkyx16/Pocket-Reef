@@ -45,7 +45,7 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
   return (
     <View>
       {/* HERO */}
-      <View style={{ borderRadius: 26, padding: 22, overflow: "hidden", borderWidth: 1, borderColor: theme.border, marginBottom: 14 }}>
+      <View style={{ borderRadius: 26, padding: 24, overflow: "hidden", borderWidth: 1, borderColor: theme.border, marginBottom: 14 }}>
         <LinearGradient colors={["#0e3a52", "#0a2c42", "#082031"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />
         <View style={{ position: "absolute", right: -50, top: -60, width: 180, height: 180, borderRadius: 90, backgroundColor: "rgba(255,211,114,0.16)" }} />
         <View style={{ alignItems: "center" }}>
@@ -112,7 +112,7 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
         {/* TRUST BADGES */}
         <View style={{ flexDirection: "row", marginTop: 16, borderTopWidth: 1, borderTopColor: theme.border, paddingTop: 14 }}>
           {TRUST.map((tItem, i) => (
-            <View key={tItem.label} style={{ flex: 1, alignItems: "center", gap: 3 }}>
+            <View key={tItem.label} style={{ flex: 1, alignItems: "center", gap: 4 }}>
               <Text style={{ fontSize: 16 }}>{tItem.icon}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{tItem.label}</Text>
             </View>

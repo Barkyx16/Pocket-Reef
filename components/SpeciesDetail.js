@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Image, Linking, Pressable, ScrollView, Share, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   careLevelColor, temperamentColor, compatColor, phRange,
   getCompatibility, getSpecies, getDiseasesForSpecies, getTankmates,
@@ -61,8 +62,11 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
-        <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Back</Text>
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
+        <>
+          <Ionicons name="chevron-back" size={16} color={theme.accent} />
+          <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
+        </>
       </Pressable>
 
       {/* HERO */}
@@ -84,7 +88,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* VERDICT */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: `${vColor}18`, borderRadius: 14, borderWidth: 1, borderColor: `${vColor}55`, padding: 12, marginBottom: 14 }}>
         <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: `${vColor}2e`, borderWidth: 1, borderColor: `${vColor}77`, alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ fontSize: 15 }}>{verdict.good ? "✅" : "⚠️"}</Text>
+          <Ionicons name={verdict.good ? "checkmark-circle" : "warning"} size={17} color={verdict.good ? theme.accent : theme.warn} />
         </View>
         <Text style={{ flex: 1, color: vColor, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{verdict.text}</Text>
       </View>
@@ -108,10 +112,10 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         ) : null}
 
         <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
-          <QuickTile icon={inWishlist ? "❤️" : "🤍"} label={inWishlist ? "Saved" : "Save"} active={inWishlist} activeColor={theme.coral} onPress={() => onToggleWishlist && onToggleWishlist(name)} />
-          <QuickTile icon="📤" label="Share" onPress={shareSpecies} />
-          <QuickTile icon="🛒" label="Shop" onPress={() => Linking.openURL(shopLinks[0].url).catch(() => {})} />
-          <QuickTile icon="📷" label="Journal" onPress={() => onGoToTab && onGoToTab("journal")} />
+          <QuickTile icon={inWishlist ? "heart" : "heart-outline"} label={inWishlist ? "Saved" : "Save"} active={inWishlist} activeColor={theme.coral} onPress={() => onToggleWishlist && onToggleWishlist(name)} />
+          <QuickTile icon="share-outline" label="Share" onPress={shareSpecies} />
+          <QuickTile icon="cart-outline" label="Shop" onPress={() => Linking.openURL(shopLinks[0].url).catch(() => {})} />
+          <QuickTile icon="camera-outline" label="Journal" onPress={() => onGoToTab && onGoToTab("journal")} />
         </View>
 
         {tanks.length > 1 && inTanks.length ? (
@@ -123,11 +127,11 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* JOURNEY / TIMELINE */}
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>🕒 {s.name}'s Journey</Text>
+        <Text style={styles.cardEyebrow}>{s.name}'s Journey</Text>
         <Text style={[styles.cardText, { marginTop: 6 }]}>{inTank ? `Track ${s.name}'s progress — log photos and notes in your Journal.` : `Add ${s.name} to your tank, then log its journey with dated photos and notes.`}</Text>
         {onGoToTab ? (
           <Pressable onPress={() => onGoToTab("journal")} style={({ pressed }) => [styles.ghostBtn, { marginTop: 12 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
-            <Text style={styles.ghostBtnText}>📷 Open Journal</Text>
+            <Text style={styles.ghostBtnText}>Open Journal</Text>
           </Pressable>
         ) : null}
       </View>
@@ -138,7 +142,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>{s.summary}</Text>
         <View style={{ gap: 8 }}>
           {careRows.map((r) => (
-            <View key={r.label} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, padding: 13 }}>
+            <View key={r.label} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
               <Text style={{ fontSize: 18 }}>{r.icon}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>{r.label}</Text>
@@ -178,7 +182,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>Diseases to watch for on {s.name} — tap any one for its full guide with treatment steps.</Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
           <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>🩺 Common Ailments</Text>
-          <View style={{ backgroundColor: "rgba(255,138,101,0.22)", borderRadius: 999, minWidth: 20, paddingHorizontal: 7, paddingVertical: 1, alignItems: "center" }}>
+          <View style={{ backgroundColor: "rgba(255,138,101,0.22)", borderRadius: 999, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
             <Text style={{ color: theme.coral, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{diseases.length}</Text>
           </View>
         </View>
@@ -205,7 +209,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           </View>
         ) : null}
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
-          <Text style={{ fontSize: 15 }}>✅</Text>
+          <Ionicons name="checkmark-circle" size={17} color={theme.accent} />
           <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
             <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>Prevent & treat: </Text>Quarantine new arrivals, keep water pristine and stable, don't overstock, and act at the very first sign.
           </Text>
@@ -259,7 +263,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       ) : null}
 
       {/* BACK (bottom) */}
-      <GradientButton label="‹ Back" onPress={onBack} style={{ marginTop: 4, marginBottom: 8 }} />
+      <GradientButton label="Back to species" icon="chevron-back" variant="secondary" onPress={onBack} style={{ marginTop: 4, marginBottom: 8 }} />
     </ScrollView>
   );
 }
@@ -273,7 +277,7 @@ function QuickTile({ icon, label, active, activeColor, onPress }) {
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <Text style={{ fontSize: 20 }}>{icon}</Text>
+      <Ionicons name={icon} size={19} color={c} />
       <Text style={{ color: c, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center" }}>{label}</Text>
     </Pressable>
   );
@@ -287,7 +291,7 @@ function MateGroup({ color, label, names, onOpen }) {
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
         <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: color }} />
         <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
-        <View style={{ backgroundColor: `${color}22`, borderRadius: 999, minWidth: 20, paddingHorizontal: 7, paddingVertical: 1, alignItems: "center" }}>
+        <View style={{ backgroundColor: `${color}22`, borderRadius: 999, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
           <Text style={{ color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{names.length}</Text>
         </View>
       </View>

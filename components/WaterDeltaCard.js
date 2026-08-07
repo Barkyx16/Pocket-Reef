@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { getWaterDelta, paramStatusColor } from "../core";
 
 // A free, at-a-glance "what changed since last test" — each parameter's newest
@@ -8,7 +9,7 @@ import { getWaterDelta, paramStatusColor } from "../core";
 export function WaterDeltaCard({ waterTests = [], waterType = "fresh" }) {
   const deltas = getWaterDelta(waterTests, waterType);
   if (!deltas.length) {
-    return <Text style={styles.cardText}>Log two water tests and the change between them will show here.</Text>;
+    return <EmptyState emoji="📊" title="Nothing to compare" subtitle="Log two water tests and the change between them shows up here." />;
   }
   return (
     <View style={{ gap: 8 }}>

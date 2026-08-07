@@ -78,7 +78,7 @@ export function JournalInsightsCard({ journal = [] }) {
         {activeMoods.map((m) => (
           <View
             key={m.mood}
-            style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 4 }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 }}
           >
             <Text style={{ fontSize: 12 }}>{m.mood}</Text>
             <Text style={{ color: theme.text, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>

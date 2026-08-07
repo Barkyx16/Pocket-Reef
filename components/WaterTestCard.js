@@ -56,7 +56,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
                 keyboardType="decimal-pad"
                 placeholder="—"
                 placeholderTextColor={theme.secondaryText}
-                style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 9, color: theme.text, borderWidth: 1, borderColor: a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
               />
               <View style={{ width: 64, alignItems: "flex-end" }}>
                 {a.status !== "none" ? (
@@ -82,7 +82,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
           <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
             <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 2 }}>⚠️ Watch these</Text>
             {issues.map((p) => (
-              <Text key={p.key} style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 5 }}>
+              <Text key={p.key} style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 4 }}>
                 <Text style={{ color: theme.text, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}: </Text>{p.tip}
               </Text>
             ))}
@@ -107,7 +107,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
                   const a = assessParam(p, h.values[p.key]);
                   const c = paramStatusColor(a.status);
                   return (
-                    <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 }}>
+                    <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
                       <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
                       <Text style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.values[p.key]}</Text>
                     </View>

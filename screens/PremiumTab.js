@@ -188,7 +188,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 16, marginTop: 12 }}>
             {[["🔒", "Secure"], ["↩️", "Cancel anytime"], ["☁️", "Cloud sync"]].map(([i, l]) => (
-              <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+              <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                 <Text style={{ fontSize: 13 }}>{i}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{l}</Text>
               </View>

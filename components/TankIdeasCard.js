@@ -28,13 +28,13 @@ export function TankIdeasCard({ onLoad }) {
           <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 8 }}>{idea.blurb}</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
             {idea.species.map((n) => (
-              <View key={n} style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 999, paddingLeft: 4, paddingRight: 9, paddingVertical: 3 }}>
+              <View key={n} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 999, paddingLeft: 4, paddingRight: 8, paddingVertical: 4 }}>
                 <SpeciesThumb name={n} size={18} radius={9} />
                 <Text style={{ color: theme.text, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{n}</Text>
               </View>
             ))}
           </View>
-          <Pressable onPress={() => { tapHaptic("medium"); onLoad && onLoad(idea); }} style={[styles.primaryBtn, { marginTop: 12, paddingVertical: 11 }]} accessibilityRole="button">
+          <Pressable onPress={() => { tapHaptic("medium"); onLoad && onLoad(idea); }} style={[styles.primaryBtn, { marginTop: 12, paddingVertical: 12 }]} accessibilityRole="button">
             <Text style={styles.primaryBtnText}>Use this setup</Text>
           </Pressable>
         </View>

@@ -81,7 +81,7 @@ export function HealthTab({ openDisease }) {
           {SYMPTOMS.map((s) => {
             const on = symptoms.includes(s);
             return (
-              <Pressable key={s} onPress={() => toggleSymptom(s)} style={[styles.pill, { paddingVertical: 7, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
+              <Pressable key={s} onPress={() => toggleSymptom(s)} style={[styles.pill, { paddingVertical: 8, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
                 <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s}</Text>
               </Pressable>
             );

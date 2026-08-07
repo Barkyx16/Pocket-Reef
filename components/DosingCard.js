@@ -73,7 +73,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
         // over low Mg mostly produces precipitate rather than a higher reading.
         <View style={{ backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.32)", borderRadius: 14, padding: 12, marginBottom: 14 }}>
           <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Fix magnesium first</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
             Magnesium holds calcium and alkalinity in solution. Dosing those while magnesium
             is low mostly makes precipitate instead of raising your numbers.
           </Text>

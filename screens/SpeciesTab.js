@@ -140,7 +140,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: 16, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
         <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: 8 }} />
-        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 13, color: theme.text, fontSize: 15 }} />
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: 15 }} />
         {query ? (
           <Pressable onPress={() => setQuery("")} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear search">
             <Ionicons name="close-circle" size={17} color={theme.secondaryText} style={{ marginLeft: 6 }} />
@@ -221,7 +221,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
               const sp = getSpecies(n);
               if (!sp) return null;
               return (
-                <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: 7, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
+                <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
                   <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{sp.emoji} {n}</Text>
                 </Pressable>
               );

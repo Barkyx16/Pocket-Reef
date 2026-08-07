@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { getSpecies, getCompatibility, compatColor, tapHaptic } from "../core";
 import { SpeciesThumb } from "./SpeciesThumb";
 
@@ -11,7 +12,7 @@ export function CompatibilityMatrix({ tank = [] }) {
   const species = tank.map(getSpecies).filter(Boolean);
   const [sel, setSel] = useState(null);
   if (species.length < 2) {
-    return <Text style={styles.cardText}>Add at least two species to your tank to see the compatibility grid.</Text>;
+    return <EmptyState emoji="🤝" title="Two species needed" subtitle="Add at least two species to your tank and every pairing gets checked here." />;
   }
   const CELL = 30;
 
@@ -57,7 +58,7 @@ export function CompatibilityMatrix({ tank = [] }) {
       {/* Selected pair reason */}
       {sel ? (
         <View style={{ marginTop: 12, backgroundColor: `${compatColor(sel.level)}18`, borderRadius: 12, borderWidth: 1, borderColor: `${compatColor(sel.level)}55`, padding: 12 }}>
-          <Text style={{ color: compatColor(sel.level), fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", marginBottom: 3 }}>{sel.level}</Text>
+          <Text style={{ color: compatColor(sel.level), fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", marginBottom: 4 }}>{sel.level}</Text>
           <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{getSpecies(sel.a)?.emoji} {sel.a} + {getSpecies(sel.b)?.emoji} {sel.b}: {sel.reason}</Text>
         </View>
       ) : (

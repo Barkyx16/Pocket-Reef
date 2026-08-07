@@ -166,7 +166,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
                   {!isUnlocked ? (
                     <Text style={{ fontSize: 18 }}>🔒</Text>
                   ) : on ? (
-                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 3 }}>
+                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 }}>
                       <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     </View>
                   ) : null}

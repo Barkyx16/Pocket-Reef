@@ -43,7 +43,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
         <Text style={styles.cleanMeta} numberOfLines={2}>
           {species.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {formatVolume(species.minGallons)}+ · {formatTempRange(species.tempMinF, species.tempMaxF)}
         </Text>
-        <View style={{ flexDirection: "row", gap: 6, marginTop: 7 }}>
+        <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
           <Chip label={species.careLevel} color={careLevelColor(species.careLevel)} />
           <Chip label={species.temperament} color={temperamentColor(species.temperament)} />
         </View>

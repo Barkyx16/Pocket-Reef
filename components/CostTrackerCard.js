@@ -46,7 +46,7 @@ export function CostTrackerCard({ costs = [], onAdd, onDelete }) {
       {byCat.length ? (
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 14, justifyContent: "center" }}>
           {byCat.map(([c, v]) => (
-            <View key={c} style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: theme.well, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: theme.border }}>
+            <View key={c} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: theme.well, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: 12 }}>{CAT_EMOJI[c]}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c}</Text>
               <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>${v.toFixed(0)}</Text>

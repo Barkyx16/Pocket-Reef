@@ -110,7 +110,7 @@ function Milestones({ entries }) {
               <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: e.mood === "🐠" ? "rgba(56,225,198,0.16)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: e.mood === "🐠" ? "rgba(56,225,198,0.4)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
                 <Text style={{ fontSize: 15 }}>{e.mood}</Text>
               </View>
-              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 3, minHeight: 14 }} /> : null}
+              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 4, minHeight: 14 }} /> : null}
             </View>
             <View style={{ flex: 1, paddingBottom: 14 }}>
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>

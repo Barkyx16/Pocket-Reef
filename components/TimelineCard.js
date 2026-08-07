@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { PARAMS, assessParam, paramStatusColor, tapHaptic } from "../core";
 
 // A unified tank timeline — the reef version of Pocket Planter's Garden Timeline.
@@ -14,7 +15,7 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
   ].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
   if (!events.length) {
-    return <Text style={styles.cardText}>Your tank's story starts here — log a water test or a journal note and it'll appear on the timeline.</Text>;
+    return <EmptyState emoji="🕰️" title="Your story starts here" subtitle="Log a water test or a journal entry and your tank's timeline begins." />;
   }
 
   const shown = events.slice(0, visible);
@@ -30,11 +31,11 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
               <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: ev.kind === "test" ? "rgba(56,225,198,0.16)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: ev.kind === "test" ? "rgba(56,225,198,0.4)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
                 <Text style={{ fontSize: 15 }}>{ev.kind === "test" ? "🧪" : ev.mood || "📓"}</Text>
               </View>
-              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 3, minHeight: 16 }} /> : null}
+              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 4, minHeight: 16 }} /> : null}
             </View>
             {/* Content */}
             <View style={{ flex: 1, paddingBottom: 16 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 3 }}>{ev.date}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{ev.date}</Text>
               {ev.kind === "journal" ? (
                 <View>
                   {ev.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
@@ -46,7 +47,7 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
                     if (!ev.values || ev.values[p.key] == null) return null;
                     const c = paramStatusColor(assessParam(p, ev.values[p.key]).status);
                     return (
-                      <View key={p.key} style={{ flexDirection: "row", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 }}>
+                      <View key={p.key} style={{ flexDirection: "row", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
                         <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
                         <Text style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ev.values[p.key]}</Text>
                       </View>

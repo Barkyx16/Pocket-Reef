@@ -193,12 +193,12 @@ export function AuthScreen({ onContinueOffline }) {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 22, paddingBottom: 48 }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 24, paddingBottom: 48 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         {/* HERO */}
-        <View style={{ alignItems: "center", marginBottom: 26 }}>
+        <View style={{ alignItems: "center", marginBottom: 24 }}>
           <View style={{ width: 74, height: 74, borderRadius: 24, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.35)", alignItems: "center", justifyContent: "center" }}>
             <Text style={{ fontSize: 38 }}>🐠</Text>
           </View>
@@ -303,7 +303,7 @@ export function AuthScreen({ onContinueOffline }) {
               <Pressable
                 onPress={biometricLogin}
                 disabled={busy}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, borderRadius: 16, paddingVertical: 15, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, borderRadius: 16, paddingVertical: 16, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Sign in with ${bioLabel}`}
               >

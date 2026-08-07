@@ -34,7 +34,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
     return (
       <View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
-          <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 9, paddingVertical: 3 }}>
+          <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 }}>
             <Text style={{ color: urgency.color, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase" }}>{urgency.label}</Text>
           </View>
           <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{plan.durationDays}-day course</Text>
@@ -78,7 +78,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       {progress.abandonedEarly ? (
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: 14, padding: 12 }}>
           <Text style={{ color: "#ff7b7b", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
             This is the most common reason an infection returns. If symptoms come back, start again
             and complete the full course.
           </Text>
@@ -93,7 +93,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
             <Pressable
               key={step.id}
               onPress={() => { tapHaptic(); onToggleStep && onToggleStep(diseaseName, step.id); }}
-              style={({ pressed }) => [{ flexDirection: "row", gap: 11, alignItems: "flex-start", opacity: state === "future" ? 0.5 : 1 }, pressed && { opacity: 0.7 }]}
+              style={({ pressed }) => [{ flexDirection: "row", gap: 12, alignItems: "flex-start", opacity: state === "future" ? 0.5 : 1 }, pressed && { opacity: 0.7 }]}
               accessibilityRole="checkbox"
               accessibilityState={{ checked: step.done }}
               accessibilityLabel={`Day ${step.day}: ${step.title}`}
@@ -114,9 +114,9 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (
-                  <Text style={{ color: "#ff7b7b", fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 3 }}>Overdue</Text>
+                  <Text style={{ color: "#ff7b7b", fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Overdue</Text>
                 ) : state === "future" ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                     In {step.daysAway} day{step.daysAway === 1 ? "" : "s"}
                   </Text>
                 ) : null}

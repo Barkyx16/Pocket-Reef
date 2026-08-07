@@ -23,7 +23,7 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
           <Text style={{ fontSize: 44 }}>{emoji}</Text>
         </View>
 
-        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 22, textAlign: "center", letterSpacing: -0.4 }}>
+        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 24, textAlign: "center", letterSpacing: -0.4 }}>
           {title}
         </Text>
         <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
@@ -31,7 +31,7 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
         </Text>
 
         {perks.length ? (
-          <View style={{ marginTop: 26, alignSelf: "stretch", gap: 12 }}>
+          <View style={{ marginTop: 24, alignSelf: "stretch", gap: 12 }}>
             {perks.map((p) => (
               <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                 <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center" }}>
@@ -43,7 +43,7 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
           </View>
         ) : null}
 
-        <GradientButton label="See Premium 👑" onPress={onOpenPremium} style={{ marginTop: 30, alignSelf: "stretch" }} />
+        <GradientButton label="See Premium 👑" onPress={onOpenPremium} style={{ marginTop: 32, alignSelf: "stretch" }} />
       </View>
     </ScrollView>
   );

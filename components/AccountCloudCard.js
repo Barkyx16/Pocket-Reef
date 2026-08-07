@@ -248,7 +248,7 @@ export function AccountCloudCard({
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.accountInfoLabel}>Premium</Text>
-          <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 3 }}>
+          <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
             {premiumUnlocked ? "Active 👑" : "Inactive"}
           </Text>
           <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
@@ -394,7 +394,7 @@ function Stat({ value, label, small }) {
   return (
     <View style={{ flexGrow: 1, minWidth: "45%", backgroundColor: theme.well, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: theme.border, alignItems: "center" }}>
       <Text style={{ color: "#fff", fontSize: small ? 15 : 24, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{label}</Text>
     </View>
   );
 }

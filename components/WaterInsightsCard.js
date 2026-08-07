@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { getWaterStats, PARAMS, assessParam, paramStatusColor } from "../core";
 
 // Free water-test analytics — average reading per parameter across your whole
@@ -7,7 +8,7 @@ import { getWaterStats, PARAMS, assessParam, paramStatusColor } from "../core";
 export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExport }) {
   const stats = getWaterStats(waterTests, waterType);
   if (!stats || !stats.averages.length) {
-    return <Text style={styles.cardText}>Log a few water tests and your averages will appear here.</Text>;
+    return <EmptyState emoji="🔮" title="No averages yet" subtitle="Log a few water tests and your averages, cadence and in-range rate appear here." />;
   }
 
   // Share of tests where every provided reading graded "good".

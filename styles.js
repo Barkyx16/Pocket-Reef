@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.26, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
-  heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 5, marginBottom: 10 },
+  heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 },
   heroEyebrow: { color: ACCENT_LIGHT, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1.1, textTransform: "uppercase" },
   heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
   heroSub: { color: "#cfe6f2", fontSize: 13.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 19 },
@@ -87,13 +87,13 @@ export const styles = StyleSheet.create({
   cleanImage: { width: 56, height: 56 },
   cleanEmoji: { fontSize: 28 },
   cleanName: { color: "#ffffff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2 },
-  cleanMeta: { color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 },
+  cleanMeta: { color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 },
   cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Chips & pills ──────────────────────────────────────────────────────────
-  chip: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, borderWidth: 1 },
+  chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, borderWidth: 1 },
   chipText: { fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" },
-  pill: { paddingHorizontal: 13, paddingVertical: 9, borderRadius: 999, borderWidth: 1 },
+  pill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, borderWidth: 1 },
 
   // ── Buttons ──────────────────────────────────────────────────────────────
   primaryBtn: { backgroundColor: ACCENT, borderRadius: 16, paddingVertical: 14, alignItems: "center", shadowColor: ACCENT, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 },
@@ -103,12 +103,12 @@ export const styles = StyleSheet.create({
 
   // ── Stat tiles ─────────────────────────────────────────────────────────────
   statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
-  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56, 225, 198, 0.06)", borderRadius: 16, padding: 13, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.14)" },
+  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56, 225, 198, 0.06)", borderRadius: 16, padding: 12, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.14)" },
   statLabel: { color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.2 },
   statValue: { color: "#ffffff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
 
   // ── Search input ───────────────────────────────────────────────────────────
-  search: { fontFamily: "Inter_400Regular", backgroundColor: theme.card, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 13, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15 },
+  search: { fontFamily: "Inter_400Regular", backgroundColor: theme.card, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15 },
 
   // ── Detail ─────────────────────────────────────────────────────────────────
   detailHeroWrap: { alignItems: "center", paddingVertical: 12 },
@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
   // ── Account / cloud card ───────────────────────────────────────────────────
   accountInfoBox: { backgroundColor: theme.well, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: theme.border, marginBottom: 10 },
   accountInfoLabel: { color: ACCENT_LIGHT, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" },
-  accountInfoValue: { color: "#ffffff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 5 },
+  accountInfoValue: { color: "#ffffff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 },
   // Hairline separator between two merged sections inside one card.
   sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: 18 },
   accountSignOutBtn: { borderRadius: 16, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, marginTop: 10 },
@@ -138,7 +138,7 @@ export const styles = StyleSheet.create({
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
   bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: 22, padding: 6, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", shadowColor: "#000", shadowOpacity: 0.28, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 14 },
-  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 9, borderRadius: 18, gap: 3 },
+  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 8, borderRadius: 18, gap: 4 },
   // A tinted well rather than a filled, glowing capsule. The active tab should
   // be obvious at a glance without being the brightest thing on the screen.
   bottomTabButtonActive: { backgroundColor: "rgba(56, 225, 198, 0.14)" },

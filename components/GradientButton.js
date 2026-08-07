@@ -19,7 +19,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
         style={({ pressed }) => [
           {
             borderRadius: 16,
-            paddingVertical: 13,
+            paddingVertical: 12,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",

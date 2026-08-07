@@ -198,7 +198,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
 
 function ChallengeRow({ c, onNavigate, onComplete }) {
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 8 }}>
       <Pressable
         onPress={onNavigate ? () => { tapHaptic("light"); onNavigate(); } : undefined}
         disabled={!onNavigate}
@@ -235,7 +235,7 @@ function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
       <Text style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
     </View>
   );
 }

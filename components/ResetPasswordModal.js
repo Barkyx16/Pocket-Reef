@@ -33,8 +33,8 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={() => close(onCancel)}>
-      <View style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: 22 }}>
-        <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 22 }}>
+      <View style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 24 }}>
           <Text style={styles.cardEyebrow}>Reset password</Text>
           <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
           <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>

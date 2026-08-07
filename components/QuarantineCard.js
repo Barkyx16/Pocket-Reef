@@ -42,13 +42,13 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate }) {
                 <Text style={{ fontSize: 18 }}>{done ? "✅" : "⏳"}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{it.name}</Text>
-                  <Text style={{ color, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2, marginBottom: 7 }}>
+                  <Text style={{ color, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2, marginBottom: 8 }}>
                     {done ? "Ready to add to your tank! 🎉" : `${left} day${left === 1 ? "" : "s"} left · day ${elapsed} of ${QT_DAYS}`}
                   </Text>
                   <ProgressBar pct={Math.min(100, (elapsed / QT_DAYS) * 100)} color={done ? theme.accent : theme.warn} height={6} />
                 </View>
                 {done && onGraduate ? (
-                  <Pressable onPress={() => { tapHaptic("medium"); onGraduate(it); }} hitSlop={8} style={{ backgroundColor: theme.accent, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7 }} accessibilityRole="button" accessibilityLabel={`Add ${it.name} to tank`}>
+                  <Pressable onPress={() => { tapHaptic("medium"); onGraduate(it); }} hitSlop={8} style={{ backgroundColor: theme.accent, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 8 }} accessibilityRole="button" accessibilityLabel={`Add ${it.name} to tank`}>
                     <Text style={{ color: "#04202a", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>＋ Add to tank</Text>
                   </Pressable>
                 ) : (

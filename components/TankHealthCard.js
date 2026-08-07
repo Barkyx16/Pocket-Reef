@@ -59,7 +59,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     accessibilityRole={onGoToTab ? "button" : undefined}
                     accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
                   >
-                    <View style={{ minWidth: 40, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.34)", alignItems: "center" }}>
+                    <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.34)", alignItems: "center" }}>
                       <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
                     </View>
                     <View style={{ flex: 1 }}>

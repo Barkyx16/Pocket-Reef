@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { EmptyState } from "./EmptyState";
 import { getSpecies } from "../core";
 
 // A snapshot of what the keeper actually keeps — species by water type and by
@@ -9,7 +10,7 @@ export function CollectionInsightsCard({ tanks = [] }) {
   tanks.forEach((t) => (t.stock || []).forEach((n) => names.add(n)));
   const species = [...names].map(getSpecies).filter(Boolean);
   if (!species.length) {
-    return <Text style={styles.cardText}>Stock a tank and your collection breakdown will appear here.</Text>;
+    return <EmptyState emoji="📊" title="No collection yet" subtitle="Stock a tank and your collection breaks down here by water type and kind." />;
   }
   const fresh = species.filter((s) => s.water === "fresh").length;
   const salt = species.filter((s) => s.water === "salt").length;
