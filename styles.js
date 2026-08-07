@@ -55,11 +55,11 @@ export const styles = StyleSheet.create({
   scroll: { padding: 16, paddingBottom: 132 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
-  heroBanner: { borderRadius: 28, padding: 24, marginBottom: 18, overflow: "hidden", justifyContent: "flex-end", minHeight: 158, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+  heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.26, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
   heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 5, marginBottom: 10 },
-  heroEyebrow: { color: ACCENT_LIGHT, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1.1, textTransform: "uppercase" },
-  heroTitle: { color: "#ffffff", fontSize: 32, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
-  heroSub: { color: "#d3ecf6", fontSize: 14, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 7, lineHeight: 20 },
+  heroEyebrow: { color: ACCENT_LIGHT, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1.1, textTransform: "uppercase" },
+  heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
+  heroSub: { color: "#cfe6f2", fontSize: 13.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 19 },
 
   // ── Profile hero (uncropped banner art + solid info panel below) ───────────
   profileHero: { borderRadius: 28, marginBottom: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { iconForEmoji } from "../lib/icons";
 import { useTabBarScroll } from "../lib/tabBarScroll";
 import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic } from "../core";
 import { PremiumTeaserCard } from "../components/PremiumTeaserCard";
@@ -204,7 +206,11 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
         accessibilityRole={onNavigate ? "button" : undefined}
       >
         <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ fontSize: 17 }}>{c.icon}</Text>
+          {iconForEmoji(c.icon) ? (
+            <Ionicons name={iconForEmoji(c.icon)} size={16} color={theme.accent} />
+          ) : (
+            <Text style={{ fontSize: 17 }}>{c.icon}</Text>
+          )}
         </View>
         <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c.title}</Text>
       </Pressable>
@@ -212,11 +218,13 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
         <Pressable
           onPress={() => { tapHaptic(); onComplete(); }}
           hitSlop={8}
-          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: theme.accent, backgroundColor: "transparent" }, pressed && { backgroundColor: theme.accent }]}
+          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(159,196,216,0.45)", backgroundColor: "transparent" }, pressed && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
           accessibilityRole="button"
           accessibilityLabel={`Mark "${c.title}" complete`}
         >
-          <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
+          {/* Intentionally empty. A tick inside the ring made every incomplete
+              challenge look already done — the ring alone is the standard
+              unchecked-checkbox affordance. */}
         </Pressable>
       ) : null}
     </View>

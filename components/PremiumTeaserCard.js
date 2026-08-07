@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // What the free user is actually missing — with their own numbers in it.
@@ -51,7 +52,7 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
       accessibilityLabel="See what Premium unlocks for your tank"
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
-        <Text style={{ fontSize: 15 }}>🔒</Text>
+        <Ionicons name="lock-closed" size={13} color={theme.accent} />
         <Text style={styles.cardEyebrow}>Waiting for you</Text>
       </View>
 

@@ -158,16 +158,16 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
           );
         })}
         <Pressable onPress={() => { tapHaptic(); setFitsOnly((v) => !v); }} style={[styles.pill, pillStyle(fitsOnly)]} accessibilityRole="button">
-          <Text style={pillText(fitsOnly)}>🎯 Fits my {tankGallons} gal</Text>
+          <Text style={pillText(fitsOnly)}>Fits my {tankGallons} gal</Text>
         </Pressable>
         {tank.length ? (
           <Pressable onPress={() => { tapHaptic(); setCompatOnly((v) => !v); }} style={[styles.pill, pillStyle(compatOnly)]} accessibilityRole="button">
-            <Text style={pillText(compatOnly)}>🤝 Fits my stock</Text>
+            <Text style={pillText(compatOnly)}>Fits my stock</Text>
           </Pressable>
         ) : null}
         {wishlist.length ? (
           <Pressable onPress={() => { tapHaptic(); setWishOnly((v) => !v); }} style={[styles.pill, pillStyle(wishOnly)]} accessibilityRole="button">
-            <Text style={pillText(wishOnly)}>❤️ Wishlist ({wishlist.length})</Text>
+            <Text style={pillText(wishOnly)}>Wishlist ({wishlist.length})</Text>
           </Pressable>
         ) : null}
         <Pressable onPress={() => { tapHaptic(); setShowFilters((v) => !v); }} style={[styles.pill, pillStyle(activeCount > 0)]} accessibilityRole="button">
