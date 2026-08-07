@@ -233,32 +233,6 @@ function PocketReef() {
     })();
   }, []);
 
-  // ── Care reminders ─────────────────────────────────────────────────────────
-  // Rebuilt whenever the inputs change. The body is written from the user's
-  // actual top Today action, so a reminder says what's wrong with THEIR tank
-  // rather than pinging them generically.
-  useEffect(() => {
-    if (!hydrated || !activeTank) return;
-    const actions = getTodayActions({
-      tank: activeTank.stock || [],
-      waterTests: activeTank.waterTests || [],
-      maintenance: activeTank.maintenance || {},
-      quarantine: activeTank.quarantine || [],
-      careDoneCount: (careDone[getTodayKey()] || []).length,
-      reminderPrefs,
-      quantities: activeTank.quantities || {},
-      waterType: activeTank.water || "fresh",
-      treatments: activeTank.treatments || [],
-    });
-    const streak = getStreak(activeDays);
-    syncReminders({
-      reminderPrefs,
-      tankName: activeTank.name,
-      topAction: actions && actions.length ? actions[0] : null,
-      // Only nudge when there's a streak to lose and today isn't logged yet.
-      streakAtRisk: streak > 0 && !activeDays.includes(getTodayKey()),
-    }).catch(() => {});
-  }, [hydrated, reminderPrefs, activeTankId, activeTank, activeDays, careDone]);
 
   // Tapping a reminder lands on the tab where you act on it — same deep-link
   // contract the Today card uses. jumpTo enforces the paywall, so a reminder
@@ -545,6 +519,37 @@ function PocketReef() {
   const quarantine = activeTank.quarantine;
   const quantities = activeTank.quantities || {};
   const feedings = activeTank.feedings || [];
+
+  // ── Care reminders ─────────────────────────────────────────────────────────
+  // Rebuilt whenever the inputs change. The body is written from the user's
+  // actual top Today action, so a reminder says what's wrong with THEIR tank
+  // rather than pinging them generically.
+  //
+  // MUST stay below the derived-tank block: a dependency array is evaluated
+  // during render, so depending on activeTank above its declaration threw
+  // "Cannot access 'activeTank' before initialization" on every launch.
+  useEffect(() => {
+    if (!hydrated || !activeTank) return;
+    const actions = getTodayActions({
+      tank: activeTank.stock || [],
+      waterTests: activeTank.waterTests || [],
+      maintenance: activeTank.maintenance || {},
+      quarantine: activeTank.quarantine || [],
+      careDoneCount: (careDone[getTodayKey()] || []).length,
+      reminderPrefs,
+      quantities: activeTank.quantities || {},
+      waterType: activeTank.water || "fresh",
+      treatments: activeTank.treatments || [],
+    });
+    const streak = getStreak(activeDays);
+    syncReminders({
+      reminderPrefs,
+      tankName: activeTank.name,
+      topAction: actions && actions.length ? actions[0] : null,
+      // Only nudge when there's a streak to lose and today isn't logged yet.
+      streakAtRisk: streak > 0 && !activeDays.includes(getTodayKey()),
+    }).catch(() => {});
+  }, [hydrated, reminderPrefs, activeTankId, activeTank, activeDays, careDone]);
 
   // Mutate the active tank and persist.
   const updateActiveTank = (updater) => {
