@@ -16,7 +16,18 @@ import { Chip } from "./Chip";
 function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishlist, onToggleWishlist }) {
   const img = getSpeciesImage(species.name);
   return (
-    <Pressable style={({ pressed }) => [styles.cleanRow, { borderLeftWidth: 3, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }, pressed && { transform: [{ scale: 0.985 }], opacity: 0.9, borderColor: theme.accent, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }]} onPress={onPress} accessibilityRole="button" accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${species.minGallons} gallons.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`} accessibilityHint="Opens care details">
+    // The row is a plain container. Nesting the wishlist and add buttons INSIDE
+    // a row-level button produced nested <button> elements on web and, worse,
+    // made VoiceOver read the whole row label and swallow the two controls
+    // inside it. The details tap target is now their sibling.
+    <View style={[styles.cleanRow, { borderLeftWidth: 3, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }]}>
+      <Pressable
+        style={({ pressed }) => [{ flex: 1, flexDirection: "row", alignItems: "center", gap: 14 }, pressed && { opacity: 0.75 }]}
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${species.minGallons} gallons.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`}
+        accessibilityHint="Opens care details"
+      >
       <View style={styles.cleanImageWrap}>
         {img ? (
           <Image source={img} style={styles.cleanImage} resizeMode="cover" />
@@ -26,7 +37,9 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
       </View>
       <View style={{ flex: 1 }}>
         <Text style={styles.cleanName} numberOfLines={1}>{species.name}</Text>
-        <Text style={styles.cleanMeta} numberOfLines={1}>
+        {/* Two lines: at 375pt "Freshwater · 15 gal+ · 72–79°F" truncated the
+            temperature away, which is the part people are checking for. */}
+        <Text style={styles.cleanMeta} numberOfLines={2}>
           {species.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {formatVolume(species.minGallons)}+ · {formatTempRange(species.tempMinF, species.tempMaxF)}
         </Text>
         <View style={{ flexDirection: "row", gap: 6, marginTop: 7 }}>
@@ -35,6 +48,8 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
         </View>
         {note ? <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
       </View>
+      </Pressable>
+
       {onToggleWishlist ? (
         <Pressable
           onPress={onToggleWishlist}
@@ -63,7 +78,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
       ) : (
         <Text style={styles.cleanArrow}>›</Text>
       )}
-    </Pressable>
+    </View>
   );
 }
 

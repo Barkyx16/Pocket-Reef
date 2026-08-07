@@ -21,7 +21,10 @@ export const IS_LARGE_SCREEN = SCREEN_W >= LARGE_SCREEN_BREAKPOINT;
 // scale. Colors, spacing, and radii are tokenized so the whole app moves together.
 export const theme = {
   background: "#061826",
-  card: "rgba(255, 255, 255, 0.055)",
+  // Dark tint, not a white wash. At 5.5% white over a bright reef photo the
+  // "glass" was effectively transparent and body copy sat directly on coral —
+  // legible over the dark water, unreadable over the pale sand.
+  card: "rgba(9, 30, 45, 0.72)",
   cardSolid: "#0c2739",
   well: "#0a2334",
   border: "rgba(96, 230, 210, 0.16)",
@@ -79,7 +82,7 @@ export const styles = StyleSheet.create({
 
   // ── Species / list row (glass) ─────────────────────────────────────────────
   listGap: { gap: 12 },
-  cleanRow: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(255, 255, 255, 0.055)", borderRadius: 20, padding: 12, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: 12 },
+  cleanRow: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(9, 30, 45, 0.66)", borderRadius: 20, padding: 12, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: 12 },
   cleanImageWrap: { width: 56, height: 56, borderRadius: 16, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: theme.hairline },
   cleanImage: { width: 56, height: 56 },
   cleanEmoji: { fontSize: 28 },

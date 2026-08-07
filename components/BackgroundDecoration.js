@@ -19,7 +19,7 @@ export const BackgroundDecoration = memo(function BackgroundDecoration() {
       />
 
       {/* Darkening overlay keeps content readable over the photo. */}
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(6, 20, 32, 0.55)" }]} />
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(6, 20, 32, 0.66)" }]} />
 
       {/* Top scrim — status bar + hero legibility. */}
       <LinearGradient
