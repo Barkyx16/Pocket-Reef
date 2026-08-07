@@ -11,7 +11,7 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "./styles";
+import { styles, theme, useResponsiveLayout, CONTENT_MAX_WIDTH } from "./styles";
 import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pushSnapshot, pullSnapshot, fetchServerEntitlement } from "./lib/cloudSync";
@@ -20,6 +20,7 @@ import { backupTankPhotos, hydrateTankPhotos } from "./lib/photoSync";
 import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage";
 import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
+import { generateStockingPlan } from "./lib/planner";
 import { LockedTab } from "./components/LockedTab";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { track, EVENTS } from "./lib/analytics";
@@ -110,6 +111,11 @@ export default function App() {
 }
 
 function PocketReef() {
+  // Live layout — re-evaluated on rotation, iPad split view and window resize.
+  // Capping the content column here means every screen inherits it from one
+  // place instead of each ScrollView carrying its own stale snapshot.
+  const layout = useResponsiveLayout();
+
   // Inter, in the weights the design system actually uses. React Native needs a
   // family per weight — fontWeight alone won't select the right file on Android.
   const [fontsLoaded] = useFonts({
@@ -635,13 +641,28 @@ function PocketReef() {
     setSelectedDisease(null);
     setActiveTab("premium");
   };
-  const finishOnboarding = ({ gallons, water } = {}) => {
+  const finishOnboarding = ({ gallons, water, seedStock } = {}) => {
     const patch = {};
     if (gallons) patch.gallons = gallons;
     if (water) patch.water = water;
+
+    // Onboarding shows real recommendations for the tank the user just
+    // described, and then used to drop them into an empty tank — throwing away
+    // the one thing that had just proved the app works. If they asked for it,
+    // seed the stock from the same generator the Tank planner uses.
+    if (seedStock) {
+      const plan = generateStockingPlan({ gallons: gallons || 20, water: water || "fresh", experience: "beginner" });
+      if (plan.ok) {
+        patch.stock = plan.stock;
+        patch.quantities = plan.quantities;
+      }
+    }
+
     if (Object.keys(patch).length) updateActiveTank(patch);
     setSeenOnboarding(true);
     AsyncStorage.setItem("pr_onboarded", "1").catch(() => {});
+    track(EVENTS.ONBOARD_DONE);
+    if (seedStock) setActiveTab("tank");
   };
 
   const recordActivity = (points) => {
@@ -907,7 +928,7 @@ function PocketReef() {
         ) : !seenOnboarding ? (
           <OnboardingCard onFinish={finishOnboarding} onStartPremium={goPremium} />
         ) : (
-        <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
+        <SafeAreaView style={[styles.safe, layout.isLarge && { maxWidth: CONTENT_MAX_WIDTH, width: "100%", alignSelf: "center" }]} edges={["top", "left", "right"]}>
           <StatusBar style="light" />
 
           {tankSheet ? (
@@ -987,7 +1008,7 @@ function PocketReef() {
           )}
 
           {!detailOpen ? (
-            <View style={styles.bottomTabs}>
+            <View style={[styles.bottomTabs, layout.isLarge && { maxWidth: 560, alignSelf: "center", left: 0, right: 0 }]}>
               {TABS.map((tab) => {
                 const on = activeTab === tab.id || (tab.id === "more" && MORE_IDS.includes(activeTab));
                 const label = t(`tabs.${tab.id}`);

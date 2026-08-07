@@ -118,5 +118,19 @@ export const ACHIEVEMENTS = [
   { id: "game_streak10", emoji: "🔥", title: "Unstoppable", desc: "Hit a 10-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 10 },
   { id: "game_streak20", emoji: "🧠", title: "Reef Savant", desc: "Hit a 20-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 20 },
   { id: "game_blitz15", emoji: "⚡", title: "Quick Draw", desc: "Score 15+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 15 },
-  { id: "game_blitz25", emoji: "🏅", title: "Blitz Champion", desc: "Score 25+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 25 },
+  { id: "game_blitz25", emoji: "🏅", title: "Blitz Champion", desc: "Score 25+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 25 },,
+  // ── Treatment, chemistry & planning ──
+  // Added after these features shipped with no progression attached — the loop
+  // should reward the behaviour the app is trying to teach, especially
+  // finishing a treatment course rather than stopping when symptoms clear.
+  { id: "first_treatment", emoji: "💊", title: "Field Medic", desc: "Start a treatment course for a sick fish.", check: (s) => s.treatmentsStarted >= 1 },
+  { id: "treatment_done", emoji: "🩹", title: "Saw It Through", desc: "Complete every step of a treatment course.", check: (s) => s.treatmentsCompleted >= 1 },
+  { id: "treatment_done3", emoji: "⚕️", title: "Reef Doctor", desc: "Complete three full treatment courses.", check: (s) => s.treatmentsCompleted >= 3 },
+  { id: "reef_chem5", emoji: "⚗️", title: "Chemist", desc: "Log alkalinity, calcium or magnesium 5 times.", check: (s) => s.reefChemTests >= 5 },
+  { id: "reef_chem25", emoji: "🧬", title: "Reef Chemist", desc: "Log reef chemistry 25 times.", check: (s) => s.reefChemTests >= 25 },
+  { id: "forecastable", emoji: "🔮", title: "Trend Setter", desc: "Log enough tests for Pocket Reef to forecast a tank.", check: (s) => s.forecastable >= 1 },
+  { id: "forecast_two", emoji: "📉", title: "Ahead of the Curve", desc: "Build a testing history on two tanks.", check: (s) => s.forecastable >= 2 },
+  { id: "note_taker", emoji: "🗒️", title: "Note Taker", desc: "Add notes to one of your tanks.", check: (s) => s.tanksWithNotes >= 1 },
+  { id: "schools_out", emoji: "🐟", title: "Schools In", desc: "Keep 5 schooling species at their full group size.", check: (s) => s.fullSchoolsCount >= 5 },
+  { id: "schools_ten", emoji: "🌊", title: "Shoal Keeper", desc: "Keep 10 schooling species at full group size.", check: (s) => s.fullSchoolsCount >= 10 },
 ];

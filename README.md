@@ -32,7 +32,7 @@ optional; see [Cloud save](#cloud-save-optional).
 | **Disease guides** | 10, each with signs, prevention, and treatment |
 | **Emergency scenarios** | 6 guided troubleshooting flows |
 | **Curated tank ideas** | 22 one-tap stocking plans |
-| **Achievements** | 86 |
+| **Achievements** | 96 |
 | **Water parameters** | 6 freshwater · 10 saltwater (full reef chemistry) |
 | **Daily tips** | 15 |
 | **Languages** | English, Spanish |
@@ -178,7 +178,7 @@ whole course.
 
 ### Profile
 Cloud save and backup, lifetime stats, a collection breakdown by water type and kind,
-86 achievements with an earned/locked filter, and premium.
+96 achievements with an earned/locked filter, and premium.
 
 ### Species detail
 Care stats, contextual tips, live compatibility against your tank, which of *your* tanks

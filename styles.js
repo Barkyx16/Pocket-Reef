@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, useWindowDimensions } from "react-native";
 
 // ── Large screens ────────────────────────────────────────────────────────────
 // app.json sets supportsTablet, so this already ships on iPad — where a
@@ -7,8 +7,13 @@ import { Dimensions, StyleSheet } from "react-native";
 // keeps the design at the width it was drawn for, with the background filling
 // the rest.
 const { width: SCREEN_W } = Dimensions.get("window");
-export const IS_LARGE_SCREEN = SCREEN_W >= 768;
-const CONTENT_MAX_WIDTH = 700;
+export const LARGE_SCREEN_BREAKPOINT = 768;
+export const CONTENT_MAX_WIDTH = 700;
+
+// StyleSheet is built once, so this snapshot is only a sensible starting point.
+// It is wrong the moment the device rotates, an iPad enters split view, or a
+// foldable opens — use useResponsiveLayout() in components that must react.
+export const IS_LARGE_SCREEN = SCREEN_W >= LARGE_SCREEN_BREAKPOINT;
 
 // Ocean/reef design system — deep teal-on-navy "glass". Same design language as
 // Pocket Planter (rounded glass cards, accent glow, floating tab bar), recolored
@@ -44,7 +49,7 @@ const ACCENT_LIGHT = theme.accentLight;
 
 export const styles = StyleSheet.create({
   safe: { flex: 1 },
-  scroll: { padding: 16, paddingBottom: 132, ...(IS_LARGE_SCREEN ? { maxWidth: CONTENT_MAX_WIDTH, width: "100%", alignSelf: "center" } : null) },
+  scroll: { padding: 16, paddingBottom: 132 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 28, padding: 24, marginBottom: 18, overflow: "hidden", justifyContent: "flex-end", minHeight: 158, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
@@ -129,10 +134,28 @@ export const styles = StyleSheet.create({
   accountDangerText: { color: theme.danger, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
-  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 , ...(IS_LARGE_SCREEN ? { maxWidth: 560, alignSelf: "center", width: "100%" } : null) }, elevation: 24 },
+  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 }, elevation: 24 },
   bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 9, borderRadius: 18, gap: 3 },
   bottomTabButtonActive: { backgroundColor: ACCENT, shadowColor: ACCENT, shadowOpacity: 0.5, shadowRadius: 16, shadowOffset: { width: 0, height: 6 }, elevation: 12 },
   bottomTabEmoji: { fontSize: 20 },
   bottomTabLabel: { fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", color: "#7ea6bd" },
   bottomTabLabelActive: { color: "#04202a" },
 });
+
+
+// Live layout, re-evaluated on every resize/rotation.
+//
+// The static IS_LARGE_SCREEN above can only ever describe the app's state at
+// launch. Anything that changes shape with the window should read this instead.
+export function useResponsiveLayout() {
+  const { width, height } = useWindowDimensions();
+  const isLarge = width >= LARGE_SCREEN_BREAKPOINT;
+  return {
+    width,
+    height,
+    isLarge,
+    isLandscape: width > height,
+    // Drop-in for styles.scroll on screens that need to react live.
+    contentStyle: isLarge ? { maxWidth: CONTENT_MAX_WIDTH, width: "100%", alignSelf: "center" } : null,
+  };
+}

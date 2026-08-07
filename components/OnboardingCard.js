@@ -77,7 +77,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
     : 0;
   const current = SLIDES[step];
 
-  const finish = () => onFinish({ gallons, water });
+  const finish = (seedStock = false) => onFinish({ gallons, water, seedStock });
   const hero = isPremium
     ? { emoji: "👑", eyebrow: "One more thing", title: "Go Premium", text: "Unlock the full reef toolkit — free to try anytime.", colors: ["#3a2f12", "#20320f", "#08202f"], glow: "rgba(255,211,114,0.20)" }
     : isResult
@@ -184,9 +184,17 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             </>
           ) : (
             <>
-              <GradientButton label={isResult ? "See what else it does →" : isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
-              <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Skip</Text>
+              {isResult ? (
+                // The plan is right there and already proven compatible —
+                // making them rebuild it by hand is a pointless first task.
+                <GradientButton label="Start my tank with these 🐠" onPress={() => finish(true)} />
+              ) : (
+                <GradientButton label={isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
+              )}
+              <Pressable onPress={() => (isResult ? setStep((s) => s + 1) : finish(false))} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
+                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                  {isResult ? "I'll pick my own" : "Skip"}
+                </Text>
               </Pressable>
             </>
           )}

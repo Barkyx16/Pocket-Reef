@@ -8,7 +8,15 @@ import { LinearGradient } from "expo-linear-gradient";
 export const BackgroundDecoration = memo(function BackgroundDecoration() {
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
-      <Image source={require("../assets/background.png")} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      {/* absoluteFill alone leaves the image at its intrinsic size in some
+          renderers — it was drawing 853x1844 inside a 1280-wide root, so the
+          photo under-covered horizontally and overflowed vertically. Explicit
+          100% dimensions make resizeMode="cover" actually apply. */}
+      <Image
+        source={require("../assets/background.png")}
+        style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
+        resizeMode="cover"
+      />
 
       {/* Darkening overlay keeps content readable over the photo. */}
       <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(6, 20, 32, 0.55)" }]} />

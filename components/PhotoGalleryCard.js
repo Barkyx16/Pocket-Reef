@@ -1,6 +1,6 @@
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { styles, theme } from "../styles";
-import { SCREEN_WIDTH } from "../core";
+
 
 // A grid of every photo from the tank journal — a quick visual history. Tapping
 // a thumbnail opens that dated entry's note.
@@ -10,7 +10,9 @@ export function PhotoGalleryCard({ journal = [], onOpen }) {
     return <Text style={styles.cardText}>Add a photo to a journal entry and your tank's photo history will build here.</Text>;
   }
   // Three across, accounting for card padding (20) and gaps (8).
-  const size = Math.floor((SCREEN_WIDTH - 32 - 40 - 16) / 3);
+  // Live width — a grid sized at launch leaves a ragged gap after rotation.
+  const { width } = useWindowDimensions();
+  const size = Math.floor((width - 32 - 40 - 16) / 3);
   return (
     <View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>{photos.length} photo{photos.length > 1 ? "s" : ""} from your journal.</Text>

@@ -8,6 +8,8 @@ import { ACHIEVEMENTS } from "./data/achievements";
 import { TROUBLESHOOTING } from "./data/troubleshooting";
 import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatments";
 
+// Launch-time snapshot. Correct for one-off calculations that don't need to
+// survive rotation; anything that lays out should use useWindowDimensions.
 export const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export { SPECIES, getCompatibility, DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom, PARAMS, assessParam, ACHIEVEMENTS, TROUBLESHOOTING, TREATMENTS, getTreatment, getTreatableDiseases };
@@ -844,7 +846,10 @@ export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist 
   // Default parameters only cover `undefined`, not `null` — and a null here
   // used to throw on wishlist.length, which takes the whole Profile tab down.
   // Normalize before anything reads them.
-  tanks = Array.isArray(tanks) ? tanks : [];
+  // The array being valid isn't enough — a single null or non-object ENTRY
+  // (a partial sync, a hand-edited import) used to throw on t.stock and take
+  // the whole Profile tab with it. Drop bad entries rather than trusting them.
+  tanks = (Array.isArray(tanks) ? tanks : []).filter((t) => t && typeof t === "object");
   activeDays = Array.isArray(activeDays) ? activeDays : [];
   wishlist = Array.isArray(wishlist) ? wishlist : [];
   gameStats = gameStats && typeof gameStats === "object" ? gameStats : {};
@@ -857,6 +862,29 @@ export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist 
   const kinds = new Set(species.map((s) => s.kind));
 
   const maxTank = tanks.reduce((m, t) => Math.max(m, (t.stock || []).length), 0);
+
+  // Stats for the features added since the last achievement pass — treatments,
+  // reef dosing, forecasting and the stocking planner had no representation at
+  // all, so none of that work fed the progression loop.
+  const allTreatments = tanks.flatMap((t) => t.treatments || []);
+  const treatmentsStarted = allTreatments.length;
+  // A course counts as completed only when every step is ticked — the whole
+  // point of the treatment feature is not stopping when symptoms clear.
+  const treatmentsCompleted = allTreatments.filter((tr) => {
+    const prog = getTreatmentProgress(tr.disease, tr.startedAt, tr.doneSteps || []);
+    return prog && prog.completed === prog.total && prog.total > 0;
+  }).length;
+  const reefChemTests = tanks.reduce((n, t) => n + (t.waterTests || []).filter((w) => w.values && (w.values.alk != null || w.values.calcium != null || w.values.magnesium != null)).length, 0);
+  // Tanks with enough history for a real trend.
+  const forecastable = tanks.filter((t) => (t.waterTests || []).length >= 3).length;
+  const tanksWithNotes = tanks.filter((t) => (t.notes || "").trim().length > 0).length;
+  const fullSchools = tanks.reduce((n, t) => {
+    const q = t.quantities || {};
+    return n + (t.stock || []).filter((name) => {
+      const sp = getSpecies(name);
+      return sp && sp.minGroup > 1 && (q[name] || 0) >= sp.minGroup;
+    }).length;
+  }, 0);
   const tests = tanks.reduce((s, t) => s + (t.waterTests || []).length, 0);
   const journal = tanks.reduce((s, t) => s + (t.journal || []).length, 0);
   const photos = tanks.reduce((s, t) => s + (t.journal || []).filter((e) => e.photo).length, 0);
@@ -925,6 +953,7 @@ export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist 
   const reefChem = tanks.some((t) => (t.waterTests || []).some((w) => w.values && w.values.alk != null && w.values.calcium != null && w.values.magnesium != null));
 
   const st = {
+    treatmentsStarted, treatmentsCompleted, reefChemTests, forecastable, tanksWithNotes, fullSchoolsCount: fullSchools,
     species: allNames.size, maxTank, tanks: tanks.length, tests, journal, photos, costs, spend,
     maint: maintTypes.size, quarantine, cycled, perfect,
     wishlist: wishlist.length, tankAgeDays, shoal, bigSchool, documented, fullShoals, feedings, reefChem, trifecta, fullPanel, nanoMaster,
