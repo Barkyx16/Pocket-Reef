@@ -1,5 +1,5 @@
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, CONTENT_MAX_WIDTH } from "../styles";
 
 
 // A grid of every photo from the tank journal — a quick visual history. Tapping
@@ -11,8 +11,12 @@ export function PhotoGalleryCard({ journal = [], onOpen }) {
   }
   // Three across, accounting for card padding (20) and gaps (8).
   // Live width — a grid sized at launch leaves a ragged gap after rotation.
+  // Window width is NOT the container width: above 768pt the content column is
+  // capped at CONTENT_MAX_WIDTH and centred, so sizing a grid from the raw
+  // window made the photos overflow their card on a tablet or wide window.
   const { width } = useWindowDimensions();
-  const size = Math.floor((width - 32 - 40 - 16) / 3);
+  const columnWidth = Math.min(width, CONTENT_MAX_WIDTH);
+  const size = Math.floor((columnWidth - 32 - 40 - 16) / 3);
   return (
     <View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>{photos.length} photo{photos.length > 1 ? "s" : ""} from your journal.</Text>

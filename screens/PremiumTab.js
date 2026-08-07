@@ -68,6 +68,10 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
   }, [loadPlans, storeReady]);
 
   const ctx = reason ? REASON_COPY[reason] : null;
+  // storeReady only means the SDK configured. Without a fetched package there
+  // is nothing to buy, and labelling the button "Unlock Premium" in that state
+  // produced a dead CTA — the worst possible thing on a paywall.
+  const canBuy = storeReady && !loadingPlans && plans.length > 0 && !!plan;
   const save = savingLabel(plans);
   const trialDays = plan && plan.freeTrialDays ? plan.freeTrialDays : 0;
 
@@ -143,9 +147,15 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
             </Text>
           ) : null}
           <GradientButton
-            label={buying ? "Opening…" : !storeReady ? "Store unavailable" : trialDays ? `Start ${trialDays} days free` : "Unlock Premium"}
-            onPress={() => storeReady && !buying && plan && onPurchase && onPurchase(plan)}
-            style={{ marginTop: 16, opacity: storeReady && !buying && plan ? 1 : 0.6 }}
+            label={
+              buying ? "Opening…"
+                : loadingPlans ? "Loading…"
+                : !canBuy ? "Unavailable right now"
+                : trialDays ? `Start ${trialDays} days free`
+                : "Unlock Premium"
+            }
+            onPress={() => canBuy && !buying && onPurchase && onPurchase(plan)}
+            style={{ marginTop: 16, opacity: canBuy && !buying ? 1 : 0.55 }}
           />
           {!storeReady ? (
             <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
@@ -160,10 +170,11 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           {/* Auto-renew disclosure. App Store review requires this verbatim-ish
               wording next to the CTA, along with reachable terms and privacy. */}
           <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", textAlign: "center", marginTop: 10, lineHeight: 15 }}>
-            {trialDays ? `Free for ${trialDays} days, then ` : ""}
-            {plan ? `${plan.priceString}${plan.per}` : "the listed price"}. Subscriptions renew automatically
-            unless cancelled at least 24 hours before the period ends. Manage or cancel in your
-            {" "}{"App Store"} settings.
+            {plan
+              ? `${trialDays ? `Free for ${trialDays} days, then ` : ""}${plan.priceString}${plan.per}. `
+              : ""}
+            Subscriptions renew automatically unless cancelled at least 24 hours before the period
+            ends. Manage or cancel in your App Store settings.
           </Text>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 18, marginTop: 8 }}>
             <Pressable onPress={() => Linking.openURL(TERMS_URL).catch(() => {})} hitSlop={8}>

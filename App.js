@@ -1008,7 +1008,16 @@ function PocketReef() {
           )}
 
           {!detailOpen ? (
-            <View style={[styles.bottomTabs, layout.isLarge && { maxWidth: 560, alignSelf: "center", left: 0, right: 0 }]}>
+            <View style={[styles.bottomTabs, layout.isLarge && {
+              // alignSelf is ignored on an absolutely-positioned element, so
+              // the bar hugged the left edge of the content column. Auto
+              // margins against left:0/right:0 is what actually centres it.
+              maxWidth: 560,
+              left: 0,
+              right: 0,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }]}>
               {TABS.map((tab) => {
                 const on = activeTab === tab.id || (tab.id === "more" && MORE_IDS.includes(activeTab));
                 const label = t(`tabs.${tab.id}`);

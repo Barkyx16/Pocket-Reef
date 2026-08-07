@@ -46,7 +46,10 @@ export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, jou
         <WaterTestCard waterType={waterType} history={waterTests} onLog={onLogTest} />
       </CollapsibleCard>
 
-      {waterTests.length >= 2 ? (
+      {/* Matches FORECAST_MIN_POINTS in core.js — at two readings the card could
+          only render its own empty state, which is a section header promising
+          something it cannot deliver. */}
+      {waterTests.length >= 3 ? (
         <CollapsibleCard storageKey="forecast" title="🔮 Where It's Heading" eyebrow="Projected from your recent tests">
           <ForecastCard forecasts={getParamForecasts(waterTests, tankWater, tank)} />
         </CollapsibleCard>
