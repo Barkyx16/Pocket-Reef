@@ -1,14 +1,16 @@
 import { ScrollView, Share } from "react-native";
 import { styles } from "../styles";
-import { getSpecies, getStreak, getTodayKey, PARAMS, tapHaptic } from "../core";
+import { getSpecies, getStreak, getTodayKey, PARAMS, tapHaptic, getParamForecasts } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { CollapsibleCard } from "../components/CollapsibleCard";
+import { ForecastCard } from "../components/ForecastCard";
+import { DosingCard } from "../components/DosingCard";
 import { WaterTestCard } from "../components/WaterTestCard";
 import { WaterDeltaCard } from "../components/WaterDeltaCard";
 import { TankToolkitCard } from "../components/TankToolkitCard";
 import { t } from "../lib/i18n";
 
-export function LogTab({ tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, premiumUnlocked, onOpenPremium }) {
+export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, premiumUnlocked, onOpenPremium }) {
   const waterType = tank.length ? (getSpecies(tank[0])?.water === "salt" ? "salt" : "fresh") : "fresh";
   const streak = getStreak(activeDays);
 
@@ -45,6 +47,18 @@ export function LogTab({ tank, tankGallons, waterTests, journal, activeDays, cos
       </CollapsibleCard>
 
       {waterTests.length >= 2 ? (
+        <CollapsibleCard storageKey="forecast" title="🔮 Where It's Heading" eyebrow="Projected from your recent tests">
+          <ForecastCard forecasts={getParamForecasts(waterTests, tankWater, tank)} />
+        </CollapsibleCard>
+      ) : null}
+
+      {tankWater === "salt" ? (
+        <CollapsibleCard storageKey="dosing" title="⚗️ Dosing" eyebrow="Alkalinity, calcium & magnesium">
+          <DosingCard latestValues={(waterTests[0] || {}).values || {}} tankGallons={tankGallons} />
+        </CollapsibleCard>
+      ) : null}
+
+      {waterTests.length ? (
         <CollapsibleCard storageKey="waterdelta" title="📊 Since Last Test">
           <WaterDeltaCard waterTests={waterTests} waterType={waterType} />
         </CollapsibleCard>

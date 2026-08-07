@@ -225,3 +225,53 @@ describe("treatment plans", () => {
     expect(getTreatmentProgress("Ich (White Spot)", "garbage")).toBeNull();
   });
 });
+
+describe("Today hub picks up the new intelligence", () => {
+  const { getTodayActions } = require("../core");
+
+  test("a treatment step due today appears as an action", () => {
+    const actions = getTodayActions({
+      tank: [], waterTests: [],
+      treatments: [{ disease: "Ich (White Spot)", startedAt: iso(0), doneSteps: [] }],
+    });
+    expect(actions.some((a) => /Ich/.test(a.text))).toBe(true);
+  });
+
+  test("an overdue treatment step is top priority and deep-links to Health", () => {
+    const actions = getTodayActions({
+      tank: [], waterTests: [],
+      treatments: [{ disease: "Ich (White Spot)", startedAt: iso(6), doneSteps: [] }],
+    });
+    const step = actions.find((a) => /overdue/i.test(a.text));
+    expect(step).toBeTruthy();
+    expect(step.rank).toBe(0);
+    expect(step.to).toBe("health");
+  });
+
+  test("completed steps stop nagging", () => {
+    const { getTreatmentProgress } = require("../core");
+    const all = getTreatmentProgress("Ich (White Spot)", iso(6)).steps.map((s) => s.id);
+    const actions = getTodayActions({
+      tank: [], waterTests: [],
+      treatments: [{ disease: "Ich (White Spot)", startedAt: iso(6), doneSteps: all }],
+    });
+    expect(actions.some((a) => /Ich/.test(a.text))).toBe(false);
+  });
+
+  test("an imminent forecast crossing surfaces in Today", () => {
+    const rising = [[0, 38], [7, 28], [14, 18], [21, 8]].map(([d, v]) => ({ date: iso(d), values: { nitrate: v } }));
+    const actions = getTodayActions({ tank: [], waterTests: rising, waterType: "fresh" });
+    const f = actions.find((a) => /out of range in about/i.test(a.text));
+    if (f) expect(f.to).toBe("log");
+  });
+
+  test("a far-off or unconfident forecast does not nag", () => {
+    const flat = [[0, 20], [7, 20], [14, 20]].map(([d, v]) => ({ date: iso(d), values: { nitrate: v } }));
+    const actions = getTodayActions({ tank: [], waterTests: flat, waterType: "fresh" });
+    expect(actions.some((a) => /out of range in about/i.test(a.text))).toBe(false);
+  });
+
+  test("still works with none of the new inputs supplied", () => {
+    expect(() => getTodayActions({ tank: [], waterTests: [] })).not.toThrow();
+  });
+});

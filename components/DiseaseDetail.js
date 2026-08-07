@@ -3,9 +3,10 @@ import { styles, theme } from "../styles";
 import { getDisease, getSpecies } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { SpeciesThumb } from "./SpeciesThumb";
+import { TreatmentPlanCard } from "./TreatmentPlanCard";
 
 // Disease guide detail — the analog of Pocket Planter's DiseaseDetailScreen.
-export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies }) {
+export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatment, onStartTreatment, onToggleTreatmentStep, onStopTreatment }) {
   const d = getDisease(name);
   if (!d) return null;
   const img = getDiseaseImage(name);
@@ -37,6 +38,20 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies }) {
       <Section icon="👀" title="Signs & symptoms" text={d.signs} color={theme.warn} />
       <Section icon="🛡️" title="How to prevent it" text={d.prevent} color={theme.accent} />
       <Section icon="✅" title="How to treat it" text={d.treat} color="#5cff89" />
+
+      {/* A guided course — the part that keeps going after symptoms clear. */}
+      {onStartTreatment ? (
+        <View style={styles.card}>
+          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>📋 Treatment plan</Text>
+          <TreatmentPlanCard
+            diseaseName={name}
+            treatment={treatment}
+            onStart={onStartTreatment}
+            onToggleStep={onToggleTreatmentStep}
+            onStop={onStopTreatment}
+          />
+        </View>
+      ) : null}
 
       {/* AT RISK IN YOUR TANK */}
       {atRisk.length ? (

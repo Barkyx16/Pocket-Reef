@@ -211,7 +211,7 @@ export function getCycleStatus(waterTests = []) {
 // Combines every signal — overdue maintenance, a due water test, a finished
 // quarantine, unfinished care, an incomplete cycle — into one prioritized list
 // of what to do right now.
-export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, quarantine = [], careDoneCount = 0, careTotal = 4, reminderPrefs = {}, quantities = {} } = {}) {
+export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, quarantine = [], careDoneCount = 0, careTotal = 4, reminderPrefs = {}, quantities = {}, waterType = "fresh", treatments = [] } = {}) {
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   const daysAgo = (iso) => Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
   const cadenceDays = (pref) => (pref === "biweekly" ? 14 : pref === "weekly" ? 7 : null); // null = off
@@ -263,6 +263,34 @@ export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, 
   }
   quarantine.forEach((q) => { if (daysAgo(q.startDate) >= 21) out.push({ rank: 2, icon: "✅", to: "tank", text: `${q.name} finished quarantine — ready to add` }); });
   if (tank.length && careDoneCount < careTotal) out.push({ rank: 2, icon: "💧", to: "home", text: `${careTotal - careDoneCount} care task${careTotal - careDoneCount > 1 ? "s" : ""} left today` });
+  // Treatment steps due today. These outrank almost everything else — a missed
+  // medication day can undo the whole course.
+  (treatments || []).forEach((tr) => {
+    const prog = getTreatmentProgress(tr.disease, tr.startedAt, tr.doneSteps || []);
+    if (!prog) return;
+    prog.overdue.forEach((step) => {
+      out.push({ rank: 0, icon: "🔴", to: "health", text: `${tr.disease}: "${step.title}" is overdue (day ${step.day})` });
+    });
+    prog.dueToday.filter((step) => !step.done).forEach((step) => {
+      out.push({ rank: 0, icon: "💊", to: "health", text: `${tr.disease} day ${prog.day}: ${step.title}` });
+    });
+  });
+
+  // A parameter heading out of range. The whole point of forecasting is that
+  // this reaches the user BEFORE the reading is bad, so it belongs in Today
+  // rather than only on a card they'd have to go looking for.
+  getParamForecasts(waterTests, waterType, tank).forEach((f) => {
+    if (f.daysToEdge == null) return; // no confident date, no nag
+    if (f.daysToEdge <= 14) {
+      out.push({
+        rank: f.daysToEdge <= 5 ? 0 : 1,
+        icon: f.daysToEdge <= 5 ? "🔴" : "📈",
+        to: "log",
+        text: `${f.label} is ${f.direction} — out of range in about ${f.daysToEdge} day${f.daysToEdge === 1 ? "" : "s"}`,
+      });
+    }
+  });
+
   return out.sort((a, b) => a.rank - b.rank);
 }
 

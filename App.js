@@ -79,8 +79,8 @@ const LOCKED_COPY = {
   profile: { emoji: "👤", title: "Profile & cloud save", blurb: "Your stats, achievements, and your reef backed up to your account.", perks: ["Cloud save across devices", "86 achievements", "Lifetime stats & collection insights", "Export and import your data"] },
 };
 
-const EMPTY_TANK = { name: "My Tank", gallons: 20, water: "fresh", emoji: "🐠", stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: null };
-const newTank = (name, gallons = 20, water = "fresh", emoji = "🐠") => ({ id: String(Date.now()) + Math.random().toString(36).slice(2, 6), name, gallons, water, emoji, stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], createdAt: new Date().toISOString() });
+const EMPTY_TANK = { name: "My Tank", gallons: 20, water: "fresh", emoji: "🐠", stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], treatments: [], createdAt: null };
+const newTank = (name, gallons = 20, water = "fresh", emoji = "🐠") => ({ id: String(Date.now()) + Math.random().toString(36).slice(2, 6), name, gallons, water, emoji, stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], treatments: [], createdAt: new Date().toISOString() });
 // Tanks hold everything a user would actually mourn, so they get the two-phase
 // write: a crash mid-save can never leave truncated JSON as the only copy.
 // Every save also stamps pr_lastEdit, which is what stops an older cloud
@@ -247,6 +247,8 @@ function PocketReef() {
       careDoneCount: (careDone[getTodayKey()] || []).length,
       reminderPrefs,
       quantities: activeTank.quantities || {},
+      waterType: activeTank.water || "fresh",
+      treatments: activeTank.treatments || [],
     });
     const streak = getStreak(activeDays);
     syncReminders({
@@ -669,6 +671,31 @@ function PocketReef() {
     updateActiveTank((tk) => ({ quantities: { ...(tk.quantities || {}), [name]: q } }));
   };
   const logTest = (entry) => { updateActiveTank((tk) => ({ waterTests: [entry, ...tk.waterTests].slice(0, 60) })); recordActivity(10); };
+  // ── Treatments ─────────────────────────────────────────────────────────────
+  // A course lives on the tank, because "which tank is being treated" is the
+  // whole point — the same disease in two tanks is two separate courses.
+  const startTreatment = (diseaseName) => {
+    updateActiveTank((tk) => {
+      const others = (tk.treatments || []).filter((t) => t.disease !== diseaseName);
+      return { treatments: [...others, { disease: diseaseName, startedAt: new Date().toISOString(), doneSteps: [] }] };
+    });
+    recordActivity(3);
+  };
+
+  const toggleTreatmentStep = (diseaseName, stepId) => {
+    updateActiveTank((tk) => ({
+      treatments: (tk.treatments || []).map((t) => {
+        if (t.disease !== diseaseName) return t;
+        const done = t.doneSteps || [];
+        return { ...t, doneSteps: done.includes(stepId) ? done.filter((id) => id !== stepId) : [...done, stepId] };
+      }),
+    }));
+  };
+
+  const stopTreatment = (diseaseName) => {
+    updateActiveTank((tk) => ({ treatments: (tk.treatments || []).filter((t) => t.disease !== diseaseName) }));
+  };
+
   const addJournal = (entry) => { updateActiveTank((tk) => ({ journal: [entry, ...tk.journal].slice(0, 200) })); recordActivity(5); };
   const deleteJournal = (id) => updateActiveTank((tk) => ({ journal: tk.journal.filter((e) => e.id !== id) }));
   const editJournal = (id, patch) => updateActiveTank((tk) => ({ journal: tk.journal.map((e) => (e.id === id ? { ...e, ...patch } : e)) }));
@@ -854,7 +881,7 @@ function PocketReef() {
           ) : showImport ? (
             <ImportSheet onImport={importData} onClose={() => setShowImport(false)} />
           ) : selectedDisease ? (
-            <DiseaseDetail name={selectedDisease} tank={tank} onBack={() => setSelectedDisease(null)} onOpenSpecies={(n) => { setSelectedDisease(null); setSelectedSpecies(n); }} />
+            <DiseaseDetail name={selectedDisease} tank={tank} onBack={() => setSelectedDisease(null)} onOpenSpecies={(n) => { setSelectedDisease(null); setSelectedSpecies(n); }} treatment={(activeTank.treatments || []).find((t) => t.disease === selectedDisease) || null} onStartTreatment={startTreatment} onToggleTreatmentStep={toggleTreatmentStep} onStopTreatment={stopTreatment} />
           ) : selectedSpecies ? (
             <SpeciesDetail
               name={selectedSpecies}
@@ -892,7 +919,7 @@ function PocketReef() {
                 <HomeTab
                   tankGallons={tankGallons} setTankGallons={changeTankGallons} tank={tank} toggleTank={toggleTank} openSpecies={openSpecies}
                   activeDays={activeDays} xp={xp} waterTests={waterTests} journal={journal} feedings={feedings} careDoneToday={careDone[getTodayKey()] || []} onToggleCare={toggleCare}
-                  maintenance={maintenance} quarantine={quarantine} quantities={quantities} tankWater={activeTank.water}
+                  maintenance={maintenance} quarantine={quarantine} quantities={quantities} tankWater={activeTank.water} treatments={activeTank.treatments || []}
                   tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onEditTank={openEditTank} onDeleteTank={deleteTank} onDuplicateTank={duplicateTank}
                   premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} onExport={exportData} onImport={() => setShowImport(true)}
                   reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit}
@@ -903,7 +930,7 @@ function PocketReef() {
               )}
               {activeTab === "species" && <SpeciesTab tankGallons={tankGallons} tank={tank} toggleTank={toggleTank} openSpecies={openSpecies} openDisease={openDisease} wishlist={wishlist} onToggleWishlist={toggleWishlist} recent={recent} premiumUnlocked={premiumUnlocked} freeLimit={FREE_SPECIES_LIMIT} onOpenPremium={() => goPremium("species")} />}
               {activeTab === "tank" && <TankTab tankGallons={tankGallons} setTankGallons={changeTankGallons} tank={tank} tankWater={activeTank.water} tankCreatedAt={activeTank.createdAt} tankNotes={activeTank.notes} waterTests={waterTests} maintenance={maintenance} quantities={quantities} onSetQuantity={setQuantity} toggleTank={toggleTank} openSpecies={openSpecies} onLoadIdea={loadTankIdea} onClearStock={clearStock} quarantine={quarantine} onAddQuarantine={addQuarantine} onRemoveQuarantine={removeQuarantine} onGraduateQuarantine={graduateQuarantine} tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onGoToTab={jumpTo} />}
-              {activeTab === "log" && <LogTab tank={tank} tankGallons={tankGallons} waterTests={waterTests} journal={journal} activeDays={activeDays} costs={costs} feedings={feedings} onLogTest={logTest} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} onAddCost={addCost} onDeleteCost={deleteCost} onAddFeeding={addFeeding} onDeleteFeeding={deleteFeeding} maintenance={maintenance} onLogMaintenance={logMaintenance} premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} />}
+              {activeTab === "log" && <LogTab tank={tank} tankGallons={tankGallons} tankWater={activeTank.water} waterTests={waterTests} journal={journal} activeDays={activeDays} costs={costs} feedings={feedings} onLogTest={logTest} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} onAddCost={addCost} onDeleteCost={deleteCost} onAddFeeding={addFeeding} onDeleteFeeding={deleteFeeding} maintenance={maintenance} onLogMaintenance={logMaintenance} premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} />}
               {activeTab === "more" && <MoreTab items={MORE_ITEMS} onNavigate={jumpTo} onClose={() => jumpTo("home")} lockedIds={premiumUnlocked ? null : PREMIUM_TAB_IDS} />}
               {activeTab === "games" && <GamesTab onEarnXp={addXp} />}
               {activeTab === "journal" && <JournalTab journal={journal} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} />}

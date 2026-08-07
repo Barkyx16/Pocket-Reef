@@ -146,6 +146,7 @@ and tank age.
 - **Water testing** — graded against your stock's own temperature and pH window, not a generic range, with since-last-test deltas
 - **Forecasting** — fits a trend per parameter and projects when it leaves the safe band ("nitrate rising 8/week, out of range in ~9 days"). Conservative by design: a weak fit reports a drift but never a countdown
 - **Water-change impact** — what a given % change actually does to each parameter, and the smallest change that gets you back in range
+- **Reef dosing** — Alk/Ca/Mg doses from your real water volume, split across days when a correction is too large to make safely in one go
 - **Water insights** — per-parameter averages, testing cadence, in-range percentage, CSV export
 - **Nitrogen cycle tracker** — know when the tank is actually ready
 - **Water-change calculator** — with one-tap logging into maintenance and the journal
@@ -158,9 +159,12 @@ Everything logged earns XP.
 Illustrated disease guides, a **symptom checker** that works backward from what you're
 actually seeing, and an emergency troubleshooter for the moments that matter.
 
-**Treatment plans** for all 10 diseases — day-by-day courses that track progress and
-flag the mistake that causes most relapses: stopping when the symptoms disappear, which
-for ich is exactly when the parasite has dropped off to breed.
+**Treatment plans** for all 10 diseases — day-by-day courses you tick off, tracked per
+tank. The key warning stays pinned for the whole course rather than being buried in a
+step, because the mistake that causes most relapses is stopping when the symptoms
+disappear — which for ich is exactly when the parasite has dropped off to breed. Steps
+due or overdue surface in the Today hub, since a missed medication day can undo the
+whole course.
 
 ### Profile
 Cloud save and backup, lifetime stats, a collection breakdown by water type and kind,
