@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { useTabBarScroll } from "../lib/tabBarScroll";
 import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic } from "../core";
 import { PremiumTeaserCard } from "../components/PremiumTeaserCard";
 import { HeroBanner } from "../components/HeroBanner";
@@ -19,6 +20,7 @@ const CARE_TASKS = [
 ];
 
 export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays = [], xp = 0, waterTests = [], journal = [], feedings = [], careDoneToday = [], onToggleCare, maintenance = {}, quarantine = [], tankWater, tanks = [], activeTankId, onSwitchTank, onEditTank, onAddTank, onDeleteTank, onDuplicateTank, onExport, onImport, premiumUnlocked, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, onGoToTab, wishlist = [], onToggleWishlist, quantities = {}, profileName = "", fishOfDaySeen = false, onSeeFishOfDay, challengesDone = [], onCompleteChallenge, treatments = [] }) {
+  const tabBarScroll = useTabBarScroll();
   const hour = new Date().getHours();
   const greeting = `${hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"}${profileName ? `, ${profileName}` : ""}`;
   const today = getTodayKey();
@@ -48,7 +50,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
   const seasonalChallenges = seasonal.items.filter((c) => !challengeDone(c));
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={greeting}
         title={t("home.title")}

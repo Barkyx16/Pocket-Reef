@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Image, Linking, Pressable, Share, StyleSheet, Text, View } from "react-native";
+import { Alert, Animated, Image, Linking, Pressable, Share, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -22,6 +22,7 @@ import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { generateStockingPlan } from "./lib/planner";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { TabBarScrollProvider, useTabBarVisibility } from "./lib/tabBarScroll";
 import { LockedTab } from "./components/LockedTab";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { track, EVENTS } from "./lib/analytics";
@@ -110,7 +111,9 @@ const persistTanks = (next) => {
 export default function App() {
   return (
     <ErrorBoundary>
-      <PocketReef />
+      <TabBarScrollProvider>
+        <PocketReef />
+      </TabBarScrollProvider>
     </ErrorBoundary>
   );
 }
@@ -120,6 +123,7 @@ function PocketReef() {
   // Capping the content column here means every screen inherits it from one
   // place instead of each ScrollView carrying its own stale snapshot.
   const layout = useResponsiveLayout();
+  const tabBar = useTabBarVisibility();
 
   // Inter, in the weights the design system actually uses. React Native needs a
   // family per weight — fontWeight alone won't select the right file on Android.
@@ -897,6 +901,7 @@ function PocketReef() {
   // one choke point is why a locked tab can't be reached by any route.
   const jumpTo = (id) => {
     tapHaptic();
+    if (tabBar) tabBar.reveal();
     if (PREMIUM_TAB_IDS.has(id) && !premiumUnlocked) { goPremium(id); return; }
     setSelectedSpecies(null);
     setSelectedDisease(null);
@@ -1013,7 +1018,13 @@ function PocketReef() {
           )}
 
           {!detailOpen ? (
-            <View style={[styles.bottomTabs, layout.isLarge && {
+            <Animated.View style={[styles.bottomTabs,
+              tabBar ? {
+                transform: [{
+                  translateY: tabBar.hidden.interpolate({ inputRange: [0, 1], outputRange: [0, 130] }),
+                }],
+                opacity: tabBar.hidden.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+              } : null, layout.isLarge && {
               // alignSelf is ignored on an absolutely-positioned element, so
               // the bar hugged the left edge of the content column. Auto
               // margins against left:0/right:0 is what actually centres it.
@@ -1040,9 +1051,7 @@ function PocketReef() {
                       <Ionicons
                         name={tab.id === "more" ? tab.icon : on ? tab.icon : `${tab.icon}-outline`}
                         size={22}
-                        // The active pill is filled with the accent, so a teal icon on it is
-                        // invisible. Match the active label's dark ink.
-                        color={on ? "#04202a" : "#7ea6bd"}
+                        color={on ? theme.accent : "#7ea6bd"}
                         style={locked ? { opacity: 0.45 } : null}
                       />
                       {locked ? (
@@ -1055,7 +1064,7 @@ function PocketReef() {
                   </Pressable>
                 );
               })}
-            </View>
+            </Animated.View>
           ) : null}
         </SafeAreaView>
         )}

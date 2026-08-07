@@ -1,13 +1,15 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { useTabBarScroll } from "../lib/tabBarScroll";
 import { tapHaptic } from "../core";
 
 // The "More" menu — styled like Pocket Planter's More sheet: a big title, a close
 // button, and a list of green icon-tile rows for the secondary sections.
 export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
+  const tabBarScroll = useTabBarScroll();
   const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 22 }}>
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (

@@ -137,12 +137,14 @@ export const styles = StyleSheet.create({
   accountDangerText: { color: theme.danger, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
-  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.94)", borderRadius: 26, padding: 7, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.16)", shadowColor: "#000", shadowOpacity: 0.4, shadowRadius: 26, shadowOffset: { width: 0, height: 16 }, elevation: 24 },
+  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: 22, padding: 6, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", shadowColor: "#000", shadowOpacity: 0.28, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 14 },
   bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 9, borderRadius: 18, gap: 3 },
-  bottomTabButtonActive: { backgroundColor: ACCENT, shadowColor: ACCENT, shadowOpacity: 0.5, shadowRadius: 16, shadowOffset: { width: 0, height: 6 }, elevation: 12 },
+  // A tinted well rather than a filled, glowing capsule. The active tab should
+  // be obvious at a glance without being the brightest thing on the screen.
+  bottomTabButtonActive: { backgroundColor: "rgba(56, 225, 198, 0.14)" },
   bottomTabEmoji: { fontSize: 20 },
   bottomTabLabel: { fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", color: "#7ea6bd" },
-  bottomTabLabelActive: { color: "#04202a" },
+  bottomTabLabelActive: { color: ACCENT },
 });
 
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
+import { useTabBarScroll } from "../lib/tabBarScroll";
 import { SPECIES, getCompatibility, tapHaptic } from "../core";
 import { getSpeciesImage } from "../data/speciesImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -32,11 +33,12 @@ const GAMES = [
 ];
 
 export function GamesTab({ onEarnXp }) {
+  const tabBarScroll = useTabBarScroll();
   const [game, setGame] = useState(null);
   if (game) return <GameHost gameId={game} onBack={() => setGame(null)} onEarnXp={onEarnXp} />;
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow="Play & earn XP"
         title="Reef Games"

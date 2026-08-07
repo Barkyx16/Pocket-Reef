@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { useTabBarScroll } from "../lib/tabBarScroll";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
 
@@ -49,6 +50,7 @@ const REASON_COPY = {
 };
 
 export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false, loadPlans, reason }) {
+  const tabBarScroll = useTabBarScroll();
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState(null);
   const [loadingPlans, setLoadingPlans] = useState(true);
@@ -76,7 +78,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
   const trialDays = plan && plan.freeTrialDays ? plan.freeTrialDays : 0;
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={premiumUnlocked ? "Premium active" : ctx ? ctx.eyebrow : "Premium"}
         title={premiumUnlocked ? "You're all in 🐠" : ctx ? ctx.title : "Keep a healthier reef"}
