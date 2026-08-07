@@ -1,10 +1,14 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { getEquipmentPlan } from "../lib/planner";
 import { getSpecies } from "../core";
 
 // Equipment sizing for the current tank — heater wattage, filter turnover, and
 // lighting, all sized from the tank volume and what's stocked.
 export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
+  // Sized from this tank and its stock rather than generic advice — heater
+  // wattage, turnover and flow are arithmetic the app already has the inputs for.
+  const equipment = getEquipmentPlan({ gallons: tankGallons, water: tankWater, stockedNames: tank });
   const stocked = tank.map(getSpecies).filter(Boolean);
   const coldwater = stocked.some((s) => s.water === "fresh" && s.tempMaxF <= 75);
   const hasCoral = stocked.some((s) => s.kind === "coral");
@@ -28,6 +32,22 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
 
   return (
     <View>
+      {equipment.ok ? (
+        <View style={{ gap: 12, marginBottom: 16 }}>
+          {equipment.items.map((it) => (
+            <View key={it.id} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+              <View style={{ minWidth: 74, paddingHorizontal: 8, paddingVertical: 5, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.12)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
+                <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "900" }}>{it.value}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#fff", fontSize: 13, fontWeight: "900" }}>{it.label}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      ) : null}
+
       <Text style={styles.cardText}>Recommended gear for your {tankGallons} gal tank:</Text>
       <View style={{ gap: 12, marginTop: 12 }}>
         {items.map((it, i) => (

@@ -207,6 +207,174 @@ export function getCycleStatus(waterTests = []) {
   return { stage: 0, label: "In progress", guidance: "Keep testing daily until ammonia and nitrite hit 0 and nitrate appears.", cycled: false };
 }
 
+// ── Cycling coach ────────────────────────────────────────────────────────────
+// getCycleStatus reports which stage you're in. It doesn't tell you what to DO,
+// and cycling is where beginners lose fish — usually by adding them during the
+// nitrite spike because the ammonia reading looked fine.
+//
+// This turns the stage plus the reading history into the next concrete action,
+// and an honest estimate of time remaining.
+const CYCLE_STAGES = [
+  {
+    stage: 0,
+    title: "Start the cycle",
+    action: "Add an ammonia source and test daily",
+    detail: "Dose ammonia to about 2 ppm, or use a piece of food to rot. Nothing living goes in yet — a fish-in cycle burns gills.",
+    typicalDays: 7,
+  },
+  {
+    stage: 1,
+    title: "Ammonia stage",
+    action: "Keep ammonia topped up and keep testing",
+    detail: "The first bacteria are colonizing. Hold ammonia around 2 ppm — let it hit zero now and the colony you're building starves.",
+    typicalDays: 14,
+  },
+  {
+    stage: 2,
+    title: "Nitrite spike",
+    action: "Hold your nerve — do not add fish",
+    detail: "Nitrite is more toxic than ammonia and this is the longest stage. This is the exact point most people give up and stock the tank.",
+    typicalDays: 21,
+  },
+  {
+    stage: 3,
+    title: "Cycled",
+    action: "Large water change, then stock slowly",
+    detail: "Ammonia and nitrite at zero within 24 hours of dosing, with nitrate present. Change 50% to drop nitrate, then add a few fish at a time.",
+    typicalDays: 0,
+  },
+];
+
+export function getCyclingCoach(waterTests = [], tankCreatedAt = null) {
+  const status = getCycleStatus(waterTests);
+  const info = CYCLE_STAGES.find((c) => c.stage === status.stage) || CYCLE_STAGES[0];
+
+  // How long has this been going? Prefer the first test, since a tank profile
+  // may have been created long before the cycle started.
+  const oldest = waterTests.length ? waterTests[waterTests.length - 1].date : tankCreatedAt;
+  const daysIn = oldest ? Math.max(0, Math.floor((Date.now() - new Date(oldest).getTime()) / 86400000)) : 0;
+
+  // Cumulative typical duration to the END of the current stage.
+  const totalTypical = CYCLE_STAGES.filter((c) => c.stage <= status.stage).reduce((n, c) => n + c.typicalDays, 0);
+  const estimateRemaining = status.cycled ? 0 : Math.max(0, totalTypical - daysIn);
+
+  // Tested at all recently? A cycle you're not measuring isn't being managed.
+  const lastTest = waterTests[0] ? Math.floor((Date.now() - new Date(waterTests[0].date).getTime()) / 86400000) : null;
+
+  return {
+    ...status,
+    ...info,
+    daysIn,
+    estimateRemaining,
+    // Deliberately soft language downstream — cycles vary enormously with
+    // temperature, seeding and source water, and a hard date would be wrong.
+    estimateConfident: waterTests.length >= 3,
+    lastTestDaysAgo: lastTest,
+    needsTest: lastTest == null || lastTest >= 2,
+    totalStages: CYCLE_STAGES.length - 1,
+  };
+}
+
+// ── Fixing a bad pairing ─────────────────────────────────────────────────────
+// The compatibility matrix says a pair won't work and then leaves the keeper
+// with a fish they've already bought and no idea what to do. This finds
+// replacements: species that fill a similar role and DO get along with
+// everything else in the tank.
+export function getConflictFixes(gallons, stockedNames = [], limit = 3) {
+  const stocked = stockedNames.map(getSpecies).filter(Boolean);
+  const fixes = [];
+
+  for (let i = 0; i < stocked.length; i++) {
+    for (let j = i + 1; j < stocked.length; j++) {
+      const c = getCompatibility(stocked[i].name, stocked[j].name);
+      if (c.level !== "avoid") continue;
+
+      // Replacing either fish would resolve it — suggest for both, and let the
+      // keeper decide which one they're less attached to.
+      [[stocked[i], stocked[j]], [stocked[j], stocked[i]]].forEach(([drop, keep]) => {
+        const others = stocked.filter((s) => s.name !== drop.name);
+
+        const alternatives = SPECIES.filter((cand) => {
+          if (stockedNames.includes(cand.name)) return false;
+          if (cand.water !== drop.water) return false;
+          if (cand.kind !== drop.kind) return false;
+          if (gallons && cand.minGallons > gallons) return false;
+          // Similar size bracket, so it fills the same visual role.
+          const ratio = (cand.adultInches || 1) / (drop.adultInches || 1);
+          if (ratio < 0.5 || ratio > 1.6) return false;
+          // And it has to actually work with everything staying.
+          return others.every((o) => getCompatibility(cand.name, o.name).level === "great" || getCompatibility(cand.name, o.name).level === "ok");
+        })
+          .sort((a, b) => (a.careLevel === "Easy" ? -1 : 1) - (b.careLevel === "Easy" ? -1 : 1))
+          .slice(0, limit);
+
+        if (alternatives.length) {
+          fixes.push({
+            conflict: `${stocked[i].name} + ${stocked[j].name}`,
+            reason: c.reason,
+            replace: drop.name,
+            keeping: keep.name,
+            alternatives: alternatives.map((a) => ({ name: a.name, emoji: a.emoji, careLevel: a.careLevel, adultInches: a.adultInches })),
+          });
+        }
+      });
+    }
+  }
+
+  return fixes;
+}
+
+// ── Feeding, sized to the actual stock ───────────────────────────────────────
+// The feeding guide was generic. What a keeper needs is how much, how often,
+// and what type for THEIR fish — herbivores need grazing material, carnivores
+// need protein and fewer feeds, and fry-sized nano fish need more frequent,
+// smaller meals than a cichlid.
+export function getFeedingPlan(stockedNames = [], quantities = {}) {
+  const stocked = stockedNames.map(getSpecies).filter(Boolean).filter((s) => s.kind !== "coral");
+  if (!stocked.length) return { ok: false, reason: "Add some stock and Pocket Reef will size your feeding routine.", groups: [] };
+
+  const groups = [];
+  const byDiet = {};
+  stocked.forEach((s) => {
+    const q = quantities[s.name] || 1;
+    (byDiet[s.diet] = byDiet[s.diet] || []).push({ species: s, count: q });
+  });
+
+  const DIET_ADVICE = {
+    herbivore: { food: "Algae wafers, nori, blanched vegetables", note: "Herbivores graze constantly in the wild — leave grazing material in rather than one large meal." },
+    carnivore: { food: "Frozen or live meaty foods, quality pellets", note: "Carnivores do better on fewer, larger meals. A fast day each week is normal and healthy." },
+    omnivore: { food: "Quality flake or pellet, plus frozen treats", note: "Vary it. A single dry food long-term is the most common cause of dull colour." },
+    "filter feeder": { food: "Phytoplankton or powdered filter food", note: "Filter feeders need food in the water column, not on the substrate — target-feed with the pumps off." },
+  };
+
+  Object.keys(byDiet).forEach((diet) => {
+    const members = byDiet[diet];
+    const totalFish = members.reduce((n, m) => n + m.count, 0);
+    const advice = DIET_ADVICE[diet] || DIET_ADVICE.omnivore;
+    // Small fish have small stomachs and faster metabolisms.
+    const avgInches = members.reduce((n, m) => n + (m.species.adultInches || 1) * m.count, 0) / Math.max(1, totalFish);
+    const perDay = diet === "carnivore" ? 1 : avgInches < 2 ? 2 : 1;
+
+    groups.push({
+      diet,
+      fishCount: totalFish,
+      species: members.map((m) => ({ name: m.species.name, count: m.count })),
+      timesPerDay: perDay,
+      food: advice.food,
+      note: advice.note,
+      portion: "Only what's eaten in about two minutes — uneaten food becomes ammonia.",
+    });
+  });
+
+  return {
+    ok: true,
+    groups,
+    totalFish: stocked.reduce((n, s) => n + (quantities[s.name] || 1), 0),
+    // The one rule that matters more than any schedule.
+    goldenRule: "Underfeeding is nearly harmless; overfeeding is the most common cause of a crashed tank.",
+  };
+}
+
 // ── "Today" action hub ───────────────────────────────────────────────────────
 // Combines every signal — overdue maintenance, a due water test, a finished
 // quarantine, unfinished care, an incomplete cycle — into one prioritized list

@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { getCycleStatus } from "../core";
+import { getCycleStatus, getCyclingCoach } from "../core";
 import { ProgressBar } from "./ProgressBar";
 
 // Nitrogen-cycle tracker — reads your latest water test and shows where the new
@@ -11,10 +11,27 @@ const STAGES = [
   { key: "cycled", label: "Cycled", emoji: "✅" },
 ];
 
-export function CycleTrackerCard({ waterTests = [] }) {
+export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
+  const coach = getCyclingCoach(waterTests, tankCreatedAt);
   const status = getCycleStatus(waterTests);
   return (
     <View>
+      {/* What to actually do next — cycling is where beginners lose fish, and
+          almost always by stocking during the nitrite spike. */}
+      <View style={{ backgroundColor: coach.cycled ? "rgba(56,225,198,0.10)" : "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: coach.cycled ? "rgba(56,225,198,0.30)" : "rgba(255,211,114,0.30)", borderRadius: 14, padding: 12, marginBottom: 14 }}>
+        <Text style={{ color: coach.cycled ? theme.accent : theme.warn, fontSize: 13, fontWeight: "900" }}>{coach.action}</Text>
+        <Text style={{ color: theme.text, fontSize: 12, fontWeight: "600", marginTop: 4, lineHeight: 17 }}>{coach.detail}</Text>
+        {!coach.cycled && coach.estimateRemaining > 0 ? (
+          <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "700", marginTop: 6 }}>
+            Day {coach.daysIn} · typically about {coach.estimateRemaining} more day{coach.estimateRemaining === 1 ? "" : "s"}
+            {coach.estimateConfident ? "" : " (rough — cycles vary a lot)"}
+          </Text>
+        ) : null}
+        {coach.needsTest && !coach.cycled ? (
+          <Text style={{ color: theme.warn, fontSize: 11, fontWeight: "900", marginTop: 6 }}>Test today — a cycle you aren't measuring isn't being managed.</Text>
+        ) : null}
+      </View>
+
       <View style={{ flexDirection: "row", gap: 8 }}>
         {STAGES.map((s, i) => {
           const stageNum = i + 1;

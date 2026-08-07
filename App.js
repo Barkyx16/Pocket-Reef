@@ -712,6 +712,17 @@ function PocketReef() {
   const deleteFeeding = (id) => updateActiveTank((tk) => ({ feedings: (tk.feedings || []).filter((f) => f.id !== id) }));
   // Tank ideas write a whole stock list at once, so they'd walk straight past
   // the per-fish cap. Premium only.
+  // A generated plan carries real group sizes, so quantities travel with it —
+  // loading a plan that silently drops "6× Neon Tetra" to one fish would
+  // recreate the exact schooling problem the planner exists to avoid.
+  const loadStockingPlan = (plan) => {
+    if (!premiumUnlocked) { goPremium("tankIdea"); return; }
+    if (!plan || !plan.ok) return;
+    tapHaptic("medium");
+    updateActiveTank({ stock: plan.stock, quantities: plan.quantities });
+    setActiveTab("tank");
+  };
+
   const loadTankIdea = (idea) => {
     if (!premiumUnlocked) { goPremium("tankIdea"); return; }
     tapHaptic("medium");
@@ -929,7 +940,7 @@ function PocketReef() {
                 />
               )}
               {activeTab === "species" && <SpeciesTab tankGallons={tankGallons} tank={tank} toggleTank={toggleTank} openSpecies={openSpecies} openDisease={openDisease} wishlist={wishlist} onToggleWishlist={toggleWishlist} recent={recent} premiumUnlocked={premiumUnlocked} freeLimit={FREE_SPECIES_LIMIT} onOpenPremium={() => goPremium("species")} />}
-              {activeTab === "tank" && <TankTab tankGallons={tankGallons} setTankGallons={changeTankGallons} tank={tank} tankWater={activeTank.water} tankCreatedAt={activeTank.createdAt} tankNotes={activeTank.notes} waterTests={waterTests} maintenance={maintenance} quantities={quantities} onSetQuantity={setQuantity} toggleTank={toggleTank} openSpecies={openSpecies} onLoadIdea={loadTankIdea} onClearStock={clearStock} quarantine={quarantine} onAddQuarantine={addQuarantine} onRemoveQuarantine={removeQuarantine} onGraduateQuarantine={graduateQuarantine} tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onGoToTab={jumpTo} />}
+              {activeTab === "tank" && <TankTab tankGallons={tankGallons} setTankGallons={changeTankGallons} tank={tank} tankWater={activeTank.water} tankCreatedAt={activeTank.createdAt} tankNotes={activeTank.notes} waterTests={waterTests} maintenance={maintenance} quantities={quantities} onSetQuantity={setQuantity} toggleTank={toggleTank} openSpecies={openSpecies} onLoadIdea={loadTankIdea} onClearStock={clearStock} quarantine={quarantine} onAddQuarantine={addQuarantine} onRemoveQuarantine={removeQuarantine} onGraduateQuarantine={graduateQuarantine} tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onGoToTab={jumpTo} onLoadPlan={loadStockingPlan} />}
               {activeTab === "log" && <LogTab tank={tank} tankGallons={tankGallons} tankWater={activeTank.water} waterTests={waterTests} journal={journal} activeDays={activeDays} costs={costs} feedings={feedings} onLogTest={logTest} onAddJournal={addJournal} onDeleteJournal={deleteJournal} onEditJournal={editJournal} onAddCost={addCost} onDeleteCost={deleteCost} onAddFeeding={addFeeding} onDeleteFeeding={deleteFeeding} maintenance={maintenance} onLogMaintenance={logMaintenance} premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} />}
               {activeTab === "more" && <MoreTab items={MORE_ITEMS} onNavigate={jumpTo} onClose={() => jumpTo("home")} lockedIds={premiumUnlocked ? null : PREMIUM_TAB_IDS} />}
               {activeTab === "games" && <GamesTab onEarnXp={addXp} />}

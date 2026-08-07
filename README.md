@@ -128,6 +128,16 @@ wishlist hearts save what you're eyeing, **Compare mode** puts two species side 
 recently-viewed gives you shortcuts back, and 🎲 Surprise Me picks for you.
 
 ### Tank
+**Plan My Tank** runs the compatibility engine in reverse: give it your tank size, water
+type and experience level and it designs a complete stocking plan — a centrepiece, a
+school at its real group minimum, a bottom dweller, and cleanup crew. Every plan is
+conflict-free by construction and deliberately leaves headroom rather than filling to the
+guideline. One tap loads it, quantities and all.
+
+**Gear sizing** works out heater wattage from your room temperature and your stock's own
+target range, filter turnover, in-tank flow (much higher with corals), and what lighting
+you actually need.
+
 Your stock with per-species quantity steppers, feeding into real-time compatibility
 checks, a bioload gauge, and a stocking planner that estimates how many more fish you
 have room for.
@@ -148,7 +158,7 @@ and tank age.
 - **Water-change impact** — what a given % change actually does to each parameter, and the smallest change that gets you back in range
 - **Reef dosing** — Alk/Ca/Mg doses from your real water volume, split across days when a correction is too large to make safely in one go
 - **Water insights** — per-parameter averages, testing cadence, in-range percentage, CSV export
-- **Nitrogen cycle tracker** — know when the tank is actually ready
+- **Nitrogen cycle tracker** — with a coach that says what to do next at each stage, and holds the line during the nitrite spike, which is where beginners stock too early and lose fish
 - **Water-change calculator** — with one-tap logging into maintenance and the journal
 - **Maintenance schedule**, **feeding log**, **cost tracking** with category breakdown
 - **Photo journal** — searchable, mood-filterable, editable, with a gallery and timeline
@@ -238,7 +248,7 @@ last write wins. Photos stay on the device; only their references sync.
 npm test
 ```
 
-112 tests over `core.js`, search, dosing, forecasting, and treatment plans — bioload, warnings, compatibility, the nitrogen cycle,
+151 tests over `core.js`, search, dosing, forecasting, treatment plans, stocking generation, and gear sizing — bioload, warnings, compatibility, the nitrogen cycle,
 Today actions, health scoring, achievements, streaks, and catalog integrity.
 They pin behaviour rather than implementation, so they survive a refactor and
 fail on a wrong answer. Worth running before each batch of changes: a babel

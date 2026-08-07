@@ -1,10 +1,11 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { getSpecies } from "../core";
+import { getSpecies, getFeedingPlan } from "../core";
 
 // A feeding plan built from the diets of what you actually keep. Derived — no
 // extra data to author.
-export function FeedingGuideCard({ tank = [] }) {
+export function FeedingGuideCard({ tank = [], quantities = {} }) {
+  const feeding = getFeedingPlan(tank, quantities);
   const species = tank.map(getSpecies).filter(Boolean);
   if (!species.length) {
     return <Text style={styles.cardText}>Stock your tank to get a feeding plan tailored to your fish.</Text>;
@@ -20,6 +21,22 @@ export function FeedingGuideCard({ tank = [] }) {
 
   return (
     <View>
+      {feeding.ok ? (
+        <View style={{ marginBottom: 16, gap: 14 }}>
+          {feeding.groups.map((g) => (
+            <View key={g.diet}>
+              <Text style={{ color: "#fff", fontSize: 13, fontWeight: "900", textTransform: "capitalize" }}>
+                {g.diet}s · {g.fishCount} fish · {g.timesPerDay}× daily
+              </Text>
+              <Text style={{ color: theme.accent, fontSize: 12, fontWeight: "800", marginTop: 2 }}>{g.food}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.note}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: 11, fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.portion}</Text>
+            </View>
+          ))}
+          <Text style={{ color: theme.warn, fontSize: 12, fontWeight: "800", lineHeight: 17 }}>{feeding.goldenRule}</Text>
+        </View>
+      ) : null}
+
       <Text style={styles.cardText}>Feed small amounts once or twice a day — only what they finish in a couple of minutes. Overfeeding is the #1 cause of bad water.</Text>
       <View style={{ gap: 10, marginTop: 12 }}>
         {recs.map((r, i) => (

@@ -10,6 +10,7 @@ import { TankToolboxCard } from "../components/TankToolboxCard";
 import { TankExtrasCard } from "../components/TankExtrasCard";
 import { TankHubCard } from "../components/TankHubCard";
 import { TankHealthCard } from "../components/TankHealthCard";
+import { StockingPlannerCard } from "../components/StockingPlannerCard";
 import { ProgressBar } from "../components/ProgressBar";
 import { Pill } from "../components/Pill";
 import { t } from "../lib/i18n";
@@ -17,7 +18,7 @@ import { formatVolume } from "../lib/units";
 
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
-export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab }) {
+export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan }) {
   const status = getTankStatus(tankGallons, tank, quantities);
   const warnings = getTankWarnings(tankGallons, tank, quantities);
   const maturity = getTankMaturity(tankCreatedAt);
@@ -169,6 +170,15 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       />
 
       {/* TANK SETUPS */}
+      <CollapsibleCard storageKey="planner" title="🧭 Plan My Tank" eyebrow="A conflict-free plan for this exact tank">
+        <StockingPlannerCard
+          tankGallons={tankGallons}
+          tankWater={tankWater}
+          hasStock={tank.length > 0}
+          onLoadPlan={onLoadPlan}
+        />
+      </CollapsibleCard>
+
       <CollapsibleCard storageKey="tankideas" title="💡 Tank Setups" defaultOpen={species.length === 0} eyebrow="Proven, conflict-free builds">
         <TankIdeasCard onLoad={onLoadIdea} />
       </CollapsibleCard>
