@@ -69,7 +69,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {/* DAILY CHALLENGES — auto-complete & disappear; fresh set every day */}
       {dailyChallenges.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>🎯 Daily Challenges</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Daily Challenges</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Complete them today — a fresh set arrives tomorrow.</Text>
           <View style={{ gap: 8 }}>
             {dailyChallenges.map((c) => (
@@ -82,7 +82,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {/* SEASONAL CHALLENGES */}
       {seasonalChallenges.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>{seasonal.emoji} {seasonal.label} Challenges</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>{seasonal.label} Challenges</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Seasonal goals for your reef — refresh daily.</Text>
           <View style={{ gap: 8 }}>
             {seasonalChallenges.map((c) => (
@@ -106,7 +106,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {/* TODAY — only shown when something actually needs attention */}
       {todayActions.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>☀️ Needs Attention</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>Needs Attention</Text>
           <TodayCard actions={todayActions} onNavigate={onGoToTab} />
         </View>
       ) : null}
@@ -121,14 +121,14 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {/* FISH OF THE DAY — disappears once viewed; a new fish returns tomorrow. */}
       {!fishOfDaySeen ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>🐟 Fish of the Day</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Fish of the Day</Text>
           <FishOfDayCard onOpenSpecies={(n) => { onSeeFishOfDay && onSeeFishOfDay(); openSpecies(n); }} />
         </View>
       ) : null}
 
       {/* THIS WEEK */}
       <View style={styles.card}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>📅 This Week</Text>
+        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>This Week</Text>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Summary label="Active days" value={`${weekly.activeDays}/7`} color={weekly.activeDays >= 5 ? theme.accent : "#fff"} />
           <Summary label="Water tests" value={`${weekly.tests}`} />
@@ -181,7 +181,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {/* WARNINGS */}
       {warnings.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>⚠️ Tank Check</Text>
+          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>Tank Check</Text>
           {warnings.map((w, i) => (
             <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
           ))}

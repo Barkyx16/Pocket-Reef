@@ -1,4 +1,5 @@
 import { memo } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import { careLevelColor, temperamentColor } from "../core";
@@ -58,7 +59,13 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
           accessibilityLabel={inWishlist ? `Remove ${species.name} from wishlist` : `Save ${species.name} to wishlist`}
           style={{ width: 34, height: 38, alignItems: "center", justifyContent: "center" }}
         >
-          <Text style={{ fontSize: 18 }}>{inWishlist ? "❤️" : "🤍"}</Text>
+          {/* A vector heart tints with the accent when saved; the ❤️/🤍 emoji
+              swap could only ever be red-or-white and looked pasted on. */}
+          <Ionicons
+            name={inWishlist ? "heart" : "heart-outline"}
+            size={19}
+            color={inWishlist ? theme.coral : theme.secondaryText}
+          />
         </Pressable>
       ) : null}
       {onToggleTank ? (

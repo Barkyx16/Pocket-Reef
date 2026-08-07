@@ -46,7 +46,7 @@ export function TankToolkitCard({
 
   return (
     <View style={styles.card}>
-      <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>🧰 Tank Tools</Text>
+      <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 4 }}>
         {TOOLS.map((tool) => (
           <Pill key={tool.id} label={`${tool.emoji} ${tool.label}`} active={sel === tool.id} onPress={() => pick(tool.id)} />

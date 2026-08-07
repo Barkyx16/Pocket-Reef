@@ -3,6 +3,7 @@ import { LayoutAnimation, Platform, Pressable, Text, UIManager, View } from "rea
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
+import { iconForEmoji } from "../lib/icons";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -38,7 +39,13 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
     <View style={styles.card}>
       <Pressable onPress={toggle} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, pressed && { opacity: 0.6 }]}>
         {emoji ? (
-          <View style={[styles.iconSquare, open && { backgroundColor: "rgba(56,225,198,0.22)", borderColor: "rgba(56,225,198,0.4)" }]}><Text style={{ fontSize: 16 }}>{emoji}</Text></View>
+          <View style={[styles.iconSquare, open && { backgroundColor: "rgba(56,225,198,0.22)", borderColor: "rgba(56,225,198,0.4)" }]}>
+            {iconForEmoji(emoji) ? (
+              <Ionicons name={iconForEmoji(emoji)} size={17} color={theme.accent} />
+            ) : (
+              <Text style={{ fontSize: 16 }}>{emoji}</Text>
+            )}
+          </View>
         ) : null}
         <View style={{ flex: 1 }}>
           {eyebrow ? <Text style={styles.cardEyebrow}>{eyebrow}</Text> : null}

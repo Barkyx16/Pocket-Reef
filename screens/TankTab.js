@@ -76,14 +76,14 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       {/* Health */}
       {tank.length ? (
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>🩺 Tank Health</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>Tank Health</Text>
           <TankHealthCard health={health} onGoToTab={onGoToTab} />
         </View>
       ) : null}
 
       {/* Fish in this tank */}
       <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>🐠 In This Tank</Text>
+        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>In This Tank</Text>
         {species.length === 0 ? (
           <EmptyState emoji="🐠" title="Your tank is empty" subtitle="Head to the Species tab and tap ＋ to stock it — Pocket Reef flags any conflicts instantly." />
         ) : (
@@ -102,7 +102,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       </View>
 
       {/* Size */}
-      <Text style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>📏 Tank size</Text>
+      <Text style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Tank size</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {TANK_PRESETS.map((g) => (
           <Pill key={g} label={`${g} gal`} active={tankGallons === g} onPress={() => setTankGallons && setTankGallons(g)} />
@@ -112,7 +112,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       {/* Notes */}
       {tankNotes && tankNotes.trim() ? (
         <View style={{ marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={styles.cardEyebrow}>📝 Notes</Text>
+          <Text style={styles.cardEyebrow}>Notes</Text>
           <Text style={[styles.cardText, { marginTop: 8 }]}>{tankNotes}</Text>
         </View>
       ) : null}

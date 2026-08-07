@@ -42,7 +42,7 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
       {/* A guided course — the part that keeps going after symptoms clear. */}
       {onStartTreatment ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>📋 Treatment plan</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Treatment plan</Text>
           <TreatmentPlanCard
             diseaseName={name}
             treatment={treatment}
@@ -56,7 +56,7 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
       {/* AT RISK IN YOUR TANK */}
       {atRisk.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>🐠 AT RISK IN YOUR TANK</Text>
+          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>AT RISK IN YOUR TANK</Text>
           <Text style={[styles.cardText, { marginBottom: 10 }]}>These species you're keeping can be affected — watch them closely.</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
             {atRisk.map((s) => (

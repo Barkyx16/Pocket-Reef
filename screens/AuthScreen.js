@@ -210,7 +210,7 @@ export function AuthScreen({ onContinueOffline }) {
         {/* Local-only mode — the backend hasn't been pointed at a project yet. */}
         {!configured ? (
           <View style={styles.card}>
-            <Text style={styles.cardEyebrow}>☁️ Cloud accounts not set up</Text>
+            <Text style={styles.cardEyebrow}>Cloud accounts not set up</Text>
             <Text style={styles.cardText}>
               Paste your Supabase project URL and anon key into lib/supabaseConfig.js to turn on accounts and cross-device sync. Until then Pocket Reef runs on this device, and nothing is lost — your data is here waiting when you connect it.
             </Text>

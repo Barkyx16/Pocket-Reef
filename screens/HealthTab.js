@@ -67,7 +67,7 @@ export function HealthTab({ openDisease }) {
       {/* SYMPTOM CHECKER */}
       <View style={styles.card}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-          <Text style={styles.cardEyebrow}>🔎 Symptom checker</Text>
+          <Text style={styles.cardEyebrow}>Symptom checker</Text>
           {symptoms.length ? (
             <Pressable onPress={() => { tapHaptic(); setSymptoms([]); }} accessibilityRole="button">
               <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>

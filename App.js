@@ -21,6 +21,7 @@ import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage"
 import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { generateStockingPlan } from "./lib/planner";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { LockedTab } from "./components/LockedTab";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { track, EVENTS } from "./lib/analytics";
@@ -47,12 +48,16 @@ import { NewTankSheet } from "./components/NewTankSheet";
 import { ImportSheet } from "./components/ImportSheet";
 
 // Bottom bar: four primary tabs + a "More" entry (Pocket Planter pattern).
+// Vector icons, not emoji. The tab bar is the most-seen chrome in the app and
+// emoji there render differently per platform, ignore the accent colour, and
+// sit off the optical baseline — the clearest "unfinished" signal a mobile app
+// can give. Filled when active, outline when not, which is the platform idiom.
 const TABS = [
-  { id: "home", emoji: "🏠", label: "Home" },
-  { id: "species", emoji: "🐠", label: "Species" },
-  { id: "tank", emoji: "🌊", label: "Tank" },
-  { id: "log", emoji: "🧪", label: "Log" },
-  { id: "more", emoji: "☰", label: "More" },
+  { id: "home", icon: "home", label: "Home" },
+  { id: "species", icon: "fish", label: "Species" },
+  { id: "tank", icon: "water", label: "Tank" },
+  { id: "log", icon: "flask", label: "Log" },
+  { id: "more", icon: "ellipsis-horizontal", label: "More" },
 ];
 // Everything behind the "More" tab, ordered by how often it gets opened:
 // Profile first, Premium last.
@@ -1032,9 +1037,18 @@ function PocketReef() {
                     accessibilityState={{ selected: on }}
                   >
                     <View>
-                      <Text style={[styles.bottomTabEmoji, on && { transform: [{ scale: 1.12 }] }, locked && { opacity: 0.45 }]}>{tab.emoji}</Text>
+                      <Ionicons
+                        name={tab.id === "more" ? tab.icon : on ? tab.icon : `${tab.icon}-outline`}
+                        size={22}
+                        // The active pill is filled with the accent, so a teal icon on it is
+                        // invisible. Match the active label's dark ink.
+                        color={on ? "#04202a" : "#7ea6bd"}
+                        style={locked ? { opacity: 0.45 } : null}
+                      />
                       {locked ? (
-                        <Text style={{ position: "absolute", right: -8, top: -3, fontSize: 11 }}>🔒</Text>
+                        <View style={{ position: "absolute", right: -7, top: -4, backgroundColor: theme.cardSolid, borderRadius: 7 }}>
+                          <Ionicons name="lock-closed" size={11} color={theme.secondaryText} />
+                        </View>
                       ) : null}
                     </View>
                     <Text style={[styles.bottomTabLabel, on && styles.bottomTabLabelActive, locked && { opacity: 0.55 }]}>{label}</Text>

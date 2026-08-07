@@ -6,6 +6,11 @@ hobby loop in one place.
 
 Built with **Expo (SDK 54) + React Native**. Runs on iOS, Android, and the web.
 
+Typography is Inter across the whole app. Emoji are used for **content** — species,
+achievements, journal moods — and never for **chrome**: the tab bar, section headers,
+and controls use Ionicons, so they take the accent colour, hold the optical baseline,
+and render identically on every platform.
+
 ---
 
 ## Run it

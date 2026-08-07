@@ -21,7 +21,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
     <View style={styles.card}>
       <Text style={{ color: "#fff", fontSize: 24, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
 
-      <GradientButton label="＋ Add a Tank" onPress={onAdd} />
+      <GradientButton label="Add a Tank" icon="add" variant="secondary" onPress={onAdd} />
 
       <View style={{ gap: 10, marginTop: 12 }}>
         {tanks.map((tk) => {
@@ -58,7 +58,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
         })}
       </View>
 
-      <GradientButton label="⚡ Quick Add Fish" onPress={onQuickAdd} style={{ marginTop: 12 }} />
+      <GradientButton label="Quick Add Fish" icon="flash" onPress={onQuickAdd} style={{ marginTop: 12 }} />
     </View>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { FlatList, Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { SPECIES, DISEASES, getSpecies, getCompatibility, speciesFitsTank, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
@@ -136,11 +137,11 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       />
 
       <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: 16, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
-        <Text style={{ fontSize: 15, marginRight: 8, opacity: 0.8 }}>🔍</Text>
+        <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: 8 }} />
         <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 13, color: theme.text, fontSize: 15 }} />
         {query ? (
           <Pressable onPress={() => setQuery("")} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear search">
-            <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", paddingLeft: 6 }}>✕</Text>
+            <Ionicons name="close-circle" size={17} color={theme.secondaryText} style={{ marginLeft: 6 }} />
           </Pressable>
         ) : null}
       </View>
@@ -184,7 +185,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
             <CompareCard a={compareSel[0]} b={compareSel[1]} />
           ) : (
             <View style={[styles.card, { marginBottom: 0 }]}>
-              <Text style={styles.cardEyebrow}>⚖️ Compare mode</Text>
+              <Text style={styles.cardEyebrow}>Compare mode</Text>
               <Text style={styles.cardText}>Tap {2 - compareSel.length} more species below to compare them side by side.{compareSel.length ? ` Selected: ${compareSel.join(", ")}.` : ""}</Text>
             </View>
           )}
@@ -212,7 +213,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       {!compareMode && !q && recent.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>🕘 RECENTLY VIEWED</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>RECENTLY VIEWED</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
@@ -229,7 +230,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       {diseaseMatches.length && openDisease ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>🩺 Health guides</Text>
+          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>Health guides</Text>
           {diseaseMatches.map((d) => (
             <Pressable key={d.name} onPress={() => openDisease(d.name)} style={[styles.cleanRow, { paddingVertical: 10 }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
               <View style={styles.cleanImageWrap}>

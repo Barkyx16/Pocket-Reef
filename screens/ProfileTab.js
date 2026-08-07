@@ -52,7 +52,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       {/* 1 — CLOUD SAVE: account, sync, premium status, security, backup. */}
       <View style={styles.card}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>☁️ Cloud Save</Text>
+        <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Cloud Save</Text>
         <AccountCloudCard
           user={user}
           lastSyncedAt={lastSyncedAt}
@@ -183,7 +183,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
       <CollapsibleCard storageKey="lifetime" title="📈 Lifetime Stats" defaultOpen={true} eyebrow="Your career & collection">
         <LifetimeStatsCard stats={lifetime} />
         <View style={styles.sectionDivider} />
-        <Text style={styles.cardEyebrow}>🐠 My Collection</Text>
+        <Text style={styles.cardEyebrow}>My Collection</Text>
         <View style={{ marginTop: 10 }}><CollectionInsightsCard tanks={tanks} /></View>
       </CollapsibleCard>
 
@@ -191,7 +191,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
       <CollapsibleCard storageKey="achievements" title="🏆 Achievements" eyebrow={`${earnedCount}/${achievements.length} unlocked`}>
         <AchievementsCard items={achievements} />
         <View style={styles.sectionDivider} />
-        <Text style={styles.cardEyebrow}>🎮 Game Records</Text>
+        <Text style={styles.cardEyebrow}>Game Records</Text>
         <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
         <GameRecordsCard />
       </CollapsibleCard>
@@ -199,7 +199,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
       {/* 6 — SETTINGS & MORE, always last. */}
       <CollapsibleCard storageKey="settings" title="⚙️ Settings & More">
         {/* Reminders */}
-        <Text style={styles.cardEyebrow}>🔔 Care Reminders</Text>
+        <Text style={styles.cardEyebrow}>Care Reminders</Text>
         <View style={{ marginTop: 8 }}><RemindersCard prefs={reminderPrefs} onChange={onChangeReminders} /></View>
 
         {/* Language */}
@@ -211,7 +211,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
         </View>
 
         {/* Units */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>📐 Units</Text>
+        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Units</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {[{ code: "imperial", label: "°F · gal" }, { code: "metric", label: "°C · L" }].map((u) => (
             <Pill key={u.code} fill label={u.label} active={unit === u.code} onPress={() => onSetUnit && onSetUnit(u.code)} />
@@ -219,7 +219,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
         </View>
 
         {/* Backup */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>💾 Backup</Text>
+        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Backup</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           <Pressable onPress={() => onExport && onExport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
             <Text style={styles.ghostBtnText}>📤 Export</Text>
