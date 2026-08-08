@@ -5,7 +5,8 @@ import { getTodayKey, tapHaptic } from "../core";
 
 // A lightweight feeding log — tap the food type, optionally note what/how much,
 // and log it. Builds the daily-touch habit loop and earns XP.
-const FOODS = [["Flake", "🍥"], ["Pellet", "🔴"], ["Frozen", "🧊"], ["Veggie", "🥬"], ["Live", "🦐"], ["Other", "🍽️"]];
+// Food types are content, but a red circle for "Pellet" communicated nothing.
+const FOODS = [["Flake", "🍥"], ["Pellet", "🟤"], ["Frozen", "🧊"], ["Veggie", "🥬"], ["Live", "🦐"], ["Other", "🍽️"]];
 const FOOD_EMOJI = Object.fromEntries(FOODS);
 
 export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {

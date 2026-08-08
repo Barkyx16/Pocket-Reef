@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 
@@ -83,7 +84,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
 
       <View style={{ flexDirection: "row", gap: 10, marginTop: 10 }}>
         <Pressable onPress={pickPhoto} style={[styles.ghostBtn, { flex: 0, paddingHorizontal: 16 }]} accessibilityRole="button" accessibilityLabel="Add photo">
-          <Text style={styles.ghostBtnText}>📷</Text>
+          <Ionicons name="camera-outline" size={17} color={theme.accent} />
         </Pressable>
         <Pressable onPress={add} disabled={!text.trim() && !photo} style={[(text.trim() || photo) ? styles.primaryBtn : styles.ghostBtn, { flex: 1 }]} accessibilityRole="button">
           <Text style={(text.trim() || photo) ? styles.primaryBtnText : styles.ghostBtnText}>{editingId ? "Save changes" : "Add to journal"}</Text>

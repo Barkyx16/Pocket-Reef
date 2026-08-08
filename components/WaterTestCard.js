@@ -40,33 +40,38 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
         ) : null}
       </View>
 
-      <View style={{ gap: 8, marginTop: 12 }}>
+      {/* Two columns. Six full-width rows ran past the fold on a phone, so the
+          submit button — the whole point of the card — was never visible while
+          filling it in. Rows are shorter too: the target range now sits inside
+          the field as a placeholder instead of taking its own line. */}
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
         {params.map((p) => {
           const a = assessParam(p, vals[p.key]);
           const c = paramStatusColor(a.status);
           return (
-            <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: a.status === "none" ? theme.border : `${c}55`, paddingHorizontal: 10, paddingVertical: 8 }}>
-              <View style={{ width: 88 }}>
-                <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.ideal}</Text>
+            <View key={p.key} style={{ width: "48.5%", backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: a.status === "none" ? theme.border : `${c}55`, paddingHorizontal: 10, paddingVertical: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
+                {/* Verdict sits beside the label, not below the field — in a
+                    narrow column it would otherwise add a third line to every
+                    tile and undo the compaction. */}
+                {a.status !== "none" ? (
+                  <Text style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>
+                    {a.status === "good" ? "Good" : a.status === "caution" ? "Watch" : "High"}
+                  </Text>
+                ) : (
+                  <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
+                )}
               </View>
               <TextInput
                 value={vals[p.key] ?? ""}
                 onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: t.replace(/[^0-9.]/g, "") }))}
                 keyboardType="decimal-pad"
-                placeholder="—"
-                placeholderTextColor={theme.secondaryText}
-                style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                placeholder={p.ideal}
+                placeholderTextColor="rgba(165,212,234,0.42)"
+                style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7, marginTop: 6, color: theme.text, borderWidth: 1, borderColor: a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
               />
-              <View style={{ width: 64, alignItems: "flex-end" }}>
-                {a.status !== "none" ? (
-                  <Text style={{ color: c, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>
-                    {a.status === "good" ? "✓ Good" : a.status === "caution" ? "Watch" : "⚠ High"}
-                  </Text>
-                ) : (
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
-                )}
-              </View>
+
             </View>
           );
         })}
