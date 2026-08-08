@@ -503,7 +503,17 @@ export function getWaterDelta(waterTests = [], waterType = "fresh") {
 export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = [], maintenance = {}, quantities = {} } = {}) {
   const factors = [];
   let score = 0;
+  let applicable = 0;
+  // A factor with nothing to assess is "n/a": it scores nothing AND counts for
+  // nothing. Awarding points for an absence is how an empty, never-tested tank
+  // used to report 73% health — full marks for having no fish to conflict, plus
+  // half marks for three things that had never been measured.
   const add = (label, state, weight, detail) => {
+    if (state === "n/a") {
+      factors.push({ label, state, detail, weight });
+      return;
+    }
+    applicable += weight;
     if (state === true) score += weight;
     else if (state === "partial") score += weight / 2;
     // weight travels with the factor so getHealthImprovements can price the
@@ -518,12 +528,12 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
       const lvl = getCompatibility(tank[i], tank[j]).level;
       if (lvl === "avoid") avoid = true; else if (lvl === "caution") caution = true;
     }
-  add("Compatibility", tank.length < 2 ? true : avoid ? false : caution ? "partial" : true, 25,
-    tank.length < 2 ? "—" : avoid ? "Conflicts present" : caution ? "Minor cautions" : "All get along");
+  add("Compatibility", tank.length < 2 ? "n/a" : avoid ? false : caution ? "partial" : true, 25,
+    tank.length < 2 ? "Needs 2+ species" : avoid ? "Conflicts present" : caution ? "Minor cautions" : "All get along");
 
   // Stocking / bioload (20)
   const bio = getBioload(tankGallons, tank, quantities);
-  add("Stocking level", !tank.length ? true : bio.pct <= 85 ? true : bio.pct <= 100 ? "partial" : false, 20, tank.length ? bio.level : "Empty");
+  add("Stocking level", !tank.length ? "n/a" : bio.pct <= 85 ? true : bio.pct <= 100 ? "partial" : false, 20, tank.length ? bio.level : "Nothing stocked yet");
 
   // Water quality from the latest test (25)
   const latest = waterTests[0];
@@ -540,14 +550,14 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
         if (s === "danger") danger = true; else if (s === "caution") cautionP = true;
       }
     }
-    add("Water quality", any ? (danger ? false : cautionP ? "partial" : true) : "partial", 25, any ? (danger ? "Out of range" : cautionP ? "Watch a value" : "All in range") : "No recent test");
+    add("Water quality", any ? (danger ? false : cautionP ? "partial" : true) : "n/a", 25, any ? (danger ? "Out of range" : cautionP ? "Watch a value" : "All in range") : "No recent test");
   } else {
-    add("Water quality", "partial", 25, "No test logged yet");
+    add("Water quality", "n/a", 25, "No test logged yet");
   }
 
   // Cycle (15)
   const cyc = getCycleStatus(waterTests);
-  add("Cycle", waterTests.length ? cyc.cycled : "partial", 15, cyc.label);
+  add("Cycle", waterTests.length ? cyc.cycled : "n/a", 15, cyc.label);
 
   // Maintenance currency (15)
   const MTASKS = [{ id: "waterchange", days: 7 }, { id: "filterclean", days: 30 }, { id: "gravelvac", days: 14 }, { id: "glassclean", days: 10 }];
@@ -556,12 +566,17 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
     const last = maintenance[tk.id];
     if (last) { logged++; const since = Math.floor((Date.now() - new Date(last).getTime()) / 86400000); if (since > tk.days) overdue++; }
   }
-  add("Maintenance", logged ? (overdue === 0 ? true : overdue <= 1 ? "partial" : false) : "partial", 15, logged ? (overdue ? `${overdue} overdue` : "Up to date") : "Not tracked yet");
+  add("Maintenance", logged ? (overdue === 0 ? true : overdue <= 1 ? "partial" : false) : "n/a", 15, logged ? (overdue ? `${overdue} overdue` : "Up to date") : "Not tracked yet");
 
-  const pct = Math.round(score);
-  const label = pct >= 85 ? "Thriving" : pct >= 65 ? "Healthy" : pct >= 45 ? "Needs care" : "At risk";
-  const color = pct >= 85 ? "#38e1c6" : pct >= 65 ? "#7ff0dd" : pct >= 45 ? "#ffd86b" : "#ff7b7b";
-  return { score: pct, label, color, factors };
+  // Scored against what can actually be assessed. A brand-new tank with no
+  // stock and no tests has nothing to score, so it reports no score at all
+  // rather than inventing a number.
+  const pct = applicable > 0 ? Math.round((score / applicable) * 100) : null;
+  const label = pct == null ? "Not enough to go on"
+    : pct >= 85 ? "Thriving" : pct >= 65 ? "Healthy" : pct >= 45 ? "Needs care" : "At risk";
+  const color = pct == null ? "#8fb8cf"
+    : pct >= 85 ? "#38e1c6" : pct >= 65 ? "#7ff0dd" : pct >= 45 ? "#ffd86b" : "#ff7b7b";
+  return { score: pct, label, color, factors, applicable, assessed: applicable > 0 };
 }
 
 // ── Achievements ─────────────────────────────────────────────────────────────
@@ -822,6 +837,8 @@ export function getHealthImprovements(healthScore, limit = 3) {
     // state === true means full marks already — nothing to suggest.
     if (f.state === true) return;
 
+    // "n/a" is the most actionable state of all: the factor isn't being tracked,
+    // so starting to track it is the single biggest thing the keeper can do.
     // "partial" credit earns roughly half, so only half the points remain.
     const available = f.state === "partial" ? Math.round((f.weight || 0) / 2) : (f.weight || 0);
     if (available <= 0) return;

@@ -35,7 +35,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                 onPress={() => onRowPress(tk)}
                 style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, padding: 12 }, pressed && { opacity: 0.85 }]}
                 accessibilityRole="button"
-                accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score} percent healthy, ${expanded ? "collapse" : "open"}`}
+                accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score == null ? "health not yet measurable" : `${h.score} percent healthy`}, ${expanded ? "collapse" : "open"}`}
               >
                 <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.12)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
                   <Text style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
@@ -45,7 +45,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                   <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
                 </View>
                 <View style={{ backgroundColor: `${h.color}22`, borderColor: `${h.color}55`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 }}>
-                  <Text style={{ color: h.color, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score >= 85 ? "✓ " : ""}{h.score}%</Text>
+                  <Text style={{ color: h.color, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score == null ? "—" : `${h.score}%`}</Text>
                 </View>
                 <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
               </Pressable>

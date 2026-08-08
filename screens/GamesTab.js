@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTabBarScroll } from "../lib/tabBarScroll";
 import { SPECIES, getCompatibility, tapHaptic } from "../core";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -26,10 +27,10 @@ function Pill({ label, active, onPress, fill }) {
 }
 
 const GAMES = [
-  { id: "guess", emoji: "🖼️", name: "Guess the Fish", desc: "Name the fish from its photo." },
-  { id: "match", emoji: "🤝", name: "Tank Match", desc: "Will these two get along?" },
-  { id: "bigger", emoji: "📏", name: "Bigger Tank?", desc: "Which one needs more gallons?" },
-  { id: "trivia", emoji: "🧠", name: "Reef Trivia", desc: "Test your fishkeeping smarts." },
+  { id: "guess", icon: "image-outline", name: "Guess the Fish", desc: "Name the fish from its photo." },
+  { id: "match", icon: "git-compare-outline", name: "Tank Match", desc: "Will these two get along?" },
+  { id: "bigger", icon: "resize-outline", name: "Bigger Tank?", desc: "Which one needs more gallons?" },
+  { id: "trivia", icon: "bulb-outline", name: "Reef Trivia", desc: "Test your fishkeeping smarts." },
 ];
 
 export function GamesTab({ onEarnXp }) {
@@ -49,7 +50,7 @@ export function GamesTab({ onEarnXp }) {
       <View style={{ gap: 12 }}>
         {GAMES.map((g) => (
           <Pressable key={g.id} onPress={() => { tapHaptic(); setGame(g.id); }} style={({ pressed }) => [styles.cleanRow, { marginBottom: 0 }, pressed && { opacity: 0.85, borderColor: theme.accent }]} accessibilityRole="button" accessibilityLabel={g.name}>
-            <View style={styles.cleanImageWrap}><Text style={styles.cleanEmoji}>{g.emoji}</Text></View>
+            <View style={styles.cleanImageWrap}><Ionicons name={g.icon} size={24} color={theme.accent} /></View>
             <View style={{ flex: 1 }}>
               <Text style={styles.cleanName}>{g.name}</Text>
               <Text style={styles.cleanMeta}>{g.desc}</Text>
@@ -85,7 +86,10 @@ function GameHost({ gameId, onBack, onEarnXp }) {
       <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
         <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Games</Text>
       </Pressable>
-      <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5 }}>{meta.emoji} {meta.name}</Text>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <Ionicons name={meta.icon} size={22} color={theme.accent} />
+        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5 }}>{meta.name}</Text>
+      </View>
       <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 14 }}>{meta.desc}</Text>
 
       {/* Mode + best scores */}
@@ -184,14 +188,18 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
 function OptionBtn({ o, answered, selectedKey, onPress }) {
   let bg = "rgba(255,255,255,0.05)", bc = theme.border, color = theme.text, mark = null;
   if (answered) {
-    if (o.correct) { bg = "rgba(56,225,198,0.16)"; bc = theme.accent; color = "#fff"; mark = "✓"; }
-    else if (o.key === selectedKey) { bg = "rgba(255,123,123,0.16)"; bc = theme.danger; color = theme.danger; mark = "✕"; }
+    if (o.correct) { bg = "rgba(56,225,198,0.16)"; bc = theme.accent; color = "#fff"; mark = "check"; }
+    else if (o.key === selectedKey) { bg = "rgba(255,123,123,0.16)"; bc = theme.danger; color = theme.danger; mark = "close"; }
     else { color = theme.secondaryText; }
   }
   return (
     <Pressable disabled={answered} onPress={onPress} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: bg, borderWidth: 1, borderColor: bc, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12 }, pressed && !answered && { opacity: 0.8 }]} accessibilityRole="button">
+      {/* The compatibility answers carried their verdict in a coloured emoji
+          circle. Replacing the emoji without this dot would have thrown the
+          colour cue away entirely. */}
+      {o.dot ? <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: o.dot }} /> : null}
       <Text style={{ flex: 1, color, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.label}</Text>
-      {mark ? <Text style={{ color: o.correct ? theme.accent : theme.danger, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{mark}</Text> : null}
+      {mark ? <Ionicons name={mark} size={17} color={o.correct ? theme.accent : theme.danger} /> : null}
     </Pressable>
   );
 }
@@ -239,9 +247,9 @@ function makeMatchRound() {
   const b = rand(samePool.length ? samePool : SPECIES.filter((s) => s.name !== a.name));
   const c = getCompatibility(a.name, b.name);
   const options = [
-    { key: "excellent", label: "🟢 Great tankmates" },
-    { key: "caution", label: "🟡 Keep an eye on them" },
-    { key: "avoid", label: "🔴 Avoid — don't mix" },
+    { key: "excellent", label: "Great tankmates", dot: "#38e1c6" },
+    { key: "caution", label: "Keep an eye on them", dot: "#ffd372" },
+    { key: "avoid", label: "Avoid — don't mix", dot: "#ff7b7b" },
   ].map((o) => ({ ...o, correct: o.key === c.level }));
   return { prompt: <TwoSpecies a={a} b={b} question="Will these two get along?" />, options, explain: c.reason };
 }

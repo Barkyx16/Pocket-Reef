@@ -212,8 +212,14 @@ describe("tank health score", () => {
     ];
     cases.forEach((c) => {
       const s = getTankHealthScore(c);
-      expect(s.score).toBeGreaterThanOrEqual(0);
-      expect(s.score).toBeLessThanOrEqual(100);
+      // The contract deliberately changed: null means "nothing assessable yet",
+      // which is a real answer. Anything else must still be a sane percentage.
+      if (s.score === null) {
+        expect(s.assessed).toBe(false);
+      } else {
+        expect(s.score).toBeGreaterThanOrEqual(0);
+        expect(s.score).toBeLessThanOrEqual(100);
+      }
     });
   });
 
@@ -490,5 +496,55 @@ describe("health improvements", () => {
     expect(getHealthImprovements(null)).toEqual([]);
     expect(getHealthImprovements({})).toEqual([]);
     expect(getHealthImprovements({ factors: "nope" })).toEqual([]);
+  });
+});
+
+describe("health score only grades what it can assess", () => {
+  test("an empty, never-tested tank has NO score rather than a flattering one", () => {
+    // It used to report 73%: full marks for having no fish to conflict, plus
+    // half marks for water, cycle and maintenance it had never measured.
+    const h = getTankHealthScore({ tank: [], tankGallons: 20 });
+    expect(h.score).toBeNull();
+    expect(h.assessed).toBe(false);
+    expect(h.label).toMatch(/not enough/i);
+  });
+
+  test("every factor of an empty tank is marked not-applicable", () => {
+    const h = getTankHealthScore({ tank: [], tankGallons: 20 });
+    expect(h.factors.every((f) => f.state === "n/a")).toBe(true);
+    expect(h.applicable).toBe(0);
+  });
+
+  test("an empty tank is not credited for having nothing to conflict", () => {
+    const h = getTankHealthScore({ tank: [], tankGallons: 20 });
+    const compat = h.factors.find((f) => f.label === "Compatibility");
+    const stocking = h.factors.find((f) => f.label === "Stocking level");
+    expect(compat.state).toBe("n/a");
+    expect(stocking.state).toBe("n/a");
+  });
+
+  test("a stocked but untested tank scores on what IS knowable", () => {
+    const h = getTankHealthScore({ tank: [NEON, "Cardinal Tetra"], tankGallons: 29 });
+    expect(typeof h.score).toBe("number");
+    // Only compatibility + stocking are assessable, so the denominator is 45.
+    expect(h.applicable).toBe(45);
+    expect(h.factors.find((f) => f.label === "Water quality").state).toBe("n/a");
+  });
+
+  test("a well-kept tank still scores high", () => {
+    const h = getTankHealthScore({
+      tank: [NEON, "Cardinal Tetra"], tankGallons: 55, quantities: { [NEON]: 6, "Cardinal Tetra": 6 },
+      waterTests: [{ date: iso(0), values: { ammonia: 0, nitrite: 0, nitrate: 10, ph: 7 } }],
+      maintenance: { waterchange: iso(1), filterclean: iso(2), gravelvac: iso(1), glassclean: iso(1) },
+    });
+    expect(h.score).toBeGreaterThanOrEqual(80);
+  });
+
+  test("untracked factors become the top improvement suggestions", () => {
+    const { getHealthImprovements } = require("../core");
+    const h = getTankHealthScore({ tank: [NEON], tankGallons: 29 });
+    const tips = getHealthImprovements(h, 3);
+    expect(tips.length).toBeGreaterThan(0);
+    expect(tips[0].points).toBeGreaterThan(0);
   });
 });

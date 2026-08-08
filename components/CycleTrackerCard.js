@@ -1,14 +1,18 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { getCycleStatus, getCyclingCoach } from "../core";
 import { ProgressBar } from "./ProgressBar";
 
 // Nitrogen-cycle tracker — reads your latest water test and shows where the new
 // tank is on the road to "cycled." Purely derived from your logged tests.
+// Icons rather than 🟡🟠✅: the card already computes a colour per stage, and
+// an emoji can never take it — the "reached" state was being conveyed by
+// opacity alone while the glyph stayed the wrong colour.
 const STAGES = [
-  { key: "ammonia", label: "Ammonia", emoji: "🟡" },
-  { key: "nitrite", label: "Nitrite", emoji: "🟠" },
-  { key: "cycled", label: "Cycled", emoji: "✅" },
+  { key: "ammonia", label: "Ammonia", icon: "ellipse" },
+  { key: "nitrite", label: "Nitrite", icon: "ellipse" },
+  { key: "cycled", label: "Cycled", icon: "checkmark-circle" },
 ];
 
 export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
@@ -40,7 +44,7 @@ export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
           const color = status.cycled && stageNum === 3 ? theme.accent : reached ? theme.warn : theme.border;
           return (
             <View key={s.key} style={{ flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: 14, borderWidth: 1, backgroundColor: current ? `${color}22` : "rgba(255,255,255,0.03)", borderColor: reached ? color : theme.border }}>
-              <Text style={{ fontSize: 20, opacity: reached ? 1 : 0.4 }}>{s.emoji}</Text>
+              <Ionicons name={s.icon} size={18} color={reached ? color : theme.secondaryText} style={{ opacity: reached ? 1 : 0.45 }} />
               <Text style={{ color: reached ? "#fff" : theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>{s.label}</Text>
             </View>
           );

@@ -21,10 +21,10 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
         onPress={() => { tapHaptic("light"); setOpen((v) => !v); }}
         style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 16 }, pressed && { opacity: 0.7 }]}
         accessibilityRole="button"
-        accessibilityLabel={`Tank health ${health.score} of 100, ${open ? "hide" : "show"} breakdown`}
+        accessibilityLabel={health.score == null ? `Tank health not yet measurable, ${open ? "hide" : "show"} breakdown` : `Tank health ${health.score} of 100, ${open ? "hide" : "show"} breakdown`}
       >
         <View style={{ width: 76, height: 76, borderRadius: 38, borderWidth: 5, borderColor: health.color, alignItems: "center", justifyContent: "center", backgroundColor: `${health.color}14`, shadowColor: health.color, shadowOpacity: 0.4, shadowRadius: 14, shadowOffset: { width: 0, height: 0 }, elevation: 4 }}>
-          <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score}</Text>
+          <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score == null ? "—" : health.score}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text style={{ color: health.color, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{health.label}</Text>
