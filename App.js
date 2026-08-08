@@ -1022,13 +1022,8 @@ function PocketReef() {
           )}
 
           {!detailOpen ? (
-            <Animated.View style={[styles.bottomTabs,
-              tabBar ? {
-                transform: [{
-                  translateY: tabBar.hidden.interpolate({ inputRange: [0, 1], outputRange: [0, 130] }),
-                }],
-                opacity: tabBar.hidden.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
-              } : null, layout.isLarge && {
+            <View style={[styles.bottomTabs,
+              tabBar && tabBar.hidden ? { transform: [{ translateY: 130 }], opacity: 0 } : null, layout.isLarge && {
               // alignSelf is ignored on an absolutely-positioned element, so
               // the bar hugged the left edge of the content column. Auto
               // margins against left:0/right:0 is what actually centres it.
@@ -1068,7 +1063,7 @@ function PocketReef() {
                   </Pressable>
                 );
               })}
-            </Animated.View>
+            </View>
           ) : null}
         </SafeAreaView>
         )}
