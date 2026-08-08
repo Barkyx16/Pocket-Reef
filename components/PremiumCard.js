@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { tapHaptic } from "../core";
 import { GradientButton } from "./GradientButton";
 
@@ -28,7 +29,7 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
     return (
       <View style={{ backgroundColor: theme.card, borderRadius: 24, padding: 18, borderWidth: 1, borderColor: theme.border }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <Text style={{ fontSize: 26 }}>👑</Text>
+          <Ionicons name="star" size={22} color={theme.accent} />
           <View style={{ flex: 1 }}>
             <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>Premium active</Text>
             <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Thanks for supporting Pocket Reef — every feature is unlocked.</Text>
@@ -50,7 +51,7 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
         <View style={{ position: "absolute", right: -50, top: -60, width: 180, height: 180, borderRadius: 90, backgroundColor: "rgba(255,211,114,0.16)" }} />
         <View style={{ alignItems: "center" }}>
           <View style={{ width: 56, height: 56, borderRadius: 18, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.3)", alignItems: "center", justifyContent: "center" }}>
-            <Text style={{ fontSize: 30 }}>👑</Text>
+            <Ionicons name="star" size={26} color={theme.accent} />
           </View>
           <Text style={{ color: theme.accentLight, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, marginTop: 12 }}>POCKET REEF PREMIUM</Text>
           <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>Keep a healthier reef.</Text>

@@ -224,7 +224,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
         <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Backup</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           <Pressable onPress={() => onExport && onExport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
-            <Text style={styles.ghostBtnText}>📤 Export</Text>
+            <Text style={styles.ghostBtnText}>Export</Text>
           </Pressable>
           <Pressable onPress={() => onImport && onImport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
             <Text style={styles.ghostBtnText}>Restore</Text>

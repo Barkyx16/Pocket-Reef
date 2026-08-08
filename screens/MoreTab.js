@@ -1,5 +1,6 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTabBarScroll } from "../lib/tabBarScroll";
 import { tapHaptic } from "../core";
 
@@ -28,13 +29,20 @@ export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
             accessibilityRole="button"
             accessibilityLabel={it.label}
           >
-            <View style={{ width: 52, height: 52, borderRadius: 15, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center", opacity: isLocked(it.id) ? 0.5 : 1 }}>
-              <Text style={{ fontSize: 26 }}>{it.emoji}</Text>
+            <View style={{ width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center", opacity: isLocked(it.id) ? 0.5 : 1 }}>
+              <Ionicons name={it.icon} size={20} color={theme.accent} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
+              <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
+              {/* The description lived in MORE_ITEMS all along and was never
+                  rendered, which is why this sheet read as five bare words. */}
               {isLocked(it.id) ? (
-                <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>🔒 Premium</Text>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 }}>
+                  <Ionicons name="lock-closed" size={11} color={theme.accent} />
+                  <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Premium</Text>
+                </View>
+              ) : it.desc ? (
+                <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{it.desc}</Text>
               ) : null}
             </View>
             <Text style={{ color: theme.accent, fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>

@@ -63,11 +63,11 @@ const TABS = [
 // Everything behind the "More" tab, ordered by how often it gets opened:
 // Profile first, Premium last.
 const MORE_ITEMS = [
-  { id: "profile", emoji: "👤", label: "Profile", desc: "Account, stats & settings" },
-  { id: "journal", emoji: "📓", label: "Journal", desc: "Your dated log & photo gallery" },
-  { id: "health", emoji: "🩺", label: "Health", desc: "Disease guides & symptom checker" },
-  { id: "games", emoji: "🎮", label: "Games", desc: "Play reef games & earn XP" },
-  { id: "premium", emoji: "👑", label: "Premium", desc: "Unlock the full reef toolkit" },
+  { id: "profile", icon: "person-outline", label: "Profile", desc: "Account, stats & settings" },
+  { id: "journal", icon: "book-outline", label: "Journal", desc: "Your dated log & photo gallery" },
+  { id: "health", icon: "medkit-outline", label: "Health", desc: "Disease guides & symptom checker" },
+  { id: "games", icon: "game-controller-outline", label: "Games", desc: "Play reef games & earn XP" },
+  { id: "premium", icon: "star-outline", label: "Premium", desc: "Unlock the full reef toolkit" },
 ];
 const MORE_IDS = MORE_ITEMS.map((m) => m.id);
 

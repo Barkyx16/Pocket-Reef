@@ -13,7 +13,13 @@ import { ProgressBar } from "./ProgressBar";
 // from 21:9 to 16:9), so "contain" never letterboxes in practice; the gradient
 // behind it only shows through if a future banner has an odd ratio.
 export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl, xp, streak, longestStreak }) {
-  const src = image ? Image.resolveAssetSource(image) : null;
+  // resolveAssetSource is a native-only API — it doesn't exist on
+  // react-native-web, where calling it threw and took the whole Profile tab
+  // down. The ratio is a nicety; falling back to 16:9 costs nothing.
+  let src = null;
+  if (image && typeof Image.resolveAssetSource === "function") {
+    try { src = Image.resolveAssetSource(image); } catch (e) { src = null; }
+  }
   const ratio = src && src.width && src.height ? src.width / src.height : 16 / 9;
 
   return (

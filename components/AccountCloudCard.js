@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { supabase, isCloudConfigured } from "../lib/supabase";
 import { RESET_REDIRECT } from "../lib/supabaseConfig";
 import {
@@ -187,7 +188,7 @@ export function AccountCloudCard({
         backgroundColor: syncError ? "rgba(255,211,114,0.10)" : "rgba(56,225,198,0.10)",
         borderColor: syncError ? "rgba(255,211,114,0.35)" : "rgba(56,225,198,0.3)",
       }}>
-        <Text style={{ fontSize: 24 }}>{syncError ? "⚠️" : lastSyncedAt ? "☁️" : "🔄"}</Text>
+        <Ionicons name={syncError ? "warning" : lastSyncedAt ? "cloud-done" : "phone-portrait-outline"} size={20} color={syncError ? theme.warn : theme.accent} />
         <View style={{ flex: 1 }}>
           <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {syncError ? "Not syncing right now" : lastSyncedAt ? "Your reef is backed up" : configured ? "Backing up your reef…" : "Saved on this device"}
@@ -244,12 +245,12 @@ export function AccountCloudCard({
         accessibilityLabel={premiumUnlocked ? "Premium active — open the Premium tab" : "Premium inactive — open the Premium tab"}
       >
         <View style={{ width: 40, height: 40, borderRadius: 13, alignItems: "center", justifyContent: "center", backgroundColor: premiumUnlocked ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: premiumUnlocked ? "rgba(56,225,198,0.3)" : "rgba(255,216,107,0.3)" }}>
-          <Text style={{ fontSize: 20 }}>👑</Text>
+          <Ionicons name="star" size={18} color={theme.accent} />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.accountInfoLabel}>Premium</Text>
           <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
-            {premiumUnlocked ? "Active 👑" : "Inactive"}
+            {premiumUnlocked ? "Active" : "Inactive"}
           </Text>
           <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
             {premiumUnlocked ? "Every feature unlocked — thank you!" : "Unlock the full reef toolkit."}
@@ -364,7 +365,7 @@ export function AccountCloudCard({
       <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 10 }}>Last export {backupLabel}.</Text>
       <View style={{ flexDirection: "row", gap: 8 }}>
         <Pressable onPress={() => onExport && onExport()} style={[styles.primaryBtn, { flex: 1 }]} accessibilityRole="button">
-          <Text style={styles.primaryBtnText}>📤 Export</Text>
+          <Text style={styles.primaryBtnText}>Export</Text>
         </Pressable>
         <Pressable onPress={() => onImport && onImport()} style={[styles.ghostBtn, { flex: 1 }]} accessibilityRole="button">
           <Text style={styles.ghostBtnText}>Restore</Text>
