@@ -56,7 +56,7 @@ export function ForecastCard({ forecasts = [] }) {
                   </Text>
                 </View>
 
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
                   {f.perWeek > 0 ? "Rising" : "Falling"} about {Math.abs(f.perWeek)}{f.unit ? ` ${f.unit}` : ""} per week
                   {f.n ? ` · ${f.n} readings` : ""}
                 </Text>

@@ -10,7 +10,7 @@ export function EmptyState({ emoji = "🐠", title, subtitle }) {
         <Text style={{ fontSize: 34 }}>{emoji}</Text>
       </View>
       {title ? <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 14, textAlign: "center" }}>{title}</Text> : null}
-      {subtitle ? <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19, maxWidth: 300 }}>{subtitle}</Text> : null}
+      {subtitle ? <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19, maxWidth: 300 }}>{subtitle}</Text> : null}
     </View>
   );
 }

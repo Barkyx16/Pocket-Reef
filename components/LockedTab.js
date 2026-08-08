@@ -33,7 +33,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
         <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 24, textAlign: "center", letterSpacing: -0.4 }}>
           {title}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
+        <Text style={{ color: theme.bodyText, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
           {blurb}
         </Text>
 

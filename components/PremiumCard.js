@@ -76,7 +76,7 @@ export function PremiumCard({ premiumUnlocked, onUnlock }) {
               <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{f.body}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{f.body}</Text>
               </View>
             </View>
           ))}

@@ -82,7 +82,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
           <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
             <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 2 }}>⚠️ Watch these</Text>
             {issues.map((p) => (
-              <Text key={p.key} style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 4 }}>
+              <Text key={p.key} style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 4 }}>
                 <Text style={{ color: theme.text, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}: </Text>{p.tip}
               </Text>
             ))}

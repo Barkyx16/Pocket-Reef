@@ -37,7 +37,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
         <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 24 }}>
           <Text style={styles.cardEyebrow}>Reset password</Text>
           <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
             Pick something at least 8 characters long. You'll stay signed in on this device afterwards.
           </Text>
 

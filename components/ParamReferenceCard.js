@@ -15,7 +15,7 @@ export function ParamReferenceCard({ waterType = "fresh" }) {
             <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
             <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.ideal}</Text>
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 4 }}>{p.tip}</Text>
+          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 4 }}>{p.tip}</Text>
         </View>
       ))}
     </View>

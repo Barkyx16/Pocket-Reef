@@ -29,8 +29,8 @@ export function FeedingGuideCard({ tank = [], quantities = {} }) {
                 {g.diet}s · {g.fishCount} fish · {g.timesPerDay}× daily
               </Text>
               <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{g.food}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.note}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.portion}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.note}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.portion}</Text>
             </View>
           ))}
           <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 17 }}>{feeding.goldenRule}</Text>
@@ -42,7 +42,7 @@ export function FeedingGuideCard({ tank = [], quantities = {} }) {
         {recs.map((r, i) => (
           <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
             <Text style={{ fontSize: 18 }}>{r.icon}</Text>
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{r.text}</Text>
+            <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{r.text}</Text>
           </View>
         ))}
       </View>

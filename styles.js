@@ -30,7 +30,14 @@ export const theme = {
   border: "rgba(96, 230, 210, 0.16)",
   hairline: "rgba(255, 255, 255, 0.07)",
   text: "#eaf7ff",
-  secondaryText: "#9fc4d8",
+  // Body prose. The old secondaryText sat at 42% saturation against accents
+  // running 74-79%, which is what made the app read dull — it was never a
+  // contrast problem (it measured 8.5:1, comfortably past AA). This is
+  // brighter AND far more saturated: 12.6:1 at 78%.
+  bodyText: "#cfeaf9",
+  // Genuine secondary information — timestamps, units, hints. Still clearly
+  // subordinate to bodyText, but no longer grey.
+  secondaryText: "#a5d4ea",
   accent: "#38e1c6", // teal
   accentLight: "#7ff0dd",
   accentDeep: "#1fb6a0",
@@ -76,7 +83,7 @@ export const styles = StyleSheet.create({
   cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
   cardEyebrow: { fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
   cardTitle: { fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
-  cardText: { marginTop: 8, fontSize: 14, lineHeight: 22, color: theme.secondaryText, fontFamily: "Inter_400Regular" },
+  cardText: { marginTop: 8, fontSize: 14, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
   iconSquare: { width: 32, height: 32, borderRadius: 10, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56, 225, 198, 0.16)", borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.22)" },
   primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: 999, backgroundColor: ACCENT, marginBottom: 12 },
 

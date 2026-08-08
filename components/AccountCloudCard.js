@@ -193,7 +193,7 @@ export function AccountCloudCard({
           <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {syncError ? "Not syncing right now" : lastSyncedAt ? "Your reef is backed up" : configured ? "Backing up your reef…" : "Saved on this device"}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 2 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 2 }}>
             {syncError
               ? "Changes are saved on this device and will retry automatically."
               : lastSyncedAt
@@ -382,7 +382,7 @@ export function AccountCloudCard({
           <Pressable onPress={deleteAccount} style={styles.accountDangerBtn} accessibilityRole="button">
             <Text style={styles.accountDangerText}>🗑 Delete account</Text>
           </Pressable>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
+          <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
             Logging out keeps everything in the cloud. Deleting removes your account and its data for good.
           </Text>
         </>

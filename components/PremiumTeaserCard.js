@@ -62,7 +62,7 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
             <View style={styles.iconSquare}><Text style={{ fontSize: 15 }}>{l.icon}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", lineHeight: 19 }}>{l.text}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
             </View>
           </View>
         ))}

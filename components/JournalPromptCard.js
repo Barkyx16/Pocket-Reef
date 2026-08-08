@@ -36,7 +36,7 @@ export function JournalPromptCard({ daysSinceLast }) {
       <Text style={{ color: theme.accentLight, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" }}>
         {first ? "✍️ Start your log" : `✍️ ${daysSinceLast} days since your last entry`}
       </Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 6 }}>
+      <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 6 }}>
         {first
           ? "Not sure what to write? Any of these works — a line is better than nothing."
           : "Pick one of these up and get back into it:"}

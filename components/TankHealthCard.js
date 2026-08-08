@@ -64,7 +64,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{imp.action}</Text>
-                      {imp.why ? <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
+                      {imp.why ? <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
                     </View>
                     {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
                   </Pressable>

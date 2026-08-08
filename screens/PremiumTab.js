@@ -113,7 +113,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
                   <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                   {premiumUnlocked ? <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
                 </View>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.body}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.body}</Text>
               </View>
             </View>
           ))}
@@ -147,7 +147,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           {loadingPlans ? (
             <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 14 }}>Loading plans…</Text>
           ) : !plans.length ? (
-            <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 14, lineHeight: 18 }}>
+            <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 14, lineHeight: 18 }}>
               Plans aren't available right now. Check your connection and try again.
             </Text>
           ) : null}
@@ -163,7 +163,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
             style={{ marginTop: 16, opacity: canBuy && !buying ? 1 : 0.55 }}
           />
           {!storeReady ? (
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
+            <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
               In-app purchases need a device build — they don't run in Expo Go.
             </Text>
           ) : null}
@@ -174,7 +174,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           </Pressable>
           {/* Auto-renew disclosure. App Store review requires this verbatim-ish
               wording next to the CTA, along with reachable terms and privacy. */}
-          <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", textAlign: "center", marginTop: 10, lineHeight: 15 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", textAlign: "center", marginTop: 10, lineHeight: 15 }}>
             {plan
               ? `${trialDays ? `Free for ${trialDays} days, then ` : ""}${plan.priceString}${plan.per}. `
               : ""}
@@ -206,7 +206,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
       {__DEV__ ? (
       <View style={{ borderRadius: 18, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
         <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>🔧 Developer</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+        <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
           Toggle the premium gate for testing. Debug builds only — stripped from release.
         </Text>
         <Pressable

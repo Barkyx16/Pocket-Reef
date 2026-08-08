@@ -203,14 +203,14 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         {watchFor.length ? (
           <View style={{ flexDirection: "row", gap: 8, marginTop: 14 }}>
             <Text style={{ fontSize: 15 }}>⚠️</Text>
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
+            <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
               <Text style={{ color: theme.warn, fontFamily: "Inter_900Black", fontWeight: "900" }}>Watch for: </Text>{watchFor.join(", ")}.
             </Text>
           </View>
         ) : null}
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           <Ionicons name="checkmark-circle" size={17} color={theme.accent} />
-          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
             <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>Prevent & treat: </Text>Quarantine new arrivals, keep water pristine and stable, don't overstock, and act at the very first sign.
           </Text>
         </View>

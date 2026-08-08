@@ -26,7 +26,7 @@ export function TroubleshooterCard() {
                 {item.steps.map((step, i) => (
                   <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
                     <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 16 }}>{i + 1}.</Text>
-                    <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{step}</Text>
+                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{step}</Text>
                   </View>
                 ))}
               </View>

@@ -176,7 +176,7 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
         </View>
         {answered && !timed ? (
           <>
-            {round.explain ? <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 12, textAlign: "center" }}>{round.explain}</Text> : null}
+            {round.explain ? <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 12, textAlign: "center" }}>{round.explain}</Text> : null}
             <GradientButton label="Next round" icon="arrow-forward" onPress={next} style={{ marginTop: 14 }} />
           </>
         ) : null}

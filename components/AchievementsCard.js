@@ -44,7 +44,7 @@ export function AchievementsCard({ items = [] }) {
           >
             <Text style={{ fontSize: 26 }}>{a.earned ? a.emoji : "🔒"}</Text>
             <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>{a.title}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: 10, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
           </View>
         ))}
       </View>

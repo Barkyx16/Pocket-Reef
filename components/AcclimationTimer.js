@@ -97,7 +97,7 @@ export function AcclimationTimer({ onComplete }) {
           <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {done ? "Acclimation complete" : current.label}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
             {done ? "Net the fish across and discard the bag water." : current.detail}
           </Text>
         </View>

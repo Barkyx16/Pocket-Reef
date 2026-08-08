@@ -25,7 +25,7 @@ export function TankIdeasCard({ onLoad }) {
               </Text>
             </View>
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 8 }}>{idea.blurb}</Text>
+          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 8 }}>{idea.blurb}</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
             {idea.species.map((n) => (
               <View key={n} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 999, paddingLeft: 4, paddingRight: 8, paddingVertical: 4 }}>

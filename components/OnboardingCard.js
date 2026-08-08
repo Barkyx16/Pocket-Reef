@@ -119,7 +119,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                     <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
+                      <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
                     </View>
                   </View>
                 ))}
@@ -156,7 +156,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                   </View>
                 ))}
               </View>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
+              <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
                 Every pairing is checked against the compatibility engine — water type, temperament,
                 predator size, and parameter overlap.
               </Text>

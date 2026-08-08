@@ -274,7 +274,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
           <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
             {list.length - shown} more species
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
             Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
           </Text>
           <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>

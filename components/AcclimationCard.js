@@ -24,7 +24,7 @@ export function AcclimationCard() {
             </View>
             {i < STEPS.length - 1 ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.25)", marginTop: 2, minHeight: 14 }} /> : null}
           </View>
-          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20, paddingBottom: 14 }}>{step}</Text>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20, paddingBottom: 14 }}>{step}</Text>
         </View>
       ))}
     </View>

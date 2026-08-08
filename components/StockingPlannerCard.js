@@ -63,7 +63,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
       </View>
 
       {!plan.ok ? (
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 16, lineHeight: 19 }}>
+        <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 16, lineHeight: 19 }}>
           {plan.reason}
         </Text>
       ) : (
@@ -81,7 +81,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
                   <Text style={{ color: theme.accent, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase", marginTop: 2 }}>
                     {p.roleLabel}
                   </Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 15 }}>
+                  <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 15 }}>
                     {p.why}
                   </Text>
                 </View>
@@ -97,7 +97,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
               </Text>
             </View>
             <ProgressBar pct={plan.pct} height={8} glow label={`Estimated stocking load, ${plan.pct}%`} />
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
+            <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
               Deliberately under-stocked — headroom is what lets fish grow and gives you room to add later.
             </Text>
           </View>
@@ -105,7 +105,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
           {plan.notes.length ? (
             <View style={{ marginTop: 12 }}>
               {plan.notes.map((n) => (
-                <Text key={n} style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>· {n}</Text>
+                <Text key={n} style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>· {n}</Text>
               ))}
             </View>
           ) : null}

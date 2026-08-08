@@ -56,7 +56,7 @@ export function TankToolboxCard({
     ) : (
       <>
         <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
+        <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
           Roughly {room.small} more nano fish (~2") {room.medium ? `or ${room.medium} community fish (~4")` : ""} — add slowly and keep testing. Check ✨ Recommended on Home for compatible picks.
         </Text>
       </>

@@ -78,7 +78,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       {progress.abandonedEarly ? (
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: 14, padding: 12 }}>
           <Text style={{ color: "#ff7b7b", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
             This is the most common reason an infection returns. If symptoms come back, start again
             and complete the full course.
           </Text>
@@ -110,7 +110,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                 <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>
                   {step.title}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (

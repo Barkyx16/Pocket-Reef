@@ -55,7 +55,7 @@ export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
       </View>
       <View style={{ marginTop: 12, backgroundColor: status.cycled ? "rgba(56,225,198,0.10)" : "rgba(255,216,107,0.08)", borderRadius: 14, borderWidth: 1, borderColor: status.cycled ? "rgba(56,225,198,0.3)" : "rgba(255,216,107,0.22)", padding: 12 }}>
         <Text style={{ color: status.cycled ? theme.accent : theme.warn, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>{status.label}</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{status.guidance}</Text>
+        <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{status.guidance}</Text>
       </View>
       {!waterTests.length ? <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>Log a water test above and this updates automatically.</Text> : null}
     </View>
