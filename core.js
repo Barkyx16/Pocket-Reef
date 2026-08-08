@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import SPECIES from "./data/speciesData";
 import { getCompatibility } from "./data/compatibility";
 import { DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom } from "./data/fishHealth";
-import { PARAMS, assessParam } from "./data/waterParams";
+import { PARAMS, assessParam, validateParam } from "./data/waterParams";
 import { ACHIEVEMENTS } from "./data/achievements";
 import { TROUBLESHOOTING } from "./data/troubleshooting";
 import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatments";
@@ -12,7 +12,7 @@ import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatment
 // survive rotation; anything that lays out should use useWindowDimensions.
 export const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export { SPECIES, getCompatibility, DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom, PARAMS, assessParam, ACHIEVEMENTS, TROUBLESHOOTING, TREATMENTS, getTreatment, getTreatableDiseases };
+export { SPECIES, getCompatibility, DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom, PARAMS, assessParam, validateParam, ACHIEVEMENTS, TROUBLESHOOTING, TREATMENTS, getTreatment, getTreatableDiseases };
 
 const byName = Object.fromEntries(SPECIES.map((s) => [s.name, s]));
 export function getSpecies(name) {

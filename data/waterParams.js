@@ -26,6 +26,38 @@ export const PARAMS = {
 };
 
 // Assess a single reading: "good" | "caution" | "danger" | "none".
+// Physically possible bounds per parameter — NOT the healthy range, which is
+// `good`/`caution`. These exist to catch a mistyped reading before it's stored:
+// a pH of 78 (meant 7.8) or a temp of 780 poisons every average, trend and
+// forecast built on it afterwards, and nothing downstream can tell it was a
+// typo. Deliberately wide — a genuinely alarming reading must still go in.
+const PLAUSIBLE = {
+  ammonia: [0, 100],
+  nitrite: [0, 100],
+  nitrate: [0, 500],
+  phosphate: [0, 50],
+  ph: [3, 11],
+  gh: [0, 60],
+  temp: [32, 120],      // °F
+  salinity: [1.0, 1.05], // specific gravity
+  alk: [0, 30],
+  calcium: [0, 1000],
+  magnesium: [0, 3000],
+};
+
+// Is this reading physically possible? Returns { ok, reason }.
+export function validateParam(p, value) {
+  if (value == null || value === "") return { ok: true };
+  const v = Number(value);
+  if (Number.isNaN(v)) return { ok: false, reason: "Not a number" };
+  const bounds = PLAUSIBLE[p.key];
+  if (!bounds) return { ok: true };
+  if (v < bounds[0] || v > bounds[1]) {
+    return { ok: false, reason: `${p.label} of ${v}${p.unit ? " " + p.unit : ""} isn't possible — check the reading` };
+  }
+  return { ok: true };
+}
+
 export function assessParam(p, value) {
   if (value == null || value === "") return { status: "none" };
   const v = Number(value);

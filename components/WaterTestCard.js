@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
-import { PARAMS, assessParam, paramStatusColor, getTodayKey, tapHaptic } from "../core";
+import { PARAMS, assessParam, paramStatusColor, getTodayKey, tapHaptic, validateParam } from "../core";
 
 // Log a water test and get an instant read on each parameter — the aquarium
 // equivalent of Pocket Planter's watering log. Values assess live as you type.
@@ -22,6 +22,16 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
 
   const submit = () => {
     if (!filled) return;
+    // Reject an impossible reading before it's stored. A mistyped pH of 78
+    // silently poisons every average, trend and forecast built on it
+    // afterwards, and nothing downstream can tell it was a typo.
+    const bad = params
+      .map((p) => ({ p, v: validateParam(p, vals[p.key]) }))
+      .find((r) => !r.v.ok);
+    if (bad) {
+      Alert.alert("Check that reading", bad.v.reason);
+      return;
+    }
     tapHaptic("medium");
     const entry = { date: getTodayKey(), water: waterType, values: {} };
     params.forEach((p) => { if (vals[p.key] !== "" && vals[p.key] != null) entry.values[p.key] = Number(vals[p.key]); });
@@ -69,7 +79,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
                 keyboardType="decimal-pad"
                 placeholder={p.ideal}
                 placeholderTextColor="rgba(165,212,234,0.42)"
-                style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7, marginTop: 6, color: theme.text, borderWidth: 1, borderColor: a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7, marginTop: 6, color: theme.text, borderWidth: 1, borderColor: !validateParam(p, vals[p.key]).ok ? theme.danger : a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
               />
 
             </View>

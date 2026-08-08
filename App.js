@@ -18,7 +18,7 @@ import { pushSnapshot, pullSnapshot, fetchServerEntitlement } from "./lib/cloudS
 import { queueSnapshot, resumePendingSync, cancelPendingSync, hasPendingSync } from "./lib/syncQueue";
 import { backupTankPhotos, hydrateTankPhotos } from "./lib/photoSync";
 import { getJSON, getRaw, setRaw, safeSetJSON, commitJSON } from "./lib/storage";
-import { runMigrations, ensureTanksShape } from "./lib/migrations";
+import { runMigrations, ensureTanksShape, SCHEMA_VERSION } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { generateStockingPlan } from "./lib/planner";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -826,18 +826,29 @@ function PocketReef() {
   const changeName = (name) => { setProfileName(name); AsyncStorage.setItem("pr_profileName", name).catch(() => {}); };
   const exportData = async () => {
     tapHaptic();
-    const payload = { app: "Pocket Reef", version: 1, exportedAt: new Date().toISOString(), tanks, xp, activeDays, careDone, reminderPrefs, premiumUnlocked, unit, lang, profileName, wishlist };
+    // premiumUnlocked is deliberately NOT exported. Entitlement belongs to a
+    // store account, not to a file — including it would imply a backup could
+    // carry a subscription between people, which it can't and shouldn't.
+    const payload = { app: "Pocket Reef", version: SCHEMA_VERSION, exportedAt: new Date().toISOString(), tanks, xp, activeDays, careDone, reminderPrefs, unit, lang, profileName, wishlist };
     try {
       const res = await Share.share({ message: JSON.stringify(payload) });
       if (!res || res.action !== Share.dismissedAction) { const now = Date.now(); setLastBackup(now); AsyncStorage.setItem("pr_lastBackup", String(now)).catch(() => {}); }
     } catch (e) {}
   };
-  const importData = (raw) => {
+  // Applies a validated payload. Split out so the confirmation step below can
+  // call it once the user has actually agreed to overwrite.
+  const applyImport = (p) => {
     try {
-      const p = JSON.parse(raw);
-      if (!p || !Array.isArray(p.tanks) || !p.tanks.length) return false;
-      setTanks(p.tanks); persistTanks(p.tanks);
-      setActiveTankId(p.tanks[0].id); AsyncStorage.setItem("pr_activeTank", p.tanks[0].id).catch(() => {});
+      // Run imported tanks through the same normalization as stored ones. A
+      // backup taken before a field existed would otherwise arrive missing it
+      // and crash the first screen that reads it — which is exactly what
+      // ensureTanksShape was written to prevent, and import wasn't using it.
+      const tanksIn = ensureTanksShape(p.tanks);
+      if (!tanksIn.length) return false;
+
+      setTanks(tanksIn); persistTanks(tanksIn);
+      // ensureTankShape guarantees an id, so this can't land on undefined.
+      setActiveTankId(tanksIn[0].id); AsyncStorage.setItem("pr_activeTank", tanksIn[0].id).catch(() => {});
       if (typeof p.xp === "number") { setXp(p.xp); AsyncStorage.setItem("pr_xp", String(p.xp)).catch(() => {}); }
       if (Array.isArray(p.activeDays)) { setActiveDays(p.activeDays); AsyncStorage.setItem("pr_activeDays", JSON.stringify(p.activeDays)).catch(() => {}); }
       if (p.careDone) { setCareDone(p.careDone); AsyncStorage.setItem("pr_careDone", JSON.stringify(p.careDone)).catch(() => {}); }
@@ -848,6 +859,34 @@ function PocketReef() {
       setShowImport(false);
       return true;
     } catch (e) { return false; }
+  };
+
+  const importData = (raw) => {
+    let p;
+    try { p = JSON.parse(raw); } catch (e) { return false; }
+    // Validate it's actually one of ours before touching anything.
+    if (!p || typeof p !== "object") return false;
+    if (p.app && p.app !== "Pocket Reef") return false;
+    if (!Array.isArray(p.tanks) || !p.tanks.length) return false;
+
+    const incoming = p.tanks.length;
+    const existing = tanks.reduce((n, t) => n + (t.stock || []).length + (t.journal || []).length + (t.waterTests || []).length, 0);
+
+    // Import REPLACES everything. Doing that silently to someone with real
+    // history is the most destructive thing this app can do, so it asks first
+    // — and only when there is actually something to lose.
+    if (existing > 0) {
+      Alert.alert(
+        "Replace everything on this device?",
+        `This backup has ${incoming} tank${incoming === 1 ? "" : "s"}. Importing replaces your current tanks, logs and journal on this device. This can't be undone.`,
+        [
+          { text: "Cancel", style: "cancel" },
+          { text: "Replace", style: "destructive", onPress: () => applyImport(p) },
+        ]
+      );
+      return true; // the sheet closes; the work happens on confirm
+    }
+    return applyImport(p);
   };
 
   const setSpeciesNote = (nm, text) => {
