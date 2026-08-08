@@ -22,7 +22,7 @@ import { runMigrations, ensureTanksShape } from "./lib/migrations";
 import { initPurchases, checkEntitlement, onEntitlementChange, restorePurchases, getOfferingPlans, purchasePackage, identifyUser, forgetUser } from "./lib/purchases";
 import { generateStockingPlan } from "./lib/planner";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { TabBarScrollProvider, useTabBarVisibility } from "./lib/tabBarScroll";
+import { TabBarScrollProvider, useTabBarVisibility, useTabBarHidden } from "./lib/tabBarScroll";
 import { LockedTab } from "./components/LockedTab";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { track, EVENTS } from "./lib/analytics";
@@ -124,6 +124,10 @@ function PocketReef() {
   // place instead of each ScrollView carrying its own stale snapshot.
   const layout = useResponsiveLayout();
   const tabBar = useTabBarVisibility();
+  // Subscribed separately so a hide/show re-renders only what it must. This
+  // used to live in the context value, which re-rendered the entire app shell
+  // (and whatever long list was on screen) on every scroll direction change.
+  const tabBarHidden = useTabBarHidden();
 
   // Inter, in the weights the design system actually uses. React Native needs a
   // family per weight — fontWeight alone won't select the right file on Android.
@@ -1023,7 +1027,7 @@ function PocketReef() {
 
           {!detailOpen ? (
             <View style={[styles.bottomTabs,
-              tabBar && tabBar.hidden ? { transform: [{ translateY: 130 }], opacity: 0 } : null, layout.isLarge && {
+              tabBarHidden ? { transform: [{ translateY: 130 }], opacity: 0 } : null, layout.isLarge && {
               // alignSelf is ignored on an absolutely-positioned element, so
               // the bar hugged the left edge of the content column. Auto
               // margins against left:0/right:0 is what actually centres it.
