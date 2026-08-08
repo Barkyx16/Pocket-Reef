@@ -12,7 +12,7 @@ import { t } from "../lib/i18n";
 // Disease guide index + a symptom checker — tap symptoms you're seeing to narrow
 // the list to the likely culprits, or browse every illustrated guide.
 export function HealthTab({ openDisease }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("health");
   const PAGE = 6;
   const [visible, setVisible] = useState(PAGE);
   const [symptoms, setSymptoms] = useState([]);

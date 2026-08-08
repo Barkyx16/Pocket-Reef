@@ -35,7 +35,7 @@ const haystack = (s) =>
   `${s.name} ${s.diet} ${s.kind} ${s.water === "salt" ? "saltwater marine reef" : "freshwater"} ${s.summary || ""}`.toLowerCase();
 
 export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("species");
   const [query, setQuery] = useState("");
   const [water, setWater] = useState("all");
   const [fitsOnly, setFitsOnly] = useState(false);

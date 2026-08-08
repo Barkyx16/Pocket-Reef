@@ -12,7 +12,7 @@ import { TankToolkitCard } from "../components/TankToolkitCard";
 import { t } from "../lib/i18n";
 
 export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, premiumUnlocked, onOpenPremium }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("log");
   const waterType = tank.length ? (getSpecies(tank[0])?.water === "salt" ? "salt" : "fresh") : "fresh";
   const streak = getStreak(activeDays);
 

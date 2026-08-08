@@ -87,8 +87,16 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
       : { emoji: current.emoji, eyebrow: current.eyebrow, title: current.title, text: current.text, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.background }}>
-      <LinearGradient colors={["#0a2f45", "#08243a", "#061826", "#04101b"]} locations={[0, 0.35, 0.7, 1]} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />
+    <View style={{ flex: 1 }}>
+      {/* The reef backdrop is already rendered at the app root; this used to be
+          an opaque gradient sitting on top of it, so onboarding was the only
+          part of the app that didn't look like the app. Now a scrim that lets
+          the photo through while keeping the copy readable. */}
+      <LinearGradient
+        colors={["rgba(10,47,69,0.72)", "rgba(8,36,58,0.62)", "rgba(6,24,38,0.72)", "rgba(4,16,27,0.86)"]}
+        locations={[0, 0.35, 0.7, 1]}
+        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+      />
       <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
         <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1, justifyContent: "center" }} showsVerticalScrollIndicator={false}>
           {/* HERO */}

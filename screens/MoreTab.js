@@ -7,7 +7,7 @@ import { tapHaptic } from "../core";
 // The "More" menu — styled like Pocket Planter's More sheet: a big title, a close
 // button, and a list of green icon-tile rows for the secondary sections.
 export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("more");
   const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
     <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>

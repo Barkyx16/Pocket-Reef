@@ -34,7 +34,7 @@ const GAMES = [
 ];
 
 export function GamesTab({ onEarnXp }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("games");
   const [game, setGame] = useState(null);
   if (game) return <GameHost gameId={game} onBack={() => setGame(null)} onEarnXp={onEarnXp} />;
 

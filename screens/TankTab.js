@@ -20,7 +20,7 @@ import { formatVolume } from "../lib/units";
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
 export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("tank");
   const status = getTankStatus(tankGallons, tank, quantities);
   const warnings = getTankWarnings(tankGallons, tank, quantities);
   const maturity = getTankMaturity(tankCreatedAt);

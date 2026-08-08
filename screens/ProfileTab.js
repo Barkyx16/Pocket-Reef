@@ -17,7 +17,7 @@ import { Pill } from "../components/Pill";
 import { t, LANGUAGES } from "../lib/i18n";
 
 export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks = [], xp = 0, activeDays = [], since, lastBackup, wishlist = [], bannerId = "reef", onSetBanner, onExport, onImport, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, user, lastSyncedAt, syncing, syncError, onSyncNow, onSignOut }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("profile");
   const lvl = levelFromXp(xp);
   const streak = getStreak(activeDays);
   const longestStreak = getLongestStreak(activeDays);

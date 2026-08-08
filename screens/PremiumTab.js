@@ -53,7 +53,7 @@ const REASON_COPY = {
 };
 
 export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false, loadPlans, reason }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("premium");
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState(null);
   const [loadingPlans, setLoadingPlans] = useState(true);

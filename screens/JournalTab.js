@@ -14,7 +14,7 @@ import { PhotoGalleryCard } from "../components/PhotoGalleryCard";
 // problems (with photos and a mood), plus the insight and memory cards built on
 // top of those entries, and a photo gallery of everything shot.
 export function JournalTab({ journal = [], onAddJournal, onDeleteJournal, onEditJournal }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("journal");
   const photoCount = journal.filter((e) => e.photo).length;
   const stats = getJournalStats(journal);
 

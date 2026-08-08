@@ -86,12 +86,12 @@ const FREE_SPECIES_LIMIT = 7; // species visible in the catalog
 
 // Copy for each locked tab — what they'd get, so the wall sells rather than scolds.
 const LOCKED_COPY = {
-  tank: { emoji: "🌊", title: "Your tank, unlocked", blurb: "Track your full stock with live compatibility, bioload, and stocking guidance.", perks: ["Unlimited fish per tank", "Real-time compatibility matrix", "Bioload & stocking planner", "Multiple tanks, quarantine & tank ideas"] },
-  log: { emoji: "🧪", title: "Log everything", blurb: "Water chemistry, maintenance, feeding, costs — all tracked and trended.", perks: ["Water tests with trends & deltas", "Nitrogen cycle tracker", "Water-change calculator", "Cost tracking & CSV export"] },
-  health: { emoji: "🩺", title: "Health toolkit", blurb: "Find out what's wrong and what to do about it.", perks: ["10 illustrated disease guides", "Symptom checker", "Emergency troubleshooter"] },
-  journal: { emoji: "📓", title: "Your reef journal", blurb: "A dated, searchable record of your tank with photos.", perks: ["Photo journal & gallery", "Search and mood filters", "Timeline view"] },
-  games: { emoji: "🎮", title: "Reef games", blurb: "Play, learn, and earn XP toward your reef-keeper level.", perks: ["Every reef mini-game", "Earn XP and records"] },
-  profile: { emoji: "👤", title: "Profile & cloud save", blurb: "Your stats, achievements, and your reef backed up to your account.", perks: ["Cloud save across devices", "86 achievements", "Lifetime stats & collection insights", "Export and import your data"] },
+  tank: { icon: "water-outline", title: "Your tank, unlocked", blurb: "Track your full stock with live compatibility, bioload, and stocking guidance.", perks: ["Unlimited fish per tank", "Real-time compatibility matrix", "Bioload & stocking planner", "Multiple tanks, quarantine & tank ideas"] },
+  log: { icon: "flask-outline", title: "Log everything", blurb: "Water chemistry, maintenance, feeding, costs — all tracked and trended.", perks: ["Water tests with trends & deltas", "Nitrogen cycle tracker", "Water-change calculator", "Cost tracking & CSV export"] },
+  health: { icon: "medkit-outline", title: "Health toolkit", blurb: "Find out what's wrong and what to do about it.", perks: ["10 illustrated disease guides", "Symptom checker", "Emergency troubleshooter"] },
+  journal: { icon: "book-outline", title: "Your reef journal", blurb: "A dated, searchable record of your tank with photos.", perks: ["Photo journal & gallery", "Search and mood filters", "Timeline view"] },
+  games: { icon: "game-controller-outline", title: "Reef games", blurb: "Play, learn, and earn XP toward your reef-keeper level.", perks: ["Every reef mini-game", "Earn XP and records"] },
+  profile: { icon: "person-outline", title: "Profile & cloud save", blurb: "Your stats, achievements, and your reef backed up to your account.", perks: ["Cloud save across devices", "86 achievements", "Lifetime stats & collection insights", "Export and import your data"] },
 };
 
 const EMPTY_TANK = { name: "My Tank", gallons: 20, water: "fresh", emoji: "🐠", stock: [], quantities: {}, notes: "", waterTests: [], journal: [], costs: [], maintenance: {}, quarantine: [], feedings: [], treatments: [], createdAt: null };
@@ -927,7 +927,11 @@ function PocketReef() {
           // editable with a reload instead of a native rebuild, and because both
           // sides use the same background the native-to-JS handoff is invisible.
           // "contain" so the whole title card fits any aspect ratio uncropped.
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: "#061826" }]}>
+          // Transparent, so the reef backdrop rendered at the app root shows
+          // through rather than being hidden behind a flat field. A light scrim
+          // keeps the title card legible over the busier parts of the photo.
+          <View style={StyleSheet.absoluteFill}>
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(6,24,38,0.45)" }]} />
             <Image source={require("./assets/loading-screen.png")} style={StyleSheet.absoluteFill} resizeMode="contain" />
           </View>
         ) : (!user && !offlineMode) ? (
@@ -972,7 +976,7 @@ function PocketReef() {
             // render. The paid screen is never mounted, so its data never
             // reaches the tree at all.
             <LockedTab
-              emoji={(LOCKED_COPY[activeTab] || {}).emoji}
+              icon={(LOCKED_COPY[activeTab] || {}).icon}
               title={(LOCKED_COPY[activeTab] || {}).title || "Premium feature"}
               blurb={(LOCKED_COPY[activeTab] || {}).blurb || "Upgrade to unlock this part of Pocket Reef."}
               perks={(LOCKED_COPY[activeTab] || {}).perks || []}

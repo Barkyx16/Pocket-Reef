@@ -1,5 +1,6 @@
 import { ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { GradientButton } from "./GradientButton";
 
 // The wall a free user hits on a Premium tab.
@@ -7,10 +8,16 @@ import { GradientButton } from "./GradientButton";
 // This renders INSTEAD of the tab, not on top of it — the gated screen is never
 // mounted, so its data never reaches the render tree. That matters: an overlay
 // you can screenshot around, or that a layout bug can reveal, isn't a gate.
-export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPremium }) {
+export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = [], onOpenPremium }) {
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-      <View style={{ alignItems: "center", paddingTop: 40 }}>
+    // flexGrow + centred content so the wall occupies the whole tab rather
+    // than floating as a short panel with dead space beneath it. It stays a
+    // ScrollView so a long perk list on a small phone can still scroll.
+    <ScrollView
+      contentContainerStyle={[styles.scroll, { flexGrow: 1, justifyContent: "center" }]}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={{ alignItems: "center" }}>
         <View
           style={{
             width: 96, height: 96, borderRadius: 48,
@@ -20,7 +27,7 @@ export function LockedTab({ emoji = "🔒", title, blurb, perks = [], onOpenPrem
             shadowColor: theme.accent, shadowOpacity: 0.3, shadowRadius: 26, shadowOffset: { width: 0, height: 0 },
           }}
         >
-          <Text style={{ fontSize: 44 }}>{emoji}</Text>
+          <Ionicons name={icon} size={40} color={theme.accent} />
         </View>
 
         <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 24, textAlign: "center", letterSpacing: -0.4 }}>

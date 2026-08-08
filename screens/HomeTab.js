@@ -22,7 +22,7 @@ const CARE_TASKS = [
 ];
 
 export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays = [], xp = 0, waterTests = [], journal = [], feedings = [], careDoneToday = [], onToggleCare, maintenance = {}, quarantine = [], tankWater, tanks = [], activeTankId, onSwitchTank, onEditTank, onAddTank, onDeleteTank, onDuplicateTank, onExport, onImport, premiumUnlocked, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, onGoToTab, wishlist = [], onToggleWishlist, quantities = {}, profileName = "", fishOfDaySeen = false, onSeeFishOfDay, challengesDone = [], onCompleteChallenge, treatments = [] }) {
-  const tabBarScroll = useTabBarScroll();
+  const tabBarScroll = useTabBarScroll("home");
   const hour = new Date().getHours();
   const greeting = `${hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"}${profileName ? `, ${profileName}` : ""}`;
   const today = getTodayKey();
@@ -47,9 +47,17 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
   };
   const CHALLENGE_TO = { test: "log", journal: "journal", feed: "log", maintain: "log", change: "log" };
   const challengeDone = (c) => doneMap[c.signal] || challengesDone.includes(c.id);
-  const dailyChallenges = getDailyChallenges(today).filter((c) => !challengeDone(c));
+  // Today's challenges are shown in full, done or not.
+  //
+  // Filtering completed ones out meant the list shortened the instant you
+  // ticked a box — every card below slid up by a row height, mid-tap, which is
+  // exactly the "page jumps around" complaint. Nothing here is stateful: the
+  // challenge set is seeded by date and challengesDone is stored against
+  // today's key, so tomorrow brings a fresh set and a clean slate on its own.
+  const allDaily = getDailyChallenges(today);
+  const dailyChallenges = allDaily;
   const seasonal = getSeasonalChallenges(today);
-  const seasonalChallenges = seasonal.items.filter((c) => !challengeDone(c));
+  const seasonalChallenges = seasonal.items;
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
@@ -71,13 +79,13 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       ) : null}
 
       {/* DAILY CHALLENGES — auto-complete & disappear; fresh set every day */}
-      {dailyChallenges.length ? (
+      {allDaily.length ? (
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Daily Challenges</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Complete them today — a fresh set arrives tomorrow.</Text>
           <View style={{ gap: 8 }}>
             {dailyChallenges.map((c) => (
-              <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
+              <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} done={challengeDone(c)} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
             ))}
           </View>
         </View>
@@ -90,7 +98,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Seasonal goals for your reef — refresh daily.</Text>
           <View style={{ gap: 8 }}>
             {seasonalChallenges.map((c) => (
-              <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
+              <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} done={challengeDone(c)} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
             ))}
           </View>
         </View>
@@ -196,7 +204,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
   );
 }
 
-function ChallengeRow({ c, onNavigate, onComplete }) {
+function ChallengeRow({ c, onNavigate, onComplete, done }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 8 }}>
       <Pressable
@@ -207,24 +215,26 @@ function ChallengeRow({ c, onNavigate, onComplete }) {
       >
         <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", alignItems: "center", justifyContent: "center" }}>
           {iconForEmoji(c.icon) ? (
-            <Ionicons name={iconForEmoji(c.icon)} size={16} color={theme.accent} />
+            <Ionicons name={iconForEmoji(c.icon)} size={16} color={done ? theme.secondaryText : theme.accent} />
           ) : (
             <Text style={{ fontSize: 17 }}>{c.icon}</Text>
           )}
         </View>
-        <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c.title}</Text>
+        <Text style={{ flex: 1, color: done ? theme.secondaryText : theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: done ? "line-through" : "none" }}>{c.title}</Text>
       </Pressable>
       {onComplete ? (
         <Pressable
           onPress={() => { tapHaptic(); onComplete(); }}
           hitSlop={8}
-          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(159,196,216,0.45)", backgroundColor: "transparent" }, pressed && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
+          disabled={done}
+          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: done ? theme.accent : "rgba(159,196,216,0.45)", backgroundColor: done ? "rgba(56,225,198,0.18)" : "transparent" }, pressed && !done && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
           accessibilityRole="button"
           accessibilityLabel={`Mark "${c.title}" complete`}
         >
-          {/* Intentionally empty. A tick inside the ring made every incomplete
-              challenge look already done — the ring alone is the standard
-              unchecked-checkbox affordance. */}
+          {/* Empty until actually done — a tick in every ring made incomplete
+              challenges look finished. Once done, the tick confirms it in
+              place, so the row never disappears out from under the tap. */}
+          {done ? <Ionicons name="checkmark" size={15} color={theme.accent} /> : null}
         </Pressable>
       ) : null}
     </View>
