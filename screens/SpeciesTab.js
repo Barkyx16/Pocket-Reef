@@ -10,7 +10,6 @@ import { CompareCard } from "../components/CompareCard";
 import { EmptyState } from "../components/EmptyState";
 import { Pill } from "../components/Pill";
 import { t } from "../lib/i18n";
-import { useTabBarScroll } from "../lib/tabBarScroll";
 import { matchesQuery, scoreMatch, buildHaystack } from "../lib/search";
 
 const WATER_FILTERS = [
@@ -35,7 +34,6 @@ const haystack = (s) =>
   `${s.name} ${s.diet} ${s.kind} ${s.water === "salt" ? "saltwater marine reef" : "freshwater"} ${s.summary || ""}`.toLowerCase();
 
 export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium }) {
-  const tabBarScroll = useTabBarScroll("species");
   const [query, setQuery] = useState("");
   const [water, setWater] = useState("all");
   const [fitsOnly, setFitsOnly] = useState(false);
@@ -315,7 +313,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       contentContainerStyle={styles.scroll}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
-      {...tabBarScroll}
+     
       // Tuned for rows of roughly even height. removeClippedSubviews is the
       // setting that actually frees memory on Android.
       initialNumToRender={10}

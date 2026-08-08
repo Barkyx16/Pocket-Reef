@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
-import { useTabBarScroll } from "../lib/tabBarScroll";
 import { levelFromXp, getStreak, getLongestStreak, getAchievements, getLifetimeStats, getBanner, BANNERS, MAX_LEVEL, tapHaptic } from "../core";
 import { getBannerImage } from "../data/bannerImageMap";
 import { ProfileHero } from "../components/ProfileHero";
@@ -17,7 +16,6 @@ import { Pill } from "../components/Pill";
 import { t, LANGUAGES } from "../lib/i18n";
 
 export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks = [], xp = 0, activeDays = [], since, lastBackup, wishlist = [], bannerId = "reef", onSetBanner, onExport, onImport, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, user, lastSyncedAt, syncing, syncError, onSyncNow, onSignOut }) {
-  const tabBarScroll = useTabBarScroll("profile");
   const lvl = levelFromXp(xp);
   const streak = getStreak(activeDays);
   const longestStreak = getLongestStreak(activeDays);
@@ -51,7 +49,7 @@ export function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks =
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       {/* 1 — CLOUD SAVE: account, sync, premium status, security, backup. */}
       <View style={styles.card}>
         <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Cloud Save</Text>

@@ -1,6 +1,5 @@
 import { Alert, Pressable, ScrollView, Share, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { useTabBarScroll } from "../lib/tabBarScroll";
 import { getSpecies, getTankStatus, getTankWarnings, getTankMaturity, getTankHealthScore, getBioload, PARAMS, tapHaptic } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { EmptyState } from "../components/EmptyState";
@@ -20,7 +19,6 @@ import { formatVolume } from "../lib/units";
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
 export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan }) {
-  const tabBarScroll = useTabBarScroll("tank");
   const status = getTankStatus(tankGallons, tank, quantities);
   const warnings = getTankWarnings(tankGallons, tank, quantities);
   const maturity = getTankMaturity(tankCreatedAt);
@@ -129,7 +127,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={t("tank.eyebrow", { gallons: tankGallons, count: tank.length })}
         title={t("tank.title")}

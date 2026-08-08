@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { useTabBarScroll } from "../lib/tabBarScroll";
 import { DISEASES, SYMPTOMS, getDiseasesBySymptom, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -12,7 +11,6 @@ import { t } from "../lib/i18n";
 // Disease guide index + a symptom checker — tap symptoms you're seeing to narrow
 // the list to the likely culprits, or browse every illustrated guide.
 export function HealthTab({ openDisease }) {
-  const tabBarScroll = useTabBarScroll("health");
   const PAGE = 6;
   const [visible, setVisible] = useState(PAGE);
   const [symptoms, setSymptoms] = useState([]);
@@ -52,7 +50,7 @@ export function HealthTab({ openDisease }) {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={t("health.eyebrow")}
         title={t("health.title")}

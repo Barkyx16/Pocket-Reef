@@ -1,6 +1,5 @@
 import { ScrollView, Share } from "react-native";
 import { styles } from "../styles";
-import { useTabBarScroll } from "../lib/tabBarScroll";
 import { getSpecies, getStreak, getTodayKey, PARAMS, tapHaptic, getParamForecasts } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { CollapsibleCard } from "../components/CollapsibleCard";
@@ -12,7 +11,6 @@ import { TankToolkitCard } from "../components/TankToolkitCard";
 import { t } from "../lib/i18n";
 
 export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, premiumUnlocked, onOpenPremium }) {
-  const tabBarScroll = useTabBarScroll("log");
   const waterType = tank.length ? (getSpecies(tank[0])?.water === "salt" ? "salt" : "fresh") : "fresh";
   const streak = getStreak(activeDays);
 
@@ -35,7 +33,7 @@ export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, jou
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} {...tabBarScroll} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={streak ? t("log.eyebrowStreak", { streak }) : t("log.eyebrowIdle")}
         title={t("log.title")}
