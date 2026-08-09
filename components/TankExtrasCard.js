@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
+import { iconForEmoji } from "../lib/icons";
 import { getRecommended, getSpecies, tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
 import { Pill } from "./Pill";
@@ -64,7 +65,7 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
       <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Explore & More</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
         {TOOLS.map((tool) => (
-          <Pill key={tool.id} label={`${tool.emoji} ${tool.label}`} active={sel === tool.id} onPress={() => pick(tool.id)} />
+          <Pill key={tool.id} icon={iconForEmoji(tool.emoji)} label={tool.label} active={sel === tool.id} onPress={() => pick(tool.id)} />
         ))}
       </View>
       <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: 12, paddingTop: 16 }}>
