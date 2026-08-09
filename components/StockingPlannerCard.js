@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { tapHaptic } from "../core";
+import { tapHaptic, successHaptic, selectionHaptic } from "../core";
 import { generateStockingPlan } from "../lib/planner";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { ProgressBar } from "./ProgressBar";
@@ -34,7 +34,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
 
   const load = () => {
     if (!plan.ok) return;
-    const apply = () => { tapHaptic("medium"); onLoadPlan && onLoadPlan(plan); };
+    const apply = () => { successHaptic(); onLoadPlan && onLoadPlan(plan); };
     if (hasStock) {
       Alert.alert(
         "Replace your current stock?",
@@ -113,7 +113,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
           <GradientButton label="Use this plan" onPress={load} style={{ marginTop: 16 }} />
 
           <Pressable
-            onPress={() => { tapHaptic(); setSeed((n) => n + 1); }}
+            onPress={() => { selectionHaptic(); setSeed((n) => n + 1); }}
             style={({ pressed }) => [{ marginTop: 10, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]}
             accessibilityRole="button"
             accessibilityLabel="Generate a different plan"

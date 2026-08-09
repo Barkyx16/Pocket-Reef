@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
-import { PARAMS, assessParam, paramStatusColor, getTodayKey, tapHaptic, validateParam } from "../core";
+import { PARAMS, assessParam, paramStatusColor, getTodayKey, tapHaptic, validateParam, failureHaptic, successHaptic } from "../core";
 
 // Log a water test and get an instant read on each parameter — the aquarium
 // equivalent of Pocket Planter's watering log. Values assess live as you type.
@@ -29,6 +29,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
       .map((p) => ({ p, v: validateParam(p, vals[p.key]) }))
       .find((r) => !r.v.ok);
     if (bad) {
+      failureHaptic();
       Alert.alert("Check that reading", bad.v.reason);
       return;
     }
@@ -36,6 +37,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog }) {
     const entry = { date: getTodayKey(), water: waterType, values: {} };
     params.forEach((p) => { if (vals[p.key] !== "" && vals[p.key] != null) entry.values[p.key] = Number(vals[p.key]); });
     onLog(entry);
+    successHaptic();
     setVals({});
   };
 

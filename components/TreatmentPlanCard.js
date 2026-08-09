@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { getTreatment, getTreatmentProgress, tapHaptic } from "../core";
+import { getTreatment, getTreatmentProgress, tapHaptic, successHaptic } from "../core";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
 
@@ -92,7 +92,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
           return (
             <Pressable
               key={step.id}
-              onPress={() => { tapHaptic(); onToggleStep && onToggleStep(diseaseName, step.id); }}
+              onPress={() => { step.done ? tapHaptic() : successHaptic(); onToggleStep && onToggleStep(diseaseName, step.id); }}
               style={({ pressed }) => [{ flexDirection: "row", gap: 12, alignItems: "flex-start", opacity: state === "future" ? 0.5 : 1 }, pressed && { opacity: 0.7 }]}
               accessibilityRole="checkbox"
               accessibilityState={{ checked: step.done }}

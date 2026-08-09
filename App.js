@@ -12,7 +12,7 @@ import {
 } from "@expo-google-fonts/inter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme, useResponsiveLayout, CONTENT_MAX_WIDTH } from "./styles";
-import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak } from "./core";
+import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak, successHaptic, failureHaptic, warningHaptic, commitHaptic } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pushSnapshot, pullSnapshot, fetchServerEntitlement } from "./lib/cloudSync";
 import { queueSnapshot, resumePendingSync, cancelPendingSync, hasPendingSync } from "./lib/syncQueue";
@@ -296,6 +296,7 @@ function PocketReef() {
   const restorePremium = async () => {
     const res = await restorePurchases();
     if (res.entitled) {
+      successHaptic();
       track(EVENTS.RESTORE_SUCCESS);
       setPremiumUnlocked(true);
       Alert.alert("Premium restored", "Welcome back — everything's unlocked.");
@@ -609,8 +610,9 @@ function PocketReef() {
       track(EVENTS.PAYWALL_CTA, paywallReason);
       const res = await purchasePackage(plan.pkg);
       if (res.cancelled) { track(EVENTS.PURCHASE_CANCELLED); return; }
-      if (!res.ok) track(EVENTS.PURCHASE_FAILED);
+      if (!res.ok) { failureHaptic(); track(EVENTS.PURCHASE_FAILED); }
       if (res.entitled) {
+        successHaptic();
         track(EVENTS.PURCHASE_SUCCESS);
         setPremiumUnlocked(true);
         Alert.alert("Welcome to Premium 👑", "Everything's unlocked. Thanks for supporting Pocket Reef.");
@@ -694,11 +696,12 @@ function PocketReef() {
   // ── Active-tank data actions ──
   const changeTankGallons = (g) => updateActiveTank({ gallons: g });
   const toggleTank = (name) => {
-    tapHaptic();
+    commitHaptic();
     // Free accounts stop at FREE_STOCK_LIMIT fish. Removing is always allowed —
     // a cap that traps you above it is worse than no cap.
     const stocked = (activeTank.stock || []).includes(name);
     if (!premiumUnlocked && !stocked && (activeTank.stock || []).length >= FREE_STOCK_LIMIT) {
+      warningHaptic();
       track(EVENTS.STOCK_CAP_HIT);
       Alert.alert(
         "Free plan holds 5 fish",

@@ -1,5 +1,4 @@
 import { Dimensions } from "react-native";
-import * as Haptics from "expo-haptics";
 import SPECIES from "./data/speciesData";
 import { getCompatibility } from "./data/compatibility";
 import { DISEASES, getDisease, getDiseasesForSpecies, SYMPTOMS, getDiseasesBySymptom } from "./data/fishHealth";
@@ -1491,11 +1490,6 @@ export function isBannerUnlocked(banner, level) {
 }
 
 // ── Haptics (mirrors Pocket Planter) ─────────────────────────────────────────
-export function tapHaptic(style = "light") {
-  const map = {
-    light: Haptics.ImpactFeedbackStyle.Light,
-    medium: Haptics.ImpactFeedbackStyle.Medium,
-    heavy: Haptics.ImpactFeedbackStyle.Heavy,
-  };
-  Haptics.impactAsync(map[style] || map.light).catch(() => {});
-}
+// Re-exported so the existing call sites keep working; the implementation and
+// the wider vocabulary live in lib/haptics.js.
+export { tapHaptic, selectionHaptic, commitHaptic, successHaptic, warningHaptic, failureHaptic } from "./lib/haptics";

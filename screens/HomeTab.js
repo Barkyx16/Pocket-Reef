@@ -3,7 +3,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { iconForEmoji } from "../lib/icons";
-import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic } from "../core";
+import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic, successHaptic } from "../core";
 import { PremiumTeaserCard } from "../components/PremiumTeaserCard";
 import { HeroBanner } from "../components/HeroBanner";
 import { CollapsibleCard } from "../components/CollapsibleCard";
@@ -222,7 +222,7 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
       </Pressable>
       {onComplete ? (
         <Pressable
-          onPress={() => { tapHaptic(); onComplete(); }}
+          onPress={() => { successHaptic(); onComplete(); }}
           hitSlop={8}
           disabled={done}
           style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: done ? theme.accent : "rgba(159,196,216,0.45)", backgroundColor: done ? "rgba(56,225,198,0.18)" : "transparent" }, pressed && !done && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
