@@ -382,6 +382,17 @@ export function getFeedingPlan(stockedNames = [], quantities = {}) {
 // quarantine, unfinished care, an incomplete cycle — into one prioritized list
 // of what to do right now.
 export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, quarantine = [], careDoneCount = 0, careTotal = 4, reminderPrefs = {}, quantities = {}, waterType = "fresh", treatments = [] } = {}) {
+  // Default parameters only cover `undefined`, not `null`. A partial sync or a
+  // hand-edited import can hand us null here, and maintenance[id] on null
+  // throws — taking down the Home screen, which is where this is rendered.
+  tank = Array.isArray(tank) ? tank : [];
+  waterTests = Array.isArray(waterTests) ? waterTests : [];
+  quarantine = Array.isArray(quarantine) ? quarantine : [];
+  treatments = Array.isArray(treatments) ? treatments : [];
+  maintenance = maintenance && typeof maintenance === "object" ? maintenance : {};
+  quantities = quantities && typeof quantities === "object" ? quantities : {};
+  reminderPrefs = reminderPrefs && typeof reminderPrefs === "object" ? reminderPrefs : {};
+
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   const daysAgo = (iso) => Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
   const cadenceDays = (pref) => (pref === "biweekly" ? 14 : pref === "weekly" ? 7 : null); // null = off
@@ -859,7 +870,7 @@ export function getHealthImprovements(healthScore, limit = 3) {
   return out.slice(0, limit);
 }
 
-export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist = [], gameStats = {} } = {}) {
+export function buildAchievementStats({ tanks = [], activeDays = [], xp = 0, wishlist = [], gameStats = {} } = {}) {
   // Default parameters only cover `undefined`, not `null` — and a null here
   // used to throw on wishlist.length, which takes the whole Profile tab down.
   // Normalize before anything reads them.
@@ -987,6 +998,17 @@ export function getAchievements({ tanks = [], activeDays = [], xp = 0, wishlist 
     cardinal: has(/cardinalfish/i), damsel: has(/damsel|chromis/i),
     shrimp: has(/shrimp/i), snail: has(/snail/i), crab: has(/crab/i), star: has(/starfish|star$/i),
   };
+  return st;
+}
+
+// Grades every achievement against the current stats.
+//
+// Split from the stats construction above so a test can diff the keys the
+// checks READ against the keys actually produced — a misspelled stat name
+// otherwise makes an achievement silently unearnable, and nothing in normal
+// use reveals it.
+export function getAchievements(input = {}) {
+  const st = buildAchievementStats(input);
   return ACHIEVEMENTS.map((a) => ({ ...a, earned: !!a.check(st) }));
 }
 

@@ -79,3 +79,49 @@ describe("achievements for the newer features", () => {
     expect(() => getAchievements({ tanks: null })).not.toThrow();
   });
 });
+
+describe("no achievement is silently unearnable", () => {
+  const { buildAchievementStats } = require("../core");
+
+  test("every check reads a stat that is actually produced", () => {
+    // The failure this catches: a misspelled stat name. The check then reads
+    // undefined forever, the achievement can never be earned, and nothing in
+    // normal use reveals it — it just looks like a hard achievement.
+    const produced = new Set(
+      Object.keys(buildAchievementStats({ tanks: [], activeDays: [], xp: 0, wishlist: [], gameStats: {} }))
+    );
+
+    const readKeys = new Set();
+    const spy = new Proxy(
+      {},
+      { get: (_t, k) => { if (typeof k === "string") readKeys.add(k); return 999999; } }
+    );
+    ACHIEVEMENTS.forEach((a) => { try { a.check(spy); } catch (e) { /* recorded below */ } });
+
+    const phantom = [...readKeys].filter((k) => !produced.has(k) && k !== "then" && k !== Symbol.toPrimitive);
+    expect(phantom).toEqual([]);
+  });
+
+  test("every check can fire given maximal stats", () => {
+    // Catches a predicate that is impossible regardless of input.
+    const generous = new Proxy({}, { get: () => 999999 });
+    const never = ACHIEVEMENTS.filter((a) => {
+      try { return !a.check(generous); } catch (e) { return true; }
+    }).map((a) => a.id);
+    expect(never).toEqual([]);
+  });
+
+  test("no check throws on a completely empty account", () => {
+    const st = buildAchievementStats({});
+    const threw = ACHIEVEMENTS.filter((a) => {
+      try { a.check(st); return false; } catch (e) { return true; }
+    }).map((a) => a.id);
+    expect(threw).toEqual([]);
+  });
+
+  test("the stats builder survives null and garbage input", () => {
+    expect(() => buildAchievementStats({ tanks: null, activeDays: null, wishlist: null, gameStats: null })).not.toThrow();
+    expect(() => buildAchievementStats({ tanks: [null, "nope", {}] })).not.toThrow();
+    expect(() => buildAchievementStats()).not.toThrow();
+  });
+});
