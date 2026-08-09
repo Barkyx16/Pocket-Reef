@@ -27,6 +27,11 @@ const OVERRIDES = {
 
 // Normalize override keys to sorted order so a pairing matches regardless of the
 // order it was written in (the lookup below always sorts the two names).
+// Exported for tests: an override whose species name is misspelled silently
+// never fires, and the engine just falls through to the generic rules. Nothing
+// in normal use surfaces that, so a test has to check the keys resolve.
+export const OVERRIDE_KEYS = Object.keys(OVERRIDES);
+
 const OV_NORM = {};
 for (const k of Object.keys(OVERRIDES)) OV_NORM[k.split("|").map((s) => s.trim()).sort().join("|")] = OVERRIDES[k];
 
@@ -48,8 +53,18 @@ export function getCompatibility(aName, bName) {
   }
 
   // 2. Aggression: an aggressive fish rarely tolerates tankmates.
-  if (a.temperament === "aggressive" || b.temperament === "aggressive") {
-    return { level: "avoid", reason: `${a.temperament === "aggressive" ? a.name : b.name} is aggressive and best kept alone or with very careful tankmates.` };
+  // When BOTH are aggressive, name both. Naming only the first argument made
+  // the verdict depend on tap order — the matrix read differently in each
+  // direction — and it understated the problem by blaming one of two bullies.
+  const aggA = a.temperament === "aggressive";
+  const aggB = b.temperament === "aggressive";
+  if (aggA && aggB) {
+    // Sorted, so the sentence itself is identical in both directions.
+    const [first, second] = [a.name, b.name].sort();
+    return { level: "avoid", reason: `${first} and ${second} are both aggressive — together they'll fight for territory.` };
+  }
+  if (aggA || aggB) {
+    return { level: "avoid", reason: `${aggA ? a.name : b.name} is aggressive and best kept alone or with very careful tankmates.` };
   }
 
   // 3. Predator / prey by size: a much larger fish may eat a small one. Corals
