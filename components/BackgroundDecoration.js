@@ -7,7 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 // legible over it. Rendered once at the app root, behind every tab.
 export const BackgroundDecoration = memo(function BackgroundDecoration() {
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+    <View style={[StyleSheet.absoluteFill, { pointerEvents: "none" }]}>
       {/* absoluteFill alone leaves the image at its intrinsic size in some
           renderers — it was drawing 853x1844 inside a 1280-wide root, so the
           photo under-covered horizontally and overflowed vertically. Explicit

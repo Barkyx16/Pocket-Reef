@@ -15,30 +15,27 @@ export function HeroBanner({ eyebrow, title, subtitle, emoji, colors, image, chi
         colors={colors || ["#0e3a52", "#0a2c42", "#082031"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-        pointerEvents="none"
+        style={[{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }, { pointerEvents: "none" }]}
       />
       {image ? (
         <Image
           source={image}
-          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" }}
+          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%", pointerEvents: "none" }}
           resizeMode="cover"
-          pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no"
         />
       ) : null}
       {/* Soft accent glow in the upper-right — dialed back over artwork. */}
-      <View pointerEvents="none" style={{ position: "absolute", right: -60, top: -70, width: 200, height: 200, borderRadius: 100, backgroundColor: image ? "rgba(56,225,198,0.10)" : "rgba(56,225,198,0.20)" }} />
+      <View style={{ position: "absolute", right: -60, top: -70, width: 200, height: 200, borderRadius: 100, backgroundColor: image ? "rgba(56,225,198,0.10)" : "rgba(56,225,198,0.20)", pointerEvents: "none" }} />
       {emoji ? (
-        <Text pointerEvents="none" style={{ position: "absolute", right: -4, top: -14, fontSize: 124, opacity: image ? 0.1 : 0.16 }}>{emoji}</Text>
+        <Text style={{ position: "absolute", right: -4, top: -14, fontSize: 124, opacity: image ? 0.1 : 0.16, pointerEvents: "none" }}>{emoji}</Text>
       ) : null}
       {/* Bottom scrim keeps the title legible over artwork/watermark. */}
       <LinearGradient
         colors={image ? ["rgba(6,20,32,0)", "rgba(6,20,32,0.82)"] : ["rgba(6,20,32,0)", "rgba(6,20,32,0.55)"]}
         locations={image ? [0.25, 1] : [0.4, 1]}
-        style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: image ? "85%" : "70%" }}
-        pointerEvents="none"
+        style={[{ position: "absolute", left: 0, right: 0, bottom: 0, height: image ? "85%" : "70%" }, { pointerEvents: "none" }]}
       />
       {eyebrow ? (
         <View style={styles.heroEyebrowPill}><Text style={styles.heroEyebrow}>{eyebrow}</Text></View>

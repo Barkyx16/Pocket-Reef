@@ -39,8 +39,7 @@ export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl,
             colors={bannerColors || ["#0e3a52", "#0a2c42", "#082031"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={{ width: "100%", height: "100%" }}
-            pointerEvents="none"
+            style={[{ width: "100%", height: "100%" }, { pointerEvents: "none" }]}
           />
         )}
       </View>
