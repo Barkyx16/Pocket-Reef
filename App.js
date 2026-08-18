@@ -57,6 +57,7 @@ import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
 import { t, setLanguage, deviceLanguage } from "./lib/i18n";
 import { setUnit } from "./lib/units";
+import { setCurrency } from "./lib/currency";
 import { BackgroundDecoration } from "./components/BackgroundDecoration";
 import { HomeTab } from "./screens/HomeTab";
 import { SpeciesTab } from "./screens/SpeciesTab";
@@ -241,6 +242,7 @@ function PocketReef() {
   const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [lang, setLangState] = useState("en");
   const [unit, setUnitState] = useState("imperial");
+  const [currency, setCurrencyState] = useState("USD");
   const [profileName, setProfileName] = useState("");
   const [since, setSince] = useState(null);
   const [lastBackup, setLastBackup] = useState(null);
@@ -324,8 +326,8 @@ function PocketReef() {
       // pr_premium is deliberately NOT read here. Entitlement comes from
       // RevenueCat, which keeps its own offline-capable cache — a local flag the
       // app can write is a local flag a patched build can write too.
-      const [x, a, rm, ob, lg, un] = await Promise.all(
-        ["pr_xp", "pr_activeDays", "pr_reminders", "pr_onboarded", "pr_lang", "pr_unit"].map((k) => getRaw(k))
+      const [x, a, rm, ob, lg, un, cur] = await Promise.all(
+        ["pr_xp", "pr_activeDays", "pr_reminders", "pr_onboarded", "pr_lang", "pr_unit", "pr_currency"].map((k) => getRaw(k))
       );
       if (x) setXp(Number(x) || 0);
       if (ob === "1") setSeenOnboarding(true);
@@ -338,6 +340,7 @@ function PocketReef() {
         if (detected) { setLanguage(detected); setLangState(detected); }
       }
       if (un) { setUnit(un); setUnitState(un); }
+      if (cur) { setCurrency(cur); setCurrencyState(cur); }
       if (a) setActiveDays((await getJSON("pr_activeDays", [])) || []);
       if (rm) { const p = await getJSON("pr_reminders", null); if (p) setReminderPrefs(p); }
 
@@ -522,6 +525,7 @@ function PocketReef() {
     if (snap.bannerId) setBannerId(snap.bannerId);
     if (snap.lang) { setLanguage(snap.lang); setLangState(snap.lang); }
     if (snap.unit) { setUnit(snap.unit); setUnitState(snap.unit); }
+    if (snap.currency) { setCurrency(snap.currency); setCurrencyState(snap.currency); }
     if (snap.strengths && typeof snap.strengths === "object") setStrengths(snap.strengths);
     if (typeof snap.tankSized === "boolean") setTankSized(snap.tankSized);
     // premiumUnlocked is deliberately NOT applied from the snapshot. Entitlement
@@ -646,7 +650,7 @@ function PocketReef() {
           // rare case where one copy is genuinely wrong.
           const localSnapshot = buildSnapshot({
             tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-            profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+            profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, currency,
             strengths, tankSized,
           });
           const { merged, report } = mergeSnapshots(localSnapshot, res.data, { localNewer: true });
@@ -715,7 +719,7 @@ function PocketReef() {
       // backoff instead of being silently dropped.
       await queueSnapshot(user.id, {
         tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-        profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+        profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, currency,
         strengths, tankSized,
       }, (r) => {
         setSyncing(false);
@@ -737,7 +741,7 @@ function PocketReef() {
     await flushWrites();
     await queueSnapshot(user.id, {
       tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, currency,
       strengths, tankSized,
     }, (r) => {
       setSyncing(false);
@@ -939,6 +943,7 @@ function PocketReef() {
   useEffect(() => { if (hydrated) scheduleWrite("pr_banner", () => bannerId, "raw"); }, [bannerId, hydrated]);
   useEffect(() => { if (hydrated) scheduleWrite("pr_lang", () => lang, "raw"); }, [lang, hydrated]);
   useEffect(() => { if (hydrated) scheduleWrite("pr_unit", () => unit, "raw"); }, [unit, hydrated]);
+  useEffect(() => { if (hydrated) scheduleWrite("pr_currency", () => currency, "raw"); }, [currency, hydrated]);
   useEffect(() => { if (hydrated && fodSeen) scheduleWrite("pr_fodSeen", () => fodSeen, "raw"); }, [fodSeen, hydrated]);
   useEffect(() => { if (hydrated && lastBackup) scheduleWrite("pr_lastBackup", () => String(lastBackup), "raw"); }, [lastBackup, hydrated]);
   useEffect(() => { if (hydrated && seenOnboarding) scheduleWrite("pr_onboarded", () => "1", "raw"); }, [seenOnboarding, hydrated]);
@@ -1024,6 +1029,9 @@ function PocketReef() {
 
   // ── User-level settings ──
   const changeUnit = useStableCallback((u) => { setUnit(u); setUnitState(u); });
+  // Symbol only — the app has no exchange rates and the figures a keeper typed
+  // are already in their own money. Switching relabels; it never converts.
+  const changeCurrency = useStableCallback((c) => { setCurrency(c); setCurrencyState(c); });
   const changeLanguage = useStableCallback((code) => { setLanguage(code); setLangState(code); });
   // Turning a reminder on is the moment a permission prompt makes sense — the
   // user has just asked to be reminded, so the ask has obvious context.
@@ -1787,7 +1795,7 @@ function PocketReef() {
     const payload = {
       app: "Pocket Reef", version: SCHEMA_VERSION, exportedAt: new Date().toISOString(),
       tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs,
-      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit,
+      profileName, since, recent, speciesNotes, challengesDone, bannerId, lang, unit, currency,
       strengths, tankSized,
     };
     try {
@@ -2256,7 +2264,7 @@ function PocketReef() {
                   maintenance={maintenance} quarantine={quarantine} quantities={quantities} tankWater={activeTank.water} treatments={activeTank.treatments || []} activeTank={activeTank}
                   tanks={tanks} activeTankId={activeTankId} onSwitchTank={switchTank} onAddTank={openNewTank} onEditTank={openEditTank} onDeleteTank={deleteTank} onDuplicateTank={duplicateTank}
                   premiumUnlocked={premiumUnlocked} onOpenPremium={goPremium} onExport={exportData} onImport={openImport}
-                  reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit}
+                  reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit} currency={currency} onSetCurrency={changeCurrency}
                   onGoToTab={jumpTo} wishlist={wishlist} onToggleWishlist={toggleWishlist} profileName={profileName}
                   fishOfDaySeen={fodSeen === getTodayKey()} onSeeFishOfDay={markFodSeen}
                   challengesDone={challengesDone} onCompleteChallenge={completeChallenge}
@@ -2283,7 +2291,7 @@ function PocketReef() {
                   user={user} lastSyncedAt={lastSyncedAt} syncing={syncing} syncError={syncError}
                   onSyncNow={syncNow} onSignOut={handleSignOut}
                   onExport={exportData} onImport={openImport} onUnlock={goPremium} onOpenPremium={goPremium}
-                  reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit}
+                  reminderPrefs={reminderPrefs} onChangeReminders={changeReminders} lang={lang} onSetLanguage={changeLanguage} unit={unit} onSetUnit={changeUnit} currency={currency} onSetCurrency={changeCurrency}
                   telemetryOn={telemetryOn} onSetTelemetry={changeTelemetry} telemetryConfigured={isTelemetryConfigured()}
                   activeTankId={activeTankId} onSwitchTank={switchTank} onRestored={handleRestored} activeTank={activeTank} onChangeTankReminders={setTankReminders} onGoToTab={jumpTo}
                 />

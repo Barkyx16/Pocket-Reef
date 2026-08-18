@@ -11,6 +11,7 @@ import { kindOf } from "../lib/inventory";
 import { forecastItem } from "../lib/inventory";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { fmtMoney } from "../lib/format";
 
 // One search box for the whole app, reachable from the header on every screen.
 //
@@ -269,7 +270,7 @@ export function UniversalSearch({
                     key={c.id}
                     icon="cash"
                     title={c.label}
-                    sub={`$${Number(c.amount).toFixed(2)}${c.category ? ` · ${c.category}` : ""}`}
+                    sub={`${fmtMoney(c.amount)}${c.category ? ` · ${c.category}` : ""}`}
                     onPress={() => pick(() => onRunAction({ id: "cost", tab: "log", tool: "costs" }))}
                   />
                 ))}

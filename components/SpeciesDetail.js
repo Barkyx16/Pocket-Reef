@@ -15,6 +15,7 @@ import { GradientButton } from "./GradientButton";
 import { tenureLabel } from "../lib/livestock";
 import { ObservationsCard } from "./ObservationsCard";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { fmtMoney } from "../lib/format";
 
 // Full species detail — modeled on Pocket Planter's plant detail: quick actions,
 // a journey prompt, smart-care rows, tappable problems & protection, step-by-step,
@@ -136,7 +137,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
               </Text>
               <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                 {record && (record.source || record.price != null)
-                  ? [record.source, record.price != null ? `$${record.price}` : null].filter(Boolean).join(" · ")
+                  ? [record.source, record.price != null ? fmtMoney(record.price) : null].filter(Boolean).join(" · ")
                   : "Add where it came from and what it cost"}
               </Text>
             </View>

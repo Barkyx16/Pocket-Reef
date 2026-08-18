@@ -11,6 +11,7 @@ import {
 } from "../lib/equipment";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { decimalText, integerText } from "../lib/numericInput";
+import { fmtMoney } from "../lib/format";
 
 // What's actually on the tank.
 //
@@ -47,7 +48,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
           <Stat label="Items" value={String(summary.count)} />
           <Stat
             label="Build cost"
-            value={summary.spend ? `$${Math.round(summary.spend)}` : "—"}
+            value={summary.spend ? fmtMoney(Math.round(summary.spend)) : "—"}
             sub={summary.priced < summary.count ? `${summary.priced} of ${summary.count} priced` : "All priced"}
           />
           <Stat
@@ -81,7 +82,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
           <View style={{ gap: 6 }}>
             {items.map((item) => {
               const w = warrantyStatus(item);
-              const bits = [ageLabel(item), item.brand || null, item.price != null ? `$${item.price}` : null, item.watts != null ? `${item.watts}W` : null].filter(Boolean);
+              const bits = [ageLabel(item), item.brand || null, item.price != null ? fmtMoney(item.price) : null, item.watts != null ? `${item.watts}W` : null].filter(Boolean);
               return (
                 <View key={item.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
                   <View style={{ width: 30, height: 30, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>

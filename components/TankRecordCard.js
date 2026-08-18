@@ -4,6 +4,7 @@ import { styles, theme } from "../styles";
 import { MAX_FONT_SCALE_COMPACT, touchSlop } from "../lib/a11y";
 import { mortalitySummary, longestResident, documentedShare, livestockSpend, isMortality, tenureLabel } from "../lib/livestock";
 import { SpeciesThumb } from "./SpeciesThumb";
+import { fmtMoney } from "../lib/format";
 
 // The tank's own record: how long things have lived, what's been lost, and
 // what that adds up to.
@@ -46,8 +47,8 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
         />
         <Stat
           label="Livestock spend"
-          value={spend.total ? `$${Math.round(spend.total)}` : "—"}
-          sub={spend.lost ? `$${Math.round(spend.lost)} lost` : "Documented"}
+          value={spend.total ? fmtMoney(Math.round(spend.total)) : "—"}
+          sub={spend.lost ? `${fmtMoney(Math.round(spend.lost))} lost` : "Documented"}
         />
       </View>
 
@@ -83,7 +84,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
               const bits = [];
               if (rec && rec.addedAt) bits.push(tenureLabel(rec));
               if (rec && rec.source) bits.push(rec.source);
-              if (rec && typeof rec.price === "number") bits.push(`$${rec.price}`);
+              if (rec && typeof rec.price === "number") bits.push(fmtMoney(rec.price));
               return (
                 <Pressable
                   key={name}

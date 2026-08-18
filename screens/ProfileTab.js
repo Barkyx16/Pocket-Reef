@@ -21,8 +21,9 @@ import { t, LANGUAGES } from "../lib/i18n";
 import { supportLine } from "../lib/buildInfo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
+import { CURRENCIES } from "../lib/currency";
 
-export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks = [], xp = 0, activeDays = [], since, lastBackup, wishlist = [], bannerId = "reef", onSetBanner, onExport, onImport, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, user, lastSyncedAt, syncing, syncError, onSyncNow, onSignOut, telemetryOn = false, onSetTelemetry, telemetryConfigured = false, activeTankId, onSwitchTank, onRestored, onGoToTab, activeTank = {}, onChangeTankReminders }) {
+export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks = [], xp = 0, activeDays = [], since, lastBackup, wishlist = [], bannerId = "reef", onSetBanner, onExport, onImport, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, currency = "USD", onSetCurrency, user, lastSyncedAt, syncing, syncError, onSyncNow, onSignOut, telemetryOn = false, onSetTelemetry, telemetryConfigured = false, activeTankId, onSwitchTank, onRestored, onGoToTab, activeTank = {}, onChangeTankReminders }) {
   const lvl = levelFromXp(xp);
   const streak = getStreak(activeDays);
   const longestStreak = getLongestStreak(activeDays);
@@ -262,6 +263,23 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {[{ code: "imperial", label: "°F · gal" }, { code: "metric", label: "°C · L" }].map((u) => (
             <Pill key={u.code} fill label={u.label} active={unit === u.code} onPress={() => onSetUnit && onSetUnit(u.code)} />
+          ))}
+        </View>
+
+        {/* Currency — the symbol on every price the keeper logs. Not a
+            conversion: the figures they typed are already in their own money,
+            and the app has no rates to convert with. */}
+        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Currency</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+          {CURRENCIES.map((c) => (
+            <Pill
+              key={c.code}
+              fill
+              label={c.label}
+              active={currency === c.code}
+              onPress={() => onSetCurrency && onSetCurrency(c.code)}
+              accessibilityLabel={`Show prices in ${c.code}`}
+            />
           ))}
         </View>
 

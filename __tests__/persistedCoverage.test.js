@@ -34,6 +34,7 @@ const STORAGE_TO_FIELD = {
   pr_banner: "bannerId",
   pr_lang: "lang",
   pr_unit: "unit",
+  pr_currency: "currency",
   pr_doseStrengths: "strengths",
   pr_tankSized: "tankSized",
 };
