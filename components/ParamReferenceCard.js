@@ -1,11 +1,12 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { PARAMS } from "../core";
+import {  } from "../core";
+import { displayParams } from "../lib/targets";
 
 // A quick target-range cheat sheet for the tank's water type — every parameter's
 // ideal band and a one-line why, so you don't have to remember the numbers.
 export function ParamReferenceCard({ waterType = "fresh" }) {
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = displayParams(waterType);
   return (
     <View style={{ gap: 10 }}>
       <Text style={styles.cardText}>Ideal ranges for a {waterType === "salt" ? "reef / saltwater" : "freshwater"} tank:</Text>

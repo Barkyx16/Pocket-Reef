@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
 import { tapHaptic } from "../core";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // Restore from a Pocket Reef export — paste the JSON you shared from another
 // device (or a saved backup) to bring all your tanks and progress back.
@@ -35,9 +36,11 @@ export function ImportSheet({ onImport, onClose }) {
           placeholderTextColor={theme.secondaryText}
           multiline
           style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: error ? theme.danger : theme.border, fontSize: 12, minHeight: 140, textAlignVertical: "top", marginTop: 12 }}
-        />
+        
+            maxLength={TEXT_LIMITS.note}
+          />
         {error ? <Text style={{ color: theme.danger, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
-        <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button">
+        <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button" accessibilityLabel="Restore this backup, replacing everything on this device" accessibilityState={{ disabled: !raw.trim() }}>
           <Text style={raw.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Restore</Text>
         </Pressable>
       </View>

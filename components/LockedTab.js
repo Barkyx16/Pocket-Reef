@@ -41,7 +41,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
           <View style={{ marginTop: 24, alignSelf: "stretch", gap: 12 }}>
             {perks.map((p) => (
               <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.16)", borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", alignItems: "center", justifyContent: "center" }}>
+                <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
                   <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
                 </View>
                 <Text style={{ flex: 1, color: theme.text, fontSize: 14, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>{p}</Text>

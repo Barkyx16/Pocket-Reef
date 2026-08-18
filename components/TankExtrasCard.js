@@ -3,7 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
 import { iconForEmoji } from "../lib/icons";
-import { getRecommended, getSpecies, tapHaptic } from "../core";
+import { getRecommended } from "../core";
 import { formatVolume } from "../lib/units";
 import { Pill } from "./Pill";
 import { SpeciesCard } from "./SpeciesCard";

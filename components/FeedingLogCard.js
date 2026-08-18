@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
 import { getTodayKey, tapHaptic } from "../core";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // A lightweight feeding log — tap the food type, optionally note what/how much,
 // and log it. Builds the daily-touch habit loop and earns XP.
@@ -34,7 +35,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
           const on = food === f;
           return (
             <Pressable key={f} onPress={() => { tapHaptic("light"); setFood(f); }} style={[styles.pill, { backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
-              <Text style={{ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{e} {f}</Text>
+              <Text style={{ color: on ? theme.onAccent : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{e} {f}</Text>
             </Pressable>
           );
         })}
@@ -42,7 +43,9 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
 
       <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
         <TextInput value={note} onChangeText={setNote} placeholder="Note (optional) — e.g. mysis + nori" placeholderTextColor={theme.secondaryText}
-          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} />
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
+            maxLength={TEXT_LIMITS.shortNote}
+          />
         <Pressable onPress={add} style={[styles.primaryBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Log</Text>
         </Pressable>

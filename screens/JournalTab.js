@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ScrollView } from "react-native";
 import { styles } from "../styles";
 import { getJournalStats } from "../core";
@@ -8,16 +9,18 @@ import { JournalPromptCard } from "../components/JournalPromptCard";
 import { JournalInsightsCard } from "../components/JournalInsightsCard";
 import { JournalMemoriesCard } from "../components/JournalMemoriesCard";
 import { PhotoGalleryCard } from "../components/PhotoGalleryCard";
+import { AdaptiveColumns } from "../components/AdaptiveColumns";
 
 // The Tank Journal, on its own tab — a dated log of milestones, arrivals, and
 // problems (with photos and a mood), plus the insight and memory cards built on
 // top of those entries, and a photo gallery of everything shot.
-export function JournalTab({ journal = [], onAddJournal, onDeleteJournal, onEditJournal }) {
+export const JournalTab = memo(function JournalTab({ journal = [], onAddJournal, onDeleteJournal, onEditJournal }) {
   const photoCount = journal.filter((e) => e.photo).length;
   const stats = getJournalStats(journal);
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={journal.length ? `${journal.length} ${journal.length === 1 ? "entry" : "entries"}` : "Your tank's story"}
         title="Journal"
@@ -51,6 +54,7 @@ export function JournalTab({ journal = [], onAddJournal, onDeleteJournal, onEdit
           <PhotoGalleryCard journal={journal} />
         </CollapsibleCard>
       ) : null}
+    </AdaptiveColumns>
     </ScrollView>
   );
-}
+})

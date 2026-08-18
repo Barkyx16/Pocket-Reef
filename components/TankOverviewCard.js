@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { getTankHealthScore, tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
 
@@ -9,7 +9,7 @@ export function TankOverviewCard({ tanks = [], activeTankId, onSwitch }) {
   return (
     <View style={{ gap: 10 }}>
       {tanks.map((tk) => {
-        const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities });
+        const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities, waterType: tk.water });
         const on = tk.id === activeTankId;
         return (
           <Pressable key={tk.id} onPress={() => { tapHaptic(); onSwitch(tk.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">

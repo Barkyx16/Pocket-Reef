@@ -1,39 +1,38 @@
+import { memo } from "react";
 import { ScrollView, Share } from "react-native";
 import { styles } from "../styles";
-import { getSpecies, getStreak, getTodayKey, PARAMS, tapHaptic, getParamForecasts } from "../core";
+import { getStreak, tapHaptic, getParamForecasts, resolveWaterType } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { CollapsibleCard } from "../components/CollapsibleCard";
-import { ForecastCard } from "../components/ForecastCard";
-import { DosingCard } from "../components/DosingCard";
 import { WaterTestCard } from "../components/WaterTestCard";
-import { WaterDeltaCard } from "../components/WaterDeltaCard";
 import { TankToolkitCard } from "../components/TankToolkitCard";
+import { DoseLogCard } from "../components/DoseLogCard";
 import { t } from "../lib/i18n";
+import { activeParams } from "../lib/targets";
+import { AdaptiveColumns } from "../components/AdaptiveColumns";
 
-export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, premiumUnlocked, onOpenPremium }) {
-  const waterType = tank.length ? (getSpecies(tank[0])?.water === "salt" ? "salt" : "fresh") : "fresh";
+export const LogTab = memo(function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onUpdateTest, onDeleteTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, onLogWaterChange, premiumUnlocked, onOpenPremium, intent, activeTank = {}, onAddUpkeepTask, onRemoveUpkeepTask, onSetUpkeepInterval, strengths = {}, onLogDose, onDeleteDose, onSetStrength, onSetSourceWater, onImportTests, onSetLightSchedule, onGoToTab, onLogMedDose, onDeleteMedDose }) {
+  const waterType = resolveWaterType(tank, tankWater);
+  // A shortcut names the card it wants open. This used to be hard-coded to the
+  // water-test card, so "Log a dose" landed on the Log tab with the dose card
+  // still folded shut — the shortcut failing at the last step.
+  const openIf = (key) => (intent && intent.card === key ? intent.nonce : null);
   const streak = getStreak(activeDays);
-
-  // One tap logs a water change: records the maintenance task and drops a dated
-  // journal note, closing the loop from "how much?" to "done."
-  const logWaterChange = (info) => {
-    if (onLogMaintenance) onLogMaintenance("waterchange");
-    if (onAddJournal) onAddJournal({ id: Date.now(), date: getTodayKey(), text: `Water change${info && info.pct ? ` (~${info.pct}%, ${info.gallons} gal)` : ""}`, mood: "🛠️", photo: null });
-  };
 
   // Share the water-test history as CSV text — a portable record for a
   // spreadsheet or your fish store.
   const exportWaterLog = () => {
     if (!waterTests.length) return;
     tapHaptic();
-    const params = PARAMS[waterType] || PARAMS.fresh;
+    const params = activeParams(waterType);
     const header = ["Date", ...params.map((p) => `${p.label}${p.unit ? ` (${p.unit})` : ""}`)].join(",");
     const rows = waterTests.map((tst) => [tst.date, ...params.map((p) => (tst.values && tst.values[p.key] != null ? tst.values[p.key] : ""))].join(","));
     Share.share({ message: `Pocket Reef water log\n\n${header}\n${rows.join("\n")}` }).catch(() => {});
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={streak ? t("log.eyebrowStreak", { streak }) : t("log.eyebrowIdle")}
         title={t("log.title")}
@@ -42,32 +41,37 @@ export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, jou
         colors={["#0e3a44", "#0b2c3a", "#082031"]}
       />
 
-      <CollapsibleCard storageKey="watertest" title="🧪 Water Test" defaultOpen={true}>
-        <WaterTestCard waterType={waterType} history={waterTests} onLog={onLogTest} />
+      <CollapsibleCard storageKey="watertest" title="🧪 Water Test" defaultOpen={true} forceOpen={openIf("watertest")}>
+        <WaterTestCard waterType={waterType} history={waterTests} onLog={onLogTest} onUpdate={onUpdateTest} onDelete={onDeleteTest} />
       </CollapsibleCard>
 
-      {/* Matches FORECAST_MIN_POINTS in core.js — at two readings the card could
-          only render its own empty state, which is a section header promising
-          something it cannot deliver. */}
-      {waterTests.length >= 3 ? (
-        <CollapsibleCard storageKey="forecast" title="🔮 Where It's Heading" eyebrow="Projected from your recent tests">
-          <ForecastCard forecasts={getParamForecasts(waterTests, tankWater, tank)} />
+      {/* Correcting a low reading and holding it steady are the same
+          conversation, so the log sits directly under the calculator. */}
+      {waterType === "salt" ? (
+        <CollapsibleCard
+          storageKey="doselog"
+          forceOpen={openIf("doselog")}
+          title="💉 Dose Log"
+          eyebrow="What you dose, and what your tank uses"
+        >
+          <DoseLogCard
+            tank={activeTank}
+            tankGallons={tankGallons}
+            waterTests={waterTests}
+            strengths={strengths}
+            onLogDose={onLogDose}
+            onDeleteDose={onDeleteDose}
+            onSetStrength={onSetStrength}
+          />
         </CollapsibleCard>
       ) : null}
 
-      {tankWater === "salt" ? (
-        <CollapsibleCard storageKey="dosing" title="⚗️ Dosing" eyebrow="Alkalinity, calcium & magnesium">
-          <DosingCard latestValues={(waterTests[0] || {}).values || {}} tankGallons={tankGallons} />
-        </CollapsibleCard>
-      ) : null}
-
-      {waterTests.length ? (
-        <CollapsibleCard storageKey="waterdelta" title="📊 Since Last Test">
-          <WaterDeltaCard waterTests={waterTests} waterType={waterType} />
-        </CollapsibleCard>
-      ) : null}
-
-      {/* Tank tools folded into one compact card with a button row. */}
+      {/* Everything else lives here. The Log tab is what you DO — enter a
+          reading, log a dose — so the analysis and the one-off settings moved
+          out: read-only views became tools in this row, and My Targets moved
+          to the Tank tab, which is where the tank is described rather than
+          logged. Six collapsed headers between you and the form you opened the
+          tab for is a tax on the most frequent action in the app. */}
       <TankToolkitCard
         waterType={waterType}
         waterTests={waterTests}
@@ -82,10 +86,23 @@ export function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, jou
         onAddCost={onAddCost}
         onDeleteCost={onDeleteCost}
         onExportWaterLog={exportWaterLog}
-        onLogWaterChange={logWaterChange}
+        onLogWaterChange={onLogWaterChange}
         premiumUnlocked={premiumUnlocked}
         onOpenPremium={onOpenPremium}
+        focusTool={intent && intent.tool ? intent : null}
+        forecasts={waterTests.length >= 3 ? getParamForecasts(waterTests, waterType, tank) : []}
+        tank={activeTank}
+        onAddUpkeepTask={onAddUpkeepTask}
+        onRemoveUpkeepTask={onRemoveUpkeepTask}
+        onSetUpkeepInterval={onSetUpkeepInterval}
+        onSetSourceWater={onSetSourceWater}
+        onImportTests={onImportTests}
+        onSetLightSchedule={onSetLightSchedule}
+        onGoToTab={onGoToTab}
+        onLogMedDose={onLogMedDose}
+        onDeleteMedDose={onDeleteMedDose}
       />
+    </AdaptiveColumns>
     </ScrollView>
   );
-}
+})

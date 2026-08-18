@@ -5,8 +5,14 @@ import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
+import { persistPhoto } from "../lib/photoStore";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 const MOODS = ["🐠", "🌱", "😍", "🛠️", "⚠️"];
+// A screen reader announces an emoji by its Unicode name — "hammer and wrench"
+// for the maintenance mood — which says nothing about what tagging an entry
+// with it means. These are the names the app would use in prose.
+const MOOD_LABELS = { "🐠": "Livestock", "🌱": "Growth", "😍": "Good day", "🛠️": "Maintenance", "⚠️": "Problem" };
 
 // A dated tank journal with photos — the reef version of Pocket Planter's garden
 // journal. Attach a photo, a mood glyph, and a note to build a visual timeline.
@@ -29,7 +35,11 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
     tapHaptic("light");
     try {
       const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.6 });
-      if (!res.canceled && res.assets && res.assets[0]) setPhoto(res.assets[0].uri);
+      if (!res.canceled && res.assets && res.assets[0]) {
+        // The picker hands back a cache URI, which iOS is free to delete. Copy
+        // it somewhere permanent before it ever reaches a journal entry.
+        setPhoto(await persistPhoto(res.assets[0].uri));
+      }
     } catch (e) {}
   };
 
@@ -60,7 +70,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
     <View>
       <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
         {MOODS.map((m) => (
-          <Pressable key={m} onPress={() => { tapHaptic("light"); setMood(m); }} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
+          <Pressable key={m} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
             <Text style={{ fontSize: 18 }}>{m}</Text>
           </Pressable>
         ))}
@@ -72,7 +82,9 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         placeholderTextColor={theme.secondaryText}
         multiline
         style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 60, textAlignVertical: "top" }}
-      />
+      
+            maxLength={TEXT_LIMITS.note}
+          />
       {photo ? (
         <View style={{ marginTop: 10 }}>
           <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: 14 }} resizeMode="cover" />
@@ -104,6 +116,8 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             placeholder="Search entries…"
             placeholderTextColor={theme.secondaryText}
             style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }}
+          
+            maxLength={TEXT_LIMITS.search}
           />
           <View style={{ flexDirection: "row", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
             {MOODS.map((m) => {

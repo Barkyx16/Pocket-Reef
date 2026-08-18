@@ -6,6 +6,9 @@ import { PARAMS, assessParam, validateParam } from "./data/waterParams";
 import { ACHIEVEMENTS } from "./data/achievements";
 import { TROUBLESHOOTING } from "./data/troubleshooting";
 import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatments";
+import { activeParams } from "./lib/targets";
+import { allTasks, sortedByUrgency } from "./lib/upkeep";
+import { dayKey as localDayKey, instantOf as localInstantOf } from "./lib/day";
 
 // Launch-time snapshot. Correct for one-off calculations that don't need to
 // survive rotation; anything that lays out should use useWindowDimensions.
@@ -22,6 +25,70 @@ export function getSpecies(name) {
 export function speciesFitsTank(species, gallons) {
   if (!gallons) return true;
   return species.minGallons <= gallons;
+}
+
+// ── "Should this fish go in this tank?" ──────────────────────────────────────
+//
+// One verdict, used both by the species detail screen and by the moment of
+// adding. The detail screen has always answered this; the "+" on a species card
+// did not, so the common path — browse the catalog, tap the plus — added a Blue
+// Tang to a 20 gallon tank in silence and only complained afterwards, on Home,
+// under "tank warnings". By then the fish has usually been bought.
+//
+// `severity` separates the two kinds of no: "blocked" is physically impossible
+// (wrong water type), "warn" is a bad idea the keeper is still allowed to make
+// — a quarantine tank is deliberately undersized, and an app that refuses to
+// record what's actually in the tank is an app people stop telling the truth to.
+export function assessAddition(name, { tank = [], tankGallons = 0, tankWater = null } = {}) {
+  const s = getSpecies(name);
+  if (!s) return { ok: true, severity: "ok", reason: "" };
+
+  const others = tank.filter((n) => n !== name);
+  // The declared type when there is one, falling back to what's swimming.
+  const water = tankWater || (others.length ? (getSpecies(others[0]) || {}).water : null);
+
+  if (water && water !== s.water) {
+    return {
+      ok: false,
+      severity: "blocked",
+      title: "Wrong water type",
+      reason: `${s.name} is a ${s.water === "salt" ? "saltwater" : "freshwater"} species and this is a ${water === "salt" ? "saltwater" : "freshwater"} tank. They can't share water.`,
+    };
+  }
+
+  if (tankGallons && s.minGallons > tankGallons) {
+    return {
+      ok: false,
+      severity: "warn",
+      title: "Bigger tank needed",
+      reason: `${s.name} needs at least ${s.minGallons} gallons and this tank is ${tankGallons}. Cramped fish grow slowly, foul the water faster, and turn on each other.`,
+    };
+  }
+
+  const clash = others
+    .map((n) => ({ n, c: getCompatibility(name, n) }))
+    .find((x) => x.c.level === "avoid");
+  if (clash) {
+    return {
+      ok: false,
+      severity: "warn",
+      title: `Conflicts with ${clash.n}`,
+      reason: clash.c.reason,
+    };
+  }
+
+  // A schooling fish added alone is the quietest mistake in the hobby: nothing
+  // looks wrong, the fish is simply stressed for the rest of its life.
+  if (s.minGroup > 1) {
+    return {
+      ok: true,
+      severity: "note",
+      title: "Keep them in a group",
+      reason: `${s.name} needs at least ${s.minGroup} together — kept alone they hide, stop eating, and colour down.`,
+    };
+  }
+
+  return { ok: true, severity: "ok", reason: "" };
 }
 
 // ── Tank health: warnings for the currently stocked list ─────────────────────
@@ -260,7 +327,7 @@ export function getCyclingCoach(waterTests = [], tankCreatedAt = null) {
   const estimateRemaining = status.cycled ? 0 : Math.max(0, totalTypical - daysIn);
 
   // Tested at all recently? A cycle you're not measuring isn't being managed.
-  const lastTest = waterTests[0] ? Math.floor((Date.now() - new Date(waterTests[0].date).getTime()) / 86400000) : null;
+  const lastTest = waterTests[0] ? Math.floor((Date.now() - localInstantOf(waterTests[0].date)) / 86400000) : null;
 
   return {
     ...status,
@@ -304,7 +371,14 @@ export function getConflictFixes(gallons, stockedNames = [], limit = 3) {
           const ratio = (cand.adultInches || 1) / (drop.adultInches || 1);
           if (ratio < 0.5 || ratio > 1.6) return false;
           // And it has to actually work with everything staying.
-          return others.every((o) => getCompatibility(cand.name, o.name).level === "great" || getCompatibility(cand.name, o.name).level === "ok");
+          //
+          // The levels this engine emits are "excellent" | "caution" | "avoid"
+          // (see data/compatibility.js). This tested for "great" and "ok",
+          // which it has never returned — so the filter matched nothing, the
+          // alternatives list was always empty, and getConflictFixes returned
+          // an empty array for every tank ever built. The whole function was
+          // dead on arrival because of a vocabulary that didn't exist.
+          return others.every((o) => getCompatibility(cand.name, o.name).level === "excellent");
         })
           .sort((a, b) => (a.careLevel === "Easy" ? -1 : 1) - (b.careLevel === "Easy" ? -1 : 1))
           .slice(0, limit);
@@ -380,7 +454,29 @@ export function getFeedingPlan(stockedNames = [], quantities = {}) {
 // Combines every signal — overdue maintenance, a due water test, a finished
 // quarantine, unfinished care, an incomplete cycle — into one prioritized list
 // of what to do right now.
-export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, quarantine = [], careDoneCount = 0, careTotal = 4, reminderPrefs = {}, quantities = {}, waterType = "fresh", treatments = [] } = {}) {
+// Which parameter set a tank should be judged by.
+//
+// Three places derived this independently, and all three got it wrong the same
+// way: they read the water type off the FIRST STOCKED SPECIES and fell back to
+// "fresh" when the tank was empty. So a saltwater tank with nothing in it yet —
+// which is precisely a tank being cycled, when you test every single day — was
+// offered the six freshwater parameters. No salinity, no alkalinity, no
+// calcium, no magnesium, no phosphate: the readings that matter most during a
+// reef cycle could not be entered at all, and the ones that could were graded
+// against freshwater ranges.
+//
+// The declared tank type is the answer whenever there's no stock to read. Stock
+// still wins when it exists, because a tank created before the `water` field
+// existed defaults to "fresh" regardless of what's swimming in it, and those
+// keepers must not be broken to fix the empty-tank case.
+export function resolveWaterType(tank = [], declared = "fresh") {
+  const fallback = declared === "salt" ? "salt" : "fresh";
+  if (!tank.length) return fallback;
+  const first = getSpecies(tank[0]);
+  return first && first.water ? first.water : fallback;
+}
+
+export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, quarantine = [], careDoneCount = 0, careTotal = 4, reminderPrefs = {}, quantities = {}, waterType = "fresh", treatments = [], upkeep = [] } = {}) {
   // Default parameters only cover `undefined`, not `null`. A partial sync or a
   // hand-edited import can hand us null here, and maintenance[id] on null
   // throws — taking down the Home screen, which is where this is rendered.
@@ -397,11 +493,21 @@ export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, 
   const cadenceDays = (pref) => (pref === "biweekly" ? 14 : pref === "weekly" ? 7 : null); // null = off
   const out = [];
 
-  // Fixed-interval maintenance (water change is reminder-driven below).
-  const MT = [{ id: "filterclean", label: "filter clean", days: 30 }, { id: "gravelvac", label: "gravel vacuum", days: 14 }, { id: "glassclean", label: "glass clean", days: 10 }];
-  MT.forEach((tk) => {
-    const last = maintenance[tk.id];
-    if (last) { const over = daysAgo(last) - tk.days; if (over > 0) out.push({ rank: 0, icon: "🔴", to: "log", text: `${cap(tk.label)} overdue by ${over} day${over > 1 ? "s" : ""}` }); }
+  // Overdue upkeep. This was a hardcoded list of three chores, so an overdue
+  // RODI membrane, filter sock or probe calibration — or anything the keeper
+  // added themselves — could never reach the Home screen. It now reads the same
+  // task list the Upkeep card does, so the two can't disagree.
+  //
+  // Capped at three: "needs attention" stops being a priority list the moment
+  // it becomes a backlog, and the card itself shows the rest in full.
+  const overdue = sortedByUrgency(
+    allTasks({ water: waterType, upkeep }),
+    maintenance
+  ).filter((r) => r.status.state === "overdue" && r.task.id !== "waterchange"); // water change is reminder-driven below
+
+  overdue.slice(0, 3).forEach(({ task, status }) => {
+    const over = -status.dueIn;
+    out.push({ rank: 0, icon: "🔴", to: "log", text: `${cap(task.label)} overdue by ${over} day${over > 1 ? "s" : ""}` });
   });
 
   if (tank.length) {
@@ -432,8 +538,10 @@ export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, 
   }
   // Nitrate creeping up on the latest test → nudge a water change.
   if (tank.length && waterTests[0] && waterTests[0].values) {
-    const wt = getSpecies(tank[0])?.water || "fresh";
-    const nP = (PARAMS[wt] || PARAMS.fresh).find((p) => p.key === "nitrate");
+    // waterType arrives as a parameter; re-deriving it here from stock was how
+    // this drifted out of step with the rest of the screen.
+    const wt = resolveWaterType(tank, waterType);
+    const nP = (activeParams(wt)).find((p) => p.key === "nitrate");
     const nv = waterTests[0].values.nitrate;
     if (nP && nv != null) {
       const st = assessParam(nP, nv).status;
@@ -441,7 +549,12 @@ export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, 
       else if (st === "caution") out.push({ rank: 1, icon: "💧", to: "log", text: `Nitrate is creeping up (${nv} ppm) — a water change would help` });
     }
   }
-  quarantine.forEach((q) => { if (daysAgo(q.startDate) >= 21) out.push({ rank: 2, icon: "✅", to: "tank", text: `${q.name} finished quarantine — ready to add` }); });
+  // Quarantine deliberately produces nothing here. It used to announce a fish
+  // "ready to add" on day 21 regardless of what the animal looked like, and
+  // lib/quarantine.js now owns the verdict properly — time plus explicit
+  // clearance checks. With both running, the hub printed two contradictory
+  // lines about the same fish and the reassuring one was the wrong one.
+  // lib/todayExtras.js contributes the quarantine actions instead.
   if (tank.length && careDoneCount < careTotal) out.push({ rank: 2, icon: "💧", to: "home", text: `${careTotal - careDoneCount} care task${careTotal - careDoneCount > 1 ? "s" : ""} left today` });
   // Treatment steps due today. These outrank almost everything else — a missed
   // medication day can undo the whole course.
@@ -495,7 +608,7 @@ export function getWaterDelta(waterTests = [], waterType = "fresh") {
   if (waterTests.length < 2) return [];
   const [latest, prev] = waterTests;
   if (!latest.values || !prev.values) return [];
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = activeParams(waterType);
   const out = [];
   for (const p of params) {
     const a = latest.values[p.key];
@@ -510,7 +623,7 @@ export function getWaterDelta(waterTests = [], waterType = "fresh") {
 // ── Overall tank health score ────────────────────────────────────────────────
 // A single 0–100 score that ties together compatibility, stocking, water
 // quality, cycle status, and maintenance currency — with a per-factor breakdown.
-export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = [], maintenance = {}, quantities = {} } = {}) {
+export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = [], maintenance = {}, quantities = {}, waterType: declaredWater = "fresh" } = {}) {
   const factors = [];
   let score = 0;
   let applicable = 0;
@@ -547,9 +660,9 @@ export function getTankHealthScore({ tank = [], tankGallons = 0, waterTests = []
 
   // Water quality from the latest test (25)
   const latest = waterTests[0];
-  const waterType = tank.length ? (getSpecies(tank[0])?.water || "fresh") : "fresh";
+  const waterType = resolveWaterType(tank, declaredWater);
   if (latest && latest.values) {
-    const params = PARAMS[waterType] || PARAMS.fresh;
+    const params = activeParams(waterType);
     let danger = false, cautionP = false, any = false;
     for (const p of params) {
       if (latest.values[p.key] != null) {
@@ -610,7 +723,7 @@ export function getWaterChangeEffect({ waterTests = [], waterType = "fresh", per
   const pct = Math.max(0, Math.min(100, Number(percent) || 0));
   if (!pct) return { ok: false, reason: "Set a change percentage", changes: [] };
 
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = activeParams(waterType);
   const frac = pct / 100;
   const changes = [];
 
@@ -751,7 +864,7 @@ function leastSquares(points) {
 
 // Returns one forecast per parameter that has enough data, newest-first input.
 export function getParamForecasts(waterTests = [], waterType = "fresh", stockedNames = []) {
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = activeParams(waterType);
   const now = Date.now();
   const out = [];
 
@@ -762,7 +875,7 @@ export function getParamForecasts(waterTests = [], waterType = "fresh", stockedN
       if (v == null || v === "") return;
       const num = Number(v);
       if (Number.isNaN(num)) return;
-      const ageDays = (now - new Date(t.date).getTime()) / 86400000;
+      const ageDays = (now - localInstantOf(t.date)) / 86400000;
       if (!(ageDays >= 0) || ageDays > FORECAST_MAX_AGE_DAYS) return;
       points.push({ x: -ageDays, y: num }); // x = days relative to now
     });
@@ -925,7 +1038,7 @@ export function buildAchievementStats({ tanks = [], activeDays = [], xp = 0, wis
   // Perfect water: any logged test with every provided reading "good".
   let perfect = false;
   for (const t of tanks) {
-    const params = PARAMS[t.water || "fresh"] || PARAMS.fresh;
+    const params = activeParams(t.water || "fresh");
     for (const test of t.waterTests || []) {
       const provided = params.filter((p) => test.values && test.values[p.key] != null);
       if (provided.length >= 3 && provided.every((p) => assessParam(p, test.values[p.key]).status === "good")) { perfect = true; break; }
@@ -979,7 +1092,35 @@ export function buildAchievementStats({ tanks = [], activeDays = [], xp = 0, wis
   // Reef chemist: a single test that measured alkalinity, calcium AND magnesium.
   const reefChem = tanks.some((t) => (t.waterTests || []).some((w) => w.values && w.values.alk != null && w.values.calcium != null && w.values.magnesium != null));
 
+  // ── Signals from the record types added since the original set ────────────
+  //
+  // Ninety-six achievements, and not one of them knew about source water, a
+  // light schedule, the shelf, an observation log or a quarantine seen through
+  // properly. Achievements are how this app teaches its own depth — a keeper
+  // discovers half the feature set by reading what they haven't earned yet —
+  // so a scoreboard frozen five rounds ago is depth nobody finds.
+  const sourceTested = tanks.some((t) => t.sourceWater && Object.keys(t.sourceWater.values || {}).length);
+  const lightScheduled = tanks.some((t) => t.lightSchedule && (t.lightSchedule.on || t.lightSchedule.off));
+  const shelfStocked = tanks.reduce((n, t) => n + (t.inventory || []).length, 0);
+  const observations = tanks.reduce((n, t) => n + Object.values(t.observations || {}).reduce((m, l) => m + (l || []).length, 0), 0);
+  // A measured animal: two sizes recorded for the same species is the point at
+  // which growth stops being a feeling.
+  const growthTracked = tanks.some((t) =>
+    Object.values(t.observations || {}).some((l) => (l || []).filter((o) => o && o.size > 0).length >= 2));
+  const observationPhotos = tanks.reduce((n, t) =>
+    n + Object.values(t.observations || {}).reduce((m, l) => m + (l || []).filter((o) => o && o.photo).length, 0), 0);
+  // Quarantine cleared on the checks, not merely on the calendar.
+  const quarantineCleared = tanks.some((t) => (t.quarantine || []).some((q) => {
+    const c = q && q.checks;
+    return c && ["eating", "marks", "behaviour", "breathing"].every((k) => c[k]);
+  }));
+  const gearWatts = tanks.some((t) => (t.equipment || []).some((e) => e && e.watts > 0));
+  const medsLogged = tanks.reduce((n, t) => n + (t.medDoses || []).length, 0);
+  const longHistory = tanks.some((t) => (t.waterTests || []).length >= 100);
+
   const st = {
+    sourceTested, lightScheduled, shelfStocked, observations, growthTracked,
+    observationPhotos, quarantineCleared, gearWatts, medsLogged, longHistory,
     treatmentsStarted, treatmentsCompleted, reefChemTests, forecastable, tanksWithNotes, fullSchoolsCount: fullSchools,
     species: allNames.size, maxTank, tanks: tanks.length, tests, journal, photos, costs, spend,
     maint: maintTypes.size, quarantine, cycled, perfect,
@@ -1076,7 +1217,7 @@ export function getTankParamWindow(stockedNames = []) {
 // analytical companion to the premium trend charts.
 export function getWaterStats(waterTests = [], waterType = "fresh") {
   if (!waterTests.length) return null;
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = activeParams(waterType);
   const averages = params.map((p) => {
     const vals = waterTests.filter((t) => t.values && t.values[p.key] != null).map((t) => Number(t.values[p.key]));
     if (!vals.length) return null;
@@ -1099,7 +1240,7 @@ export function getWaterStats(waterTests = [], waterType = "fresh") {
 export function getWeeklyActivity({ waterTests = [], journal = [], activeDays = [] } = {}) {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 6); // today + previous 6 = 7-day window
-  const cutKey = cutoff.toISOString().slice(0, 10);
+  const cutKey = localDayKey(cutoff);
   const within = (d) => typeof d === "string" && d.slice(0, 10) >= cutKey;
   return {
     tests: waterTests.filter((t) => within(t.date)).length,
@@ -1313,10 +1454,18 @@ export function getSeasonalChallenges(dateKey = getTodayKey(), count = 3) {
 // ── Fish of the Day ──────────────────────────────────────────────────────────
 // A deterministic daily species spotlight — same fish for everyone on a given
 // date, a fresh one tomorrow. Drives catalog discovery and a reason to reopen.
-export function getFishOfDay(dateKey = getTodayKey()) {
+export function getFishOfDay(dateKey = getTodayKey(), waterType = null) {
+  // Picked from the whole 316-species catalog regardless of the tank, so a reef
+  // keeper's "Fish of the Day" was a Zebra Loach more than half the time — a
+  // daily recommendation they cannot act on. Narrowing to the tank's water type
+  // keeps the feature a suggestion rather than a curiosity.
+  const pool = waterType === "salt" || waterType === "fresh"
+    ? SPECIES.filter((s) => s.water === waterType)
+    : SPECIES;
+  const list = pool.length ? pool : SPECIES;
   let h = 0;
   for (let i = 0; i < dateKey.length; i++) h = (h * 31 + dateKey.charCodeAt(i)) >>> 0;
-  return SPECIES[h % SPECIES.length];
+  return list[h % list.length];
 }
 
 // ── Tip of the Day ───────────────────────────────────────────────────────────
@@ -1367,11 +1516,16 @@ export function paramStatusColor(status) {
 }
 
 // ── Dates, streaks & XP (the retention loop, mirrors Pocket Planter) ──────────
+//
+// Local, not UTC. These were `toISOString().slice(0, 10)`, which is the date in
+// Greenwich rather than the date on the wall behind the tank — so a keeper in
+// California logging at 5pm filed it under tomorrow, and one in New Zealand
+// logging at 9am filed it under yesterday. See lib/day.js.
 export function getTodayKey() {
-  return new Date().toISOString().slice(0, 10);
+  return localDayKey(new Date());
 }
 function dayKey(d) {
-  return new Date(d).toISOString().slice(0, 10);
+  return localDayKey(d);
 }
 
 // Consecutive-day streak ending today (or yesterday, so a fresh morning doesn't

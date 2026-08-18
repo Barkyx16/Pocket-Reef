@@ -1,7 +1,8 @@
 import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import { EmptyState } from "./EmptyState";
-import { getWaterStats, PARAMS, assessParam, paramStatusColor } from "../core";
+import { getWaterStats, assessParam, paramStatusColor } from "../core";
+import { activeParams } from "../lib/targets";
 
 // Free water-test analytics — average reading per parameter across your whole
 // history, how often you test, and how many tests came back fully in range.
@@ -12,7 +13,7 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
   }
 
   // Share of tests where every provided reading graded "good".
-  const params = PARAMS[waterType] || PARAMS.fresh;
+  const params = activeParams(waterType);
   let clean = 0, evaluated = 0;
   for (const t of waterTests) {
     if (!t.values) continue;

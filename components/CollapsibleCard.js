@@ -1,9 +1,10 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { LayoutAnimation, Platform, Pressable, Text, UIManager, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
 import { iconForEmoji } from "../lib/icons";
+import { useReduceMotion, touchSlop } from "../lib/a11y";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -16,20 +17,43 @@ function splitEmoji(title = "") {
   return m ? { emoji: m[1], text: m[2] } : { emoji: null, text: title };
 }
 
-export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title, eyebrow, defaultOpen = false, children }) {
+export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title, eyebrow, defaultOpen = false, forceOpen, children }) {
   const [open, setOpen] = useState(defaultOpen);
+  const reduceMotion = useReduceMotion();
+  // True once a shortcut has forced this card open. The stored-state read below
+  // is async, so without this the two race: forceOpen sets open and writes "1",
+  // then the read — which started before that write — resolves with the old
+  // "0" and closes the card again. The shortcut appeared to do nothing, and the
+  // stored flag said open while the card was visibly shut.
+  const forced = useRef(false);
   const { emoji, text } = splitEmoji(title);
 
   useEffect(() => {
     let alive = true;
     AsyncStorage.getItem(`pr_collapse_${storageKey}`).then((val) => {
-      if (alive && val !== null) setOpen(val === "1");
+      // A shortcut that arrived while this was in flight wins — its intent is
+      // newer than whatever was on disk when the read started.
+      if (alive && val !== null && !forced.current) setOpen(val === "1");
     }).catch(() => {});
     return () => { alive = false; };
   }, [storageKey]);
 
+  // A shortcut that opens this card wins over the stored collapsed state —
+  // arriving from "Log a water test" and finding the water-test card folded
+  // shut is the shortcut failing at the last step. forceOpen carries a nonce,
+  // not a boolean, so tapping the same shortcut twice re-opens the card even
+  // if the user collapsed it in between.
+  useEffect(() => {
+    if (forceOpen) {
+      forced.current = true;
+      if (!reduceMotion) LayoutAnimation.configureNext(LayoutAnimation.create(200, LayoutAnimation.Types.easeInEaseOut, LayoutAnimation.Properties.opacity));
+      setOpen(true);
+      AsyncStorage.setItem(`pr_collapse_${storageKey}`, "1").catch(() => {});
+    }
+  }, [forceOpen]);
+
   function toggle() {
-    LayoutAnimation.configureNext(LayoutAnimation.create(200, LayoutAnimation.Types.easeInEaseOut, LayoutAnimation.Properties.opacity));
+    if (!reduceMotion) LayoutAnimation.configureNext(LayoutAnimation.create(200, LayoutAnimation.Types.easeInEaseOut, LayoutAnimation.Properties.opacity));
     const next = !open;
     setOpen(next);
     AsyncStorage.setItem(`pr_collapse_${storageKey}`, next ? "1" : "0").catch(() => {});
@@ -37,9 +61,17 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
 
   return (
     <View style={styles.card}>
-      <Pressable onPress={toggle} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, pressed && { opacity: 0.6 }]}>
+      <Pressable
+        onPress={toggle}
+        hitSlop={touchSlop(38)}
+        accessibilityRole="button"
+        accessibilityLabel={text}
+        accessibilityState={{ expanded: open }}
+        accessibilityHint={open ? "Collapses this section" : "Expands this section"}
+        style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, pressed && { opacity: 0.6 }]}
+      >
         {emoji ? (
-          <View style={[styles.iconSquare, open && { backgroundColor: "rgba(56,225,198,0.22)", borderColor: "rgba(56,225,198,0.4)" }]}>
+          <View style={[styles.iconSquare, open && { backgroundColor: "rgba(56,225,198,0.18)", borderColor: "rgba(56,225,198,0.42)" }]}>
             {iconForEmoji(emoji) ? (
               <Ionicons name={iconForEmoji(emoji)} size={17} color={theme.accent} />
             ) : (
@@ -51,7 +83,7 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
           {eyebrow ? <Text style={styles.cardEyebrow}>{eyebrow}</Text> : null}
           <Text style={styles.cardTitle}>{text}</Text>
         </View>
-        <View style={{ width: 30, height: 30, borderRadius: 15, alignItems: "center", justifyContent: "center", backgroundColor: open ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: open ? "rgba(56,225,198,0.3)" : theme.border, marginLeft: 12 }}>
+        <View style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: open ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: open ? "rgba(56,225,198,0.30)" : theme.border, marginLeft: 12 }}>
           <Ionicons name={open ? "chevron-down" : "chevron-forward"} size={16} color={theme.accent} />
         </View>
       </Pressable>

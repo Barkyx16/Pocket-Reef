@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { tapHaptic, successHaptic, selectionHaptic } from "../core";
+import { successHaptic, selectionHaptic } from "../core";
 import { generateStockingPlan } from "../lib/planner";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
 import { Pill } from "./Pill";
+import { formatVolume } from "../lib/units";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // "Design my tank."
@@ -93,7 +94,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>ESTIMATED LOAD</Text>
               <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
-                {plan.load}" of {plan.capacity} gal · {plan.headroom}" spare
+                {plan.load}" of {formatVolume(plan.capacity)} · {plan.headroom}" spare
               </Text>
             </View>
             <ProgressBar pct={plan.pct} height={8} glow label={`Estimated stocking load, ${plan.pct}%`} />

@@ -1,5 +1,5 @@
 import { Image, Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles } from "../styles";
 import { getFishOfDay, careLevelColor, temperamentColor, tapHaptic } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -7,8 +7,8 @@ import { Chip } from "./Chip";
 
 // A deterministic daily species spotlight on Home — a fresh fish to discover
 // each day, tapping through to its full detail page.
-export function FishOfDayCard({ onOpenSpecies }) {
-  const s = getFishOfDay();
+export function FishOfDayCard({ waterType = null, onOpenSpecies }) {
+  const s = getFishOfDay(undefined, waterType);
   if (!s) return null;
   const img = getSpeciesImage(s.name);
   return (

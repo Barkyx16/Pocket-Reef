@@ -1,18 +1,22 @@
+import { memo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, useResponsiveLayout } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { tapHaptic } from "../core";
 
 // The "More" menu — styled like Pocket Planter's More sheet: a big title, a close
 // button, and a list of green icon-tile rows for the secondary sections.
-export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
+export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
+  // The shell is wider now that most screens reflow into two columns; this
+  // one doesn't, so it keeps a readable line length instead of stretching.
+  const layout = useResponsiveLayout();
   const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 24 }}>
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (
-          <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 19, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
+          <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
             <Text style={{ color: theme.text, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         ) : null}
@@ -49,4 +53,4 @@ export function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
       </View>
     </ScrollView>
   );
-}
+})

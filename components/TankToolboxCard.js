@@ -17,7 +17,7 @@ import { QuarantineCard } from "./QuarantineCard";
 // window, gear guide, adding a new fish, and the quarantine tracker.
 export function TankToolboxCard({
   tankGallons, tank = [], tankWater, quantities = {},
-  quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine,
+  quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, onSetQuarantineCheck,
 }) {
   const bio = getBioload(tankGallons, tank, quantities);
   const room = getStockingRoom(tankGallons, tank, quantities);
@@ -101,7 +101,7 @@ export function TankToolboxCard({
         <AcclimationCard />
       </View>
     ) },
-    { id: "quarantine", emoji: "⏳", label: "Quarantine", render: () => <QuarantineCard items={quarantine} onAdd={onAddQuarantine} onRemove={onRemoveQuarantine} onGraduate={onGraduateQuarantine} /> },
+    { id: "quarantine", emoji: "⏳", label: "Quarantine", render: () => <QuarantineCard items={quarantine} onAdd={onAddQuarantine} onRemove={onRemoveQuarantine} onGraduate={onGraduateQuarantine} onSetCheck={onSetQuarantineCheck} /> },
   ];
 
   const [sel, setSel] = useState("stocking");

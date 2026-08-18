@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, memo } from "react";
 import { FlatList, Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, useResponsiveLayout } from "../styles";
 import { SPECIES, DISEASES, getSpecies, getCompatibility, speciesFitsTank, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -10,7 +10,10 @@ import { CompareCard } from "../components/CompareCard";
 import { EmptyState } from "../components/EmptyState";
 import { Pill } from "../components/Pill";
 import { t } from "../lib/i18n";
+import { usePersistedState } from "../lib/usePersistedState";
 import { matchesQuery, scoreMatch, buildHaystack } from "../lib/search";
+import { formatVolume } from "../lib/units";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 const WATER_FILTERS = [
   { id: "all", label: "All" },
@@ -30,22 +33,32 @@ const CARE_RANK = { Easy: 0, Moderate: 1, Advanced: 2 };
 // Built once for the whole catalog, not per keystroke per species.
 const HAY = new Map(SPECIES.map((s) => [s.name, buildHaystack(s)]));
 
-const haystack = (s) =>
-  `${s.name} ${s.diet} ${s.kind} ${s.water === "salt" ? "saltwater marine reef" : "freshwater"} ${s.summary || ""}`.toLowerCase();
 
-export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium }) {
+export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium, tankWater = "fresh" }) {
   const [query, setQuery] = useState("");
-  const [water, setWater] = useState("all");
-  const [fitsOnly, setFitsOnly] = useState(false);
-  const [compatOnly, setCompatOnly] = useState(false);
-  const [wishOnly, setWishOnly] = useState(false);
+  // These describe what you're shopping for, so they outlive the screen. Only
+  // one tab is mounted at a time, which meant a trip into a species detail and
+  // back used to wipe every filter you'd set.
+  const oneOf = (opts) => (v) => opts.includes(v);
+  const isBool = (v) => typeof v === "boolean";
+  // Defaults to the tank you actually keep rather than "all". A reef keeper
+  // opening the catalog was met with 174 freshwater fish they cannot put in
+  // their tank, every single time — the filter existed but nobody's first
+  // action should have to be narrowing 316 results down to the relevant half.
+  // Still fully persisted, so changing it sticks.
+  const [water, setWater] = usePersistedState("pr_f_water", tankWater, { validate: oneOf(WATER_FILTERS.map((w) => w.id)) });
+  const [fitsOnly, setFitsOnly] = usePersistedState("pr_f_fits", false, { validate: isBool });
+  const [compatOnly, setCompatOnly] = usePersistedState("pr_f_compat", false, { validate: isBool });
+  const [wishOnly, setWishOnly] = usePersistedState("pr_f_wish", false, { validate: isBool });
+  const [care, setCare] = usePersistedState("pr_f_care", "all", { validate: oneOf(CARE_OPTS.map((o) => o[0])) });
+  const [temper, setTemper] = usePersistedState("pr_f_temper", "all", { validate: oneOf(TEMP_OPTS.map((o) => o[0])) });
+  const [size, setSize] = usePersistedState("pr_f_size", "all", { validate: oneOf(SIZE_OPTS.map((o) => o[0])) });
+  const [reefOnly, setReefOnly] = usePersistedState("pr_f_reef", false, { validate: isBool });
+  const [sort, setSort] = usePersistedState("pr_f_sort", "default", { validate: oneOf(SORT_OPTS.map((o) => o[0])) });
+  // Transient: compare mode and the expanded filter drawer are about this
+  // visit, not about what you're looking for.
   const [compareMode, setCompareMode] = useState(false);
   const [compareSel, setCompareSel] = useState([]);
-  const [care, setCare] = useState("all");
-  const [temper, setTemper] = useState("all");
-  const [size, setSize] = useState("all");
-  const [reefOnly, setReefOnly] = useState(false);
-  const [sort, setSort] = useState("default");
   const [showFilters, setShowFilters] = useState(false);
   const PAGE = 15;
   const [visible, setVisible] = useState(PAGE);
@@ -108,8 +121,21 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
   // How many cards actually render. Free accounts see a fixed preview no matter
   // how they search or filter, so the cap can't be paged or filtered around.
   const shown = premiumUnlocked ? Math.min(visible, list.length) : Math.min(freeLimit, list.length);
+  // Two columns once there's room, matching the card reflow on every other tab.
+  const layout = useResponsiveLayout();
+  const columns = layout.isLarge ? 2 : 1;
 
   const resetFilters = () => { setCare("all"); setTemper("all"); setSize("all"); setReefOnly(false); };
+  // Everything narrowing the catalog right now, including the pills above the
+  // drawer. Persisted filters make this essential: a filter set three sessions
+  // ago is invisible unless the screen says so and offers one tap out.
+  const narrowing =
+    activeCount + (water !== "all" ? 1 : 0) + (fitsOnly ? 1 : 0) + (compatOnly ? 1 : 0) + (wishOnly ? 1 : 0);
+  const clearAll = () => {
+    tapHaptic("medium");
+    resetFilters();
+    setWater("all"); setFitsOnly(false); setCompatOnly(false); setWishOnly(false); setSort("default");
+  };
 
   const FilterRow = ({ label, opts, value, onChange }) => (
     <View style={{ marginTop: 12 }}>
@@ -138,13 +164,30 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
 
       <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: 16, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
         <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: 8 }} />
-        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: 15 }} />
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: 15 }} 
+            maxLength={TEXT_LIMITS.search}
+          />
         {query ? (
           <Pressable onPress={() => setQuery("")} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear search">
             <Ionicons name="close-circle" size={17} color={theme.secondaryText} style={{ marginLeft: 6 }} />
           </Pressable>
         ) : null}
       </View>
+
+      {/* What the filters are actually doing, and the way out. Restoring a
+          filter set silently is worse than not restoring it — this is the line
+          that stops "where did the other 300 fish go?". */}
+      {narrowing ? (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
+          <Ionicons name="funnel" size={12} color={theme.accent} />
+          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+            Showing {list.length} of {SPECIES.length} · {narrowing} filter{narrowing === 1 ? "" : "s"} on
+          </Text>
+          <Pressable onPress={clearAll} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear all filters">
+            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear all</Text>
+          </Pressable>
+        </View>
+      ) : null}
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 12 }} contentContainerStyle={{ flexDirection: "row", gap: 8, paddingRight: 8 }} keyboardShouldPersistTaps="handled">
         {WATER_FILTERS.map((w) => {
@@ -156,7 +199,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
           );
         })}
         <Pressable onPress={() => { tapHaptic(); setFitsOnly((v) => !v); }} style={[styles.pill, pillStyle(fitsOnly)]} accessibilityRole="button">
-          <Text style={pillText(fitsOnly)}>Fits my {tankGallons} gal</Text>
+          <Text style={pillText(fitsOnly)}>Fits my {formatVolume(tankGallons)}</Text>
         </Pressable>
         {tank.length ? (
           <Pressable onPress={() => { tapHaptic(); setCompatOnly((v) => !v); }} style={[styles.pill, pillStyle(compatOnly)]} accessibilityRole="button">
@@ -288,9 +331,10 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
     </View>
   );
 
+  // In grid mode each row is shared between two cards.
   const renderItem = ({ item }) => {
     const selected = compareMode && compareSel.includes(item.name);
-    return (
+    const card = (
       <SpeciesCard
         species={item}
         onPress={() => onCardPress(item.name)}
@@ -301,10 +345,21 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
         note={selected ? "\u2696\ufe0f Selected for compare" : undefined}
       />
     );
+    // In one column the card fills the row as it always has. In two, each cell
+    // has to claim half the row or the cards keep their content width and sit
+    // in a ragged left-hand strip.
+    return columns > 1 ? <View style={{ flex: 1 }}>{card}</View> : card;
   };
 
   return (
     <FlatList
+      // A single column of 316 species down the middle of an iPad wastes most
+      // of the screen. FlatList refuses to change numColumns in place, so the
+      // key forces a remount on rotation — which costs one re-render on an
+      // event that already re-renders everything.
+      key={columns}
+      numColumns={columns}
+      columnWrapperStyle={columns > 1 ? { gap: 10 } : undefined}
       data={list.slice(0, shown)}
       renderItem={renderItem}
       keyExtractor={(item) => item.name}
@@ -322,7 +377,7 @@ export function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDis
       removeClippedSubviews
     />
   );
-}
+})
 
 const pillStyle = (on) => ({ backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border });
-const pillText = (on) => ({ color: on ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" });
+const pillText = (on) => ({ color: on ? theme.onAccent : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" });

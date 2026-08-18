@@ -9,6 +9,10 @@ import { Dimensions, StyleSheet, useWindowDimensions } from "react-native";
 const { width: SCREEN_W } = Dimensions.get("window");
 export const LARGE_SCREEN_BREAKPOINT = 768;
 export const CONTENT_MAX_WIDTH = 700;
+// Room for two 700-ish columns plus the gap between them. Used once the content
+// reflows rather than stretching, so a tablet fills its screen instead of
+// showing a phone layout down the middle.
+export const TWO_COLUMN_MAX_WIDTH = 1180;
 
 // StyleSheet is built once, so this snapshot is only a sensible starting point.
 // It is wrong the moment the device rotates, an iPad enters split view, or a
@@ -44,8 +48,50 @@ export const theme = {
   coral: "#ff8a6a",
   warn: "#ffd372",
   danger: "#ff7b7b",
-  glow: "rgba(56, 225, 198, 0.45)",
+  // Text and icons that sit ON the accent colour. Twenty components had this
+  // hex inline; it is a real token — the one colour guaranteed readable on
+  // teal — and it belongs with the others.
+  onAccent: "#04202a",
+  // A muted slate for de-emphasised chrome, distinct from secondaryText, which
+  // is blue-tinted body copy.
+  muted: "#8a9bb0",
+  glow: "rgba(56,225,198,0.45)",
   isDark: true,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The design scales.
+//
+// Before these existed the app used 17 distinct border radii (7, 9, 11, 13, 15,
+// 18, …) and 23 distinct opacities of the same teal — 0.28, 0.3, 0.30, 0.32,
+// 0.34 and 0.35 all appearing for the same job. None of that is visible as a
+// bug in any single screen; together it's exactly what makes an interface read
+// as "almost right" instead of finished.
+//
+// Seven steps each, chosen so the common existing values stayed put and only
+// the one-offs moved.
+// ─────────────────────────────────────────────────────────────────────────────
+export const radius = {
+  xs: 8,
+  sm: 10,
+  md: 12,
+  lg: 14,
+  xl: 16,
+  card: 22,
+  sheet: 26,
+  pill: 999,
+};
+
+// Tints of the accent, by the job they do rather than by number — `tint.fill`
+// says what it's for in a way `rgba(56,225,198,0.14)` never can.
+export const tint = {
+  faint: "rgba(56,225,198,0.04)",
+  glass: "rgba(56,225,198,0.08)",
+  subtle: "rgba(56,225,198,0.10)",
+  fill: "rgba(56,225,198,0.14)",
+  strong: "rgba(56,225,198,0.18)",
+  border: "rgba(56,225,198,0.30)",
+  borderStrong: "rgba(56,225,198,0.42)",
 };
 
 // Accent gradient stops, reused by buttons, bars, and rings.
@@ -59,7 +105,9 @@ const ACCENT_LIGHT = theme.accentLight;
 
 export const styles = StyleSheet.create({
   safe: { flex: 1 },
-  scroll: { padding: 16, paddingBottom: 132 },
+  // Clears the tab bar *and* the floating quick-action button above it. At the
+  // old 132 the FAB sat on top of the last card's controls.
+  scroll: { padding: 16, paddingBottom: 168 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.26, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
@@ -74,17 +122,17 @@ export const styles = StyleSheet.create({
   profileHeroName: { flexShrink: 1, color: "#ffffff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 },
   profileHeroBannerPill: { backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, maxWidth: "50%" },
   profileHeroBannerPillText: { color: ACCENT_LIGHT, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" },
-  profileHeroLevelBadge: { width: 54, height: 54, borderRadius: 17, backgroundColor: "rgba(6,20,32,0.55)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)", alignItems: "center", justifyContent: "center" },
+  profileHeroLevelBadge: { width: 54, height: 54, borderRadius: 16, backgroundColor: "rgba(6,20,32,0.55)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)", alignItems: "center", justifyContent: "center" },
 
   // ── Card (glass chrome) ────────────────────────────────────────────────────
   card: { backgroundColor: theme.card, borderRadius: 22, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: theme.border, shadowColor: "#000", shadowOpacity: 0.22, shadowRadius: 22, shadowOffset: { width: 0, height: 10 }, elevation: 5 },
   // A primary/feature card with a soft accent glow to draw the eye.
-  cardElevated: { backgroundColor: "rgba(56, 225, 198, 0.055)", borderRadius: 22, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
+  cardElevated: { backgroundColor: "rgba(56,225,198,0.04)", borderRadius: 22, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
   cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
   cardEyebrow: { fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
   cardTitle: { fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
   cardText: { marginTop: 8, fontSize: 14, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
-  iconSquare: { width: 32, height: 32, borderRadius: 10, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56, 225, 198, 0.16)", borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.22)" },
+  iconSquare: { width: 32, height: 32, borderRadius: 10, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.18)" },
   primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: 999, backgroundColor: ACCENT, marginBottom: 12 },
 
   // ── Species / list row (glass) ─────────────────────────────────────────────
@@ -110,7 +158,7 @@ export const styles = StyleSheet.create({
 
   // ── Stat tiles ─────────────────────────────────────────────────────────────
   statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
-  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56, 225, 198, 0.06)", borderRadius: 16, padding: 12, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.14)" },
+  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56,225,198,0.06)", borderRadius: 16, padding: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.14)" },
   statLabel: { color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.2 },
   statValue: { color: "#ffffff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
 
@@ -119,7 +167,7 @@ export const styles = StyleSheet.create({
 
   // ── Detail ─────────────────────────────────────────────────────────────────
   detailHeroWrap: { alignItems: "center", paddingVertical: 12 },
-  detailImageWrap: { width: 136, height: 136, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", shadowColor: ACCENT, shadowOpacity: 0.18, shadowRadius: 20, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
+  detailImageWrap: { width: 136, height: 136, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.18, shadowRadius: 20, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
   detailEmoji: { fontSize: 68 },
   detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginTop: 12, textAlign: "center" },
   backBtn: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", paddingVertical: 8, paddingHorizontal: 4 },
@@ -145,10 +193,10 @@ export const styles = StyleSheet.create({
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
   bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: 22, padding: 6, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", shadowColor: "#000", shadowOpacity: 0.28, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 14 },
-  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 8, borderRadius: 18, gap: 4 },
+  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 8, borderRadius: 16, gap: 4 },
   // A tinted well rather than a filled, glowing capsule. The active tab should
   // be obvious at a glance without being the brightest thing on the screen.
-  bottomTabButtonActive: { backgroundColor: "rgba(56, 225, 198, 0.14)" },
+  bottomTabButtonActive: { backgroundColor: "rgba(56,225,198,0.14)" },
   bottomTabEmoji: { fontSize: 20 },
   bottomTabLabel: { fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", color: "#7ea6bd" },
   bottomTabLabelActive: { color: ACCENT },

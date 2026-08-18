@@ -4,6 +4,7 @@ import { styles, theme } from "../styles";
 import { TANK_IDEAS } from "../data/tankIdeas";
 import { tapHaptic } from "../core";
 import { SpeciesThumb } from "./SpeciesThumb";
+import { formatVolume } from "../lib/units";
 
 // Ready-made, compatibility-checked stocking templates. One tap loads the tank
 // size + species — the reef version of Pocket Planter's guild templates.
@@ -21,7 +22,7 @@ export function TankIdeasCard({ onLoad }) {
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{idea.name}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
-                {idea.gallons} gal · {idea.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {idea.species.length} species
+                {formatVolume(idea.gallons)} · {idea.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {idea.species.length} species
               </Text>
             </View>
           </View>

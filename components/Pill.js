@@ -1,7 +1,7 @@
 import { Pressable, Text } from "react-native";
 import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { tapHaptic, selectionHaptic } from "../core";
+import { selectionHaptic } from "../core";
 
 // The standard filter/toggle pill — tonal when off, glowing accent when on, with
 // a springy press. Unifies the many inline pills across the app.
@@ -23,9 +23,9 @@ export function Pill({ label, active, onPress, haptic = "light", fill = false, i
       accessibilityState={{ selected: !!active }}
     >
       {icon ? (
-        <Ionicons name={icon} size={13} color={active ? "#04202a" : theme.accent} style={{ marginRight: 6 }} />
+        <Ionicons name={icon} size={13} color={active ? theme.onAccent : theme.accent} style={{ marginRight: 6 }} />
       ) : null}
-      <Text style={{ color: active ? "#04202a" : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
+      <Text style={{ color: active ? theme.onAccent : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
     </Pressable>
   );
 }

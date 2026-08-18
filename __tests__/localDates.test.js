@@ -1,0 +1,207 @@
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+);
+
+// What day is it, where the keeper is standing?
+//
+// Every dated record was stamped with `new Date().toISOString().slice(0, 10)` —
+// the date in Greenwich, not the date on the wall behind the tank. For roughly
+// half the world that is silently, routinely wrong:
+//
+//   California, 5:30pm on 17 August → stamped 18 August
+//   New Zealand, 9am on 17 August   → stamped 16 August
+//
+// And the mirror of it: stored keys were parsed back with `new Date("2026-08-17")`,
+// which is UTC midnight. Ahead of Greenwich that instant is in the future for
+// most of the local day, so every engine's age filter silently discarded a
+// reading the keeper had just logged.
+//
+// The whole suite runs under several timezones in CI. This file pins the
+// primitives.
+
+const { dayKey, todayKey, fromDayKey, daysBetweenKeys, daysSinceKey, addDaysToKey, instantOf } = require("../lib/day");
+const { getTodayKey } = require("../core");
+
+describe("a day key is the local calendar day", () => {
+  test("it comes from local fields, not from an ISO string", () => {
+    // 00:30 UTC on the 18th. In any western timezone that is still the 17th.
+    const instant = new Date("2026-08-18T00:30:00Z");
+    const local = `${instant.getFullYear()}-${String(instant.getMonth() + 1).padStart(2, "0")}-${String(instant.getDate()).padStart(2, "0")}`;
+    expect(dayKey(instant)).toBe(local);
+  });
+
+  test("the app's today and the device's today are the same day", () => {
+    const now = new Date();
+    const expected = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    expect(getTodayKey()).toBe(expected);
+    expect(todayKey()).toBe(expected);
+  });
+
+  test("junk gives null rather than a wrong day", () => {
+    expect(dayKey("not a date")).toBeNull();
+    expect(fromDayKey("nonsense")).toBeNull();
+    expect(fromDayKey(null)).toBeNull();
+  });
+});
+
+describe("a stored key round-trips", () => {
+  test("out and back is the same day, in any timezone", () => {
+    ["2026-01-01", "2026-06-15", "2026-12-31"].forEach((key) => {
+      expect(dayKey(fromDayKey(key))).toBe(key);
+    });
+  });
+
+  test("a key parses to local midnight, never to the day before", () => {
+    const d = fromDayKey("2026-08-17");
+    expect(d.getFullYear()).toBe(2026);
+    expect(d.getMonth()).toBe(7);
+    expect(d.getDate()).toBe(17);
+    expect(d.getHours()).toBe(0);
+  });
+
+  test("today's key is never in the future", () => {
+    // The bug this pins: ahead of Greenwich, UTC-midnight-today is later than
+    // local now for most of the day, so every engine's `age >= 0` filter threw
+    // away the reading the keeper had just logged.
+    expect(instantOf(todayKey())).toBeLessThanOrEqual(Date.now());
+  });
+});
+
+describe("day arithmetic is calendar arithmetic", () => {
+  test("counting between keys", () => {
+    expect(daysBetweenKeys("2026-08-01", "2026-08-08")).toBe(7);
+    expect(daysBetweenKeys("2026-08-08", "2026-08-01")).toBe(-7);
+    expect(daysBetweenKeys("2026-08-01", "2026-08-01")).toBe(0);
+  });
+
+  test("across a month and a year boundary", () => {
+    expect(daysBetweenKeys("2026-01-31", "2026-02-01")).toBe(1);
+    expect(daysBetweenKeys("2025-12-31", "2026-01-01")).toBe(1);
+  });
+
+  test("across a daylight-saving boundary, where a day is 23 or 25 hours", () => {
+    // Rounding rather than flooring elapsed ms: a 23-hour day must still be one
+    // day, not zero.
+    expect(daysBetweenKeys("2026-03-07", "2026-03-09")).toBe(2);
+    expect(daysBetweenKeys("2026-10-31", "2026-11-02")).toBe(2);
+  });
+
+  test("adding days", () => {
+    expect(addDaysToKey("2026-08-17", 1)).toBe("2026-08-18");
+    expect(addDaysToKey("2026-12-31", 1)).toBe("2027-01-01");
+    expect(addDaysToKey("2026-03-01", -1)).toBe("2026-02-28");
+  });
+
+  test("days since a key, from today", () => {
+    expect(daysSinceKey(todayKey())).toBe(0);
+    expect(daysSinceKey(addDaysToKey(todayKey(), -5))).toBe(5);
+  });
+});
+
+describe("instantOf tells a day from a timestamp", () => {
+  test("a bare key becomes local midnight", () => {
+    expect(instantOf("2026-08-17")).toBe(fromDayKey("2026-08-17").getTime());
+  });
+
+  test("a full ISO timestamp keeps its instant", () => {
+    const iso = "2026-08-17T15:30:00.000Z";
+    expect(instantOf(iso)).toBe(new Date(iso).getTime());
+  });
+
+  test("junk is NaN, not zero", () => {
+    expect(Number.isNaN(instantOf("nope"))).toBe(true);
+    expect(Number.isNaN(instantOf(null))).toBe(true);
+  });
+});
+
+describe("the engines see today's reading", () => {
+  // The end-to-end version of the bug: a test logged right now must be visible
+  // to everything that filters on age.
+  const today = todayKey();
+  const tests = [-0, -3, -6].map((n) => ({
+    date: addDaysToKey(today, n),
+    water: "salt",
+    values: { alk: 8 + Math.abs(n) * 0.3 },
+  }));
+
+  test("stability grades it rather than reporting no data", () => {
+    const { tankStability } = require("../lib/stability");
+    expect(tankStability(tests, "salt", {}).ok).toBe(true);
+  });
+
+  test("the cadence engine can pace it", () => {
+    const { observedInterval } = require("../lib/cadence");
+    expect(observedInterval(tests, "alk", {})).toBeGreaterThan(0);
+  });
+
+  test("the forecast engine sees it too", () => {
+    // getParamForecasts had its own `new Date(t.date)` and was missed by the
+    // first pass — so ahead of Greenwich it discarded today's reading and the
+    // predictive alerts had one fewer point than the keeper could see.
+    const { getParamForecasts } = require("../core");
+    const climbing = [0, 7, 14, 21].map((n) => ({
+      date: addDaysToKey(today, -n),
+      water: "salt",
+      values: { nitrate: 10 + n },
+    }));
+    const found = getParamForecasts(climbing, "salt", []);
+    expect(Array.isArray(found)).toBe(true);
+    expect(found.find((f) => f.key === "nitrate")).toBeTruthy();
+  });
+
+  test("the health score counts the days since the last test correctly", () => {
+    const { getTankHealthScore } = require("../core");
+    const scored = getTankHealthScore({
+      tank: [], tankGallons: 40, quantities: {}, maintenance: {}, waterType: "salt",
+      waterTests: [{ date: today, water: "salt", values: { ammonia: 0, nitrite: 0, nitrate: 5 } }],
+    });
+    // A test logged today must never read as one logged in the future.
+    expect(scored.score).toBeGreaterThan(0);
+  });
+
+  test("the anomaly check sees the history", () => {
+    const { checkReading } = require("../lib/anomaly");
+    const { activeParams } = require("../lib/targets");
+    const alk = activeParams("salt").find((p) => p.key === "alk");
+    const many = Array.from({ length: 6 }, (_, i) => ({
+      date: addDaysToKey(today, -i * 3),
+      water: "salt",
+      values: { alk: 8.4 },
+    }));
+    // Four-plus readings on file, so it has something to compare against.
+    expect(checkReading(alk, 8.5, many, {}).reason).not.toBe("not enough history");
+  });
+});
+
+describe("day-keyed maps don't grow forever", () => {
+  const { pruneDayMap } = require("../lib/day");
+  const NOW = new Date("2026-08-18T12:00:00Z");
+
+  test("recent days are kept", () => {
+    const map = { "2026-08-18": ["feed"], "2026-08-15": ["test"] };
+    expect(Object.keys(pruneDayMap(map, 14, NOW)).sort()).toEqual(["2026-08-15", "2026-08-18"]);
+  });
+
+  test("old days are dropped", () => {
+    // careDone gathered one key per day, forever — and rode along in every
+    // sync, export and restore point.
+    const map = { "2026-08-18": ["feed"], "2020-01-01": ["feed"], "2026-01-01": ["feed"] };
+    expect(Object.keys(pruneDayMap(map, 14, NOW))).toEqual(["2026-08-18"]);
+  });
+
+  test("five years of daily ticks collapse to a fortnight", () => {
+    const map = {};
+    for (let i = 0; i < 1800; i++) map[addDaysToKey("2026-08-18", -i)] = ["feed"];
+    expect(Object.keys(pruneDayMap(map, 14, NOW)).length).toBeLessThanOrEqual(15);
+  });
+
+  test("a key that isn't a day is left alone rather than silently discarded", () => {
+    const map = { "2026-08-18": ["feed"], version: 3 };
+    expect(pruneDayMap(map, 14, NOW).version).toBe(3);
+  });
+
+  test("an empty or missing map is safe", () => {
+    expect(pruneDayMap({}, 14, NOW)).toEqual({});
+    expect(pruneDayMap(undefined, 14, NOW)).toEqual({});
+  });
+});

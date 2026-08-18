@@ -1,4 +1,4 @@
-import { getParamForecasts, getWaterChangeEffect, getRecommendedChangePercent, getTreatmentProgress, getTreatment, getTreatableDiseases, PARAMS } from "../core";
+import { getParamForecasts, getWaterChangeEffect, getRecommendedChangePercent, getTreatmentProgress, getTreatment, getTreatableDiseases } from "../core";
 import { planDose, getDosingPlan, actualWaterVolume, REEF_TARGETS } from "../lib/dosing";
 import { DISEASES } from "../data/fishHealth";
 

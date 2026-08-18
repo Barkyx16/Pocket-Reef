@@ -7,7 +7,7 @@ import { tapHaptic, getHealthImprovements } from "../core";
 // a glance; tap the header to expand or collapse the six-factor breakdown so the
 // card stays compact inside the Your Tank overview.
 const ICON = { true: "✓", partial: "~", false: "✕" };
-const CLR = { true: "#38e1c6", partial: "#ffd86b", false: "#ff7b7b" };
+const CLR = { true: theme.accent, partial: theme.warn, false: theme.danger };
 
 export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
   // A score with no next step is just a grade. These are the same factors,
@@ -37,7 +37,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
         <View style={{ marginTop: 14, gap: 8 }}>
           {health.factors.map((f) => (
             <View key={f.label} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <View style={{ width: 22, height: 22, borderRadius: 7, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
+              <View style={{ width: 22, height: 22, borderRadius: 8, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
                 <Text style={{ color: CLR[String(f.state)], fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
               </View>
               <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.label}</Text>
@@ -59,7 +59,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     accessibilityRole={onGoToTab ? "button" : undefined}
                     accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
                   >
-                    <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.34)", alignItems: "center" }}>
+                    <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
                       <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
                     </View>
                     <View style={{ flex: 1 }}>

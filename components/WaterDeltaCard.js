@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { getWaterDelta, paramStatusColor } from "../core";
 

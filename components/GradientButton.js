@@ -26,7 +26,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
             gap: 8,
             backgroundColor: "rgba(56,225,198,0.10)",
             borderWidth: 1,
-            borderColor: "rgba(56,225,198,0.34)",
+            borderColor: "rgba(56,225,198,0.30)",
           },
           pressed && { opacity: 0.75 },
           style,
@@ -48,7 +48,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
       accessibilityLabel={label}
     >
       <LinearGradient colors={accentGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}>
-        {icon ? <Ionicons name={icon} size={17} color="#04202a" /> : null}
+        {icon ? <Ionicons name={icon} size={17} color={theme.onAccent} /> : null}
         <Text style={styles.primaryBtnText}>{label}</Text>
       </LinearGradient>
     </Pressable>

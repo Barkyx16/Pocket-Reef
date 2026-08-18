@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, useResponsiveLayout } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
@@ -12,11 +12,12 @@ import { GradientButton } from "../components/GradientButton";
 // asks for money, and six mismatched emoji in accent squares undercut it.
 const FEATURES = [
   { icon: "fish-outline", title: "Unlimited tanks", body: "Plan and track every aquarium you keep." },
-  { icon: "trending-up-outline", title: "Parameter trends & alerts", body: "Charts for each reading, with drift warnings." },
-  { icon: "grid-outline", title: "Advanced compatibility", body: "Full pairing reasons and stocking limits." },
-  { icon: "medkit-outline", title: "Complete disease library", body: "Every illustrated guide, plus symptom lookup." },
-  { icon: "notifications-outline", title: "Smart care reminders", body: "Water tests, changes, and feedings on schedule." },
-  { icon: "cloud-outline", title: "Cloud backup & sync", body: "Your tanks, logs, and journal safe across devices." },
+  { icon: "analytics-outline", title: "Trends, forecasts & stability", body: "Charts per reading, a date on the next problem, and a grade for how steady you hold it." },
+  { icon: "bulb-outline", title: "Answers, not just numbers", body: "Why a reading won't come down, what your algae is feeding on, how often to test each parameter." },
+  { icon: "grid-outline", title: "Advanced compatibility", body: "Full pairing reasons, stocking limits, and your wishlist simulated against your real tank." },
+  { icon: "medkit-outline", title: "Complete health toolkit", body: "Every illustrated guide, symptom lookup, and medication doses on your real water volume." },
+  { icon: "notifications-outline", title: "Smart care reminders", body: "Cadence reminders, plus an alert before a parameter leaves its safe range." },
+  { icon: "cloud-outline", title: "Cloud sync & restore points", body: "Your tanks and logs across devices, merged rather than overwritten, with local snapshots." },
 ];
 
 // Legal links are not optional: App Store review rejects a subscription
@@ -44,14 +45,19 @@ const REASON_COPY = {
   tankIdea: { eyebrow: "One-tap stocking", title: "22 tanks, already planned", subtitle: "Curated stocking plans verified conflict-free — load one and you're done." },
   secondTank: { eyebrow: "More than one tank?", title: "Track them all", subtitle: "Premium keeps unlimited tanks, each with its own stock, water history, and journal." },
   tank: { eyebrow: "Your tank", title: "See the whole picture", subtitle: "Live compatibility, bioload, the stocking planner, and your ideal parameter window." },
-  log: { eyebrow: "Your logbook", title: "Track what matters", subtitle: "Water chemistry with trends, the cycle tracker, maintenance, feeding, and costs." },
-  health: { eyebrow: "Health toolkit", title: "Know what to do", subtitle: "Disease guides, symptom checker, and an emergency troubleshooter when it counts." },
+  log: { eyebrow: "Your logbook", title: "Track it, then understand it", subtitle: "Trends and forecasts, stability grading, and the tap-water ceiling on your water changes." },
+  health: { eyebrow: "Health toolkit", title: "Know what to do", subtitle: "Disease guides, a symptom checker, algae diagnosed from your own readings, and medication doses on your real volume." },
   journal: { eyebrow: "Your journal", title: "Remember every stage", subtitle: "A dated, searchable photo record of your tank — backed up to your account." },
   games: { eyebrow: "Reef games", title: "Play and learn", subtitle: "Every mini-game, with XP toward your reef-keeper level." },
-  profile: { eyebrow: "Your progress", title: "Never lose a thing", subtitle: "Cloud save across devices, 86 achievements, and lifetime stats." },
+  // No `profile` entry: Profile is a free tab now, so nothing routes here for
+  // it. Account, settings, export and deletion are not things to sell back.
+  analysis: { eyebrow: "Beyond the numbers", title: "Understand your readings", subtitle: "Stability grading, forecasts, and why a reading won't come down — worked out from your own log." },
 };
 
 export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false, loadPlans, reason }) {
+  // The shell is wider now that most screens reflow into two columns; this
+  // one doesn't, so it keeps a readable line length instead of stretching.
+  const layout = useResponsiveLayout();
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState(null);
   const [loadingPlans, setLoadingPlans] = useState(true);
@@ -79,7 +85,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
   const trialDays = plan && plan.freeTrialDays ? plan.freeTrialDays : 0;
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={premiumUnlocked ? "Premium active" : ctx ? ctx.eyebrow : "Premium"}
         title={premiumUnlocked ? "You're all in 🐠" : ctx ? ctx.title : "Keep a healthier reef"}
@@ -127,7 +133,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
               const on = plan && plan.id === p.id;
               const badge = p.annual ? "BEST VALUE" : "POPULAR";
               const badgeBg = p.annual ? theme.warn : theme.accent;
-              const badgeColor = p.annual ? "#3d2c00" : "#04202a";
+              const badgeColor = p.annual ? "#3d2c00" : theme.onAccent;
               return (
                 <Pressable key={p.id} onPress={() => setPlan(p)} style={({ pressed }) => [{ flex: 1, borderRadius: 16, padding: 14, backgroundColor: on ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }, pressed && { opacity: 0.9 }]} accessibilityRole="button">
                   <View style={{ alignSelf: "flex-start", backgroundColor: badgeBg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 8 }}>
@@ -180,10 +186,10 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
             ends. Manage or cancel in your App Store settings.
           </Text>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 18, marginTop: 8 }}>
-            <Pressable onPress={() => Linking.openURL(TERMS_URL).catch(() => {})} hitSlop={8}>
+            <Pressable onPress={() => Linking.openURL(TERMS_URL).catch(() => {})} hitSlop={8} accessibilityRole="link" accessibilityLabel="Terms of use, opens in your browser">
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: "underline" }}>Terms</Text>
             </Pressable>
-            <Pressable onPress={() => Linking.openURL(PRIVACY_URL).catch(() => {})} hitSlop={8}>
+            <Pressable onPress={() => Linking.openURL(PRIVACY_URL).catch(() => {})} hitSlop={8} accessibilityRole="link" accessibilityLabel="Privacy policy, opens in your browser">
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: "underline" }}>Privacy</Text>
             </Pressable>
           </View>
@@ -202,14 +208,14 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           build: a premium switch the app can flip is a premium switch anyone
           can flip. Entitlement in production comes from RevenueCat alone. */}
       {__DEV__ ? (
-      <View style={{ borderRadius: 18, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
+      <View style={{ borderRadius: 16, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
         <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>🔧 Developer</Text>
         <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
           Toggle the premium gate for testing. Debug builds only — stripped from release.
         </Text>
         <Pressable
           onPress={() => onSetPremium && onSetPremium(!premiumUnlocked)}
-          style={({ pressed }) => [{ marginTop: 12, borderRadius: 14, paddingVertical: 12, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.4)" }, pressed && { opacity: 0.8 }]}
+          style={({ pressed }) => [{ marginTop: 12, borderRadius: 14, paddingVertical: 12, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
           accessibilityRole="button"
         >
           <Text style={{ color: premiumUnlocked ? theme.danger : theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>

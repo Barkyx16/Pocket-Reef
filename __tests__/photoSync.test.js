@@ -15,7 +15,7 @@ jest.mock("../lib/supabase", () => ({
   },
 }));
 
-const { uploadPhoto, signPhoto, deletePhoto, backupTankPhotos, hydrateTankPhotos } = require("../lib/photoSync");
+const { uploadPhoto, deletePhoto, backupTankPhotos, hydrateTankPhotos } = require("../lib/photoSync");
 
 const tank = (journal) => ({ id: "t1", name: "T", journal });
 

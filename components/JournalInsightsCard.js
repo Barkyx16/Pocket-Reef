@@ -93,7 +93,7 @@ export function JournalInsightsCard({ journal = [] }) {
           onPress={() => canGoBack && step(-1)}
           disabled={!canGoBack}
           hitSlop={10}
-          style={{ width: 30, height: 30, borderRadius: 15, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoBack ? 1 : 0.3 }}
+          style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoBack ? 1 : 0.3 }}
           accessibilityRole="button"
           accessibilityLabel="Previous month"
         >
@@ -109,7 +109,7 @@ export function JournalInsightsCard({ journal = [] }) {
           onPress={() => canGoFwd && step(1)}
           disabled={!canGoFwd}
           hitSlop={10}
-          style={{ width: 30, height: 30, borderRadius: 15, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoFwd ? 1 : 0.3 }}
+          style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoFwd ? 1 : 0.3 }}
           accessibilityRole="button"
           accessibilityLabel="Next month"
         >
@@ -133,7 +133,7 @@ export function JournalInsightsCard({ journal = [] }) {
                 style={{
                   width: 27,
                   height: 27,
-                  borderRadius: 9,
+                  borderRadius: 10,
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: has ? `${c.mood.color}2e` : "rgba(255,255,255,0.03)",

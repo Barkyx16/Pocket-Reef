@@ -26,7 +26,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
         style={({ pressed }) => [{ flex: 1, flexDirection: "row", alignItems: "center", gap: 14 }, pressed && { opacity: 0.75 }]}
         onPress={onPress}
         accessibilityRole="button"
-        accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${species.minGallons} gallons.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`}
+        accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${formatVolume(species.minGallons)}.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`}
         accessibilityHint="Opens care details"
       >
       <View style={styles.cleanImageWrap}>

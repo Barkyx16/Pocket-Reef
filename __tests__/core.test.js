@@ -8,6 +8,19 @@ import SPECIES from "../data/speciesData";
 import { getCompatibility } from "../data/compatibility";
 import { ACHIEVEMENTS } from "../data/achievements";
 
+// Day keys built the way the app builds them: local calendar fields, not UTC.
+// These fixtures previously used toISOString(), which is the exact assumption
+// the app was fixed for — so in any non-UTC zone the fixture's "today" and the
+// app's "today" were different days.
+function localDay(value = new Date()) {
+  const d = value instanceof Date ? value : new Date(value);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // core.js is the brain — bioload, warnings, health scoring, achievements, the
 // Today hub. It ships 10 changes at a time with nothing catching a regression,
@@ -18,11 +31,13 @@ import { ACHIEVEMENTS } from "../data/achievements";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const iso = (daysAgo) => new Date(Date.now() - daysAgo * 86400000).toISOString();
-const todayKey = () => new Date().toISOString().slice(0, 10);
+const todayKey = () => localDay();
 
 // A few known-good catalog entries to build fixtures from.
 const NEON = "Neon Tetra";
 const CLOWN = "Ocellaris Clownfish";
+
+
 
 describe("catalog integrity", () => {
   test("every species has the fields the app renders", () => {
@@ -297,12 +312,12 @@ describe("streaks", () => {
   });
 
   test("consecutive days accumulate", () => {
-    const days = [0, 1, 2].map((d) => new Date(Date.now() - d * 86400000).toISOString().slice(0, 10));
+    const days = [0, 1, 2].map((d) => localDay(Date.now() - d * 86400000));
     expect(getStreak(days)).toBe(3);
   });
 
   test("a gap breaks it", () => {
-    const days = [todayKey(), new Date(Date.now() - 5 * 86400000).toISOString().slice(0, 10)];
+    const days = [todayKey(), localDay(Date.now() - 5 * 86400000)];
     expect(getStreak(days)).toBe(1);
   });
 });

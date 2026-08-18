@@ -12,6 +12,8 @@ const MILESTONE_MOODS = ["🐠", "🛠️"];
 // A single card with three views — "On this day", a milestone timeline, and a
 // before/after photo compare. They're all ways of looking backwards, so they
 // share one card and a segmented switch rather than sprawling into three.
+const STRIP_MAX = 40;
+
 export function JournalMemoriesCard({ journal = [] }) {
   const [view, setView] = useState("onthisday");
   const today = getTodayKey();
@@ -76,7 +78,7 @@ function OnThisDay({ memories }) {
       {memories.map((m) => (
         <View key={m.months} style={{ marginBottom: 14 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <View style={{ height: 1, width: 14, backgroundColor: "rgba(56,225,198,0.4)" }} />
+            <View style={{ height: 1, width: 14, backgroundColor: "rgba(56,225,198,0.42)" }} />
             <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
             <View style={{ height: 1, flex: 1, backgroundColor: theme.hairline }} />
           </View>
@@ -107,10 +109,10 @@ function Milestones({ entries }) {
           <View key={e.id || `${e.date}-${i}`} style={{ flexDirection: "row", gap: 12 }}>
             {/* Rail — matches the connector style used by TimelineCard. */}
             <View style={{ alignItems: "center", width: 30 }}>
-              <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: e.mood === "🐠" ? "rgba(56,225,198,0.16)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: e.mood === "🐠" ? "rgba(56,225,198,0.4)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
+              <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: e.mood === "🐠" ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: e.mood === "🐠" ? "rgba(56,225,198,0.42)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
                 <Text style={{ fontSize: 15 }}>{e.mood}</Text>
               </View>
-              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.22)", marginTop: 4, minHeight: 14 }} /> : null}
+              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: 4, minHeight: 14 }} /> : null}
             </View>
             <View style={{ flex: 1, paddingBottom: 14 }}>
               <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
@@ -130,6 +132,18 @@ function Milestones({ entries }) {
 }
 
 function Compare({ photos }) {
+  // The picker strip mounts one <Image> per photo, like the gallery did. It's a
+  // horizontal scroller you drag through a handful of thumbnails at a time, so
+  // a four-year journal was decoding several hundred bitmaps to let you choose
+  // two. The oldest and newest are always kept — they're the default
+  // before/after pair and the most likely comparison anyone wants.
+  const stripPhotos = useMemo(() => {
+    if (photos.length <= STRIP_MAX) return photos;
+    const head = photos.slice(0, Math.floor(STRIP_MAX / 2));
+    const tail = photos.slice(photos.length - Math.ceil(STRIP_MAX / 2));
+    return [...head, ...tail];
+  }, [photos]);
+
   // Defaults to the widest span available — oldest vs newest — which is the
   // comparison people actually want on first open.
   const [aId, setAId] = useState(null);
@@ -179,11 +193,12 @@ function Compare({ photos }) {
         </Text>
         <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
           Tap a photo below to set the {next === "a" ? "before" : "after"} shot
+          {photos.length > STRIP_MAX ? ` · showing the oldest and newest ${STRIP_MAX} of ${photos.length}` : ""}
         </Text>
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingVertical: 12, paddingHorizontal: 2 }}>
-        {photos.map((e, i) => {
+        {stripPhotos.map((e, i) => {
           const k = keyOfEntry(e, i);
           const on = k === (aId ?? keyOfEntry(first, 0)) || k === (bId ?? keyOfEntry(last, photos.length - 1));
           return (

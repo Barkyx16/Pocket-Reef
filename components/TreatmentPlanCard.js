@@ -18,7 +18,7 @@ import { GradientButton } from "./GradientButton";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const URGENCY = {
-  critical: { color: "#ff7b7b", label: "Act now" },
+  critical: { color: theme.danger, label: "Act now" },
   high: { color: theme.warn, label: "Treat promptly" },
   moderate: { color: theme.accent, label: "Treat steadily" },
 };
@@ -77,7 +77,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
 
       {progress.abandonedEarly ? (
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: 14, padding: 12 }}>
-          <Text style={{ color: "#ff7b7b", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
+          <Text style={{ color: theme.danger, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
           <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
             This is the most common reason an infection returns. If symptoms come back, start again
             and complete the full course.
@@ -88,7 +88,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       <View style={{ marginTop: 16, gap: 10 }}>
         {progress.steps.map((step) => {
           const state = step.done ? "done" : step.overdue ? "overdue" : step.due ? "due" : "future";
-          const color = state === "done" ? theme.accent : state === "overdue" ? "#ff7b7b" : state === "due" ? theme.warn : theme.secondaryText;
+          const color = state === "done" ? theme.accent : state === "overdue" ? theme.danger : state === "due" ? theme.warn : theme.secondaryText;
           return (
             <Pressable
               key={step.id}
@@ -100,7 +100,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
             >
               <View style={{
                 width: 24, height: 24, borderRadius: 8, marginTop: 1,
-                backgroundColor: step.done ? "rgba(56,225,198,0.20)" : "rgba(255,255,255,0.05)",
+                backgroundColor: step.done ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)",
                 borderWidth: 1, borderColor: step.done ? theme.accent : `${color}66`,
                 alignItems: "center", justifyContent: "center",
               }}>
@@ -114,7 +114,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (
-                  <Text style={{ color: "#ff7b7b", fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Overdue</Text>
+                  <Text style={{ color: theme.danger, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Overdue</Text>
                 ) : state === "future" ? (
                   <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                     In {step.daysAway} day{step.daysAway === 1 ? "" : "s"}

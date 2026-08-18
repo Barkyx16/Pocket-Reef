@@ -126,7 +126,7 @@ export function AcclimationTimer({ onComplete }) {
             <View key={p.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, opacity: passed ? 0.55 : 1 }}>
               <View style={{
                 width: 20, height: 20, borderRadius: 10,
-                backgroundColor: passed ? "rgba(56,225,198,0.20)" : isNow ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)",
+                backgroundColor: passed ? "rgba(56,225,198,0.18)" : isNow ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)",
                 borderWidth: 1, borderColor: isNow ? theme.accent : passed ? "rgba(56,225,198,0.45)" : theme.border,
                 alignItems: "center", justifyContent: "center",
               }}>

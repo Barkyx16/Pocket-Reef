@@ -1,5 +1,5 @@
 import { generateStockingPlan, getEquipmentPlan } from "../lib/planner";
-import { getCyclingCoach, getConflictFixes, getFeedingPlan, getCompatibility, getSpecies } from "../core";
+import { getCyclingCoach, getConflictFixes, getFeedingPlan, getCompatibility } from "../core";
 import SPECIES from "../data/speciesData";
 
 const iso = (d) => new Date(Date.now() - d * 86400000).toISOString();

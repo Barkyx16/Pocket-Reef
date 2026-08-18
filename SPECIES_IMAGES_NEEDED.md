@@ -1,7 +1,16 @@
-# Pocket Reef — species images needed (316 total)
+# Pocket Reef — species images: COMPLETE
 
-Drop each PNG into `assets/species/` using the exact filename below. Square (~1:1),
-max ~600px. Filenames on the left, species on the right.
+All 316 species images are bundled in `assets/species/` (319 files) and wired
+up in `data/speciesImageMap.js`. Nothing here is outstanding.
+
+This file is kept as the naming reference: any species added to the catalog needs
+a matching PNG using the filename convention below (lowercase, hyphenated, `.png`),
+dropped into `assets/species/` and registered in the image map. `SpeciesThumb`
+falls back to the species emoji when a file is missing, so a new species without
+an image degrades rather than breaking — which also means a missing one is easy
+to overlook.
+
+---
 
 ## FRESHWATER FISH (160)
 

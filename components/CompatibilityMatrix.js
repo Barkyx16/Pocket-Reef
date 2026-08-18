@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { getSpecies, getCompatibility, compatColor, tapHaptic } from "../core";
 import { SpeciesThumb } from "./SpeciesThumb";

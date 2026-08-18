@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { theme } from "../styles";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // The last line of defence.
@@ -19,6 +18,10 @@ import { theme } from "../styles";
 // Deliberately dependency-free and styled inline: whatever broke may be in the
 // design system, so this must render without it.
 // ─────────────────────────────────────────────────────────────────────────────
+// Colours here are inlined on purpose. This renders when something has already
+// thrown, and what threw may be the design system itself — importing `theme` to
+// draw the apology would risk the apology throwing too. Every other component
+// uses the tokens; these two are the deliberate exception. (design-system colours are inlined)
 export class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +50,35 @@ export class ErrorBoundary extends Component {
   render() {
     const { error } = this.state;
     if (!error) return <View key={this.state.resetKey} style={{ flex: 1 }}>{this.props.children}</View>;
+
+    // `compact` is the per-screen variant. A crash inside one tab shouldn't
+    // take down the other nine, the tab bar and the header with it — the app
+    // is still perfectly usable, and losing all of it turns a bug in the
+    // Games tab into "my tank records are gone".
+    if (this.props.compact) {
+      return (
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 28 }}>
+          <Text style={{ fontSize: 34 }}>🐠</Text>
+          <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12, textAlign: "center" }}>
+            This screen hit a problem
+          </Text>
+          <Text style={{ color: "#a5d4ea", fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19, marginTop: 8, textAlign: "center" }}>
+            Your tank data is safe and untouched. The rest of the app still works — switch tabs, or try this one again.
+          </Text>
+          <Pressable
+            onPress={this.retry}
+            style={{ marginTop: 18, backgroundColor: "#38e1c6", borderRadius: 14, paddingVertical: 12, paddingHorizontal: 24 }}
+            accessibilityRole="button"
+            accessibilityLabel="Try this screen again"
+          >
+            <Text style={{ color: "#04202a", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
+          </Pressable>
+          <Text style={{ color: "#6f8ea3", fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
+            {String((error && error.message) || error || "Unknown error").slice(0, 140)}
+          </Text>
+        </View>
+      );
+    }
 
     const detail = String((error && error.message) || error || "Unknown error");
 

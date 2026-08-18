@@ -3,6 +3,8 @@ import { Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles, theme } from "../styles";
 import { getDosingPlan, REEF_TARGETS } from "../lib/dosing";
+import { formatVolume } from "../lib/units";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Reef supplement dosing.
@@ -31,10 +33,17 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    // Guarded: these read from storage and set state when the promise resolves.
+    // Switching tab or closing the sheet before that lands writes to an
+    // unmounted component — React logs it and the write is thrown away, which
+    // is a warning today and a stale-state bug the moment anything downstream
+    // reads it.
+    let alive = true;
     AsyncStorage.getItem(KEY)
-      .then((raw) => { if (raw) { try { setStrengths(JSON.parse(raw) || {}); } catch (e) {} } })
+      .then((raw) => { if (alive && raw) { try { setStrengths(JSON.parse(raw) || {}); } catch (e) {} } })
       .catch(() => {})
-      .finally(() => setLoaded(true));
+      .finally(() => { if (alive) setLoaded(true); });
+    return () => { alive = false; };
   }, []);
 
   const setStrength = (key, text) => {
@@ -91,7 +100,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
           const row = plans.find((p) => p.key === key);
           if (!row) return null;
           const target = REEF_TARGETS[key];
-          const statusColor = row.inRange ? theme.accent : row.low ? theme.warn : "#ff7b7b";
+          const statusColor = row.inRange ? theme.accent : row.low ? theme.warn : theme.danger;
 
           return (
             <View key={key}>
@@ -116,22 +125,24 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                       keyboardType="decimal-pad"
                       style={{ width: 78, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                       accessibilityLabel={`${row.label} product strength`}
-                    />
+                    
+            maxLength={TEXT_LIMITS.number}
+          />
                     <Text style={{ flex: 1, color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15 }}>
                       {STRENGTH_HINT[key]} — from your product label
                     </Text>
                   </View>
 
                   {row.plan && row.plan.ok && row.plan.totalMl > 0 ? (
-                    <View style={{ marginTop: 10, backgroundColor: "rgba(56,225,198,0.08)", borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", borderRadius: 12, padding: 12 }}>
+                    <View style={{ marginTop: 10, backgroundColor: "rgba(56,225,198,0.08)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", borderRadius: 12, padding: 12 }}>
                       <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                         {row.plan.capped
                           ? `${row.plan.perDayMl} ml per day for ${row.plan.days} days`
                           : `${row.plan.totalMl} ml, one dose`}
                       </Text>
                       <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 16 }}>
-                        Raises {row.plan.needed} {row.unit} across {row.plan.volume} gal of actual water
-                        (your {tankGallons} gal tank, less rock and sand).
+                        Raises {row.plan.needed} {row.unit} across {formatVolume(row.plan.volume)} of actual water
+                        (your {formatVolume(tankGallons)} tank, less rock and sand).
                         {row.plan.capped
                           ? ` Split because more than ${row.plan.safeDailyRise} ${row.unit} in one day risks shocking your corals.`
                           : ""}

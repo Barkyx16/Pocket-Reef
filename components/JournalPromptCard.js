@@ -32,7 +32,7 @@ export function JournalPromptCard({ daysSinceLast }) {
   const first = daysSinceLast === null;
 
   return (
-    <View style={{ backgroundColor: "rgba(56, 225, 198, 0.055)", borderRadius: 18, borderWidth: 1, borderColor: "rgba(56, 225, 198, 0.28)", padding: 16, marginBottom: 16 }}>
+    <View style={{ backgroundColor: "rgba(56,225,198,0.04)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", padding: 16, marginBottom: 16 }}>
       <Text style={{ color: theme.accentLight, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" }}>
         {first ? "✍️ Start your log" : `✍️ ${daysSinceLast} days since your last entry`}
       </Text>

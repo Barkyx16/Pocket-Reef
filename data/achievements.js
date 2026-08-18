@@ -114,11 +114,11 @@ export const ACHIEVEMENTS = [
   { id: "nano_master", emoji: "🫙", title: "Nano Master", desc: "Keep 3+ species in a 10-gallon or smaller tank.", check: (s) => s.nanoMaster },
 
   // ── Reef Games: skill in the mini-games ──
-  { id: "game_streak5", emoji: "🎯", title: "On a Roll", desc: "Hit a 5-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 5 },
-  { id: "game_streak10", emoji: "🔥", title: "Unstoppable", desc: "Hit a 10-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 10 },
+  { id: "game_streak5", emoji: "🎯", title: "Quiz Streak", desc: "Hit a 5-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 5 },
+  { id: "game_streak10", emoji: "🔥", title: "Quiz Master", desc: "Hit a 10-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 10 },
   { id: "game_streak20", emoji: "🧠", title: "Reef Savant", desc: "Hit a 20-answer streak in any Reef Game.", check: (s) => s.gameStreak >= 20 },
   { id: "game_blitz15", emoji: "⚡", title: "Quick Draw", desc: "Score 15+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 15 },
-  { id: "game_blitz25", emoji: "🏅", title: "Blitz Champion", desc: "Score 25+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 25 },,
+  { id: "game_blitz25", emoji: "🏅", title: "Blitz Champion", desc: "Score 25+ in a 60-second Blitz.", check: (s) => s.gameBlitz >= 25 },
   // ── Treatment, chemistry & planning ──
   // Added after these features shipped with no progression attached — the loop
   // should reward the behaviour the app is trying to teach, especially
@@ -126,11 +126,28 @@ export const ACHIEVEMENTS = [
   { id: "first_treatment", emoji: "💊", title: "Field Medic", desc: "Start a treatment course for a sick fish.", check: (s) => s.treatmentsStarted >= 1 },
   { id: "treatment_done", emoji: "🩹", title: "Saw It Through", desc: "Complete every step of a treatment course.", check: (s) => s.treatmentsCompleted >= 1 },
   { id: "treatment_done3", emoji: "⚕️", title: "Reef Doctor", desc: "Complete three full treatment courses.", check: (s) => s.treatmentsCompleted >= 3 },
-  { id: "reef_chem5", emoji: "⚗️", title: "Chemist", desc: "Log alkalinity, calcium or magnesium 5 times.", check: (s) => s.reefChemTests >= 5 },
-  { id: "reef_chem25", emoji: "🧬", title: "Reef Chemist", desc: "Log reef chemistry 25 times.", check: (s) => s.reefChemTests >= 25 },
+  { id: "reef_chem5", emoji: "⚗️", title: "Reef Chemistry", desc: "Log alkalinity, calcium or magnesium 5 times.", check: (s) => s.reefChemTests >= 5 },
+  { id: "reef_chem25", emoji: "🧬", title: "Reef Chemistry, Mastered", desc: "Log reef chemistry 25 times.", check: (s) => s.reefChemTests >= 25 },
   { id: "forecastable", emoji: "🔮", title: "Trend Setter", desc: "Log enough tests for Pocket Reef to forecast a tank.", check: (s) => s.forecastable >= 1 },
   { id: "forecast_two", emoji: "📉", title: "Ahead of the Curve", desc: "Build a testing history on two tanks.", check: (s) => s.forecastable >= 2 },
   { id: "note_taker", emoji: "🗒️", title: "Note Taker", desc: "Add notes to one of your tanks.", check: (s) => s.tanksWithNotes >= 1 },
   { id: "schools_out", emoji: "🐟", title: "Schools In", desc: "Keep 5 schooling species at their full group size.", check: (s) => s.fullSchoolsCount >= 5 },
   { id: "schools_ten", emoji: "🌊", title: "Shoal Keeper", desc: "Keep 10 schooling species at full group size.", check: (s) => s.fullSchoolsCount >= 10 },
+
+  // ── The depth added after the original set ──────────────────────────────
+  //
+  // These exist as much to teach the feature set as to reward it. Somebody
+  // scrolling their locked achievements is the closest thing this app has to a
+  // guided tour, and until now that tour stopped several rounds ago.
+  { id: "source_tested", emoji: "🚰", title: "Know Your Water", desc: "Test what comes out of your tap or RODI.", check: (s) => s.sourceTested },
+  { id: "light_scheduled", emoji: "💡", title: "On A Timer", desc: "Set your light schedule.", check: (s) => s.lightScheduled },
+  { id: "shelf_stocked", emoji: "🧂", title: "Well Stocked", desc: "Track 3 consumables on your shelf.", check: (s) => s.shelfStocked >= 3 },
+  { id: "gear_watts", emoji: "⚡", title: "Metered", desc: "Record the wattage of a piece of equipment.", check: (s) => s.gearWatts },
+  { id: "first_observation", emoji: "👁️", title: "Close Observer", desc: "Record your first observation about an animal.", check: (s) => s.observations >= 1 },
+  { id: "observer_ten", emoji: "📔", title: "Field Notes", desc: "Record 10 observations.", check: (s) => s.observations >= 10 },
+  { id: "growth_tracked", emoji: "📏", title: "Measured, Not Guessed", desc: "Record two sizes for the same animal.", check: (s) => s.growthTracked },
+  { id: "photo_series", emoji: "📸", title: "Then And Now", desc: "Photograph the same animal twice.", check: (s) => s.observationPhotos >= 2 },
+  { id: "qt_cleared", emoji: "🛡️", title: "By The Book", desc: "Clear a quarantine on every check, not just the clock.", check: (s) => s.quarantineCleared },
+  { id: "meds_logged", emoji: "💊", title: "Kept The Course", desc: "Log a medication dose.", check: (s) => s.medsLogged >= 1 },
+  { id: "long_history", emoji: "📚", title: "The Long Record", desc: "Build a history of 100 water tests.", check: (s) => s.longHistory },
 ];

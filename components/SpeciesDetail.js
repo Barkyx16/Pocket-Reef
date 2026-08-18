@@ -4,7 +4,7 @@ import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   careLevelColor, temperamentColor, compatColor, phRange,
-  getCompatibility, getSpecies, getDiseasesForSpecies, getTankmates,
+  getCompatibility, getSpecies, getDiseasesForSpecies, getTankmates, assessAddition, getCareTips, getSimilarSpecies,
 } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -12,11 +12,14 @@ import { getDiseaseImage } from "../data/diseaseImageMap";
 import { Chip } from "./Chip";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { GradientButton } from "./GradientButton";
+import { tenureLabel } from "../lib/livestock";
+import { ObservationsCard } from "./ObservationsCard";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // Full species detail — modeled on Pocket Planter's plant detail: quick actions,
 // a journey prompt, smart-care rows, tappable problems & protection, step-by-step,
 // tankmate intelligence, shop links, and personal notes.
-export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onToggleTank, onOpenDisease, onOpenSpecies, inWishlist, onToggleWishlist, tanks = [], quantity = 1, onSetQuantity, onGoToTab, note = "", onChangeNote }) {
+export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onToggleTank, onOpenDisease, onOpenSpecies, inWishlist, onToggleWishlist, tanks = [], quantity = 1, onSetQuantity, onGoToTab, note = "", onChangeNote, record = null, onOpenRecord, activeTank = {}, onAddObservation, onRemoveObservation }) {
   const s = getSpecies(name);
   const [noteText, setNoteText] = useState(note);
   useEffect(() => { setNoteText(note); }, [name]); // reset when navigating fish-to-fish
@@ -29,18 +32,21 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
   const mates = getTankmates(name, 6);
   const shopLinks = buildShopLinks(s);
   const watchFor = [...new Set(diseases.flatMap((d) => d.symptoms || []))].slice(0, 7);
+  // Both of these have been computed by core.js since the beginning and shown
+  // nowhere. The care sheet lists this animal's numbers — size, pH, temperature
+  // — and never said what any of them mean for keeping it, which is the half a
+  // beginner actually needs.
+  const careTips = getCareTips(s);
+  const similar = getSimilarSpecies(s, 4);
 
-  // "Will this work in MY tank?" verdict.
-  const tankWater = tank.length ? getSpecies(tank[0])?.water : null;
-  const fits = !tankGallons || s.minGallons <= tankGallons;
-  const waterOk = !tankWater || tankWater === s.water;
-  const conflictWith = others.find((n) => getCompatibility(name, n).level === "avoid");
-  let verdict;
-  if (!waterOk) verdict = { good: false, text: `Wrong water type — your tank is ${tankWater}water` };
-  else if (!fits) verdict = { good: false, text: `Needs a bigger tank — at least ${s.minGallons} gal` };
-  else if (conflictWith) verdict = { good: false, text: `Conflicts with ${conflictWith} already in your tank` };
-  else if (tank.length) verdict = { good: true, text: "Great fit — compatible with your current tank" };
-  else verdict = { good: true, text: tankGallons ? `Fits your ${tankGallons} gal tank` : "Looks like a solid choice" };
+  // "Will this work in MY tank?" verdict — the same call the add button makes,
+  // so the screen and the confirmation can never disagree about a fish.
+  const check = assessAddition(name, { tank, tankGallons });
+  const verdict = check.ok
+    ? tank.length
+      ? { good: true, text: "Great fit — compatible with your current tank" }
+      : { good: true, text: tankGallons ? `Fits your ${formatVolume(tankGallons)} tank` : "Looks like a solid choice" }
+    : { good: false, text: check.title };
   const vColor = verdict.good ? theme.accent : theme.danger;
 
   const careRows = [
@@ -71,7 +77,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* HERO */}
       <View style={styles.detailHeroWrap}>
-        <View style={{ position: "absolute", top: 18, width: 190, height: 190, borderRadius: 95, backgroundColor: "rgba(56,225,198,0.12)" }} />
+        <View style={{ position: "absolute", top: 18, width: 190, height: 190, borderRadius: 95, backgroundColor: "rgba(56,225,198,0.14)" }} />
         <View style={styles.detailImageWrap}>
           {getSpeciesImage(s.name) ? (
             <Image source={getSpeciesImage(s.name)} style={{ width: 136, height: 136 }} resizeMode="cover" />
@@ -87,7 +93,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* VERDICT */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: `${vColor}18`, borderRadius: 14, borderWidth: 1, borderColor: `${vColor}55`, padding: 12, marginBottom: 14 }}>
-        <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: `${vColor}2e`, borderWidth: 1, borderColor: `${vColor}77`, alignItems: "center", justifyContent: "center" }}>
+        <View style={{ width: 30, height: 30, borderRadius: 16, backgroundColor: `${vColor}2e`, borderWidth: 1, borderColor: `${vColor}77`, alignItems: "center", justifyContent: "center" }}>
           <Ionicons name={verdict.good ? "checkmark-circle" : "warning"} size={17} color={verdict.good ? theme.accent : theme.warn} />
         </View>
         <Text style={{ flex: 1, color: vColor, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{verdict.text}</Text>
@@ -109,6 +115,33 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
               <Pressable onPress={() => onSetQuantity(name, quantity + 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Increase count"><Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text></Pressable>
             </View>
           </View>
+        ) : null}
+
+        {/* What YOU know about this animal, not what the catalog knows.
+            Records existed but were only visible on the Tank tab — so opening
+            the fish you've kept for two years showed generic care notes and no
+            sign the app had ever met it. */}
+        {inTank ? (
+          <Pressable
+            onPress={() => onOpenRecord && onOpenRecord(name)}
+            disabled={!onOpenRecord}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 14, paddingVertical: 11 }, pressed && onOpenRecord && { opacity: 0.75, borderColor: theme.accent }]}
+            accessibilityRole={onOpenRecord ? "button" : undefined}
+            accessibilityLabel={record && record.addedAt ? `Your record: kept ${tenureLabel(record)}` : "Add your record for this animal"}
+          >
+            <Ionicons name="bookmark-outline" size={15} color={theme.accent} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                {record && record.addedAt ? `Yours for ${tenureLabel(record)}` : "Your record"}
+              </Text>
+              <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                {record && (record.source || record.price != null)
+                  ? [record.source, record.price != null ? `$${record.price}` : null].filter(Boolean).join(" · ")
+                  : "Add where it came from and what it cost"}
+              </Text>
+            </View>
+            {onOpenRecord ? <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} /> : null}
+          </Pressable>
         ) : null}
 
         <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
@@ -189,7 +222,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {diseases.map((d) => (
             <Pressable key={d.name} onPress={() => onOpenDisease && onOpenDisease(d.name)} style={({ pressed }) => [{ width: "47.5%", flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,138,101,0.10)", borderWidth: 1, borderColor: "rgba(255,138,101,0.35)", borderRadius: 14, padding: 8 }, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
-              <View style={{ width: 32, height: 32, borderRadius: 9, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+              <View style={{ width: 32, height: 32, borderRadius: 10, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                 {getDiseaseImage(d.name) ? (
                   <Image source={getDiseaseImage(d.name)} style={{ width: 32, height: 32 }} resizeMode="cover" />
                 ) : (
@@ -245,6 +278,54 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         </View>
       </View>
 
+      {/* WHAT IT NEEDS FROM YOU — the numbers above, turned into instructions. */}
+      {careTips.length ? (
+        <View style={styles.card}>
+          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>Keeping {s.name}</Text>
+          {careTips.map((tip, i) => (
+            <View key={i} style={{ flexDirection: "row", gap: 8, marginTop: i ? 8 : 0 }}>
+              <Ionicons name="ellipse" size={7} color={theme.accent} style={{ marginTop: 6 }} />
+              <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19 }}>{tip}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+
+      {/* SIMILAR — a browse path for "I like this but it won't fit", which is
+          the most common reason somebody is reading a care sheet they can't
+          act on. */}
+      {similar.length ? (
+        <View style={styles.card}>
+          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>If you like {s.name}</Text>
+          <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>
+            Similar size, temperament and care level — useful when this one doesn't fit your tank.
+          </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {similar.map((o) => (
+              <Pressable
+                key={o.name}
+                onPress={() => onOpenSpecies && onOpenSpecies(o.name)}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 7, backgroundColor: theme.well, borderRadius: 999, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 7 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+                accessibilityRole="button"
+                accessibilityLabel={`${o.name}, ${o.careLevel} care, minimum ${o.minGallons} gallons`}
+              >
+                <SpeciesThumb species={o} size={18} />
+                <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.name}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{formatVolume(o.minGallons)}+</Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      ) : null}
+
+      {/* OBSERVATIONS — only for something actually in the tank. A dated log
+          for a fish you're browsing is a form with nothing to record. */}
+      {inTank && onAddObservation ? (
+        <View style={styles.card}>
+          <ObservationsCard tank={activeTank} name={name} onAdd={onAddObservation} onRemove={onRemoveObservation} />
+        </View>
+      ) : null}
+
       {/* PERSONAL NOTES */}
       {onChangeNote ? (
         <View style={styles.card}>
@@ -258,6 +339,8 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
             placeholderTextColor={theme.secondaryText}
             multiline
             style={{ backgroundColor: theme.well, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 96, textAlignVertical: "top", marginTop: 10 }}
+          
+            maxLength={TEXT_LIMITS.note}
           />
         </View>
       ) : null}

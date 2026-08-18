@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { TROUBLESHOOTING, tapHaptic } from "../core";
 
 // Emergency troubleshooter — tap a problem to expand fast, ordered first-response

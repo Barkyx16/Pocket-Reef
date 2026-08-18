@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ActivityIndicator, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
 import { supabase } from "../lib/supabase";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // Shown when the app is opened from a password-reset email. By the time this
 // appears Supabase has already exchanged the link for a recovery session, so
@@ -50,6 +51,8 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
             placeholderTextColor={theme.secondaryText}
             style={[styles.authInput, { marginTop: 16 }]}
             accessibilityLabel="New password"
+          
+            maxLength={TEXT_LIMITS.password}
           />
           <TextInput
             value={confirm}
@@ -60,12 +63,14 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
             placeholderTextColor={theme.secondaryText}
             style={[styles.authInput, { marginTop: 12 }]}
             accessibilityLabel="Confirm new password"
+          
+            maxLength={TEXT_LIMITS.password}
           />
 
           {error ? <Text style={styles.authError}>{error}</Text> : null}
 
-          <Pressable onPress={submit} disabled={busy} style={({ pressed }) => [styles.primaryBtn, { marginTop: 16 }, (pressed || busy) && { opacity: 0.8 }]} accessibilityRole="button">
-            {busy ? <ActivityIndicator color="#04202a" /> : <Text style={styles.primaryBtnText}>Update password</Text>}
+          <Pressable onPress={submit} disabled={busy} style={({ pressed }) => [styles.primaryBtn, { marginTop: 16 }, (pressed || busy) && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel={busy ? "Updating password" : "Update password"} accessibilityState={{ busy }}>
+            {busy ? <ActivityIndicator color={theme.onAccent} /> : <Text style={styles.primaryBtnText}>Update password</Text>}
           </Pressable>
           <Pressable onPress={() => close(onCancel)} style={styles.authLinkBtn} accessibilityRole="button">
             <Text style={[styles.authLinkText, { color: theme.secondaryText }]}>Cancel</Text>

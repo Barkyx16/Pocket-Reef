@@ -3,7 +3,7 @@
     "name": "Pocket Reef",
     "slug": "pocket-reef",
     "scheme": "pocketreef",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#061826",
@@ -14,7 +14,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.alexrafalski.pocketreef",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Pocket Reef uses Face ID so you can sign in to your account without typing your password.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.alexrafalski.pocketreef",
@@ -41,7 +45,15 @@
           "faceIDPermission": "Allow Pocket Reef to use Face ID to sign you in."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Pocket Reef uses your photo library so you can attach pictures of your tank and its animals to journal entries and observations.",
+          "cameraPermission": "Pocket Reef uses the camera so you can photograph your tank and its animals for your journal."
+        }
+      ]
     ]
   }
 }

@@ -8,6 +8,7 @@ import {
   isBiometricAvailable, getBiometricLabel, isBiometricEnabled, disableBiometricLogin, enableBiometricLogin,
 } from "../lib/biometricAuth";
 import { tapHaptic } from "../core";
+import { TEXT_LIMITS } from "../lib/textLimits";
 
 // Cloud save / account card — the reef version of Pocket Planter's
 // AccountCloudCard, wired to a real account: sync status from the last
@@ -186,7 +187,7 @@ export function AccountCloudCard({
       <View style={{
         flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, padding: 14, marginBottom: 16, borderWidth: 1,
         backgroundColor: syncError ? "rgba(255,211,114,0.10)" : "rgba(56,225,198,0.10)",
-        borderColor: syncError ? "rgba(255,211,114,0.35)" : "rgba(56,225,198,0.3)",
+        borderColor: syncError ? "rgba(255,211,114,0.35)" : "rgba(56,225,198,0.30)",
       }}>
         <Ionicons name={syncError ? "warning" : lastSyncedAt ? "cloud-done" : "phone-portrait-outline"} size={20} color={syncError ? theme.warn : theme.accent} />
         <View style={{ flex: 1 }}>
@@ -207,7 +208,7 @@ export function AccountCloudCard({
       </View>
 
       {configured && onSyncNow ? (
-        <Pressable onPress={() => { tapHaptic(); onSyncNow(); }} style={[styles.ghostBtn, { marginBottom: 14 }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); onSyncNow(); }} style={[styles.ghostBtn, { marginBottom: 14 }]} accessibilityRole="button" accessibilityLabel="Sync now">
           <Text style={styles.ghostBtnText}>Sync now</Text>
         </Pressable>
       ) : null}
@@ -228,7 +229,9 @@ export function AccountCloudCard({
           placeholderTextColor={theme.secondaryText}
           style={{ color: theme.text, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", paddingVertical: 2, marginTop: 4 }}
           accessibilityLabel="Reef keeper name"
-        />
+        
+            maxLength={TEXT_LIMITS.name}
+          />
       </View>
 
       {/* Premium status — reads straight off premiumUnlocked, so it flips to
@@ -238,13 +241,13 @@ export function AccountCloudCard({
         onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }}
         style={({ pressed }) => [
           styles.accountInfoBox,
-          { flexDirection: "row", alignItems: "center", gap: 12, borderColor: premiumUnlocked ? "rgba(56,225,198,0.35)" : "rgba(255,216,107,0.35)" },
+          { flexDirection: "row", alignItems: "center", gap: 12, borderColor: premiumUnlocked ? "rgba(56,225,198,0.30)" : "rgba(255,216,107,0.35)" },
           pressed && { opacity: 0.85 },
         ]}
         accessibilityRole="button"
         accessibilityLabel={premiumUnlocked ? "Premium active — open the Premium tab" : "Premium inactive — open the Premium tab"}
       >
-        <View style={{ width: 40, height: 40, borderRadius: 13, alignItems: "center", justifyContent: "center", backgroundColor: premiumUnlocked ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: premiumUnlocked ? "rgba(56,225,198,0.3)" : "rgba(255,216,107,0.3)" }}>
+        <View style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: premiumUnlocked ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: premiumUnlocked ? "rgba(56,225,198,0.30)" : "rgba(255,216,107,0.3)" }}>
           <Ionicons name="star" size={18} color={theme.accent} />
         </View>
         <View style={{ flex: 1 }}>
@@ -297,8 +300,10 @@ export function AccountCloudCard({
               placeholderTextColor={theme.secondaryText}
               style={[styles.authInput, { marginTop: 8 }]}
               accessibilityLabel="New email address"
-            />
-            <Pressable onPress={changeEmail} disabled={busy === "email"} style={[styles.ghostBtn, { marginTop: 10 }]} accessibilityRole="button">
+            
+            maxLength={TEXT_LIMITS.email}
+          />
+            <Pressable onPress={changeEmail} disabled={busy === "email"} style={[styles.ghostBtn, { marginTop: 10 }]} accessibilityRole="button" accessibilityLabel="Change the email address on this account">
               {busy === "email" ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>Send confirmation link</Text>}
             </Pressable>
           </View>
@@ -317,7 +322,9 @@ export function AccountCloudCard({
                 placeholderTextColor={theme.secondaryText}
                 style={[styles.authInput, { paddingRight: 64 }]}
                 accessibilityLabel="New password"
-              />
+              
+            maxLength={TEXT_LIMITS.password}
+          />
               <Pressable
                 onPress={() => setShowNewPassword((v) => !v)}
                 hitSlop={10}
@@ -339,7 +346,9 @@ export function AccountCloudCard({
               placeholderTextColor={theme.secondaryText}
               style={[styles.authInput, { marginTop: 8 }]}
               accessibilityLabel="Confirm new password"
-            />
+            
+            maxLength={TEXT_LIMITS.password}
+          />
             <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
               At least 8 characters.{bioEnabled ? ` ${bioLabel} updates automatically.` : ""}
             </Text>
@@ -348,13 +357,19 @@ export function AccountCloudCard({
               disabled={busy === "changePassword" || !newPassword || !confirmPassword}
               style={[styles.ghostBtn, { marginTop: 10 }, (!newPassword || !confirmPassword) && { opacity: 0.5 }]}
               accessibilityRole="button"
+              // Named explicitly: while busy the Text is replaced by a spinner,
+              // and a button whose only child is an ActivityIndicator announces
+              // as an anonymous "button" — worst at exactly the moment the user
+              // wants confirmation that their tap registered.
+              accessibilityLabel={busy === "changePassword" ? "Updating password" : "Update password"}
+              accessibilityState={{ busy: busy === "changePassword" }}
             >
               {busy === "changePassword" ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>Update password</Text>}
             </Pressable>
           </View>
 
           {/* Fallback for a password you can't remember — goes through email. */}
-          <Pressable onPress={sendPasswordReset} disabled={busy === "password"} style={styles.ghostBtn} accessibilityRole="button">
+          <Pressable onPress={sendPasswordReset} disabled={busy === "password"} style={styles.ghostBtn} accessibilityRole="button" accessibilityLabel="Send a password reset email">
             {busy === "password" ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>Email me a reset link instead</Text>}
           </Pressable>
         </>

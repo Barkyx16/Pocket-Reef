@@ -25,7 +25,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
 
       <View style={{ gap: 10, marginTop: 12 }}>
         {tanks.map((tk) => {
-          const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities });
+          const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities, waterType: tk.water });
           const on = tk.id === activeTankId;
           const expanded = on && expandedId === tk.id;
           const n = tk.stock ? tk.stock.length : 0;
@@ -37,7 +37,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                 accessibilityRole="button"
                 accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score == null ? "health not yet measurable" : `${h.score} percent healthy`}, ${expanded ? "collapse" : "open"}`}
               >
-                <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.12)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
                   <Text style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>

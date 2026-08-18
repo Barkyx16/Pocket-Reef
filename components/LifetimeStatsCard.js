@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { fmtMoney } from "../lib/format";
 
 // Career totals across every tank — the long-term progress view that makes a
 // keeper's history feel tangible. Reads a getLifetimeStats() roll-up.
@@ -25,7 +26,7 @@ export function LifetimeStatsCard({ stats }) {
       </View>
       {stats.spend > 0 ? (
         <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
-          💰 ~${stats.spend} tracked across all tanks so far.
+          💰 ~${fmtMoney(stats.spend)} tracked across all tanks so far.
         </Text>
       ) : null}
     </View>

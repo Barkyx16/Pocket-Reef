@@ -37,11 +37,25 @@ optional; see [Cloud save](#cloud-save-optional).
 | **Disease guides** | 10, each with signs, prevention, and treatment |
 | **Emergency scenarios** | 6 guided troubleshooting flows |
 | **Curated tank ideas** | 22 one-tap stocking plans |
-| **Achievements** | 96 |
+| **Achievements** | 107 |
 | **Water parameters** | 6 freshwater · 10 saltwater (full reef chemistry) |
 | **Daily tips** | 15 |
-| **Languages** | English, Spanish |
-| **App surface** | 11 screens · 61 components |
+| **Languages** | English. A Spanish locale exists but currently covers only the tab bar and screen headers — see [Localisation](#localisation). |
+| **App surface** | 11 screens · 100 components |
+
+### Localisation
+
+The language setting is real but its coverage is not. `lib/i18n.js` has a working
+dictionary, fallback chain and parameter substitution, and `lib/locales/` holds
+English and Spanish — but between them they cover the tab bar and six screen
+headers. **Every other string in the app is hardcoded English**, including all
+the care advice, every diagnosis and the entire species catalog.
+
+Calling that "Spanish support" in a feature table overstates it, so this table
+no longer does. Translating properly is a project of its own — roughly two
+thousand strings across ~100 components, plus 316 species summaries — and a
+partial pass would leave a keeper with a half-translated app, which is worse
+than an honest English one.
 
 ### Species data
 

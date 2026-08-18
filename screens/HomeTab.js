@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -11,7 +11,14 @@ import { SpeciesCard } from "../components/SpeciesCard";
 import { TodayCard } from "../components/TodayCard";
 import { TankOverviewCard } from "../components/TankOverviewCard";
 import { FishOfDayCard } from "../components/FishOfDayCard";
+import { FirstStepsCard } from "../components/FirstStepsCard";
+import { WeeklyReviewCard } from "../components/WeeklyReviewCard";
 import { t } from "../lib/i18n";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
+import { withExtras } from "../lib/todayExtras";
+import { cadenceFor } from "../lib/notifications";
+import { formatVolume } from "../lib/units";
+import { AdaptiveColumns } from "../components/AdaptiveColumns";
 
 const CARE_TASKS = [
   { id: "feed", icon: "🍤", text: "Feed the tank (small pinch)" },
@@ -20,7 +27,7 @@ const CARE_TASKS = [
   { id: "observe", icon: "👀", text: "Watch for stress, spots, or nipping" },
 ];
 
-export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays = [], xp = 0, waterTests = [], journal = [], feedings = [], careDoneToday = [], onToggleCare, maintenance = {}, quarantine = [], tankWater, tanks = [], activeTankId, onSwitchTank, onEditTank, onAddTank, onDeleteTank, onDuplicateTank, onExport, onImport, premiumUnlocked, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, onGoToTab, wishlist = [], onToggleWishlist, quantities = {}, profileName = "", fishOfDaySeen = false, onSeeFishOfDay, challengesDone = [], onCompleteChallenge, treatments = [] }) {
+export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays = [], xp = 0, waterTests = [], journal = [], feedings = [], careDoneToday = [], onToggleCare, maintenance = {}, quarantine = [], tankWater, tanks = [], activeTankId, onSwitchTank, onEditTank, onAddTank, onDeleteTank, onDuplicateTank, onExport, onImport, premiumUnlocked, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, onGoToTab, wishlist = [], onToggleWishlist, quantities = {}, profileName = "", fishOfDaySeen = false, onSeeFishOfDay, challengesDone = [], onCompleteChallenge, treatments = [], activeTankHasSize = true, upkeep = [], activeTank = {} }) {
   const hour = new Date().getHours();
   const greeting = `${hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"}${profileName ? `, ${profileName}` : ""}`;
   const today = getTodayKey();
@@ -30,7 +37,24 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
   const weekly = getWeeklyActivity({ waterTests, journal, activeDays });
   const warnings = getTankWarnings(tankGallons, tank, quantities);
   const doneCount = CARE_TASKS.filter((t) => careDoneToday.includes(t.id)).length;
-  const todayActions = getTodayActions({ tank, waterTests, maintenance, quarantine, careDoneCount: doneCount, careTotal: CARE_TASKS.length, reminderPrefs, quantities , waterType: tankWater, treatments });
+  // This tank's own cadence where it has one. Without this the hub would nag on
+  // the account default while the scheduler stayed quiet on the tank's own
+  // setting — two parts of the app disagreeing about the same tank.
+  const effectivePrefs = {
+    waterTest: cadenceFor(activeTank, reminderPrefs, "waterTest"),
+    waterChange: cadenceFor(activeTank, reminderPrefs, "waterChange"),
+    feeding: cadenceFor(activeTank, reminderPrefs, "feeding"),
+  };
+
+  // The base list, plus everything the analysis engines know. Those were built
+  // one at a time and none of them reached this screen — an app that can work
+  // out a bucket of salt runs out on Thursday and only says so three taps deep
+  // is an app with features rather than one that helps.
+  const todayActions = withExtras(
+    getTodayActions({ tank, waterTests, maintenance, quarantine, careDoneCount: doneCount, careTotal: CARE_TASKS.length, reminderPrefs: effectivePrefs, quantities, waterType: tankWater, treatments, upkeep }),
+    activeTank,
+    { waterType: tankWater }
+  );
 
   // Challenges auto-complete based on today's activity, then disappear.
   const doneMap = {
@@ -52,13 +76,26 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
   // exactly the "page jumps around" complaint. Nothing here is stateful: the
   // challenge set is seeded by date and challengesDone is stored against
   // today's key, so tomorrow brings a fresh set and a clean slate on its own.
+  // ── First run ──────────────────────────────────────────────────────────────
+  // Until the basics exist there is nothing for the habit-loop cards to report
+  // on, so they're replaced rather than stacked on top of. "Setting up" is a
+  // different screen from "keeping up", and showing both at once was why a new
+  // tank opened onto four cards of zeroes.
+  const firstSteps = [
+    { id: "size", icon: "resize-outline", title: "Tell us your tank size", hint: `Currently ${formatVolume(tankGallons)} — tap to change it. Everything from stocking to dosing is calculated from this.`, done: !!activeTankHasSize, to: "tank" },
+    { id: "stock", icon: "fish-outline", title: "Add your first fish", hint: "Add what's already in the tank, or browse the catalog for what fits.", done: tank.length > 0, to: "species" },
+    { id: "test", icon: "flask-outline", title: "Log your first water test", hint: "Even one reading starts the trends, the cycle tracker and the health score.", done: waterTests.length > 0, to: "log" },
+  ];
+  const settingUp = firstSteps.some((s) => !s.done);
+
   const allDaily = getDailyChallenges(today);
   const dailyChallenges = allDaily;
   const seasonal = getSeasonalChallenges(today);
   const seasonalChallenges = seasonal.items;
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <AdaptiveColumns lead={2}>
       <HeroBanner
         eyebrow={greeting}
         title={t("home.title")}
@@ -66,6 +103,11 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
         emoji="🐠"
         colors={["#0f3d55", "#0a2c44", "#071d2e"]}
       />
+
+      {/* FIRST RUN — replaces the habit-loop cards until the basics exist. */}
+      {settingUp ? (
+        <FirstStepsCard steps={firstSteps} onDo={(step) => onGoToTab && onGoToTab(step.to)} />
+      ) : null}
 
       {/* STREAK AT RISK */}
       {streak > 0 && !loggedToday ? (
@@ -76,8 +118,16 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
         </Pressable>
       ) : null}
 
+      {/* THE WEEK. Below the first-run steps and the streak nudge — both of
+          those are about today, and a retrospective is the wrong thing to read
+          before a tank is even set up. Hides itself when there's nothing to
+          look back on. */}
+      {!settingUp ? (
+        <WeeklyReviewCard tank={activeTank} waterType={tankWater} onGoToTab={onGoToTab} />
+      ) : null}
+
       {/* DAILY CHALLENGES — auto-complete & disappear; fresh set every day */}
-      {allDaily.length ? (
+      {allDaily.length && !settingUp ? (
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Daily Challenges</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Complete them today — a fresh set arrives tomorrow.</Text>
@@ -90,7 +140,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       ) : null}
 
       {/* SEASONAL CHALLENGES */}
-      {seasonalChallenges.length ? (
+      {seasonalChallenges.length && !settingUp ? (
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>{seasonal.label} Challenges</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Seasonal goals for your reef — refresh daily.</Text>
@@ -106,7 +156,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {!premiumUnlocked ? (
         <PremiumTeaserCard
           warnings={warnings}
-          healthScore={getTankHealthScore({ tank, tankGallons, waterTests, maintenance, quantities }).score}
+          healthScore={getTankHealthScore({ tank, tankGallons, waterTests, maintenance, quantities, waterType: tankWater }).score}
           tankName={(tanks.find((t) => t.id === activeTankId) || {}).name || "your tank"}
           lockedSpecies={Math.max(0, SPECIES.length - 7)}
           onOpenPremium={onOpenPremium}
@@ -132,11 +182,13 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
       {!fishOfDaySeen ? (
         <View style={styles.card}>
           <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Fish of the Day</Text>
-          <FishOfDayCard onOpenSpecies={(n) => { onSeeFishOfDay && onSeeFishOfDay(); openSpecies(n); }} />
+          <FishOfDayCard waterType={tankWater} onOpenSpecies={(n) => { onSeeFishOfDay && onSeeFishOfDay(); openSpecies(n); }} />
         </View>
       ) : null}
 
-      {/* THIS WEEK */}
+      {/* THIS WEEK — a table of zeroes is not a summary, so it waits until
+          there's something to report. */}
+      {!settingUp ? (
       <View style={styles.card}>
         <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>This Week</Text>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -148,6 +200,7 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
           {weekly.activeDays >= 5 ? "Great consistency this week — your reef thanks you! 🐠" : weekly.activeDays === 0 ? "Log a test or a note to start this week off." : "Keep the momentum going — small daily touches add up."}
         </Text>
       </View>
+      ) : null}
 
       {/* TODAY'S CARE — tap to check off; card disappears when all done, back tomorrow. */}
       {doneCount < CARE_TASKS.length ? (
@@ -198,9 +251,10 @@ export function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays
         </View>
       ) : null}
 
+    </AdaptiveColumns>
     </ScrollView>
   );
-}
+})
 
 function ChallengeRow({ c, onNavigate, onComplete, done }) {
   return (
@@ -211,7 +265,7 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
         style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 }}
         accessibilityRole={onNavigate ? "button" : undefined}
       >
-        <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.28)", alignItems: "center", justifyContent: "center" }}>
+        <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
           {iconForEmoji(c.icon) ? (
             <Ionicons name={iconForEmoji(c.icon)} size={16} color={done ? theme.secondaryText : theme.accent} />
           ) : (
@@ -242,8 +296,8 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
 function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
-      <Text style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
     </View>
   );
 }

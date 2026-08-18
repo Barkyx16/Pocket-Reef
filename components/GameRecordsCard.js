@@ -16,14 +16,21 @@ export function GameRecordsCard() {
   const [records, setRecords] = useState({});
 
   useEffect(() => {
+    // Guarded: these read from storage and set state when the promise resolves.
+    // Switching tab or closing the sheet before that lands writes to an
+    // unmounted component — React logs it and the write is thrown away, which
+    // is a warning today and a stale-state bug the moment anything downstream
+    // reads it.
+    let alive = true;
     const keys = GAMES.flatMap((g) => [`pr_game_${g.id}_streak`, `pr_game_${g.id}_blitz`]);
     AsyncStorage.multiGet(keys)
       .then((pairs) => {
         const r = {};
         pairs.forEach(([k, v]) => { r[k] = Number(v) || 0; });
-        setRecords(r);
+        if (alive) setRecords(r);
       })
       .catch(() => {});
+    return () => { alive = false; };
   }, []);
 
   return (

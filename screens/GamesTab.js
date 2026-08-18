@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, useResponsiveLayout } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SPECIES, getCompatibility, tapHaptic } from "../core";
 import { getSpeciesImage } from "../data/speciesImageMap";
 import { HeroBanner } from "../components/HeroBanner";
 import { SpeciesThumb } from "../components/SpeciesThumb";
 import { GradientButton } from "../components/GradientButton";
+import { formatVolume } from "../lib/units";
 
 // Reef Games — four quick, endlessly-randomizing games that earn XP for each
 // correct answer (the reef version of Pocket Planter's Garden Games).
@@ -32,12 +33,15 @@ const GAMES = [
   { id: "trivia", icon: "bulb-outline", name: "Reef Trivia", desc: "Test your fishkeeping smarts." },
 ];
 
-export function GamesTab({ onEarnXp }) {
+export const GamesTab = memo(function GamesTab({ onEarnXp }) {
+  // The shell is wider now that most screens reflow into two columns; this
+  // one doesn't, so it keeps a readable line length instead of stretching.
+  const layout = useResponsiveLayout();
   const [game, setGame] = useState(null);
   if (game) return <GameHost gameId={game} onBack={() => setGame(null)} onEarnXp={onEarnXp} />;
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow="Play & earn XP"
         title="Reef Games"
@@ -59,9 +63,12 @@ export function GamesTab({ onEarnXp }) {
       </View>
     </ScrollView>
   );
-}
+})
 
 function GameHost({ gameId, onBack, onEarnXp }) {
+  // Same clamp as the list above: a game board stretched across a tablet is
+  // harder to play, not easier.
+  const layout = useResponsiveLayout();
   const meta = GAMES.find((g) => g.id === gameId);
   const makeRound = gameId === "guess" ? makeGuessRound : gameId === "match" ? makeMatchRound : gameId === "bigger" ? makeBiggerRound : makeTriviaRound;
   const [mode, setMode] = useState("practice"); // practice | blitz
@@ -70,9 +77,17 @@ function GameHost({ gameId, onBack, onEarnXp }) {
   const [nonce, setNonce] = useState(0);
 
   useEffect(() => {
+    // Guarded: these read from storage and set state when the promise resolves.
+    // Switching tab or closing the sheet before that lands writes to an
+    // unmounted component — React logs it and the write is thrown away, which
+    // is a warning today and a stale-state bug the moment anything downstream
+    // reads it.
+    let alive = true;
     AsyncStorage.multiGet([`pr_game_${gameId}_streak`, `pr_game_${gameId}_blitz`]).then((pairs) => {
+      if (!alive) return;
       pairs.forEach(([k, v]) => { if (v) { if (k.endsWith("streak")) setBestStreak(Number(v) || 0); else setBestBlitz(Number(v) || 0); } });
     }).catch(() => {});
+    return () => { alive = false; };
   }, [gameId]);
 
   const saveStreak = (s) => { if (s > bestStreak) { setBestStreak(s); AsyncStorage.setItem(`pr_game_${gameId}_streak`, String(s)).catch(() => {}); } };
@@ -80,7 +95,7 @@ function GameHost({ gameId, onBack, onEarnXp }) {
   const switchMode = (m) => { tapHaptic("light"); setMode(m); setNonce((n) => n + 1); };
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
         <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Games</Text>
       </Pressable>
@@ -186,7 +201,7 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
 function OptionBtn({ o, answered, selectedKey, onPress }) {
   let bg = "rgba(255,255,255,0.05)", bc = theme.border, color = theme.text, mark = null;
   if (answered) {
-    if (o.correct) { bg = "rgba(56,225,198,0.16)"; bc = theme.accent; color = "#fff"; mark = "check"; }
+    if (o.correct) { bg = "rgba(56,225,198,0.14)"; bc = theme.accent; color = "#fff"; mark = "check"; }
     else if (o.key === selectedKey) { bg = "rgba(255,123,123,0.16)"; bc = theme.danger; color = theme.danger; mark = "close"; }
     else { color = theme.secondaryText; }
   }
@@ -245,9 +260,9 @@ function makeMatchRound() {
   const b = rand(samePool.length ? samePool : SPECIES.filter((s) => s.name !== a.name));
   const c = getCompatibility(a.name, b.name);
   const options = [
-    { key: "excellent", label: "Great tankmates", dot: "#38e1c6" },
-    { key: "caution", label: "Keep an eye on them", dot: "#ffd372" },
-    { key: "avoid", label: "Avoid — don't mix", dot: "#ff7b7b" },
+    { key: "excellent", label: "Great tankmates", dot: theme.accent },
+    { key: "caution", label: "Keep an eye on them", dot: theme.warn },
+    { key: "avoid", label: "Avoid — don't mix", dot: theme.danger },
   ].map((o) => ({ ...o, correct: o.key === c.level }));
   return { prompt: <TwoSpecies a={a} b={b} question="Will these two get along?" />, options, explain: c.reason };
 }
@@ -257,7 +272,7 @@ function makeBiggerRound() {
   while ((b.name === a.name || b.minGallons === a.minGallons) && t < 40) { b = rand(SPECIES); t++; }
   const bigger = a.minGallons >= b.minGallons ? a : b;
   const options = shuffle([a, b]).map((s) => ({ key: s.name, label: `${s.emoji} ${s.name}`, correct: s.name === bigger.name }));
-  return { prompt: <TwoSpecies a={a} b={b} question="Which one needs the bigger tank?" />, options, explain: `${a.name}: ${a.minGallons} gal min · ${b.name}: ${b.minGallons} gal min` };
+  return { prompt: <TwoSpecies a={a} b={b} question="Which one needs the bigger tank?" />, options, explain: `${a.name}: ${formatVolume(a.minGallons)} min · ${b.name}: ${formatVolume(b.minGallons)} min` };
 }
 
 function makeTriviaRound() {

@@ -3,19 +3,31 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles, theme } from "../styles";
-import { tapHaptic, getRecommended, SPECIES } from "../core";
+import { getRecommended, SPECIES } from "../core";
 import { GradientButton } from "./GradientButton";
 import { Pill } from "./Pill";
+import { formatVolume } from "../lib/units";
 
 // First-run onboarding — the reef version of Pocket Planter's welcome flow.
 // Feature slides → tank setup → a Premium showcase finale. Shown once (App
 // persists a seen flag).
+// What the app actually is, in the order it earns trust.
+//
+// These slides described a catalog with a water-test form attached, which is
+// what the app was when they were written. It now diagnoses algae from your own
+// readings, tells you when a water change cannot reach your target, and grades
+// how steady a tank is rather than only how correct — and none of that was
+// mentioned to somebody deciding in the first thirty seconds whether to stay.
+//
+// Deliberately phrased as questions a keeper has rather than as features I
+// built: "why won't my nitrate come down" is something they have wondered
+// about; "correlation engine" is not.
 const SLIDES = [
   {
     emoji: "🐠", eyebrow: "Welcome to Pocket Reef", title: "Build a reef\nthat thrives",
     text: "Plan a tank where every fish, invert, and coral gets along — then keep it healthy.",
     features: [
-      { icon: "🔎", title: "316 species", text: "Fish, inverts & corals with full care data." },
+      { icon: "🔎", title: "316 species", text: "Fish, inverts & corals, every one illustrated, with full care data." },
       { icon: "🤝", title: "Smart compatibility", text: "Know what can live together before you buy." },
     ],
   },
@@ -24,17 +36,26 @@ const SLIDES = [
     text: "Take the guesswork out of a balanced, beautiful tank.",
     features: [
       { icon: "📊", title: "Bioload & stocking", text: "See how full your tank is at a glance." },
+      { icon: "🔮", title: "Try it before you buy it", text: "Simulate your whole wishlist against your actual tank." },
       { icon: "💡", title: "Ready-made setups", text: "One-tap, conflict-free tank builds." },
-      { icon: "🌡️", title: "Ideal water window", text: "The temp & pH that keeps everyone happy." },
     ],
   },
   {
     emoji: "🧪", eyebrow: "Build the habit", title: "Test, log,\nlevel up",
     text: "Small daily touches keep your reef thriving — and it's fun.",
     features: [
-      { icon: "🧪", title: "Water testing", text: "Graded vs the safe range, fresh & reef." },
+      { icon: "🧪", title: "Water testing", text: "Graded against the safe range, fresh & reef." },
       { icon: "📓", title: "Journal & photos", text: "A visual history of your tank." },
       { icon: "🔥", title: "Streaks & XP", text: "Grow from Fry to Reef Master." },
+    ],
+  },
+  {
+    emoji: "🔍", eyebrow: "Answers, not just numbers", title: "Why your tank\ndoes what it does",
+    text: "Once you've logged a few tests, Pocket Reef starts explaining them.",
+    features: [
+      { icon: "🚰", title: "Why a reading won't drop", text: "Test your tap once and it knows what a water change can actually reach." },
+      { icon: "⚖️", title: "Steady beats ideal", text: "Grades how fast things move, not just where they sit." },
+      { icon: "🌿", title: "Algae, diagnosed", text: "Worked back through your own nutrients and light hours." },
     ],
   },
 ];
@@ -81,10 +102,10 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
   const hero = isPremium
     ? { emoji: "👑", eyebrow: "One more thing", title: "Go Premium", text: "Unlock the full reef toolkit — free to try anytime.", colors: ["#3a2f12", "#20320f", "#08202f"], glow: "rgba(255,211,114,0.20)" }
     : isResult
-      ? { emoji: "✨", eyebrow: "Your tank, analyzed", title: `${fitCount} species fit`, text: `Out of ${SPECIES.length} in the catalog, here's what suits a ${gallons} gallon ${water === "salt" ? "saltwater" : "freshwater"} tank.`, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" }
+      ? { emoji: "✨", eyebrow: "Your tank, analyzed", title: `${fitCount} species fit`, text: `Out of ${SPECIES.length} in the catalog, here's what suits a ${formatVolume(gallons)} ${water === "salt" ? "saltwater" : "freshwater"} tank.`, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.18)" }
     : isSize
-      ? { emoji: "📏", eyebrow: "Last bit of setup", title: "Your tank", text: "Pick your water type and size — you can change it anytime.", colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" }
-      : { emoji: current.emoji, eyebrow: current.eyebrow, title: current.title, text: current.text, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.20)" };
+      ? { emoji: "📏", eyebrow: "Last bit of setup", title: "Your tank", text: "Pick your water type and size — you can change it anytime.", colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.18)" }
+      : { emoji: current.emoji, eyebrow: current.eyebrow, title: current.title, text: current.text, colors: ["#0e3a52", "#0a2c42", "#082031"], glow: "rgba(56,225,198,0.18)" };
 
   return (
     <View style={{ flex: 1 }}>
@@ -136,7 +157,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
                 {TANK_PRESETS.map((g) => (
-                  <Pill key={g} label={`${g} gal`} active={gallons === g} onPress={() => setGallons(g)} />
+                  <Pill key={g} label={formatVolume(g)} active={gallons === g} onPress={() => setGallons(g)} />
                 ))}
               </View>
             </View>
@@ -150,7 +171,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
                       <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
-                        {sp.careLevel} · {sp.temperament} · {sp.minGallons}gal min
+                        {sp.careLevel} · {sp.temperament} · {formatVolume(sp.minGallons)} min
                       </Text>
                     </View>
                   </View>

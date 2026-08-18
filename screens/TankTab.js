@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Alert, Pressable, ScrollView, Share, Text, View } from "react-native";
 import { styles, theme } from "../styles";
-import { getSpecies, getTankStatus, getTankWarnings, getTankMaturity, getTankHealthScore, getBioload, PARAMS, tapHaptic } from "../core";
+import { getSpecies, getTankStatus, getTankWarnings, getTankMaturity, getTankHealthScore, getBioload, getConflictFixes, tapHaptic } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { EmptyState } from "../components/EmptyState";
 import { SpeciesCard } from "../components/SpeciesCard";
@@ -11,19 +12,34 @@ import { TankExtrasCard } from "../components/TankExtrasCard";
 import { TankHubCard } from "../components/TankHubCard";
 import { TankHealthCard } from "../components/TankHealthCard";
 import { StockingPlannerCard } from "../components/StockingPlannerCard";
+import { TankRecordCard } from "../components/TankRecordCard";
+import { EquipmentCard } from "../components/EquipmentCard";
+import { InventoryCard } from "../components/InventoryCard";
+import { WhatIfCard } from "../components/WhatIfCard";
+import { VacationCard } from "../components/VacationCard";
+import { ExistingTankCard } from "../components/ExistingTankCard";
+import { forecastInventory } from "../lib/inventory";
+import { TargetsCard } from "../components/TargetsCard";
 import { ProgressBar } from "../components/ProgressBar";
 import { Pill } from "../components/Pill";
 import { t } from "../lib/i18n";
 import { formatVolume } from "../lib/units";
+import { activeParams } from "../lib/targets";
+import { AdaptiveColumns } from "../components/AdaptiveColumns";
 
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
-export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan }) {
+export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, onSetQuarantineCheck, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan, stockMeta = {}, losses = [], onOpenRecord, onDeleteLoss, onShareReport, equipment = [], onAddEquipment, onRemoveEquipment, intent, targets = {}, onSetTarget, onSetAllTargets, activeTank = {}, onAddInventory, onRemoveInventory, onSetInventoryStock, wishlist = [], onSetupExisting }) {
+  // Same contract as the Log tab: a shortcut names the card it wants open.
+  const openIf = (key) => (intent && intent.card === key ? intent.nonce : null);
+  // Just the count, for the collapsed header — the card itself does the work.
+  const inventoryNeeds = forecastInventory(activeTank.inventory || [], activeTank, {}).needs.length;
   const status = getTankStatus(tankGallons, tank, quantities);
   const warnings = getTankWarnings(tankGallons, tank, quantities);
+  const conflictFixes = getConflictFixes(tankGallons, tank, 3);
   const maturity = getTankMaturity(tankCreatedAt);
   const bio = getBioload(tankGallons, tank, quantities);
-  const health = getTankHealthScore({ tank, tankGallons, waterTests, maintenance, quantities });
+  const health = getTankHealthScore({ tank, tankGallons, waterTests, maintenance, quantities, waterType: tankWater });
   const species = tank.map(getSpecies).filter(Boolean);
   const qty = (name) => quantities[name] || 1;
   const waterType = tank.length ? (getSpecies(tank[0])?.water === "salt" ? "🌊 Salt" : "💧 Fresh") : (tankWater === "salt" ? "🌊 Salt" : "💧 Fresh");
@@ -36,7 +52,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
     const latest = waterTests[0];
     let waterLine = "";
     if (latest && latest.values) {
-      const parts = (PARAMS[latest.water] || PARAMS.fresh)
+      const parts = (activeParams(latest.water))
         .filter((p) => latest.values[p.key] != null)
         .map((p) => `${p.label} ${latest.values[p.key]}${p.unit ? p.unit : ""}`);
       if (parts.length) waterLine = `\nLatest water: ${parts.join(" · ")}`;
@@ -70,6 +86,38 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
           )) : (
             <Text style={[styles.cardText, { marginTop: 6 }]}>Everything in your tank gets along and fits the space. Nice work! 🐠</Text>
           )}
+
+          {/* What to actually DO about a conflict. getConflictFixes has worked
+              out swaps — which fish to rehome and what fills the same role —
+              since it was written, and no screen has ever rendered it. Naming
+              a problem and withholding the answer is the least useful thing an
+              app can do. */}
+          {conflictFixes.length ? (
+            <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+              <Text style={[styles.cardEyebrow, { marginBottom: 6 }]}>Ways to fix it</Text>
+              {conflictFixes.map((f, i) => (
+                <View key={i} style={{ backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11, marginTop: 8 }}>
+                  <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                    Rehome {f.replace}, keep {f.keeping}
+                  </Text>
+                  {f.alternatives.length ? (
+                    <>
+                      <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                        Similar and compatible:
+                      </Text>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+                        {f.alternatives.map((alt) => (
+                          <Pressable key={alt.name} onPress={() => openSpecies(alt.name)} style={styles.pill} accessibilityRole="button" accessibilityLabel={`${alt.name}, a compatible alternative to ${f.replace}`}>
+                            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{alt.emoji} {alt.name}</Text>
+                          </Pressable>
+                        ))}
+                      </View>
+                    </>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          ) : null}
         </View>
       ) : null}
 
@@ -105,7 +153,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       <Text style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Tank size</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {TANK_PRESETS.map((g) => (
-          <Pill key={g} label={`${g} gal`} active={tankGallons === g} onPress={() => setTankGallons && setTankGallons(g)} />
+          <Pill key={g} label={formatVolume(g)} active={tankGallons === g} onPress={() => setTankGallons && setTankGallons(g)} />
         ))}
       </View>
 
@@ -127,7 +175,8 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={t("tank.eyebrow", { gallons: tankGallons, count: tank.length })}
         title={t("tank.title")}
@@ -155,7 +204,7 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
         quarantine={quarantine}
         onAddQuarantine={onAddQuarantine}
         onRemoveQuarantine={onRemoveQuarantine}
-        onGraduateQuarantine={onGraduateQuarantine}
+        onGraduateQuarantine={onGraduateQuarantine} onSetQuarantineCheck={onSetQuarantineCheck}
       />
 
       {/* EXPLORE & MORE — recommended, matrix, feeding, share */}
@@ -170,6 +219,92 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       />
 
       {/* TANK SETUPS */}
+      {/* The tank's own record. Open by default once there's a history worth
+          reading — a keeper who has lost something wants to see it, not go
+          looking for it. */}
+      <CollapsibleCard
+        storageKey="record"
+        forceOpen={openIf("record")}
+        title="📋 Tank Record"
+        defaultOpen={losses.length > 0}
+        eyebrow={losses.length ? `${tank.length} living · ${losses.length} recorded` : "How long everything has lived here"}
+      >
+        <TankRecordCard
+          stock={tank}
+          stockMeta={stockMeta}
+          quantities={quantities}
+          losses={losses}
+          onOpenRecord={onOpenRecord}
+          onDeleteLoss={onDeleteLoss}
+          onShareReport={onShareReport}
+        />
+      </CollapsibleCard>
+
+      {/* What "good" means for THIS tank. It describes the tank rather than
+          logging it, which is why it belongs here and not on the Log tab —
+          it's set once and revisited rarely, but every reading is graded by it. */}
+      <CollapsibleCard
+        storageKey="targets"
+        forceOpen={openIf("targets")}
+        title="🎯 My Targets"
+        eyebrow={Object.keys(targets).length ? `${Object.keys(targets).length} set for this tank` : "Grade readings against your ranges"}
+      >
+        <TargetsCard waterType={tankWater} targets={targets} onSetTarget={onSetTarget} onSetAll={onSetAllTargets} />
+      </CollapsibleCard>
+
+      {/* What's physically on the tank. Sits with the tank's own record — both
+          describe the system rather than the day-to-day logging. */}
+      <CollapsibleCard
+        storageKey="equipment"
+        forceOpen={openIf("equipment")}
+        title="🧰 Equipment"
+        eyebrow={equipment.length ? `${equipment.length} recorded` : "Heater, pump, skimmer, light"}
+      >
+        <EquipmentCard equipment={equipment} onAdd={onAddEquipment} onRemove={onRemoveEquipment} />
+      </CollapsibleCard>
+
+      {/* The shelf that keeps the tank running, next to the gear that runs it.
+          Both answer "what do I own", on different timescales. */}
+      <CollapsibleCard
+        storageKey="inventory"
+        forceOpen={openIf("inventory")}
+        title="🧂 Supplies"
+        eyebrow={inventoryNeeds ? `${inventoryNeeds} to restock` : "Salt, RODI, media, test kits"}
+      >
+        <InventoryCard
+          tank={activeTank}
+          waterType={tankWater}
+          onAdd={onAddInventory}
+          onRemove={onRemoveInventory}
+          onSetStock={onSetInventoryStock}
+        />
+      </CollapsibleCard>
+
+      {/* The wishlist, priced up against this exact tank. Sits with the
+          stocking tools, not the catalog — it's a decision about this tank
+          rather than a way to browse. */}
+      <CollapsibleCard
+        storageKey="whatif"
+        title="🔮 What If I Bought These?"
+        eyebrow={wishlist.length ? `${wishlist.length} on your wishlist` : "Star species to simulate them"}
+      >
+        <WhatIfCard tank={activeTank} wishlist={wishlist} onOpenSpecies={openSpecies} />
+      </CollapsibleCard>
+
+      {/* Only for a tank that hasn't been described yet — once it's dated and
+          has readings, this is noise and disappears. */}
+      {(!waterTests.length || !tankCreatedAt) ? (
+        <CollapsibleCard storageKey="existing" title="🕰️ Already Running?" eyebrow="Set up a tank you already have" defaultOpen={true}>
+          <ExistingTankCard tank={activeTank} waterType={tankWater} onApply={onSetupExisting} onGoToTab={onGoToTab} />
+        </CollapsibleCard>
+      ) : null}
+
+      {/* Handing the tank over. Sits with the tank's own description — it's
+          about this system, not about today's logging. */}
+      <CollapsibleCard storageKey="vacation" title="✈️ Going Away" eyebrow="Care notes for whoever's watching it">
+        <VacationCard tank={activeTank} waterType={tankWater} />
+      </CollapsibleCard>
+
       <CollapsibleCard storageKey="planner" title="🧭 Plan My Tank" eyebrow="A conflict-free plan for this exact tank">
         <StockingPlannerCard
           tankGallons={tankGallons}
@@ -182,9 +317,10 @@ export function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCrea
       <CollapsibleCard storageKey="tankideas" title="💡 Tank Setups" defaultOpen={species.length === 0} eyebrow="Proven, conflict-free builds">
         <TankIdeasCard onLoad={onLoadIdea} />
       </CollapsibleCard>
+    </AdaptiveColumns>
     </ScrollView>
   );
-}
+})
 
 // A divided stat cell for the compact "Your Tank" overview strip.
 function Stat({ label, value, color, divider }) {
@@ -199,7 +335,7 @@ function Stat({ label, value, color, divider }) {
 // Compact −/＋ quantity control. Highlights amber when the count is below the
 // species' schooling minimum.
 function Stepper({ value, onDec, onInc, low }) {
-  const btn = { width: 30, height: 30, borderRadius: 9, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.accent };
+  const btn = { width: 30, height: 30, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.accent };
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
       <Pressable onPress={() => { tapHaptic("light"); onDec(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Decrease count">

@@ -36,6 +36,37 @@ These match `AUTH_REDIRECT` / `RESET_REDIRECT` in `lib/supabaseConfig.js` and th
 `"scheme": "pocketreef"` in `app.json`. Without them, confirmation and password
 reset links won't reopen the app.
 
+## 5. Put the 6-digit code in the emails — required
+
+The app verifies new accounts and password resets by having the user type a
+6-digit code from the email (`screens/AuthScreen.js` → the `verify` mode).
+Supabase already generates that code for every auth email, but the **default
+templates don't print it** — they only render the link. Until you add it, the
+emails will arrive with no code in them and the code screen will have nothing to
+accept.
+
+Authentication → Emails → Templates. In both **Confirm signup** and **Reset
+password**, add `{{ .Token }}` to the body:
+
+```html
+<h2>Your Pocket Reef code</h2>
+<p style="font-size:32px;letter-spacing:6px;font-weight:800">{{ .Token }}</p>
+<p>Enter this code in the app. It expires in an hour.</p>
+<p>Or just tap here: <a href="{{ .ConfirmationURL }}">open Pocket Reef</a></p>
+```
+
+Keep the `{{ .ConfirmationURL }}` link. The app still handles it as a deep link
+(`App.js`), so a tapped link and a typed code both work — the link is the
+shortcut, the code is the fallback that survives reading email on a desktop.
+
+Two related settings on the same screen:
+
+- Authentication → Sign In / Providers → Email → **Confirm email** must be on.
+  With it off, `signUp` returns a live session, nothing is emailed, and the app
+  skips the code screen (handled, but then nobody's address is ever verified).
+- Authentication → Rate Limits controls how often a new code can be sent. The
+  app's resend button waits 45 seconds, matching the default.
+
 ## Optional: account deletion
 
 The Profile → Cloud Save card has a **Delete account** button that calls an Edge

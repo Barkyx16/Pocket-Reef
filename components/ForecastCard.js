@@ -17,7 +17,7 @@ import { paramStatusColor } from "../core";
 
 function urgencyColor(days) {
   if (days == null) return theme.secondaryText;
-  if (days <= 7) return "#ff7b7b";
+  if (days <= 7) return theme.danger;
   if (days <= 21) return theme.warn;
   return theme.accent;
 }
