@@ -10,6 +10,7 @@ import {
   warrantyStatus, byCategory, equipmentSummary,
 } from "../lib/equipment";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText, integerText } from "../lib/numericInput";
 
 // What's actually on the tank.
 //
@@ -157,7 +158,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
           <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
             <TextInput
               value={draft.price}
-              onChangeText={(v) => setDraft((d) => ({ ...d, price: v.replace(/[^0-9.]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, price: decimalText(v) }))}
               keyboardType="decimal-pad"
               placeholder="Price"
               placeholderTextColor={theme.secondaryText}
@@ -168,7 +169,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
           />
             <TextInput
               value={draft.warrantyMonths}
-              onChangeText={(v) => setDraft((d) => ({ ...d, warrantyMonths: v.replace(/[^0-9]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, warrantyMonths: integerText(v) }))}
               keyboardType="number-pad"
               placeholder="Warranty (months)"
               placeholderTextColor={theme.secondaryText}
@@ -183,7 +184,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
               typical figure for the category and says when it has. */}
           <TextInput
             value={draft.watts}
-            onChangeText={(v) => setDraft((d) => ({ ...d, watts: v.replace(/[^0-9.]/g, "") }))}
+            onChangeText={(v) => setDraft((d) => ({ ...d, watts: decimalText(v) }))}
             keyboardType="decimal-pad"
             placeholder="Watts (optional — powers the running-cost estimate)"
             placeholderTextColor={theme.secondaryText}

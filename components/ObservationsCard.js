@@ -9,6 +9,7 @@ import { persistPhoto } from "../lib/photoStore";
 import { KINDS, kindOf, newObservation, observationsFor, growth, photoTimeline } from "../lib/observations";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // What this animal has been doing, and whether it has actually grown.
 //
@@ -112,7 +113,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
             <TextInput
               value={size}
-              onChangeText={(t) => setSize(t.replace(/[^0-9.]/g, ""))}
+              onChangeText={(t) => setSize(decimalText(t))}
               keyboardType="decimal-pad"
               placeholder="Size"
               placeholderTextColor={theme.secondaryText}

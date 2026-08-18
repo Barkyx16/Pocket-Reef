@@ -11,6 +11,7 @@ import {
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { fmt } from "../lib/format";
+import { decimalText } from "../lib/numericInput";
 
 // What you dosed, and what your tank actually uses.
 //
@@ -94,7 +95,7 @@ export function DoseLogCard({
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
               <TextInput
                 value={amounts[key] ?? ""}
-                onChangeText={(v) => setAmounts((a) => ({ ...a, [key]: v.replace(/[^0-9.]/g, "") }))}
+                onChangeText={(v) => setAmounts((a) => ({ ...a, [key]: decimalText(v) }))}
                 keyboardType="decimal-pad"
                 placeholder={daily ? String(daily) : "ml"}
                 placeholderTextColor={theme.secondaryText}
@@ -134,7 +135,7 @@ export function DoseLogCard({
                 </Text>
                 <TextInput
                   defaultValue={strength ? String(strength) : ""}
-                  onChangeText={(v) => onSetStrength(key, v.replace(/[^0-9.]/g, ""))}
+                  onChangeText={(v) => onSetStrength(key, decimalText(v))}
                   keyboardType="decimal-pad"
                   placeholder={`e.g. 0.05 ${target.unit}`}
                   placeholderTextColor={theme.secondaryText}

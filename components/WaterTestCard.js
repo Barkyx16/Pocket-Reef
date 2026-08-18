@@ -9,6 +9,7 @@ import { checkReadings } from "../lib/anomaly";
 import { tempToDisplay, tempFromInput } from "../lib/units";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { dayKeyProblem } from "../lib/day";
+import { decimalText } from "../lib/numericInput";
 
 // The reading a test kit gives you most of the time. Ammonia and nitrite in a
 // cycled tank are zero on the overwhelming majority of test days, and typing
@@ -342,7 +343,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
               <TextInput
                 ref={(el) => { inputs.current[p.key] = el; }}
                 value={vals[p.key] ?? ""}
-                onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: t.replace(/[^0-9.]/g, "") }))}
+                onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: decimalText(t) }))}
                 keyboardType="decimal-pad"
                 // decimal-pad has no return key on iOS, so "next" is wired to
                 // submitEditing for the platforms that do show one, and the

@@ -10,11 +10,12 @@ import { livestockSpend } from "../lib/livestock";
 import { Pill } from "./Pill";
 import { dayKey, isValidDayKey } from "../lib/day";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
+import { fmtMoney } from "../lib/format";
 
 const CATS = ["Equipment", "Livestock", "Food", "Other"];
 const CAT_EMOJI = { Equipment: "🔧", Livestock: "🐠", Food: "🍤", Other: "📦" };
 
-const money = (n) => `$${Number(n || 0).toFixed(2)}`;
 
 // The day an expense belongs to. Entries written before expenses could be dated
 // fall back to their id, which has always been Date.now() — so an old ledger
@@ -52,7 +53,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
   const sources = [
     { id: "typed", emoji: "🧾", label: "Expenses", value: typed, sub: `${costs.length} logged` },
     { id: "gear", emoji: "🔧", label: "Gear", value: gear.spend, sub: gear.priced < gear.count ? `${gear.priced} of ${gear.count} priced` : `${gear.count} items` },
-    { id: "stock", emoji: "🐠", label: "Livestock", value: stock.total, sub: stock.lost ? `${money(stock.lost)} of it lost` : "priced records" },
+    { id: "stock", emoji: "🐠", label: "Livestock", value: stock.total, sub: stock.lost ? `${fmtMoney(stock.lost)} of it lost` : "priced records" },
   ].filter((s) => s.value > 0);
 
   // Both ledgers holding money is the one case where the total can overstate:
@@ -87,8 +88,8 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
       <View style={{ borderRadius: 16, overflow: "hidden", marginBottom: 14, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: theme.accent, shadowOpacity: 0.18, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
           <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Total invested</Text>
-          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{money(total)}</Text>
-          {monthTotal > 0 ? <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>{money(monthTotal)} this month</Text> : null}
+          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(total)}</Text>
+          {monthTotal > 0 ? <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>{fmtMoney(monthTotal)} this month</Text> : null}
         </LinearGradient>
       </View>
 
@@ -102,7 +103,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
               <Text style={{ fontSize: 14 }}>{s.emoji}</Text>
               <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.label}</Text>
               <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.sub}</Text>
-              <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{money(s.value)}</Text>
+              <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(s.value)}</Text>
             </View>
           ))}
           {mayDoubleCount ? (
@@ -130,7 +131,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
           style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
             maxLength={TEXT_LIMITS.name}
           />
-        <TextInput value={amount} onChangeText={(t) => setAmount(t.replace(/[^0-9.]/g, ""))} keyboardType="decimal-pad" placeholder="$0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Amount"
+        <TextInput value={amount} onChangeText={(t) => setAmount(decimalText(t))} keyboardType="decimal-pad" placeholder="$0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Amount"
           style={{ width: 84, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
             maxLength={TEXT_LIMITS.number}
           />
@@ -191,7 +192,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
                   <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{costDate(c)}</Text>
                 ) : null}
               </View>
-              <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{money(c.amount)}</Text>
+              <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(c.amount)}</Text>
               <Pressable onPress={() => onDelete(c.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel={`Delete ${c.label}`}>
                 <Text style={{ color: theme.secondaryText, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
               </Pressable>

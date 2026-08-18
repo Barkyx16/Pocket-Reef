@@ -9,8 +9,9 @@ import { equipmentSummary } from "../lib/equipment";
 import { livestockSpend } from "../lib/livestock";
 import { EmptyState } from "./EmptyState";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
+import { fmtMoney } from "../lib/format";
 
-const money = (n) => `$${Number(n || 0).toFixed(2)}`;
 
 // What it costs to keep running, as opposed to what it cost to buy.
 //
@@ -49,9 +50,9 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
       <View style={{ borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
           <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Electricity, per month</Text>
-          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{money(running.perMonth)}</Text>
+          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(running.perMonth)}</Text>
           <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
-            {running.kWhPerMonth} kWh · {money(running.perYear)} a year
+            {running.kWhPerMonth} kWh · {fmtMoney(running.perYear)} a year
           </Text>
         </LinearGradient>
       </View>
@@ -70,7 +71,7 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
         <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Your rate</Text>
         <TextInput
           value={rate}
-          onChangeText={(t) => setRate(t.replace(/[^0-9.]/g, ""))}
+          onChangeText={(t) => setRate(decimalText(t))}
           keyboardType="decimal-pad"
           placeholder="0.17"
           placeholderTextColor={theme.secondaryText}
@@ -91,7 +92,7 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
                 {r.watts}W{r.estimated ? " (typical)" : ""} · {r.hoursPerDay}h a day · {categoryLabel(r.category)}
               </Text>
             </View>
-            <Text style={{ color: theme.accent, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{money(r.costPerMonth)}</Text>
+            <Text style={{ color: theme.accent, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(r.costPerMonth)}</Text>
           </View>
         ))}
       </View>
@@ -102,7 +103,7 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
         <View style={{ flexDirection: "row", gap: 9, marginTop: 12, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
           <Ionicons name="bulb-outline" size={15} color={theme.accent} style={{ marginTop: 1 }} />
           <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
-            Each hour of photoperiod costs about <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>{money(running.perLightHour)}</Text> a month{running.lightHours ? `, and you run ${running.lightHours}` : ""}.
+            Each hour of photoperiod costs about <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(running.perLightHour)}</Text> a month{running.lightHours ? `, and you run ${running.lightHours}` : ""}.
           </Text>
         </View>
       ) : null}
@@ -111,9 +112,9 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
         <View style={{ marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Since you set it up</Text>
           <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 6 }}>
-            <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{money(ownership.total)}</Text>
+            <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(ownership.total)}</Text>
             <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
-              {money(ownership.spent)} bought · {money(ownership.electricity)} run · {ownership.months} months
+              {fmtMoney(ownership.spent)} bought · {fmtMoney(ownership.electricity)} run · {ownership.months} months
             </Text>
           </View>
         </View>

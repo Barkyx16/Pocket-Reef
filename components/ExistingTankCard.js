@@ -8,6 +8,7 @@ import { tempFromInput } from "../lib/units";
 import { AGE_OPTIONS, buildSetup, whatsMissing } from "../lib/existingTank";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // The short path for a tank that already exists.
 //
@@ -72,7 +73,7 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
             <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
             <TextInput
               value={readings[p.key] ?? ""}
-              onChangeText={(t) => setReadings((v) => ({ ...v, [p.key]: t.replace(/[^0-9.]/g, "") }))}
+              onChangeText={(t) => setReadings((v) => ({ ...v, [p.key]: decimalText(t) }))}
               keyboardType="decimal-pad"
               placeholder={p.ideal}
               placeholderTextColor="rgba(165,212,234,0.42)"

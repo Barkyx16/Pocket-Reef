@@ -139,7 +139,11 @@ export function getTankWarnings(gallons, stockedNames = [], quantities = {}) {
 // "inch of fish per gallon" guideline. Returns a percentage and status band.
 // Bioload weight by kind — corals add essentially no waste; inverts (shrimp,
 // snails, crabs) far less than a fish of the same length. Fish are the baseline.
-const bioWeight = (s) => (s.kind === "coral" ? 0 : s.kind === "invert" ? 0.3 : 1);
+// How much a species counts toward the stocking budget. Corals add none,
+// inverts a fraction, fish the full length. Exported because the stocking
+// planner needs the identical rule — two copies of it agreed today and had
+// nothing keeping them in step.
+export const bioWeight = (s) => (s && s.kind === "coral" ? 0 : s && s.kind === "invert" ? 0.3 : 1);
 
 export function getBioload(gallons, stockedNames = [], quantities = {}) {
   const stocked = stockedNames.map(getSpecies).filter(Boolean);

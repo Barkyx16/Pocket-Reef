@@ -6,6 +6,7 @@ import { tapHaptic } from "../core";
 import { PROFILES, newLightSchedule, assessLighting, suggestProfile, suggestSchedule, dailyHours, hasSchedule } from "../lib/lighting";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { integerText } from "../lib/numericInput";
 
 // How long the lights are on — the third lever, after nutrients and flow, and
 // the only one that costs nothing to pull.
@@ -88,7 +89,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
             </View>
             <View style={{ width: 88 }}>
               <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Ramp</Text>
-              <TextInput value={ramp} onChangeText={(t) => setRamp(t.replace(/[^0-9]/g, ""))} keyboardType="number-pad" placeholder="0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Ramp minutes" style={styles.authInput} 
+              <TextInput value={ramp} onChangeText={(t) => setRamp(integerText(t))} keyboardType="number-pad" placeholder="0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Ramp minutes" style={styles.authInput} 
             maxLength={TEXT_LIMITS.number}
           />
             </View>

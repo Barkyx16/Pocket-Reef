@@ -8,6 +8,7 @@ import { MED_CLASSES, classOf, planMedDose, safetyFor, newMedDose, courseTotal }
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { fmt } from "../lib/format";
+import { decimalText, integerText } from "../lib/numericInput";
 
 // The arithmetic between "dose per the label" and a syringe.
 //
@@ -56,7 +57,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 14 }}>
         <TextInput
           value={labelDose}
-          onChangeText={(t) => setLabelDose(t.replace(/[^0-9.]/g, ""))}
+          onChangeText={(t) => setLabelDose(decimalText(t))}
           keyboardType="decimal-pad"
           placeholder="5"
           placeholderTextColor={theme.secondaryText}
@@ -68,7 +69,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>ml per</Text>
         <TextInput
           value={labelPer}
-          onChangeText={(t) => setLabelPer(t.replace(/[^0-9.]/g, ""))}
+          onChangeText={(t) => setLabelPer(decimalText(t))}
           keyboardType="decimal-pad"
           placeholder="10"
           placeholderTextColor={theme.secondaryText}
@@ -104,7 +105,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
             <TextInput
               value={changePct}
-              onChangeText={(t) => setChangePct(t.replace(/[^0-9]/g, ""))}
+              onChangeText={(t) => setChangePct(integerText(t))}
               keyboardType="number-pad"
               placeholder="25"
               placeholderTextColor={theme.secondaryText}

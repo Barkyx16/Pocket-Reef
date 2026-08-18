@@ -6,6 +6,7 @@ import { tapHaptic, successHaptic } from "../core";
 import { getPresets, builtInParam, effectiveParams, customisedKeys, applyPreset, formatIdeal, validTarget } from "../lib/targets";
 import { MAX_FONT_SCALE_COMPACT, touchSlop } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // Your tank's targets, not the app's.
 //
@@ -113,7 +114,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                     <TextInput
                       value={draft.lo}
-                      onChangeText={(v) => setDraft((d) => ({ ...d, lo: v.replace(/[^0-9.]/g, "") }))}
+                      onChangeText={(v) => setDraft((d) => ({ ...d, lo: decimalText(v) }))}
                       keyboardType="decimal-pad"
                       style={rangeInput}
                       accessibilityLabel={`${p.label} minimum`}
@@ -123,7 +124,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
                     <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>–</Text>
                     <TextInput
                       value={draft.hi}
-                      onChangeText={(v) => setDraft((d) => ({ ...d, hi: v.replace(/[^0-9.]/g, "") }))}
+                      onChangeText={(v) => setDraft((d) => ({ ...d, hi: decimalText(v) }))}
                       keyboardType="decimal-pad"
                       style={rangeInput}
                       accessibilityLabel={`${p.label} maximum`}

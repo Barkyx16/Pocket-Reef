@@ -9,6 +9,7 @@ import { EmptyState } from "./EmptyState";
 import { Pill } from "./Pill";
 import { fmt } from "../lib/format";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // The shelf, and when it runs out.
 //
@@ -167,7 +168,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
             <TextInput
               value={draft.stock}
-              onChangeText={(v) => setDraft((d) => ({ ...d, stock: v.replace(/[^0-9.]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, stock: decimalText(v) }))}
               keyboardType="decimal-pad"
               placeholder={`How much (${kindOf(draft.kind).unit})`}
               placeholderTextColor={theme.secondaryText}
@@ -182,7 +183,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           {kindOf(draft.kind).source === "waterchange" ? (
             <TextInput
               value={draft.perGallon}
-              onChangeText={(v) => setDraft((d) => ({ ...d, perGallon: v.replace(/[^0-9.]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, perGallon: decimalText(v) }))}
               keyboardType="decimal-pad"
               placeholder={`${kindOf(draft.kind).unit} per gallon of new water`}
               placeholderTextColor={theme.secondaryText}
@@ -200,7 +201,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           ) : (
             <TextInput
               value={draft.perDay}
-              onChangeText={(v) => setDraft((d) => ({ ...d, perDay: v.replace(/[^0-9.]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, perDay: decimalText(v) }))}
               keyboardType="decimal-pad"
               placeholder={`Used per day (${kindOf(draft.kind).unit}) — optional`}
               placeholderTextColor={theme.secondaryText}

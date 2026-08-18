@@ -8,6 +8,7 @@ import { formatVolume } from "../lib/units";
 import { sourceValuesFor, explainsStubborn } from "../lib/sourceWater";
 import { getRecommendedChangePercent } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // Water-change calculator — answers the question every aquarist asks: "how big a
 // water change do I need to bring nitrate down?" Dilution math: a p% change
@@ -64,7 +65,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
   const field = (label, val, set) => (
     <View style={{ flex: 1 }}>
       <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{label}</Text>
-      <TextInput value={val} onChangeText={(t) => set(t.replace(/[^0-9.]/g, ""))} keyboardType="decimal-pad" placeholder="—" placeholderTextColor={theme.secondaryText}
+      <TextInput value={val} onChangeText={(t) => set(decimalText(t))} keyboardType="decimal-pad" placeholder="—" placeholderTextColor={theme.secondaryText}
         style={{ backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 16, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
             maxLength={TEXT_LIMITS.number}
           />

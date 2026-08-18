@@ -7,6 +7,7 @@ import { LOSS_REASONS, LOSS_CAUSES, isMortality, tenureLabel, newStockRecord } f
 import { SpeciesThumb } from "./SpeciesThumb";
 import { touchSlop } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // The record for one animal: what a keeper would otherwise write on a tag and
 // then lose. Two jobs in one sheet, because they're the same conversation —
@@ -84,7 +85,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                 <Field label="Price paid" hint="Each, not the total">
                   <TextInput
                     value={current.price == null ? "" : String(current.price)}
-                    onChangeText={(v) => set({ price: v.replace(/[^0-9.]/g, "") })}
+                    onChangeText={(v) => set({ price: decimalText(v) })}
                     keyboardType="decimal-pad"
                     placeholder="—"
                     placeholderTextColor={theme.secondaryText}

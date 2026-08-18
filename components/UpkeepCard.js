@@ -7,6 +7,7 @@ import { iconForEmoji } from "../lib/icons";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { allTasks, sortedByUrgency, statusLabel, newUpkeepTask, suggestionsFor } from "../lib/upkeep";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { integerText } from "../lib/numericInput";
 
 // Everything this tank needs doing, soonest first.
 //
@@ -103,7 +104,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                   <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Every</Text>
                   <TextInput
                     defaultValue={String(status.interval)}
-                    onChangeText={(v) => onSetInterval(task, v.replace(/[^0-9]/g, ""))}
+                    onChangeText={(v) => onSetInterval(task, integerText(v))}
                     keyboardType="number-pad"
                     style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
                     accessibilityLabel={`How often ${task.label} is due, in days`}
@@ -163,7 +164,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
             <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Every</Text>
             <TextInput
               value={draft.days}
-              onChangeText={(v) => setDraft((d) => ({ ...d, days: v.replace(/[^0-9]/g, "") }))}
+              onChangeText={(v) => setDraft((d) => ({ ...d, days: integerText(v) }))}
               keyboardType="number-pad"
               style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
               accessibilityLabel="How often the new job is due, in days"

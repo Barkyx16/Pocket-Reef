@@ -7,6 +7,7 @@ import { displayParams } from "../lib/targets";
 import { SOURCE_KINDS, SOURCE_KEYS, kindOf, newSourceProfile, analyseSource } from "../lib/sourceWater";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { decimalText } from "../lib/numericInput";
 
 // One test of the water going IN, and what it means for every change coming out.
 //
@@ -94,7 +95,7 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
                 <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
                 <TextInput
                   value={vals[p.key] ?? ""}
-                  onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: t.replace(/[^0-9.]/g, "") }))}
+                  onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: decimalText(t) }))}
                   keyboardType="decimal-pad"
                   placeholder="0"
                   placeholderTextColor={theme.secondaryText}
