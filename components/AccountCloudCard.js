@@ -9,6 +9,7 @@ import {
 } from "../lib/biometricAuth";
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { friendlyAuthError } from "../lib/authErrors";
 
 // Cloud save / account card — the reef version of Pocket Planter's
 // AccountCloudCard, wired to a real account: sync status from the last
@@ -70,7 +71,7 @@ export function AccountCloudCard({
     setBusy("email");
     try {
       const { error } = await supabase.auth.updateUser({ email: clean });
-      if (error) { Alert.alert("Couldn't change your email", error.message); return; }
+      if (error) { Alert.alert("Couldn't change your email", friendlyAuthError(error.message)); return; }
       Alert.alert("Confirm the change", `We sent a confirmation link to ${clean}. Your email updates once you open it.`);
       setNewEmail("");
     } catch (e) {
@@ -90,7 +91,7 @@ export function AccountCloudCard({
     setBusy("changePassword");
     try {
       const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if (error) { Alert.alert("Couldn't change your password", error.message); return; }
+      if (error) { Alert.alert("Couldn't change your password", friendlyAuthError(error.message)); return; }
       if (bioEnabled && user?.email) await enableBiometricLogin(user.email, newPassword);
       setNewPassword("");
       setConfirmPassword("");
@@ -109,7 +110,7 @@ export function AccountCloudCard({
     setBusy("password");
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(user.email, { redirectTo: RESET_REDIRECT });
-      if (error) { Alert.alert("Couldn't send the reset email", error.message); return; }
+      if (error) { Alert.alert("Couldn't send the reset email", friendlyAuthError(error.message)); return; }
       Alert.alert("Check your inbox", `A password reset link is on its way to ${user.email}.`);
     } finally {
       setBusy("");

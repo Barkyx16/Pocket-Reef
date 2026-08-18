@@ -7,6 +7,7 @@ import { touchSlop } from "../lib/a11y";
 import { MED_CLASSES, classOf, planMedDose, safetyFor, newMedDose, courseTotal } from "../lib/meds";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { fmt } from "../lib/format";
 
 // The arithmetic between "dose per the label" and a syringe.
 //
@@ -163,7 +164,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
                 </Text>
                 <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d.date}</Text>
                 {onDeleteMedDose ? (
-                  <Pressable onPress={() => onDeleteMedDose(d.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the ${d.amount} ml dose from ${d.date}`}>
+                  <Pressable onPress={() => onDeleteMedDose(d.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the ${fmt(d.amount)} ml dose from ${d.date}`}>
                     <Ionicons name="close" size={13} color={theme.secondaryText} />
                   </Pressable>
                 ) : null}

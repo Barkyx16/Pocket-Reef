@@ -3,6 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../styles";
 import { tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
+import { touchSlop } from "../lib/a11y";
 
 // A slim bar above every tab. Two things live here, and only two, because a
 // header that grows becomes a second tab bar:
@@ -40,6 +41,7 @@ export function AppHeader({ tank, tankCount = 1, onOpenTankMenu, onOpenSearch, s
       </Pressable>
 
       <Pressable
+        hitSlop={touchSlop(38)}
         onPress={() => { tapHaptic("light"); onOpenSearch(); }}
         style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
         accessibilityRole="button"

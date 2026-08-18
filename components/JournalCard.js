@@ -7,6 +7,7 @@ import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { persistPhoto } from "../lib/photoStore";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { touchSlop } from "../lib/a11y";
 
 const MOODS = ["🐠", "🌱", "😍", "🛠️", "⚠️"];
 // A screen reader announces an emoji by its Unicode name — "hammer and wrench"
@@ -70,7 +71,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
     <View>
       <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
         {MOODS.map((m) => (
-          <Pressable key={m} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
+          <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
             <Text style={{ fontSize: 18 }}>{m}</Text>
           </Pressable>
         ))}
@@ -123,7 +124,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             {MOODS.map((m) => {
               const on = findMood === m;
               return (
-                <Pressable key={m} onPress={() => { tapHaptic("light"); setFindMood(on ? null : m); }} style={{ width: 38, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
+                <Pressable key={m} hitSlop={touchSlop(34)} onPress={() => { tapHaptic("light"); setFindMood(on ? null : m); }} style={{ width: 38, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
                   <Text style={{ fontSize: 16, opacity: on ? 1 : 0.6 }}>{m}</Text>
                 </Pressable>
               );

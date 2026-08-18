@@ -3,6 +3,7 @@ import { ActivityIndicator, Modal, Pressable, Text, TextInput, View } from "reac
 import { styles, theme } from "../styles";
 import { supabase } from "../lib/supabase";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { friendlyAuthError } from "../lib/authErrors";
 
 // Shown when the app is opened from a password-reset email. By the time this
 // appears Supabase has already exchanged the link for a recovery session, so
@@ -23,7 +24,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
     setBusy(true);
     try {
       const { error: err } = await supabase.auth.updateUser({ password: value });
-      if (err) { setError(err.message); return; }
+      if (err) { setError(friendlyAuthError(err.message)); return; }
       close(onDone);
     } catch (e) {
       setError("Something went wrong. Try the link again.");

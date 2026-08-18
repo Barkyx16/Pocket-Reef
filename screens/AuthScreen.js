@@ -12,6 +12,7 @@ import {
 import { OtpCodeInput } from "../components/OtpCodeInput";
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { friendlyAuthError, isUnconfirmedError } from "../lib/authErrors";
 
 // The gate in front of the app: create an account or sign in, with Face ID /
 // Touch ID for returning users, password reset, and a hint for "which email did
@@ -37,29 +38,6 @@ function maskEmail(value = "") {
   if (!name || !domain) return value;
   const head = name.slice(0, 1);
   return `${head}${"*".repeat(Math.max(2, name.length - 1))}@${domain}`;
-}
-
-// Supabase surfaces these as raw API strings. Rewrite the handful users actually
-// hit into something that tells them what to do next; pass anything else through
-// rather than swallowing a real error behind a generic apology.
-function friendlyAuthError(message = "") {
-  const m = String(message).toLowerCase();
-  if (m.includes("invalid login credentials")) return "That email and password don't match an account. Check for typos, or reset your password.";
-  if (m.includes("email not confirmed")) return "This account still needs to be verified.";
-  if (m.includes("token has expired") || m.includes("expired")) return "That code has expired. Send a new one and try again.";
-  if (m.includes("invalid") && m.includes("token")) return "That code isn't right. Check the email and re-enter it.";
-  if (m.includes("already registered") || m.includes("already been registered")) return "There's already an account with that email. Log in instead, or reset the password.";
-  if (m.includes("rate limit") || m.includes("too many") || m.includes("security purposes")) return "Too many attempts. Wait a minute, then try again.";
-  if (m.includes("weak password") || m.includes("password should be")) return "Pick a stronger password — at least 8 characters.";
-  if (m.includes("network") || m.includes("fetch")) return "Couldn't reach the server. Check your connection and try again.";
-  return message || "Something went wrong. Try again.";
-}
-
-// Does this account exist but sit unverified? Supabase says so in a few
-// different phrasings depending on the endpoint.
-function isUnconfirmedError(message = "") {
-  const m = String(message).toLowerCase();
-  return m.includes("email not confirmed") || m.includes("not confirmed");
 }
 
 export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {

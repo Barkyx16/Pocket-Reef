@@ -10,6 +10,7 @@ import {
 } from "../lib/dosingLog";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { fmt } from "../lib/format";
 
 // What you dosed, and what your tank actually uses.
 //
@@ -164,7 +165,7 @@ export function DoseLogCard({
                     onPress={() => onDeleteDose(d.id)}
                     hitSlop={touchSlop(20)}
                     accessibilityRole="button"
-                    accessibilityLabel={`Delete the ${d.ml}ml ${(REEF_TARGETS[d.key] || {}).label} dose from ${d.date}`}
+                    accessibilityLabel={`Delete the ${fmt(d.ml)}ml ${(REEF_TARGETS[d.key] || {}).label} dose from ${d.date}`}
                   >
                     <Ionicons name="close" size={13} color={theme.secondaryText} />
                   </Pressable>
