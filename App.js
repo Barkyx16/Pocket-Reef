@@ -912,8 +912,18 @@ function PocketReef() {
   // React is free to call it more than once, and to throw the result away and
   // re-run it, so a write inside the updater can fire twice for one edit, or
   // persist a value that never becomes state.
+  // While an undo is running this holds the tank the original action happened
+  // on. Every undo restore in this file goes through updateActiveTank, and
+  // "active" is whichever tank is open when Undo is *tapped* — not the one the
+  // record came from. The snackbar lasts five seconds and the tank switcher is
+  // one tap away in the header, so deleting a water test, switching tanks and
+  // hitting undo filed that reading into the wrong tank, and the tank it
+  // belonged to never got it back.
+  const undoTankRef = useRef(null);
+
   const updateActiveTank = useStableCallback((updater) => {
-    setTanks((prev) => prev.map((tk) => (tk.id === (activeTankId || (prev[0] && prev[0].id)) ? { ...tk, ...(typeof updater === "function" ? updater(tk) : updater) } : tk)));
+    const target = undoTankRef.current || activeTankId;
+    setTanks((prev) => prev.map((tk) => (tk.id === (target || (prev[0] && prev[0].id)) ? { ...tk, ...(typeof updater === "function" ? updater(tk) : updater) } : tk)));
   });
 
   // Mutating a tank by id rather than "whichever is open". The round shows work
@@ -1178,9 +1188,16 @@ function PocketReef() {
   // Undo is tapped the list has moved on, and an index would put the entry back
   // in the wrong place or over the top of something else.
   const showUndo = useStableCallback((message, restore, icon = "trash-outline") =>
-    setUndo({ id: Date.now(), message, icon, onUndo: restore }));
+    // The tank is captured here, when the action happens, rather than read back
+    // when Undo is tapped.
+    setUndo({ id: Date.now(), message, icon, onUndo: restore, tankId: activeTankId }));
   const runUndo = useStableCallback(() => {
-    if (undo && undo.onUndo) undo.onUndo();
+    if (undo && undo.onUndo) {
+      undoTankRef.current = undo.tankId || null;
+      // finally, not just after: a restore that throws must not leave every
+      // later write pointed at a tank the keeper closed minutes ago.
+      try { undo.onUndo(); } finally { undoTankRef.current = null; }
+    }
     setUndo(null);
   });
 
