@@ -242,3 +242,45 @@ describe("no fixture dates itself in UTC", () => {
     expect(fs.readdirSync(DIR).filter((n) => n.endsWith(".js")).length).toBeGreaterThan(50);
   });
 });
+
+describe("stepping back n days is not subtracting n × 24 hours", () => {
+  // Found when a test failed only in Pacific/Auckland. A fixture built its
+  // dates as `NOW - n * 86400000` and asserted the two were 199 days apart;
+  // New Zealand's April DST change falls inside a 200-day window, so they were
+  // 198. The assertion had already been widened to "199 or 200" to cope, which
+  // hid the cause rather than fixing it.
+  //
+  // The app's own arithmetic was right throughout — it correctly reported the
+  // gap between the two dates it was handed. The dates were wrong.
+  const { addDaysToKey, daysBetweenKeys, dayKey } = require("../lib/day");
+
+  test("calendar stepping is exact across a DST boundary", () => {
+    // 2026-03-08 (US spring forward) and 2026-11-01 (fall back) both sit
+    // inside these windows.
+    for (const [from, n] of [["2026-01-01", 200], ["2026-09-01", 120], ["2026-02-01", 199]]) {
+      const to = addDaysToKey(from, n);
+      expect([from, n, daysBetweenKeys(from, to)]).toEqual([from, n, n]);
+    }
+  });
+
+  test("millisecond stepping is not, which is the trap", () => {
+    // Demonstrated rather than described: this is what the fixture was doing.
+    const start = new Date(2026, 1, 1, 12, 0, 0).getTime(); // 1 Feb, midday
+    const naive = dayKey(new Date(start + 199 * 86400000));
+    const calendar = addDaysToKey("2026-02-01", 199);
+    // In a zone with DST between the two dates these differ by a day; in one
+    // without, they agree. Either way the calendar answer is the correct one.
+    expect(daysBetweenKeys("2026-02-01", calendar)).toBe(199);
+    expect(typeof naive).toBe("string");
+  });
+
+  test("a fixture that asserts an exact day gap uses calendar stepping", () => {
+    // The one test that asserted a precise gap now builds its dates with
+    // addDaysToKey. If another starts asserting one, it should do the same.
+    const fs = require("fs");
+    const path = require("path");
+    const src = fs.readFileSync(path.join(__dirname, "nextlevel5.test.js"), "utf8");
+    expect(src).toContain("addDaysToKey(localDay(NOW), -n)");
+    expect(src).not.toMatch(/dayKey = \(n\) => localDay\(NOW - n \* 86400000\)/);
+  });
+});

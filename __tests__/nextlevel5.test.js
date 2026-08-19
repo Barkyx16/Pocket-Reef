@@ -1,3 +1,4 @@
+const { addDaysToKey } = require("../lib/day");
 jest.mock("@react-native-async-storage/async-storage", () =>
   require("@react-native-async-storage/async-storage/jest/async-storage-mock")
 );
@@ -49,7 +50,14 @@ const btn = (t, text) =>
 
 const NOW = Date.now();
 const dayAgo = (n) => new Date(NOW - n * 86400000).toISOString();
-const dayKey = (n) => localDay(NOW - n * 86400000);
+// Calendar arithmetic, not millisecond subtraction.
+//
+// `NOW - n * 86400000` steps back n lots of exactly 24 hours, which is not n
+// calendar days across a DST change. In Pacific/Auckland the April transition
+// falls inside a 200-day window, so dayKey(200) and dayKey(1) came out 198
+// days apart rather than 199 — and the assertion here had already been widened
+// to "199 or 200" to cope, which hid the cause rather than fixing it.
+const dayKey = (n) => addDaysToKey(localDay(NOW), -n);
 
 const allChecked = () => {
 
@@ -123,8 +131,8 @@ describe("observation photos", () => {
     const tree = mount(<ObservationsCard tank={{ observations: obs }} name={name} onAdd={() => {}} />);
     const shown = textOf(tree);
     expect(shown).toMatch(/then/i);
-    // 199 or 200 depending on which side of local midnight the fixture lands.
-    expect(shown).toMatch(/(199|200) days apart/);
+    // Exactly 199 now that the dates are built by calendar day.
+    expect(shown).toMatch(/199 days apart/);
     tree.unmount();
   });
 
