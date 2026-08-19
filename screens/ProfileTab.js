@@ -22,8 +22,10 @@ import { supportLine } from "../lib/buildInfo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
 import { CURRENCIES } from "../lib/currency";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, premiumUnlocked, tanks = [], xp = 0, activeDays = [], since, lastBackup, wishlist = [], bannerId = "reef", onSetBanner, onExport, onImport, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, currency = "USD", onSetCurrency, user, lastSyncedAt, syncing, syncError, onSyncNow, onSignOut, telemetryOn = false, onSetTelemetry, telemetryConfigured = false, activeTankId, onSwitchTank, onRestored, onGoToTab, activeTank = {}, onChangeTankReminders }) {
+  const scrollRef = useScrollToTop();
   const lvl = levelFromXp(xp);
   const streak = getStreak(activeDays);
   const longestStreak = getLongestStreak(activeDays);
@@ -64,7 +66,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
   };
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <AdaptiveColumns lead={1}>
       {/* 1 — CLOUD SAVE: account, sync, premium status, security, backup. */}
       <View style={styles.card}>

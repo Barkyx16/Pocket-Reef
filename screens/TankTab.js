@@ -27,10 +27,12 @@ import { formatVolume } from "../lib/units";
 import { activeParams } from "../lib/targets";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
 import { CardBoundary } from "../components/CardBoundary";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
 export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank, tankWater, tankCreatedAt, tankNotes, waterTests = [], maintenance = {}, quantities = {}, onSetQuantity, toggleTank, openSpecies, onLoadIdea, onClearStock, quarantine, onAddQuarantine, onRemoveQuarantine, onGraduateQuarantine, onSetQuarantineCheck, tanks = [], activeTankId, onSwitchTank, onAddTank, onGoToTab, onLoadPlan, stockMeta = {}, losses = [], onOpenRecord, onDeleteLoss, onShareReport, equipment = [], onAddEquipment, onRemoveEquipment, intent, targets = {}, onSetTarget, onSetAllTargets, activeTank = {}, onAddInventory, onRemoveInventory, onSetInventoryStock, wishlist = [], onSetupExisting }) {
+  const scrollRef = useScrollToTop();
   // Same contract as the Log tab: a shortcut names the card it wants open.
   const openIf = (key) => (intent && intent.card === key ? intent.nonce : null);
   // Just the count, for the collapsed header — the card itself does the work.
@@ -176,7 +178,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
   );
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={t("tank.eyebrow", { gallons: tankGallons, count: tank.length })}

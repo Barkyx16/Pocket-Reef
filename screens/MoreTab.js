@@ -4,16 +4,18 @@ import { styles, theme, useResponsiveLayout } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { tapHaptic } from "../core";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 // The "More" menu — styled like Pocket Planter's More sheet: a big title, a close
 // button, and a list of green icon-tile rows for the secondary sections.
 export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, lockedIds }) {
+  const scrollRef = useScrollToTop();
   // The shell is wider now that most screens reflow into two columns; this
   // one doesn't, so it keeps a readable line length instead of stretching.
   const layout = useResponsiveLayout();
   const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 24 }}>
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (

@@ -10,10 +10,12 @@ import { TroubleshooterCard } from "../components/TroubleshooterCard";
 import { AlgaeCard } from "../components/AlgaeCard";
 import { t } from "../lib/i18n";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 // Disease guide index + a symptom checker — tap symptoms you're seeing to narrow
 // the list to the likely culprits, or browse every illustrated guide.
 export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fresh", activeTank = {}, onGoToTab }) {
+  const scrollRef = useScrollToTop();
   const PAGE = 6;
   const [visible, setVisible] = useState(PAGE);
   const [symptoms, setSymptoms] = useState([]);
@@ -68,7 +70,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
   );
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={t("health.eyebrow")}

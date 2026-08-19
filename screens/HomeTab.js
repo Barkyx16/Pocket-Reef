@@ -19,6 +19,7 @@ import { withExtras } from "../lib/todayExtras";
 import { cadenceFor } from "../lib/notifications";
 import { formatVolume } from "../lib/units";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 const CARE_TASKS = [
   { id: "feed", icon: "🍤", text: "Feed the tank (small pinch)" },
@@ -28,6 +29,7 @@ const CARE_TASKS = [
 ];
 
 export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, openSpecies, activeDays = [], xp = 0, waterTests = [], journal = [], feedings = [], careDoneToday = [], onToggleCare, maintenance = {}, quarantine = [], tankWater, tanks = [], activeTankId, onSwitchTank, onEditTank, onAddTank, onDeleteTank, onDuplicateTank, onExport, onImport, premiumUnlocked, onOpenPremium, reminderPrefs, onChangeReminders, lang = "en", onSetLanguage, unit = "imperial", onSetUnit, onGoToTab, wishlist = [], onToggleWishlist, quantities = {}, profileName = "", fishOfDaySeen = false, onSeeFishOfDay, challengesDone = [], onCompleteChallenge, treatments = [], activeTankHasSize = true, upkeep = [], activeTank = {} }) {
+  const scrollRef = useScrollToTop();
   const hour = new Date().getHours();
   const greeting = `${hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"}${profileName ? `, ${profileName}` : ""}`;
   const today = getTodayKey();
@@ -94,7 +96,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
   const seasonalChallenges = seasonal.items;
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <AdaptiveColumns lead={2}>
       <HeroBanner
         eyebrow={greeting}

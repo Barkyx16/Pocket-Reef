@@ -4,6 +4,7 @@ import { styles, theme, useResponsiveLayout } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 // A self-contained Premium tab: what's included, a plan picker, the unlock CTA,
 // and — at the very bottom — a developer toggle to unlock/lock the gate while
@@ -55,6 +56,7 @@ const REASON_COPY = {
 };
 
 export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestore, storeReady = false, buying = false, loadPlans, reason }) {
+  const scrollRef = useScrollToTop();
   // The shell is wider now that most screens reflow into two columns; this
   // one doesn't, so it keeps a readable line length instead of stretching.
   const layout = useResponsiveLayout();
@@ -85,7 +87,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
   const trialDays = plan && plan.freeTrialDays ? plan.freeTrialDays : 0;
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow={premiumUnlocked ? "Premium active" : ctx ? ctx.eyebrow : "Premium"}
         title={premiumUnlocked ? "You're all in 🐠" : ctx ? ctx.title : "Keep a healthier reef"}

@@ -9,6 +9,7 @@ import { HeroBanner } from "../components/HeroBanner";
 import { SpeciesThumb } from "../components/SpeciesThumb";
 import { GradientButton } from "../components/GradientButton";
 import { formatVolume } from "../lib/units";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 // Reef Games — four quick, endlessly-randomizing games that earn XP for each
 // correct answer (the reef version of Pocket Planter's Garden Games).
@@ -34,6 +35,7 @@ const GAMES = [
 ];
 
 export const GamesTab = memo(function GamesTab({ onEarnXp }) {
+  const scrollRef = useScrollToTop();
   // The shell is wider now that most screens reflow into two columns; this
   // one doesn't, so it keeps a readable line length instead of stretching.
   const layout = useResponsiveLayout();
@@ -41,7 +43,7 @@ export const GamesTab = memo(function GamesTab({ onEarnXp }) {
   if (game) return <GameHost gameId={game} onBack={() => setGame(null)} onEarnXp={onEarnXp} />;
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
       <HeroBanner
         eyebrow="Play & earn XP"
         title="Reef Games"

@@ -85,6 +85,7 @@ import { CAPS, capped } from "./lib/caps";
 import { classifyLink } from "./lib/deepLink";
 import { friendlyAuthError } from "./lib/authErrors";
 import { friendlyPurchaseError, OUTCOME } from "./lib/purchaseErrors";
+import { ScrollToTopContext } from "./lib/scrollToTop";
 
 // Bottom bar: four primary tabs + a "More" entry (Pocket Planter pattern).
 // Vector icons, not emoji. The tab bar is the most-seen chrome in the app and
@@ -215,6 +216,8 @@ function PocketReef() {
   });
 
   const [activeTab, setActiveTab] = useState("home");
+
+  const [scrollSignal, setScrollSignal] = useState(0);
   // Per-tank data now lives inside tank profiles.
   const [tanks, setTanks] = useState([]);
   const [activeTankId, setActiveTankId] = useState(null);
@@ -2023,6 +2026,9 @@ function PocketReef() {
   // one choke point is why a locked tab can't be reached by any route.
   const jumpTo = useStableCallback((id) => {
     tapHaptic();
+    // Already here: the platform habit is that this returns you to the top
+    // rather than doing nothing at all.
+    if (id === activeTab) { setScrollSignal((n) => n + 1); return; }
     if (PREMIUM_TAB_IDS.has(id) && !premiumUnlocked) { goPremium(id); return; }
     setSelectedSpecies(null);
     setSelectedDisease(null);
@@ -2150,6 +2156,7 @@ function PocketReef() {
 
   return (
     <SafeAreaProvider>
+      <ScrollToTopContext.Provider value={scrollSignal}>
       <View style={{ flex: 1, backgroundColor: theme.background }}>
         <BackgroundDecoration />
         {/* Saving is broken. Shown above everything, unmissable and not
@@ -2469,6 +2476,7 @@ function PocketReef() {
         </SafeAreaView>
         )}
       </View>
+      </ScrollToTopContext.Provider>
     </SafeAreaProvider>
   );
 }

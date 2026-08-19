@@ -15,6 +15,7 @@ import { matchesQuery, scoreMatch, buildHaystack } from "../lib/search";
 import { formatVolume } from "../lib/units";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { CardBoundary } from "../components/CardBoundary";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 const WATER_FILTERS = [
   { id: "all", label: "All" },
@@ -36,6 +37,7 @@ const HAY = new Map(SPECIES.map((s) => [s.name, buildHaystack(s)]));
 
 
 export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTank, openSpecies, openDisease, wishlist = [], onToggleWishlist, recent = [], premiumUnlocked = false, freeLimit = 7, onOpenPremium, tankWater = "fresh" }) {
+  const scrollRef = useScrollToTop();
   const [query, setQuery] = useState("");
   // These describe what you're shopping for, so they outlive the screen. Only
   // one tab is mounted at a time, which meant a trip into a species detail and
@@ -354,6 +356,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
   return (
     <FlatList
+      ref={scrollRef}
       // A single column of 316 species down the middle of an iPad wastes most
       // of the screen. FlatList refuses to change numColumns in place, so the
       // key forces a remount on rotation — which costs one re-render on an

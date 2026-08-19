@@ -10,8 +10,10 @@ import { DoseLogCard } from "../components/DoseLogCard";
 import { t } from "../lib/i18n";
 import { activeParams } from "../lib/targets";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
+import { useScrollToTop } from "../lib/scrollToTop";
 
 export const LogTab = memo(function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onUpdateTest, onDeleteTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, onLogWaterChange, premiumUnlocked, onOpenPremium, intent, activeTank = {}, onAddUpkeepTask, onRemoveUpkeepTask, onSetUpkeepInterval, strengths = {}, onLogDose, onDeleteDose, onSetStrength, onSetSourceWater, onImportTests, onSetLightSchedule, onGoToTab, onLogMedDose, onDeleteMedDose }) {
+  const scrollRef = useScrollToTop();
   const waterType = resolveWaterType(tank, tankWater);
   // A shortcut names the card it wants open. This used to be hard-coded to the
   // water-test card, so "Log a dose" landed on the Log tab with the dose card
@@ -31,7 +33,7 @@ export const LogTab = memo(function LogTab({ tankWater = "fresh", tank, tankGall
   };
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <AdaptiveColumns lead={1}>
       <HeroBanner
         eyebrow={streak ? t("log.eyebrowStreak", { streak }) : t("log.eyebrowIdle")}
