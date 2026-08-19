@@ -17,7 +17,13 @@
       "buildNumber": "1",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Pocket Reef uses Face ID so you can sign in to your account without typing your password.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
       }
     },
     "android": {

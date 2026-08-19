@@ -7,7 +7,15 @@ import { Dimensions, StyleSheet, useWindowDimensions } from "react-native";
 // keeps the design at the width it was drawn for, with the background filling
 // the rest.
 const { width: SCREEN_W } = Dimensions.get("window");
-export const LARGE_SCREEN_BREAKPOINT = 768;
+// 740, not 768. The classic 768 comes from the original non-retina iPad and
+// leaves the iPad mini out: it is 744pt across in portrait, so it got the phone
+// layout standing up and the tablet layout lying down — rotating it changed the
+// whole design rather than the shape of it.
+//
+// There is 314pt of empty space between the widest phone in portrait (430) and
+// the narrowest iPad (744), so this boundary has an enormous margin either way
+// and no phone can drift across it.
+export const LARGE_SCREEN_BREAKPOINT = 740;
 export const CONTENT_MAX_WIDTH = 700;
 // Room for two 700-ish columns plus the gap between them. Used once the content
 // reflows rather than stretching, so a tablet fills its screen instead of
