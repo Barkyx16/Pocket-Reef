@@ -369,6 +369,12 @@ export function getCyclingCoach(waterTests = [], tankCreatedAt = null) {
   return {
     ...status,
     ...info,
+    // A crash borrows the cycled stage so the progress bar reads correctly —
+    // the bacteria WERE established — but the stage table's copy for that stage
+    // is "Large water change, then stock slowly… add a few fish at a time".
+    // Printed above an ammonia emergency that is a contradiction, and the
+    // reassuring half is the one at the top in bigger type. The emergency wins.
+    ...(status.crashed ? { action: `${status.label} — act now`, detail: status.guidance } : null),
     daysIn,
     estimateRemaining,
     // Deliberately soft language downstream — cycles vary enormously with

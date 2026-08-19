@@ -92,3 +92,54 @@ describe("a tank that genuinely is cycling still gets cycling advice", () => {
     expect(getCycleStatus().crashed).toBeFalsy();
   });
 });
+
+describe("the coach and the card do not contradict the warning", () => {
+  // A crash reports stage 3 so the progress bar reads correctly — the bacteria
+  // WERE established. But the stage table's copy for stage 3 is "Large water
+  // change, then stock slowly… add a few fish at a time", and the card prints
+  // that as its headline, in bigger type, directly above the emergency. The
+  // reassuring half was the one the eye lands on first.
+  const { getCyclingCoach } = require("../core");
+  const renderer = require("react-test-renderer");
+  const { Text } = require("react-native");
+  const { CycleTrackerCard } = require("../components/CycleTrackerCard");
+  const CLEAN2 = { ammonia: 0, nitrite: 0, nitrate: 5 };
+  const crashed = [t(0, { ...CLEAN2, ammonia: 2, nitrite: 1 }),
+    ...Array.from({ length: 60 }, (_, i) => t((i + 1) * 10, CLEAN2))];
+  const flat = (c) => (Array.isArray(c) ? c.map(flat).join("") : typeof c === "string" || typeof c === "number" ? String(c) : "");
+
+  test("the headline is the emergency, not the stocking advice", () => {
+    const c = getCyclingCoach(crashed);
+    expect(c.action).toMatch(/spike.*act now/i);
+    expect(c.action).not.toMatch(/stock slowly/i);
+    expect(c.detail).toMatch(/change water now/i);
+    expect(c.detail).not.toMatch(/add a few fish/i);
+  });
+
+  test("the progress still reads as cycled, because it was", () => {
+    const c = getCyclingCoach(crashed);
+    expect(c.cycled).toBe(true);
+    expect(c.estimateRemaining).toBe(0);
+  });
+
+  test("a genuinely cycled tank keeps its stocking advice", () => {
+    const c = getCyclingCoach([t(0, CLEAN2), t(10, CLEAN2)]);
+    expect(c.action).toMatch(/stock slowly/i);
+    expect(c.crashed).toBeFalsy();
+  });
+
+  test("the card renders the emergency wording", () => {
+    let tree;
+    renderer.act(() => { tree = renderer.create(<CycleTrackerCard waterTests={crashed} tank={["Ocellaris Clownfish"]} />); });
+    const first = tree.root.findAllByType(Text).map((n) => flat(n.props.children)).filter((x) => x.trim())[0];
+    expect(first).toMatch(/spike.*act now/i);
+  });
+
+  test("and does not paint it in the colour for all-good", () => {
+    // `cycled` is true for a crash, so the calm teal treatment applied to it.
+    const src = require("fs").readFileSync(
+      require("path").join(__dirname, "..", "components/CycleTrackerCard.js"), "utf8");
+    expect(src).toMatch(/coach\.crashed \? theme\.danger/);
+    expect(src).toMatch(/coach\.crashed \? "rgba\(255,123,123/);
+  });
+});

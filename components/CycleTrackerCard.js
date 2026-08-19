@@ -22,8 +22,11 @@ export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
     <View>
       {/* What to actually do next — cycling is where beginners lose fish, and
           almost always by stocking during the nitrite spike. */}
-      <View style={{ backgroundColor: coach.cycled ? "rgba(56,225,198,0.10)" : "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: coach.cycled ? "rgba(56,225,198,0.30)" : "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: space.md, marginBottom: space.lg }}>
-        <Text style={{ color: coach.cycled ? theme.accent : theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{coach.action}</Text>
+      {/* A crash is `cycled: true` — the bacteria were established — so the
+          calm teal treatment applied to it. An emergency shown in the colour
+          the app uses for "all good" is the wrong signal twice over. */}
+      <View style={{ backgroundColor: coach.crashed ? "rgba(255,123,123,0.12)" : coach.cycled ? "rgba(56,225,198,0.10)" : "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: coach.crashed ? "rgba(255,123,123,0.38)" : coach.cycled ? "rgba(56,225,198,0.30)" : "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: space.md, marginBottom: space.lg }}>
+        <Text style={{ color: coach.crashed ? theme.danger : coach.cycled ? theme.accent : theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{coach.action}</Text>
         <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>{coach.detail}</Text>
         {!coach.cycled && coach.estimateRemaining > 0 ? (
           <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>
