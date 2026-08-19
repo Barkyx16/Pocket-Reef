@@ -68,7 +68,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       <AdaptiveColumns lead={1}>
       {/* 1 — CLOUD SAVE: account, sync, premium status, security, backup. */}
       <View style={styles.card}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>Cloud Save</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>Cloud Save</Text>
         <AccountCloudCard
           user={user}
           lastSyncedAt={lastSyncedAt}
@@ -231,7 +231,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       <CollapsibleCard storageKey="lifetime" title="📈 Lifetime Stats" defaultOpen={true} eyebrow="Your career & collection">
         <LifetimeStatsCard stats={lifetime} />
         <View style={styles.sectionDivider} />
-        <Text style={styles.cardEyebrow}>My Collection</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>My Collection</Text>
         <View style={{ marginTop: 10 }}><CollectionInsightsCard tanks={tanks} /></View>
       </CollapsibleCard>
 
@@ -239,7 +239,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       <CollapsibleCard storageKey="achievements" title="🏆 Achievements" eyebrow={`${earnedCount}/${achievements.length} unlocked`}>
         <AchievementsCard items={achievements} />
         <View style={styles.sectionDivider} />
-        <Text style={styles.cardEyebrow}>Game Records</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Game Records</Text>
         <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
         <GameRecordsCard />
       </CollapsibleCard>
@@ -247,11 +247,11 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       {/* 6 — SETTINGS & MORE, always last. */}
       <CollapsibleCard storageKey="settings" title="⚙️ Settings & More">
         {/* Reminders */}
-        <Text style={styles.cardEyebrow}>Care Reminders</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Care Reminders</Text>
         <View style={{ marginTop: 8 }}><RemindersCard prefs={reminderPrefs} onChange={onChangeReminders} tank={tanks.length > 1 ? activeTank : null} onChangeTankReminders={onChangeTankReminders} /></View>
 
         {/* Language */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>🌐 {t("common.language")}</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>🌐 {t("common.language")}</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {LANGUAGES.map((l) => (
             <Pill key={l.code} fill label={l.label} active={lang === l.code} onPress={() => onSetLanguage && onSetLanguage(l.code)} />
@@ -259,7 +259,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         </View>
 
         {/* Units */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Units</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Units</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {[{ code: "imperial", label: "°F · gal" }, { code: "metric", label: "°C · L" }].map((u) => (
             <Pill key={u.code} fill label={u.label} active={unit === u.code} onPress={() => onSetUnit && onSetUnit(u.code)} />
@@ -269,7 +269,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         {/* Currency — the symbol on every price the keeper logs. Not a
             conversion: the figures they typed are already in their own money,
             and the app has no rates to convert with. */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Currency</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Currency</Text>
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
           {CURRENCIES.map((c) => (
             <Pill
@@ -288,7 +288,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
             toggle that does nothing is worse than no toggle. */}
         {telemetryConfigured ? (
           <>
-            <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Help improve Pocket Reef</Text>
+            <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Help improve Pocket Reef</Text>
             <Pressable
               onPress={() => onSetTelemetry && onSetTelemetry(!telemetryOn)}
               style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: telemetryOn ? theme.accent : theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.8 }]}
@@ -312,7 +312,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
 
         {/* Version, for when something goes wrong and you need to say which
             build you are on. */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>About</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>About</Text>
         <View style={{ marginTop: 8, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }}>
           <Text selectable style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
             {supportLine()}
@@ -323,7 +323,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         </View>
 
         {/* Backup */}
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Backup</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Backup</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           <Pressable onPress={() => onExport && onExport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel="Export a backup of all your data">
             <Text style={styles.ghostBtnText}>Export</Text>

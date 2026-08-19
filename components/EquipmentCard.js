@@ -78,7 +78,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 
       {groups.map(({ category, items }) => (
         <View key={category.id} style={{ marginTop: 14 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 6 }]}>{category.label}</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>{category.label}</Text>
           <View style={{ gap: 6 }}>
             {items.map((item) => {
               const w = warrantyStatus(item);

@@ -46,7 +46,7 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
       {/* A guided course — the part that keeps going after symptoms clear. */}
       {onStartTreatment ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Treatment plan</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Treatment plan</Text>
           <TreatmentPlanCard
             diseaseName={name}
             treatment={treatment}
@@ -60,7 +60,7 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
       {/* AT RISK IN YOUR TANK */}
       {atRisk.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { color: theme.warn }]}>AT RISK IN YOUR TANK</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { color: theme.warn }]}>AT RISK IN YOUR TANK</Text>
           <Text style={[styles.cardText, { marginBottom: 10 }]}>These species you're keeping can be affected — watch them closely.</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
             {atRisk.map((s) => (
@@ -82,7 +82,7 @@ function Section({ icon, title, text, color }) {
     <View style={[styles.card, { flexDirection: "row", gap: 12 }]}>
       <View style={{ width: 4, borderRadius: 999, backgroundColor: color, opacity: 0.7 }} />
       <View style={{ flex: 1 }}>
-        <Text style={[styles.cardEyebrow, { color }]}>{icon} {title.toUpperCase()}</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { color }]}>{icon} {title.toUpperCase()}</Text>
         <Text style={styles.cardText}>{text}</Text>
       </View>
     </View>

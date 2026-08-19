@@ -37,18 +37,18 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>Name</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Name</Text>
         <TextInput value={name} onChangeText={setName} placeholder="e.g. Living Room Reef" placeholderTextColor={theme.secondaryText}
           style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8 }} 
             maxLength={TEXT_LIMITS.name}
           />
 
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Water type</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Water type</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {WATERS.map((w) => <Pill key={w.id} fill label={w.label} active={water === w.id} onPress={() => setWater(w.id)} />)}
         </View>
 
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Icon</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Icon</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
           {EMOJIS.map((e) => {
             const on = emoji === e;
@@ -60,12 +60,12 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
           })}
         </View>
 
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
           {PRESETS.map((g) => <Pill key={g} label={formatVolume(g)} active={gallons === g} onPress={() => setGallons(g)} />)}
         </View>
 
-        <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
         <TextInput value={notes} onChangeText={setNotes} placeholder="Equipment, dosing, livestock plans…" placeholderTextColor={theme.secondaryText} multiline
           style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} 
             maxLength={TEXT_LIMITS.note}

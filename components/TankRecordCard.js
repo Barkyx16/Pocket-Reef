@@ -76,7 +76,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {/* CURRENT STOCK, as records rather than a list of names. */}
       {stock.length ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>In the tank</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>In the tank</Text>
           <View style={{ gap: 6 }}>
             {stock.map((name) => {
               const rec = stockMeta[name];
@@ -130,7 +130,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {/* THE HISTORY. */}
       {recent.length ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>No longer with us</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>No longer with us</Text>
           <View style={{ gap: 6 }}>
             {recent.map((l) => (
               <View key={l.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 12, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 9 }}>

@@ -238,7 +238,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
           {/* Stability — the reading behind the reading. */}
           {stability ? (
             <View style={[styles.card, { marginTop: 12 }]}>
-              <Text style={styles.cardEyebrow}>How steady it is</Text>
+              <Text accessibilityRole="header" style={styles.cardEyebrow}>How steady it is</Text>
               <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 4 }}>
                 <Text style={{ color: stability.grade === "unstable" ? theme.danger : stability.grade === "swinging" ? theme.warn : theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {stability.gradeLabel}
@@ -256,7 +256,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
           {/* What moves it. */}
           {related.length ? (
             <View style={[styles.card, { marginTop: 12 }]}>
-              <Text style={styles.cardEyebrow}>What moves it</Text>
+              <Text accessibilityRole="header" style={styles.cardEyebrow}>What moves it</Text>
               {related.map((c, i) => {
                 const note = interpret(c);
                 return (

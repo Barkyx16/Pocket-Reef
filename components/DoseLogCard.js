@@ -153,7 +153,7 @@ export function DoseLogCard({
       {/* THE LOG */}
       {recent.length ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>Recent doses</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Recent doses</Text>
           <View style={{ gap: 6 }}>
             {recent.map((d) => (
               <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 12, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 8 }}>

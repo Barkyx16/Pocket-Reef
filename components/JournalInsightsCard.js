@@ -69,7 +69,7 @@ export function JournalInsightsCard({ journal = [] }) {
       </Text>
 
       {/* ── Mood mix ─────────────────────────────────────────────────────── */}
-      <Text style={[styles.cardEyebrow, { marginTop: 18, marginBottom: 8 }]}>Mood mix</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18, marginBottom: 8 }]}>Mood mix</Text>
       <View style={{ flexDirection: "row", height: 12, borderRadius: 999, overflow: "hidden", backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border }}>
         {activeMoods.map((m) => (
           <View key={m.mood} style={{ flex: m.count, backgroundColor: m.color }} />

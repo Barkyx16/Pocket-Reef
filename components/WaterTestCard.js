@@ -494,7 +494,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
       {/* HISTORY */}
       {history.length ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>
             {showAllHistory ? `All ${history.length} tests` : "Recent tests"}
           </Text>
 

@@ -53,7 +53,7 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
         <Ionicons name="lock-closed" size={13} color={theme.accent} />
-        <Text style={styles.cardEyebrow}>Waiting for you</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Waiting for you</Text>
       </View>
 
       <View style={{ gap: 14 }}>

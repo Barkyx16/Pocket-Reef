@@ -81,7 +81,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       {/* Conflicts / positives */}
       {tank.length ? (
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={[styles.cardEyebrow, { color: warnings.length ? theme.warn : theme.accent }]}>{warnings.length ? "⚠️ Things to Check" : "✅ All Compatible"}</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { color: warnings.length ? theme.warn : theme.accent }]}>{warnings.length ? "⚠️ Things to Check" : "✅ All Compatible"}</Text>
           {warnings.length ? warnings.map((w, i) => (
             <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
           )) : (
@@ -95,7 +95,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
               app can do. */}
           {conflictFixes.length ? (
             <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-              <Text style={[styles.cardEyebrow, { marginBottom: 6 }]}>Ways to fix it</Text>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>Ways to fix it</Text>
               {conflictFixes.map((f, i) => (
                 <View key={i} style={{ backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11, marginTop: 8 }}>
                   <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
@@ -125,14 +125,14 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       {/* Health */}
       {tank.length ? (
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>Tank Health</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>Tank Health</Text>
           <CardBoundary name="Tank Health"><TankHealthCard health={health} onGoToTab={onGoToTab} /></CardBoundary>
         </View>
       ) : null}
 
       {/* Fish in this tank */}
       <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>In This Tank</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>In This Tank</Text>
         {species.length === 0 ? (
           <EmptyState emoji="🐠" title="Your tank is empty" subtitle="Head to the Species tab and tap ＋ to stock it — Pocket Reef flags any conflicts instantly." />
         ) : (
@@ -151,7 +151,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       </View>
 
       {/* Size */}
-      <Text style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Tank size</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Tank size</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {TANK_PRESETS.map((g) => (
           <Pill key={g} label={formatVolume(g)} active={tankGallons === g} onPress={() => setTankGallons && setTankGallons(g)} />
@@ -161,7 +161,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       {/* Notes */}
       {tankNotes && tankNotes.trim() ? (
         <View style={{ marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={styles.cardEyebrow}>Notes</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>Notes</Text>
           <Text style={[styles.cardText, { marginTop: 8 }]}>{tankNotes}</Text>
         </View>
       ) : null}

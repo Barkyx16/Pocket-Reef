@@ -104,7 +104,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* QUICK ACTIONS */}
       <View style={styles.card}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>Quick Actions</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>Quick Actions</Text>
         <Pressable onPress={() => onToggleTank && onToggleTank(name)} style={inTank ? styles.ghostBtn : styles.primaryBtn} accessibilityRole="button">
           <Text style={inTank ? styles.ghostBtnText : styles.primaryBtnText}>{inTank ? "− Remove from my tank" : "＋ Add to my tank"}</Text>
         </Pressable>
@@ -163,7 +163,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* JOURNEY / TIMELINE */}
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>{s.name}'s Journey</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>{s.name}'s Journey</Text>
         <Text style={[styles.cardText, { marginTop: 6 }]}>{inTank ? `Track ${s.name}'s progress — log photos and notes in your Journal.` : `Add ${s.name} to your tank, then log its journey with dated photos and notes.`}</Text>
         {onGoToTab ? (
           <Pressable onPress={() => onGoToTab("journal")} style={({ pressed }) => [styles.ghostBtn, { marginTop: 12 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
@@ -174,7 +174,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* SMART CARE */}
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>Smart Care</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Smart Care</Text>
         <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>{s.summary}</Text>
         <View style={{ gap: 8 }}>
           {careRows.map((r) => (
@@ -192,7 +192,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* GETS ALONG WITH YOUR TANK */}
       {others.length ? (
         <View style={styles.card}>
-          <Text style={styles.cardEyebrow}>GETS ALONG WITH YOUR TANK</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>GETS ALONG WITH YOUR TANK</Text>
           {others.map((n) => {
             const c = getCompatibility(name, n);
             const other = getSpecies(n);
@@ -214,7 +214,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* PROBLEMS & PROTECTION */}
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>PROBLEMS & PROTECTION</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>PROBLEMS & PROTECTION</Text>
         <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>Diseases to watch for on {s.name} — tap any one for its full guide with treatment steps.</Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
           <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>🩺 Common Ailments</Text>
@@ -255,7 +255,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* TANKMATE INTELLIGENCE */}
       {(mates.great.length || mates.caution.length || mates.avoid.length) ? (
         <View style={styles.card}>
-          <Text style={styles.cardEyebrow}>TANKMATE INTELLIGENCE</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>TANKMATE INTELLIGENCE</Text>
           <Text style={styles.cardText}>Who gets along with {s.name} — and who to keep apart. Tap any fish to open it.</Text>
           <MateGroup color={theme.accent} label="Great Tankmates" names={mates.great} onOpen={onOpenSpecies} />
           <MateGroup color={theme.warn} label="With Caution" names={mates.caution} onOpen={onOpenSpecies} />
@@ -265,7 +265,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* SHOP & SUPPLY */}
       <View style={styles.card}>
-        <Text style={styles.cardEyebrow}>SHOP & SUPPLY</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>SHOP & SUPPLY</Text>
         <Text style={styles.cardText}>Find {s.name}, the right food, and gear from trusted sources.</Text>
         <View style={{ gap: 10, marginTop: 12 }}>
           {shopLinks.map((link) => (
@@ -284,7 +284,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* WHAT IT NEEDS FROM YOU — the numbers above, turned into instructions. */}
       {careTips.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>Keeping {s.name}</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Keeping {s.name}</Text>
           {careTips.map((tip, i) => (
             <View key={i} style={{ flexDirection: "row", gap: 8, marginTop: i ? 8 : 0 }}>
               <Ionicons name="ellipse" size={7} color={theme.accent} style={{ marginTop: 6 }} />
@@ -299,7 +299,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           act on. */}
       {similar.length ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 4 }]}>If you like {s.name}</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>If you like {s.name}</Text>
           <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>
             Similar size, temperament and care level — useful when this one doesn't fit your tank.
           </Text>
@@ -332,7 +332,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* PERSONAL NOTES */}
       {onChangeNote ? (
         <View style={styles.card}>
-          <Text style={styles.cardEyebrow}>PERSONAL NOTES</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>PERSONAL NOTES</Text>
           <TextInput
             value={noteText}
             onChangeText={setNoteText}

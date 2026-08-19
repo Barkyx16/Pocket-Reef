@@ -35,7 +35,7 @@ export function TankToolboxCard({
   const stocking = () => empty ? emptyHint("Stock your tank to see its bioload and stocking level.") : (
     <>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 10 }}>
-        <Text style={styles.cardEyebrow}>Stocking level</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Stocking level</Text>
         <Text style={{ color: bio.color, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bio.level} · {bio.pct}%</Text>
       </View>
       <ProgressBar pct={bio.pct} color={bio.color} height={12} />
@@ -117,7 +117,7 @@ export function TankToolboxCard({
 
   return (
     <View style={styles.card}>
-      <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
         {TOOLS.map((tool) => (
           <Pill key={tool.id} icon={iconForEmoji(tool.emoji)} label={tool.label} active={sel === tool.id} onPress={() => pick(tool.id)} />

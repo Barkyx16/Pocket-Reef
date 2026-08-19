@@ -344,14 +344,14 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             )}
           </View>
           <Text style={[styles.heroEyebrow, { marginTop: 16 }]}>Pocket Reef</Text>
-          <Text style={[styles.heroTitle, { textAlign: "center", fontSize: 29, marginTop: 8 }]}>{heading}</Text>
+          <Text accessibilityRole="header" style={[styles.heroTitle, { textAlign: "center", fontSize: 29, marginTop: 8 }]}>{heading}</Text>
           <Text style={[styles.heroSub, { textAlign: "center", maxWidth: 330 }]}>{sub}</Text>
         </View>
 
         {/* Local-only mode — the backend hasn't been pointed at a project yet. */}
         {!configured ? (
           <View style={styles.card}>
-            <Text style={styles.cardEyebrow}>Cloud accounts not set up</Text>
+            <Text accessibilityRole="header" style={styles.cardEyebrow}>Cloud accounts not set up</Text>
             <Text style={styles.cardText}>
               Paste your Supabase project URL and anon key into lib/supabaseConfig.js to turn on accounts and cross-device sync. Until then Pocket Reef runs on this device, and nothing is lost — your data is here waiting when you connect it.
             </Text>

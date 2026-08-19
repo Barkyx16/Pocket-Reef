@@ -81,6 +81,11 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
           </View>
         ) : null}
         <View style={{ flex: 1 }}>
+          {/* Deliberately NOT accessibilityRole="header". The Pressable above
+              carries a role and a label, which makes the whole row a single
+              accessible element — VoiceOver never reaches these Texts, so a
+              role here does nothing except imply it does. A disclosure row is
+              a button, and the Buttons rotor is how it gets found. */}
           {eyebrow ? <Text style={styles.cardEyebrow}>{eyebrow}</Text> : null}
           <Text style={styles.cardTitle}>{text}</Text>
         </View>

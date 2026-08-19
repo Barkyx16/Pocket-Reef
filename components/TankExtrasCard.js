@@ -63,7 +63,7 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
 
   return (
     <View style={styles.card}>
-      <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Explore & More</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Explore & More</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
         {TOOLS.map((tool) => (
           <Pill key={tool.id} icon={iconForEmoji(tool.emoji)} label={tool.label} active={sel === tool.id} onPress={() => pick(tool.id)} />

@@ -107,7 +107,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
 
       {/* Everything included */}
       <View style={styles.card}>
-        <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything included</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything included</Text>
         <View style={{ gap: 12 }}>
           {FEATURES.map((f) => (
             <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
@@ -127,7 +127,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
       {/* Plan selector + CTA (only until unlocked) */}
       {!premiumUnlocked ? (
         <View style={styles.card}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Choose your plan</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Choose your plan</Text>
           <View style={{ flexDirection: "row", gap: 10 }}>
             {plans.map((p) => {
               const on = plan && plan.id === p.id;

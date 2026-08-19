@@ -40,7 +40,7 @@ export function HeroBanner({ eyebrow, title, subtitle, emoji, colors, image, chi
       {eyebrow ? (
         <View style={styles.heroEyebrowPill}><Text style={styles.heroEyebrow}>{eyebrow}</Text></View>
       ) : null}
-      <Text style={styles.heroTitle}>{title}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{title}</Text>
       {subtitle ? <Text style={styles.heroSub}>{subtitle}</Text> : null}
       {/* Optional extra content inside the banner (e.g. the profile level + XP bar). */}
       {children}

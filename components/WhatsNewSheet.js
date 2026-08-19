@@ -21,7 +21,7 @@ export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss 
         <View style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 18, paddingTop: 12, paddingBottom: 26, maxHeight: "86%" }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
-          <Text style={styles.cardEyebrow}>Updated to {currentVersion}</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>Updated to {currentVersion}</Text>
           <Text style={{ color: "#fff", fontSize: 24, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginTop: 2 }}>{title}</Text>
 
           <ScrollView style={{ marginTop: 14 }} showsVerticalScrollIndicator={false}>

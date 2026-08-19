@@ -131,7 +131,7 @@ export function TankToolkitCard({
 
   return (
     <View style={styles.card}>
-      <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
       {/* Pills carry a number where one exists, so the row says something about
           your tank instead of being nine identical words. */}
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 4 }}>

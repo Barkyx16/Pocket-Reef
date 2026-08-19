@@ -229,7 +229,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
             <CardBoundary name="Compare"><CompareCard a={compareSel[0]} b={compareSel[1]} /></CardBoundary>
           ) : (
             <View style={[styles.card, { marginBottom: 0 }]}>
-              <Text style={styles.cardEyebrow}>Compare mode</Text>
+              <Text accessibilityRole="header" style={styles.cardEyebrow}>Compare mode</Text>
               <Text style={styles.cardText}>Tap {2 - compareSel.length} more species below to compare them side by side.{compareSel.length ? ` Selected: ${compareSel.join(", ")}.` : ""}</Text>
             </View>
           )}
@@ -274,7 +274,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
       {diseaseMatches.length && openDisease ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 8 }]}>Health guides</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Health guides</Text>
           {diseaseMatches.map((d) => (
             <Pressable key={d.name} onPress={() => openDisease(d.name)} style={[styles.cleanRow, { paddingVertical: 10 }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
               <View style={styles.cleanImageWrap}>

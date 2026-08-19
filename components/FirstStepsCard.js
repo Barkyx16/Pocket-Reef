@@ -22,7 +22,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
   return (
     <View style={[styles.card, { borderColor: "rgba(56,225,198,0.30)" }]}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-        <Text style={styles.cardEyebrow}>Get your tank set up</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>Get your tank set up</Text>
         <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{done}/{steps.length}</Text>
       </View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>

@@ -126,14 +126,14 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             <View style={{ position: "absolute", right: -60, top: -70, width: 200, height: 200, borderRadius: 100, backgroundColor: hero.glow }} />
             <Text style={{ position: "absolute", right: -6, top: -24, fontSize: 150, opacity: 0.16 }}>{hero.emoji}</Text>
             <View style={styles.heroEyebrowPill}><Text style={styles.heroEyebrow}>{hero.eyebrow}</Text></View>
-            <Text style={[styles.heroTitle, { fontSize: 32 }]}>{hero.title}</Text>
+            <Text accessibilityRole="header" style={[styles.heroTitle, { fontSize: 32 }]}>{hero.title}</Text>
             <Text style={styles.heroSub}>{hero.text}</Text>
           </View>
 
           {/* BODY */}
           {isPremium ? (
             <View style={styles.card}>
-              <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything Premium unlocks</Text>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything Premium unlocks</Text>
               <View style={{ gap: 12 }}>
                 {PREMIUM.map((f) => (
                   <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
@@ -148,13 +148,13 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             </View>
           ) : isSize ? (
             <View style={styles.card}>
-              <Text style={styles.cardEyebrow}>Water type</Text>
+              <Text accessibilityRole="header" style={styles.cardEyebrow}>Water type</Text>
               <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
                 {[{ id: "fresh", label: "💧 Freshwater" }, { id: "salt", label: "🌊 Saltwater" }].map((w) => (
                   <Pill key={w.id} fill label={w.label} active={water === w.id} onPress={() => setWater(w.id)} />
                 ))}
               </View>
-              <Text style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
                 {TANK_PRESETS.map((g) => (
                   <Pill key={g} label={formatVolume(g)} active={gallons === g} onPress={() => setGallons(g)} />
@@ -163,7 +163,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             </View>
           ) : isResult ? (
             <View style={styles.card}>
-              <Text style={[styles.cardEyebrow, { marginBottom: 12 }]}>Recommended for you</Text>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Recommended for you</Text>
               <View style={{ gap: 12 }}>
                 {picks.map((sp) => (
                   <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>

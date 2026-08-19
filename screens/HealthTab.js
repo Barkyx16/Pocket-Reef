@@ -112,7 +112,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
       {/* SYMPTOM CHECKER */}
       <View style={styles.card}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-          <Text style={styles.cardEyebrow}>Symptom checker</Text>
+          <Text accessibilityRole="header" style={styles.cardEyebrow}>Symptom checker</Text>
           {symptoms.length ? (
             <Pressable onPress={() => { tapHaptic(); setSymptoms([]); }} accessibilityRole="button">
               <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>

@@ -161,7 +161,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
 
       {valid ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={[styles.cardEyebrow, { marginBottom: 6 }]}>Quick changes</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>Quick changes</Text>
           {[25, 50].map((p) => (
             <View key={p} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderTopWidth: 1, borderTopColor: theme.border }}>
               <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p}% change ({formatVolume(Math.round((p / 100) * tankGallons * 10) / 10)})</Text>

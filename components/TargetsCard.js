@@ -56,7 +56,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
       </Text>
 
       {/* PRESETS */}
-      <Text style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Start from a tank type</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Start from a tank type</Text>
       <View style={{ gap: 6 }}>
         {presets.map((preset) => (
           <Pressable
@@ -82,7 +82,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
 
       {/* PER-PARAMETER */}
       <View style={{ flexDirection: "row", alignItems: "center", marginTop: 18, marginBottom: 8 }}>
-        <Text style={[styles.cardEyebrow, { flex: 1 }]}>Your ranges</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { flex: 1 }]}>Your ranges</Text>
         {custom.length ? (
           <Pressable onPress={resetAll} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel="Reset every target to the default">
             <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Reset all</Text>

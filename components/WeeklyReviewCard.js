@@ -39,7 +39,7 @@ export function WeeklyReviewCard({ tank = {}, waterType = "fresh", onGoToTab, no
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-        <Text style={styles.cardEyebrow}>{days === 7 ? "Your week" : "Your month"}</Text>
+        <Text accessibilityRole="header" style={styles.cardEyebrow}>{days === 7 ? "Your week" : "Your month"}</Text>
         <View style={{ flexDirection: "row", gap: 6 }}>
           {[7, 30].map((d) => (
             <Pressable
