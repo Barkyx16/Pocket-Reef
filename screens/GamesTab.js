@@ -282,11 +282,11 @@ function makeTriviaRound() {
   const s = rand(SPECIES);
   const kinds = ["water", "temperament", "diet"];
   if (s.reefSafe != null && s.kind === "fish") kinds.push("reef");
-  const type = rand(kinds);
+  const kind = rand(kinds);
   let q, opts, answer;
-  if (type === "water") { q = `Is ${s.name} freshwater or saltwater?`; opts = ["Freshwater", "Saltwater"]; answer = s.water === "salt" ? "Saltwater" : "Freshwater"; }
-  else if (type === "temperament") { q = `What's ${s.name}'s temperament?`; opts = ["Peaceful", "Semi-aggressive", "Aggressive"]; answer = { peaceful: "Peaceful", "semi-aggressive": "Semi-aggressive", aggressive: "Aggressive" }[s.temperament]; }
-  else if (type === "diet") { q = `What does ${s.name} mainly eat?`; opts = ["Omnivore", "Carnivore", "Herbivore", "Photosynthetic"]; answer = cap(s.diet); }
+  if (kind === "water") { q = `Is ${s.name} freshwater or saltwater?`; opts = ["Freshwater", "Saltwater"]; answer = s.water === "salt" ? "Saltwater" : "Freshwater"; }
+  else if (kind === "temperament") { q = `What's ${s.name}'s temperament?`; opts = ["Peaceful", "Semi-aggressive", "Aggressive"]; answer = { peaceful: "Peaceful", "semi-aggressive": "Semi-aggressive", aggressive: "Aggressive" }[s.temperament]; }
+  else if (kind === "diet") { q = `What does ${s.name} mainly eat?`; opts = ["Omnivore", "Carnivore", "Herbivore", "Photosynthetic"]; answer = cap(s.diet); }
   else { q = `Is ${s.name} reef-safe?`; opts = ["Yes", "No"]; answer = s.reefSafe ? "Yes" : "No"; }
   const options = shuffle(opts).map((o) => ({ key: o, label: o, correct: o === answer }));
   return {
