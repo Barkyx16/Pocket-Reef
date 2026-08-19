@@ -461,7 +461,7 @@ export function getFeedingPlan(stockedNames = [], quantities = {}) {
   const DIET_ADVICE = {
     herbivore: { food: "Algae wafers, nori, blanched vegetables", note: "Herbivores graze constantly in the wild — leave grazing material in rather than one large meal." },
     carnivore: { food: "Frozen or live meaty foods, quality pellets", note: "Carnivores do better on fewer, larger meals. A fast day each week is normal and healthy." },
-    omnivore: { food: "Quality flake or pellet, plus frozen treats", note: "Vary it. A single dry food long-term is the most common cause of dull colour." },
+    omnivore: { food: "Quality flake or pellet, plus frozen treats", note: "Vary it. A single dry food long-term is the most common cause of dull color." },
     "filter feeder": { food: "Phytoplankton or powdered filter food", note: "Filter feeders need food in the water column, not on the substrate — target-feed with the pumps off." },
   };
 
