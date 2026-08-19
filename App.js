@@ -460,10 +460,22 @@ function PocketReef() {
       return;
     }
     if (res.kind === "done") {
+      // Which tank? A reminder rolls several tanks into one line ("Due in the
+      // reef and the frag tank"), and this fires from the lock screen hours
+      // later, so "the tank that is open in the app" is not an answer — it was
+      // the old one, and it filed the reef's water change against quarantine
+      // while leaving the reef overdue. Both tanks wrong, silently.
+      //
+      // Act only when the reminder is about exactly one tank. Anything else
+      // opens the app so the keeper says which, rather than the app choosing.
+      const ids = Array.isArray(res.tankIds) ? res.tankIds.filter((id) => tanks.some((tk) => tk.id === id)) : [];
+      const only = ids.length === 1 ? ids[0] : (tanks.length === 1 ? tanks[0].id : null);
+      if (!only) { jumpTo(res.to || "log"); return; }
+
       // Only the chores that map onto a real record. A reminder key that
       // doesn't is left alone rather than inventing an entry.
-      if (res.key === "waterChange") logMaintenance("waterchange");
-      else if (res.key === "feeding") addFeeding({ id: Date.now(), date: getTodayKey(), food: "Fed" });
+      if (res.key === "waterChange") markJobDone(only, "waterchange", "Water change");
+      else if (res.key === "feeding") addFeedingToTank(only, { id: Date.now(), date: getTodayKey(), food: "Fed" });
       else if (res.key === "waterTest") jumpTo("log");
       return;
     }
@@ -875,6 +887,10 @@ function PocketReef() {
       const testEvery = cadence(cadenceFor(tk, reminderPrefs, "waterTest"));
       const changeEvery = cadence(cadenceFor(tk, reminderPrefs, "waterChange"));
       return {
+        // The id travels with the state so a reminder can say which tank it is
+        // about. Without it, ticking a chore off from the lock screen recorded
+        // against whichever tank happened to be open in the app.
+        id: tk.id,
         name: tk.name,
         testDue: testEvery != null && sinceDays((tk.waterTests || [])[0] && (tk.waterTests || [])[0].date) >= testEvery,
         changeDue: changeEvery != null && sinceDays((tk.maintenance || {}).waterchange) >= changeEvery,
@@ -1748,6 +1764,12 @@ function PocketReef() {
     }
     return { stock: canAdd ? [...tk.stock, item.name] : tk.stock, stockMeta, quarantine: tk.quarantine.filter((q) => q.id !== item.id) };
   }));
+  // By id, for the notification handler: a "Fed" tapped from the lock screen
+  // belongs to the tank the reminder was about, not the one left open.
+  const addFeedingToTank = useStableCallback((tankId, entry) => {
+    updateTankById(tankId, (tk) => ({ feedings: capped([entry, ...(tk.feedings || [])], CAPS.feedings) }));
+    recordActivity(2);
+  });
   const addFeeding = useStableCallback((entry) => { updateActiveTank((tk) => ({ feedings: capped([entry, ...(tk.feedings || [])], CAPS.feedings) })); recordActivity(2); });
   const deleteFeeding = useStableCallback((id) => {
     const gone = (activeTank.feedings || []).find((f) => f.id === id);
