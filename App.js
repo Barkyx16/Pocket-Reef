@@ -84,6 +84,7 @@ import { getAction } from "./lib/shortcuts";
 import { CAPS, capped } from "./lib/caps";
 import { classifyLink } from "./lib/deepLink";
 import { friendlyAuthError } from "./lib/authErrors";
+import { friendlyPurchaseError, OUTCOME } from "./lib/purchaseErrors";
 
 // Bottom bar: four primary tabs + a "More" entry (Pocket Planter pattern).
 // Vector icons, not emoji. The tab bar is the most-seen chrome in the app and
@@ -501,7 +502,15 @@ function PocketReef() {
     } else if (res.ok) {
       Alert.alert("Nothing to restore", "No active subscription was found for this store account.");
     } else {
-      Alert.alert("Couldn't restore", res.error || "Please try again in a moment.");
+      const f = friendlyPurchaseError(res);
+      // Already-owned surfacing here means the receipt is on the device after
+      // all, which is a restore that worked.
+      if (f.outcome === OUTCOME.owned) {
+        setPremiumUnlocked(true);
+        Alert.alert(f.title, f.message);
+      } else if (f.outcome !== OUTCOME.cancelled) {
+        Alert.alert("Couldn't restore", f.message);
+      }
     }
   });
 
@@ -1065,15 +1074,33 @@ function PocketReef() {
       track(EVENTS.PAYWALL_CTA, paywallReason);
       const res = await purchasePackage(plan.pkg);
       if (res.cancelled) { track(EVENTS.PURCHASE_CANCELLED); return; }
-      if (!res.ok) { failureHaptic(); track(EVENTS.PURCHASE_FAILED); }
       if (res.entitled) {
         successHaptic();
         track(EVENTS.PURCHASE_SUCCESS);
         setPremiumUnlocked(true);
         Alert.alert("Welcome to Premium 👑", "Everything's unlocked. Thanks for supporting Pocket Reef.");
-      } else if (!res.ok) {
-        Alert.alert("Purchase failed", res.error || "Please try again.");
+        return;
       }
+      if (res.ok) return;
+
+      // Not every failure is one. Someone who already owns this was being told
+      // "Purchase failed", and a purchase waiting on Ask to Buy approval looked
+      // to a parent and child like the thing they just set up was broken.
+      const f = friendlyPurchaseError(res);
+      if (f.outcome === OUTCOME.owned) {
+        successHaptic();
+        setPremiumUnlocked(true);
+        Alert.alert(f.title, f.message);
+        return;
+      }
+      if (f.outcome === OUTCOME.pending) {
+        Alert.alert(f.title, f.message);
+        return;
+      }
+      if (f.outcome === OUTCOME.cancelled) { track(EVENTS.PURCHASE_CANCELLED); return; }
+      failureHaptic();
+      track(EVENTS.PURCHASE_FAILED);
+      Alert.alert(f.title, f.message);
     } finally {
       setBuying(false);
     }
