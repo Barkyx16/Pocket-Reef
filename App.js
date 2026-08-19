@@ -517,7 +517,16 @@ function PocketReef() {
       setPremiumUnlocked(true);
       Alert.alert("Premium restored", "Welcome back — everything's unlocked.");
     } else if (res.ok) {
-      Alert.alert("Nothing to restore", "No active subscription was found for this store account.");
+      // A restore that finds nothing is the moment a paying customer is most
+      // likely to think they have been charged for nothing. The old message
+      // stated the outcome and stopped, and the cause is almost always the same
+      // one — the App Store is signed into a different Apple ID than the one
+      // that bought it, which is not something the app can see or fix, but is
+      // something it can name.
+      Alert.alert(
+        "Nothing to restore",
+        "No subscription was found on this Apple ID.\n\nIf you bought Premium on a different Apple ID, sign into that one in Settings → your name → Media & Purchases, then try again. A subscription that has lapsed will not restore either — you can resubscribe above."
+      );
     } else {
       const f = friendlyPurchaseError(res);
       // Already-owned surfacing here means the receipt is on the device after
