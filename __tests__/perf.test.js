@@ -43,15 +43,42 @@ const bigTank = () => ({
   journal: [], costs: [], maintenance: {}, quarantine: [], inventory: [], observations: {},
 });
 
-// Median of several runs: a single timing on a loaded CI box is mostly noise.
-const median = (fn, runs = 7) => {
+// Median of several runs: a single timing on a loaded box is mostly noise.
+//
+// Each measurement times a BATCH rather than one call. The one-year case runs
+// in about 0.2ms, and this suite executes alongside fifty others — a single GC
+// pause is several times that, so a lone timing measures pauses rather than
+// work. Taking the median of seven doesn't save it either, because a stall
+// under load lands on several consecutive iterations. Timing a batch big enough
+// to dwarf a pause does, and it cost this suite an intermittent failure to
+// learn that.
+//
+// The batch size is found rather than fixed: doubling until the run clears a
+// few milliseconds keeps a fast function accurate without making a slow one
+// take twenty seconds to measure.
+const FLOOR_MS = 3;
+const MAX_BATCH = 256;
 
+function batchFor(fn) {
+  let n = 1;
+  for (;;) {
+    const t = process.hrtime.bigint();
+    for (let i = 0; i < n; i++) fn();
+    const ms = Number(process.hrtime.bigint() - t) / 1e6;
+    if (ms >= FLOOR_MS || n >= MAX_BATCH) return n;
+    n *= 2;
+  }
+}
 
+const median = (fn, runs = 5, batch = null) => {
+  // The first pass through a function is the optimiser's, not the algorithm's.
+  fn();
+  const n = batch || batchFor(fn);
   const times = [];
   for (let i = 0; i < runs; i++) {
     const t = process.hrtime.bigint();
-    fn();
-    times.push(Number(process.hrtime.bigint() - t) / 1e6);
+    for (let j = 0; j < n; j++) fn();
+    times.push(Number(process.hrtime.bigint() - t) / 1e6 / n);
   }
   return times.sort((a, b) => a - b)[Math.floor(runs / 2)];
 };
@@ -69,10 +96,13 @@ describe("the analysis scales with how long you've kept the tank", () => {
   const scaling = (build, run) => {
     const small = build(52);   // one year
     const large = build(208);  // four years
-    const t1 = median(() => run(small));
-    const t2 = median(() => run(large));
-    // Guard against a divide-by-zero on a very fast machine.
-    return t2 / Math.max(t1, 0.05);
+    // The same batch for both, so the ratio compares work and not bookkeeping.
+    const batch = batchFor(() => run(large));
+    const t1 = median(() => run(small), 5, batch);
+    const t2 = median(() => run(large), 5, batch);
+    // The batch makes both numbers comfortably measurable, so this guard is
+    // now only for the impossible case rather than load-bearing.
+    return t2 / Math.max(t1, 0.001);
   };
 
   test("correlation stays sub-quadratic as history grows", () => {

@@ -205,3 +205,40 @@ describe("day-keyed maps don't grow forever", () => {
     expect(pruneDayMap(undefined, 14, NOW)).toEqual({});
   });
 });
+
+describe("no fixture dates itself in UTC", () => {
+  // This class of bug only surfaces for part of the day, in some timezones —
+  // a suite can pass every run for a week and then fail at 17:00. A fixture
+  // that derives a day key from toISOString() dates its records in UTC while
+  // every engine reads them as local, so west of Greenwich the fixture's
+  // "today" becomes the app's tomorrow and the reading lands in the future.
+  //
+  // Found the hard way: todayHub.test.js had done this since it was written
+  // and only failed once the clock happened to be past the boundary during a
+  // run. Checked here so the next one is caught at once rather than in six
+  // months at an inconvenient hour.
+  const fs = require("fs");
+  const path = require("path");
+  const DIR = path.join(__dirname);
+
+  test("no test file builds a day key out of an ISO string", () => {
+    const offenders = [];
+    for (const f of fs.readdirSync(DIR).filter((n) => n.endsWith(".js"))) {
+      const src = fs.readFileSync(path.join(DIR, f), "utf8");
+      const lines = src.split("\n");
+      lines.forEach((line, i) => {
+        // This file names the pattern in prose to explain it.
+        if (line.trim().startsWith("//") || line.trim().startsWith("*")) return;
+        if (/toISOString\(\)[^\n]*\.slice\(0, ?10\)/.test(line)) {
+          offenders.push(`${f}:${i + 1}`);
+        }
+      });
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  test("and the check can actually see the files", () => {
+    // A walker that silently matches nothing passes forever.
+    expect(fs.readdirSync(DIR).filter((n) => n.endsWith(".js")).length).toBeGreaterThan(50);
+  });
+});

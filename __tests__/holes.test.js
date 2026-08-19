@@ -14,7 +14,16 @@ const { explainsStubborn, newSourceProfile } = require("../lib/sourceWater");
 
 const NOW = Date.now();
 const ago = (n) => new Date(NOW - n * 86400000).toISOString();
-const key = (n) => ago(n).slice(0, 10);
+// Day keys built the way the app builds them: local calendar fields, not UTC.
+// Deriving one from toISOString() dates the fixture in UTC while every engine
+// reads it as local, so west of Greenwich after ~17:00 the fixture's "today"
+// is the app's tomorrow — a reading in the future, and a test that passes or
+// fails depending on the hour it is run.
+const dayKeyOf = (d) => {
+  const x = d instanceof Date ? d : new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+};
+const key = (n) => dayKeyOf(new Date(Date.now() - n * 86400000));
 
 describe("the daily hub can't contradict itself", () => {
   test("a quarantined fish gets one verdict, not two opposite ones", () => {

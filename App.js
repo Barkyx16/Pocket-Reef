@@ -83,6 +83,8 @@ import { TabShortcutSheet } from "./components/TabShortcutSheet";
 import { UndoSnackbar } from "./components/UndoSnackbar";
 import { getAction } from "./lib/shortcuts";
 import { CAPS, capped } from "./lib/caps";
+import { classifyLink } from "./lib/deepLink";
+import { friendlyAuthError } from "./lib/authErrors";
 
 // Bottom bar: four primary tabs + a "More" entry (Pocket Planter pattern).
 // Vector icons, not emoji. The tab bar is the most-seen chrome in the app and
@@ -600,21 +602,23 @@ function PocketReef() {
   useEffect(() => {
     if (!supabase) return;
     const handleUrl = async (url) => {
-      if (!url) return;
-      const fragment = url.includes("#") ? url.split("#")[1] : url.split("?")[1];
-      if (!fragment) return;
-      const params = {};
-      fragment.split("&").forEach((pair) => {
-        const [k, v] = pair.split("=");
-        if (k) params[k] = decodeURIComponent(v || "");
-      });
-      if (params.access_token && params.refresh_token) {
-        await supabase.auth.setSession({
-          access_token: params.access_token,
-          refresh_token: params.refresh_token,
-        }).catch(() => {});
+      // Any app or web page can open a URL with this app's scheme. A link is
+      // acted on only if it claims one of the two destinations we registered —
+      // otherwise a crafted link carrying someone else's tokens would sign the
+      // keeper into someone else's account, and everything they logged after
+      // that would land where they couldn't see it.
+      const link = classifyLink(url);
+      if (!link) return;
+      if (link.error) {
+        // Tapping an expired link used to open the app and do nothing, which
+        // reads as the app being broken rather than the link being stale.
+        Alert.alert("That link didn't work", `${friendlyAuthError(link.error)}\n\nRequest a new one from the sign-in screen.`);
+        return;
       }
-      if (params.type === "recovery" || url.includes("reset-password")) setShowResetPassword(true);
+      if (link.session) {
+        await supabase.auth.setSession(link.session).catch(() => {});
+      }
+      if (link.isRecovery) setShowResetPassword(true);
     };
     Linking.getInitialURL().then(handleUrl).catch(() => {});
     const sub = Linking.addEventListener("url", ({ url }) => handleUrl(url));

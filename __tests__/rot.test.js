@@ -19,7 +19,16 @@ const alk = activeParams("salt").find((p) => p.key === "alk");
 // dates would drift out of the window and make this suite fail with the
 // calendar rather than with a regression.
 const NOW = Date.now();
-const ago = (d) => new Date(NOW - d * 86400000).toISOString().slice(0, 10);
+// Day keys built the way the app builds them: local calendar fields, not UTC.
+// Deriving one from toISOString() dates the fixture in UTC while every engine
+// reads it as local, so west of Greenwich after ~17:00 the fixture's "today"
+// is the app's tomorrow — a reading in the future, and a test that passes or
+// fails depending on the hour it is run.
+const dayKeyOf = (d) => {
+  const x = d instanceof Date ? d : new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+};
+const ago = (d) => dayKeyOf(new Date(NOW - d * 86400000));
 const reading = (date, v) => ({ id: date, date, values: { alk: v } });
 // A list that is the right shape with rot scattered through it.
 const rotten = (good) => [good[0], null, good[1], undefined, good[2], "", good[3], 0, []];
