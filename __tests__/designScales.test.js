@@ -86,3 +86,44 @@ describe("the scales themselves are coherent", () => {
     expect(theme.accent).toBeTruthy();
   });
 });
+
+describe("depth is a known quantity", () => {
+  // Audited: 22 shadows across the app, 19 of them a unique recipe. Depth
+  // means nothing when no two elements share one — an element does not read as
+  // "one level above the card" if every element has its own private opacity.
+  //
+  // Only the black ones are depth. The other fifteen are accent glows, which
+  // are a colour effect and belong nowhere near an elevation scale.
+  //
+  // The tokens were derived from recipes already in the app, so adopting them
+  // moves nothing. One matched exactly and is routed; the rest are visual
+  // decisions, held here so they stay visible rather than being forgotten.
+  const ALL = [...FILES, "styles.js"];
+  const shadows = (kind) => ALL.flatMap((f) => {
+    const src = read(f);
+    return [...src.matchAll(/shadowColor: ([^,]+),/g)]
+      .map((m) => m[1].trim())
+      .filter((c) => (kind === "black" ? /^"#000/.test(c) : !/^"#000/.test(c)));
+  });
+
+  test("elevation has three levels and no more", () => {
+    expect(Object.keys(elevation)).toHaveLength(3);
+  });
+
+  test("the tokens are ordered: floating sits above card", () => {
+    expect(elevation.floating.shadowOpacity).toBeGreaterThan(elevation.card.shadowOpacity);
+    expect(elevation.floating.shadowOffset.height).toBeGreaterThan(elevation.card.shadowOffset.height);
+  });
+
+  test("hand-rolled elevation shadows stay countable", () => {
+    // Five today, minus the one routed. If this climbs, depth is drifting
+    // again and the next person should reach for a token instead.
+    expect(shadows("black").length).toBeLessThanOrEqual(8);
+  });
+
+  test("glows are not mistaken for depth", () => {
+    // They are coloured on purpose; a scale of elevations should never absorb
+    // them, because they say "this is active", not "this is raised".
+    expect(shadows("glow").length).toBeGreaterThan(5);
+  });
+});

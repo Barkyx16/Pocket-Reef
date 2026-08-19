@@ -73,7 +73,7 @@ export function RestorePointsCard({ onRestored }) {
       {points === null ? (
         <ActivityIndicator color={theme.accent} style={{ marginTop: 16 }} />
       ) : !points.length ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
           No snapshots yet — the first is taken automatically next time the app opens.
         </Text>
       ) : (

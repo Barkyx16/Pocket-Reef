@@ -76,7 +76,7 @@ export function TankToolboxCard({
             <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
           </View>
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, lineHeight: 16, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
           The overlap that keeps every species in your tank comfortable — aim your heater and buffering here.
         </Text>
       </>

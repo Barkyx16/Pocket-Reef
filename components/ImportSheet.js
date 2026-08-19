@@ -39,7 +39,7 @@ export function ImportSheet({ onImport, onClose }) {
         
             maxLength={TEXT_LIMITS.note}
           />
-        {error ? <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
+        {error ? <Text style={{ color: theme.danger, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
         <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button" accessibilityLabel="Restore this backup, replacing everything on this device" accessibilityState={{ disabled: !raw.trim() }}>
           <Text style={raw.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Restore</Text>
         </Pressable>
