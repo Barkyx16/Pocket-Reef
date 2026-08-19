@@ -1909,7 +1909,7 @@ function PocketReef() {
   // actually reach for and the app didn't have.
   const shareReport = useStableCallback(async () => {
     tapHaptic("medium");
-    const text = buildTankReport(activeTank, { unitLabel: unit === "metric" ? "L" : "gal", strengths });
+    const text = buildTankReport(activeTank, { strengths });
     if (!text) return;
     try { await Share.share({ message: text }); } catch (e) { /* dismissed */ }
   });
