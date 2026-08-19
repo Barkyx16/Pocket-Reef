@@ -1599,6 +1599,14 @@ export function rankTitle(level) {
   return RANKS[Math.min(RANKS.length - 1, Math.floor((level - 1) / 10))];
 }
 export function levelFromXp(xp = 0) {
+  // XP arrives from a restored backup, a synced profile, or storage written by
+  // a build that predates a field — none of which is guaranteed to be a sane
+  // number. A NaN made pct and toNext NaN, which renders as "NaN XP to Level 2"
+  // above a progress bar of NaN width; a negative made pct -1000%, which is a
+  // bar drawn a thousand percent to the left of where it starts.
+  xp = Number(xp);
+  if (!Number.isFinite(xp) || xp < 0) xp = 0;
+
   let level = 1;
   while (level < MAX_LEVEL && xp >= xpForLevel(level + 1)) level++;
   const cur = xpForLevel(level);

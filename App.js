@@ -11,7 +11,7 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { styles, theme, useResponsiveLayout, CONTENT_MAX_WIDTH, TWO_COLUMN_MAX_WIDTH } from "./styles";
-import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak, successHaptic, failureHaptic, warningHaptic, commitHaptic, resolveWaterType, assessAddition, getParamForecasts } from "./core";
+import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak, successHaptic, failureHaptic, warningHaptic, commitHaptic, resolveWaterType, assessAddition, getParamForecasts, BANNERS } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pullSnapshot, fetchServerEntitlement, buildSnapshot } from "./lib/cloudSync";
 import { mergeSnapshots } from "./lib/merge";
@@ -29,7 +29,7 @@ import { generateStockingPlan } from "./lib/planner";
 import { newStockRecord, newLoss, isMortality } from "./lib/livestock";
 import { forgetPhoto } from "./lib/photoStore";
 import { collectOrphanPhotos } from "./lib/photoGC";
-import { pruneDayMap } from "./lib/day";
+import { pruneDayMap, isValidDayKey } from "./lib/day";
 import { reviewLoss } from "./lib/afterLoss";
 import { newUpkeepTask } from "./lib/upkeep";
 import { newDose } from "./lib/dosingLog";
@@ -55,9 +55,9 @@ import { isTelemetryConfigured } from "./lib/posthogConfig";
 import { syncReminders, requestPermission, onReminderTap, cadenceFor } from "./lib/notifications";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
-import { t, setLanguage, deviceLanguage } from "./lib/i18n";
-import { setUnit } from "./lib/units";
-import { setCurrency } from "./lib/currency";
+import { t, setLanguage, deviceLanguage, getLanguage } from "./lib/i18n";
+import { setUnit, getUnit } from "./lib/units";
+import { setCurrency, getCurrency } from "./lib/currency";
 import { BackgroundDecoration } from "./components/BackgroundDecoration";
 import { HomeTab } from "./screens/HomeTab";
 import { SpeciesTab } from "./screens/SpeciesTab";
@@ -334,15 +334,15 @@ function PocketReef() {
       if (x) setXp(Number(x) || 0);
       if (ob === "1") setSeenOnboarding(true);
       if (lg) {
-        setLanguage(lg); setLangState(lg);
+        setLanguage(lg); setLangState(getLanguage());
       } else {
         // No stored choice yet — follow the phone. Only ever applied on a fresh
         // install, so it can never override a language the user picked.
         const detected = deviceLanguage();
-        if (detected) { setLanguage(detected); setLangState(detected); }
+        if (detected) { setLanguage(detected); setLangState(getLanguage()); }
       }
-      if (un) { setUnit(un); setUnitState(un); }
-      if (cur) { setCurrency(cur); setCurrencyState(cur); }
+      if (un) { setUnit(un); setUnitState(getUnit()); }
+      if (cur) { setCurrency(cur); setCurrencyState(getCurrency()); }
       if (a) setActiveDays((await getJSON("pr_activeDays", [])) || []);
       if (rm) { const p = await getJSON("pr_reminders", null); if (p) setReminderPrefs(p); }
 
@@ -525,9 +525,9 @@ function PocketReef() {
     if (Array.isArray(snap.recent)) setRecent(snap.recent);
     if (snap.speciesNotes) setSpeciesNotes(snap.speciesNotes);
     if (snap.bannerId) setBannerId(snap.bannerId);
-    if (snap.lang) { setLanguage(snap.lang); setLangState(snap.lang); }
-    if (snap.unit) { setUnit(snap.unit); setUnitState(snap.unit); }
-    if (snap.currency) { setCurrency(snap.currency); setCurrencyState(snap.currency); }
+    if (snap.lang) { setLanguage(snap.lang); setLangState(getLanguage()); }
+    if (snap.unit) { setUnit(snap.unit); setUnitState(getUnit()); }
+    if (snap.currency) { setCurrency(snap.currency); setCurrencyState(getCurrency()); }
     if (snap.strengths && typeof snap.strengths === "object") setStrengths(snap.strengths);
     if (typeof snap.tankSized === "boolean") setTankSized(snap.tankSized);
     // premiumUnlocked is deliberately NOT applied from the snapshot. Entitlement
@@ -1032,11 +1032,16 @@ function PocketReef() {
   }, [syncNow]);
 
   // ── User-level settings ──
-  const changeUnit = useStableCallback((u) => { setUnit(u); setUnitState(u); });
+  // Store what the module actually accepted, not what it was handed. These
+  // arrive from imports and synced profiles as well as from the picker, and
+  // setUnit already rejects anything it doesn't know — but the React state used
+  // to keep the raw value, so the singleton said "imperial" while the state
+  // said "banana", no pill looked selected, and the junk was persisted.
+  const changeUnit = useStableCallback((u) => { setUnit(u); setUnitState(getUnit()); });
   // Symbol only — the app has no exchange rates and the figures a keeper typed
   // are already in their own money. Switching relabels; it never converts.
-  const changeCurrency = useStableCallback((c) => { setCurrency(c); setCurrencyState(c); });
-  const changeLanguage = useStableCallback((code) => { setLanguage(code); setLangState(code); });
+  const changeCurrency = useStableCallback((c) => { setCurrency(c); setCurrencyState(getCurrency()); });
+  const changeLanguage = useStableCallback((code) => { setLanguage(code); setLangState(getLanguage()); });
   // Turning a reminder on is the moment a permission prompt makes sense — the
   // user has just asked to be reminded, so the ask has obvious context.
   const changeReminders = useStableCallback((next) => {
@@ -1887,17 +1892,25 @@ function PocketReef() {
       setTanks(tanksIn);
       // ensureTankShape guarantees an id, so this can't land on undefined.
       setActiveTankId(tanksIn[0].id);
-      if (typeof p.xp === "number") setXp(p.xp);
-      if (Array.isArray(p.activeDays)) setActiveDays(p.activeDays);
-      if (p.careDone) setCareDone(p.careDone);
-      if (Array.isArray(p.wishlist)) setWishlist(p.wishlist);
+      // typeof NaN is "number", and NaN XP propagates into the level, the
+      // progress bar and every achievement that compares against it.
+      if (Number.isFinite(p.xp) && p.xp >= 0) setXp(p.xp);
+      // Day keys, and the streak engine filters and compares them as strings.
+      if (Array.isArray(p.activeDays)) setActiveDays(p.activeDays.filter((d) => isValidDayKey(d)));
+      // A map of day key -> list of task ids. Anything else is read as one by
+      // `careDone[today] || []`, which quietly yields nothing for the day.
+      if (p.careDone && typeof p.careDone === "object" && !Array.isArray(p.careDone)) {
+        setCareDone(pruneDayMap(p.careDone));
+      }
+      if (Array.isArray(p.wishlist)) setWishlist(p.wishlist.filter((n) => typeof n === "string" && n.trim()));
       // Restored to match what export now writes — an import that silently
       // dropped half the file was the other half of the same bug.
       if (p.activeTankId && tanksIn.some((tk) => tk.id === p.activeTankId)) setActiveTankId(p.activeTankId);
       if (p.speciesNotes && typeof p.speciesNotes === "object") setSpeciesNotes(p.speciesNotes);
-      if (Array.isArray(p.recent)) setRecent(p.recent);
+      if (Array.isArray(p.recent)) setRecent(p.recent.filter((n) => typeof n === "string" && n.trim()));
       if (typeof p.profileName === "string") setProfileName(p.profileName);
-      if (p.bannerId) setBannerId(p.bannerId);
+      // An unknown id leaves the profile hero with no banner at all.
+      if (p.bannerId && BANNERS.some((b) => b.id === p.bannerId)) setBannerId(p.bannerId);
       if (p.strengths && typeof p.strengths === "object") setStrengths(p.strengths);
       if (typeof p.tankSized === "boolean") setTankSized(p.tankSized);
       if (typeof p.since === "number") { setSince(p.since); scheduleWrite("pr_since", () => String(p.since), "raw"); }
