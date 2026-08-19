@@ -76,8 +76,22 @@ describe("achievements", () => {
     // Two rows reading "On a Roll" in a list of 107 is a scoreboard nobody can
     // read: you can't tell which you just earned, and the locked one gives no
     // hint what to do about it.
-    const titles = ACHIEVEMENTS.map((a) => a.title);
+    // Compared case- and space-insensitively. The exact-match version of this
+    // test passed while "By the Book" and "By The Book" sat in the same list,
+    // one capital letter apart — indistinguishable on screen, and the whole
+    // point of the check.
+    const norm = (t) => String(t).toLowerCase().replace(/\s+/g, " ").trim();
+    const titles = ACHIEVEMENTS.map((a) => norm(a.title));
     const dupes = titles.filter((t, i) => titles.indexOf(t) !== i);
+    expect([...new Set(dupes)]).toEqual([]);
+  });
+
+  test("descriptions are unique too, for the same reason", () => {
+    // A title tells you which one it is; the description tells you what to do.
+    // Two identical descriptions is the same unreadable scoreboard one row down.
+    const norm = (t) => String(t).toLowerCase().replace(/\s+/g, " ").trim();
+    const descs = ACHIEVEMENTS.map((a) => norm(a.desc));
+    const dupes = descs.filter((t, i) => descs.indexOf(t) !== i);
     expect([...new Set(dupes)]).toEqual([]);
   });
 

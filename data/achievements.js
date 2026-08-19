@@ -99,7 +99,7 @@ export const ACHIEVEMENTS = [
   { id: "proper_shoal", emoji: "🐟", title: "Proper Shoal", desc: "Keep a schooling species at its full group size.", check: (s) => s.shoal },
   { id: "shoalmaster", emoji: "🐠", title: "Shoal Master", desc: "Keep 3 species at full group size.", check: (s) => s.fullShoals >= 3 },
   { id: "big_school", emoji: "🌊", title: "Big School", desc: "Keep 10+ of a single species.", check: (s) => s.bigSchool },
-  { id: "documented", emoji: "📝", title: "By the Book", desc: "Add notes to a tank.", check: (s) => s.documented },
+  { id: "documented", emoji: "📝", title: "Written Down", desc: "Add notes to a tank.", check: (s) => s.documented },
   { id: "wishlist25", emoji: "⭐", title: "Big Dreams", desc: "Save 25 species to your wishlist.", check: (s) => s.wishlist >= 25 },
 
   // ── Feeding & reef chemistry ──
