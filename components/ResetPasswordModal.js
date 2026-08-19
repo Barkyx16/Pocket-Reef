@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, Modal, Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, View } from "react-native";
 import { styles, theme } from "../styles";
 import { supabase } from "../lib/supabase";
 import { TEXT_LIMITS } from "../lib/textLimits";
@@ -35,7 +35,12 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={() => close(onCancel)}>
-      <View style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      {/* Centred, with no scroll behind it: on a small phone the keyboard
+          covered both password fields and the button that submits them. */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: 24 }}
+      >
         <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 24 }}>
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Reset password</Text>
           <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
@@ -77,7 +82,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
             <Text style={[styles.authLinkText, { color: theme.secondaryText }]}>Cancel</Text>
           </Pressable>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

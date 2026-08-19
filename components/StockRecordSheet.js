@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
@@ -34,6 +34,10 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={close}>
+      {/* The sheet is anchored to the bottom of the screen, which is where the
+          keyboard appears — without this, tapping "Where from?" put the field
+          behind the keyboard and the keeper typed blind. */}
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
       <Pressable style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.72)", justifyContent: "flex-end" }} onPress={close} accessibilityLabel="Close record">
         {/* Swallows taps so they don't close the sheet. Not a control, so it's
             hidden from VoiceOver rather than announced as an unnamed button. */}
@@ -213,6 +217,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
           </ScrollView>
         </Pressable>
       </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
