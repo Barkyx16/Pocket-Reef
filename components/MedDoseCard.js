@@ -3,7 +3,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme, radius, type, space } from "../styles";
 import { getSpecies, tapHaptic } from "../core";
-import { touchSlop } from "../lib/a11y";
+import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { MED_CLASSES, classOf, planMedDose, safetyFor, newMedDose, courseTotal } from "../lib/meds";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
@@ -53,6 +53,20 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       <Text style={styles.cardText}>
         Read the dose off the bottle and Pocket Reef does the rest. It never guesses a strength — products differ, and the label always wins.
       </Text>
+
+      {/* Said before a class is chosen, not after.
+          The per-class warning is correct and fires the moment copper is
+          selected — but by then the keeper has already decided what they are
+          dosing. This tank's stock is known from the first render, and on a
+          reef the answer to "which medication?" is usually "not in here". */}
+      {hasInverts ? (
+        <View style={{ flexDirection: "row", gap: space.sm, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.32)", borderRadius: radius.md, padding: space.md, marginTop: space.md }}>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.body, letterSpacing: 0 }}>⚠️</Text>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, lineHeight: 17, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+            This tank has corals or invertebrates. Copper and formalin will kill them, and copper never fully leaves rock and sand — treat the fish in a separate tank rather than in here.
+          </Text>
+        </View>
+      ) : null}
 
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.lg }}>
         <TextInput
