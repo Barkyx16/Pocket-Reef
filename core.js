@@ -262,12 +262,44 @@ export function getSimilarSpecies(s, limit = 4) {
 // ── Nitrogen cycle status ────────────────────────────────────────────────────
 // Reads the latest water test to place a new tank on the cycle: ammonia → nitrite
 // → nitrate/cycled. The thing every new aquarist watches obsessively.
+// Was this tank ever cycled? Any earlier reading with no ammonia, no nitrite
+// and nitrate present is proof the bacteria were established once.
+function everCycled(waterTests = []) {
+  return waterTests.slice(1).some((t) => {
+    const v = t && t.values;
+    if (!v) return false;
+    const { ammonia: a, nitrite: n, nitrate: na } = v;
+    return a != null && n != null && na != null && Number(a) === 0 && Number(n) === 0 && Number(na) > 0;
+  });
+}
+
 export function getCycleStatus(waterTests = []) {
   const latest = waterTests[0];
   if (!latest || !latest.values) {
     return { stage: 0, label: "Not started", guidance: "Begin a fishless cycle: add an ammonia source and test daily. Bacteria take 4–8 weeks to establish.", cycled: false };
   }
   const { ammonia: am, nitrite: ni, nitrate: na } = latest.values;
+
+  // Ammonia or nitrite on a tank that has already cycled is not a cycle. It is
+  // a crash — something died out of sight, the filter failed, or a medication
+  // took the bacteria with it.
+  //
+  // This mattered because the two readings look identical and the advice is
+  // opposite. A cycling tank is told "keep testing, don't add fish yet", which
+  // is right, and was being told to a four-year-old reef at 2 ppm ammonia with
+  // fish in it — where waiting is how they die. Nothing in the old check looked
+  // past the newest reading.
+  const spiking = (am != null && Number(am) > 0) || (ni != null && Number(ni) > 0);
+  if (spiking && everCycled(waterTests)) {
+    const which = am != null && Number(am) > 0 ? "Ammonia" : "Nitrite";
+    return {
+      stage: 3,
+      cycled: true,
+      crashed: true,
+      label: `${which} spike`,
+      guidance: `${which} should be zero in an established tank. Change water now to dilute it, then find the cause — something dead out of sight, a filter that has stalled, or a medication that killed the bacteria. Do not wait this one out.`,
+    };
+  }
   if (am != null && ni != null && na != null && am === 0 && ni === 0 && na > 0) {
     return { stage: 3, label: "Cycled ✓", guidance: "Ammonia and nitrite read 0 with nitrate present — your tank is cycled and ready. Add livestock slowly.", cycled: true };
   }
@@ -531,7 +563,10 @@ export function getTodayActions({ tank = [], waterTests = [], maintenance = {}, 
     }
 
     const cyc = getCycleStatus(waterTests);
-    if (waterTests.length && !cyc.cycled) out.push({ rank: 1, icon: "🔄", to: "log", text: `Tank still cycling — ${cyc.label}` });
+    // A crash outranks everything: it is the only reading in the app that kills
+    // fish within hours.
+    if (cyc.crashed) out.push({ rank: 0, icon: "🔴", to: "log", text: `${cyc.label} in an established tank — change water now and find the cause` });
+    else if (waterTests.length && !cyc.cycled) out.push({ rank: 1, icon: "🔄", to: "log", text: `Tank still cycling — ${cyc.label}` });
 
     // Complete-your-school — a schooling species kept below its group minimum.
     tank.map(getSpecies).filter(Boolean).forEach((s) => {
