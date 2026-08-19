@@ -11,6 +11,8 @@ import { t } from "../lib/i18n";
 import { activeParams } from "../lib/targets";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
 import { useScrollToTop } from "../lib/scrollToTop";
+import { buildWaterLogCsv } from "../lib/csvExport";
+import { writeTextFile, waterLogFilename } from "../lib/backupFile";
 
 export const LogTab = memo(function LogTab({ tankWater = "fresh", tank, tankGallons, waterTests, journal, activeDays, costs, feedings = [], maintenance, onLogTest, onUpdateTest, onDeleteTest, onAddJournal, onAddCost, onDeleteCost, onAddFeeding, onDeleteFeeding, onLogMaintenance, onLogWaterChange, premiumUnlocked, onOpenPremium, intent, activeTank = {}, onAddUpkeepTask, onRemoveUpkeepTask, onSetUpkeepInterval, strengths = {}, onLogDose, onDeleteDose, onSetStrength, onSetSourceWater, onImportTests, onSetLightSchedule, onGoToTab, onLogMedDose, onDeleteMedDose }) {
   const scrollRef = useScrollToTop();
@@ -23,13 +25,20 @@ export const LogTab = memo(function LogTab({ tankWater = "fresh", tank, tankGall
 
   // Share the water-test history as CSV text — a portable record for a
   // spreadsheet or your fish store.
-  const exportWaterLog = () => {
+  const exportWaterLog = async () => {
     if (!waterTests.length) return;
     tapHaptic();
-    const params = activeParams(waterType);
-    const header = ["Date", ...params.map((p) => `${p.label}${p.unit ? ` (${p.unit})` : ""}`)].join(",");
-    const rows = waterTests.map((tst) => [tst.date, ...params.map((p) => (tst.values && tst.values[p.key] != null ? tst.values[p.key] : ""))].join(","));
-    Share.share({ message: `Pocket Reef water log\n\n${header}\n${rows.join("\n")}` }).catch(() => {});
+    const csv = buildWaterLogCsv(activeParams(waterType), waterTests);
+    // A real .csv the keeper can save and open, rather than a wall of text in
+    // a message body. Degrades to the old behaviour where there is no
+    // filesystem, because a share that works badly beats a button that does
+    // nothing.
+    const written = await writeTextFile(csv, waterLogFilename());
+    if (written.ok) {
+      Share.share({ url: written.uri, message: "Pocket Reef water log" }).catch(() => {});
+      return;
+    }
+    Share.share({ message: `Pocket Reef water log\n\n${csv}` }).catch(() => {});
   };
 
   return (
