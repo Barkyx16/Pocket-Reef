@@ -8,7 +8,7 @@ import { touchSlop } from "../lib/a11y";
 import { equipmentSummary } from "../lib/equipment";
 import { livestockSpend } from "../lib/livestock";
 import { Pill } from "./Pill";
-import { dayKey, isValidDayKey } from "../lib/day";
+import {dayKey, isPastOrToday } from "../lib/day";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { decimalText } from "../lib/numericInput";
 import { fmtMoney } from "../lib/format";
@@ -73,7 +73,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
     return d && d.slice(0, 7) === thisMonth ? s + (Number(c.amount) || 0) : s;
   }, 0);
 
-  const dateValid = isValidDayKey(date);
+  const dateValid = isPastOrToday(date);
   const ready = Boolean(label.trim() && amount && dateValid);
 
   const add = () => {
