@@ -5,8 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { supabase, isCloudConfigured } from "../lib/supabase";
 import { RESET_REDIRECT } from "../lib/supabaseConfig";
 import {
-  isBiometricAvailable, getBiometricLabel, isBiometricEnabled, disableBiometricLogin, enableBiometricLogin,
-} from "../lib/biometricAuth";
+  isBiometricAvailable, getBiometricLabel, isBiometricEnabled, disableBiometricLogin, enableBiometricLogin, updateStoredEmail } from "../lib/biometricAuth";
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { friendlyAuthError } from "../lib/authErrors";
@@ -73,6 +72,12 @@ export function AccountCloudCard({
     try {
       const { error } = await supabase.auth.updateUser({ email: clean });
       if (error) { Alert.alert("Couldn't change your email", friendlyAuthError(error.message)); return; }
+      // Repointed now rather than on confirmation: the link is opened in a
+      // browser and the app may never see the moment it lands. Keeping the
+      // password against the new address is the recoverable side of the
+      // choice — the alternative is Face ID silently submitting an address
+      // that no longer exists.
+      if (bioEnabled) await updateStoredEmail(clean);
       Alert.alert("Confirm the change", `We sent a confirmation link to ${clean}. Your email updates once you open it.`);
       setNewEmail("");
     } catch (e) {
@@ -127,8 +132,15 @@ export function AccountCloudCard({
       );
       return;
     }
-    await disableBiometricLogin();
+    const cleared = await disableBiometricLogin();
     setBioEnabled(false);
+    if (!cleared) {
+      Alert.alert(
+        "Turned off, but not fully cleared",
+        "Biometric sign-in is off. The saved password couldn't be removed from this device's keychain — restart the app and turn it off again to clear it."
+      );
+      return;
+    }
     tapHaptic();
   };
 
@@ -171,6 +183,11 @@ export function AccountCloudCard({
                 headers: { Authorization: `Bearer ${token}` },
               });
               if (error) { Alert.alert("Deletion failed", "We couldn't delete the account right now. Try again, or contact support."); return; }
+              // The credentials live in the device keychain, not in the
+              // account, so deleting the account leaves them behind. Saying
+              // "your account and its data are gone" while the password is
+              // still on the phone is not true.
+              await disableBiometricLogin();
               await supabase.auth.signOut();
               onSignOut && onSignOut();
               Alert.alert("Account deleted", "Your Pocket Reef account and its data are gone.");
