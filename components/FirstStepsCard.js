@@ -23,7 +23,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
     <View style={[styles.card, { borderColor: "rgba(56,225,198,0.30)" }]}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Get your tank set up</Text>
-        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{done}/{steps.length}</Text>
+        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{done}/{steps.length}</Text>
       </View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
         Three steps and Pocket Reef can actually tell you something about your water.
@@ -58,7 +58,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
                 {s.done ? <Ionicons name="checkmark" size={15} color={theme.accent} /> : <Ionicons name={s.icon} size={14} color={theme.secondaryText} />}
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: s.done ? theme.secondaryText : "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: s.done ? "line-through" : "none" }}>{s.title}</Text>
+                <Text style={{ color: s.done ? theme.secondaryText : "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: s.done ? "line-through" : "none" }}>{s.title}</Text>
                 {/* Only the step you're on explains itself. Three subtitles at
                     once is a wall of text where a checklist should be. */}
                 {isNext && s.hint ? (

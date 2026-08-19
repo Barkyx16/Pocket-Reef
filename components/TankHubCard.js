@@ -42,13 +42,13 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.headline }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>
+                  <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>
                   <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
                 </View>
                 <View style={{ backgroundColor: `${h.color}22`, borderColor: `${h.color}55`, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
                   <Text style={{ color: h.color, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score == null ? "—" : `${h.score}%`}</Text>
                 </View>
-                <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
               </Pressable>
 
               {expanded && renderDetail ? (

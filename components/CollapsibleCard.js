@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { LayoutAnimation, Platform, Pressable, Text, UIManager, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, radius } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { useReduceMotion, touchSlop } from "../lib/a11y";
 
@@ -76,7 +76,7 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
             {iconForEmoji(emoji) ? (
               <Ionicons name={iconForEmoji(emoji)} size={17} color={theme.accent} />
             ) : (
-              <Text style={{ fontSize: 16 }}>{emoji}</Text>
+              <Text style={{ fontSize: type.bodyLg }}>{emoji}</Text>
             )}
           </View>
         ) : null}

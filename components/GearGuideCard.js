@@ -53,9 +53,9 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
       <View style={{ gap: 12, marginTop: 12 }}>
         {items.map((it, i) => (
           <View key={i} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-            <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{it.icon}</Text></View>
+            <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{it.icon}</Text></View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
+              <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
               <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 19 }}>{it.text}</Text>
             </View>
           </View>

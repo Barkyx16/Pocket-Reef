@@ -75,8 +75,9 @@ describe("the scales themselves are coherent", () => {
   });
 
   test("elevation has few enough levels that depth means something", () => {
-    expect(Object.keys(elevation)).toEqual(["none", "card", "floating"]);
-    expect(elevation.floating.shadowRadius).toBeGreaterThan(elevation.card.shadowRadius);
+    // none / card / hero / floating. Four is the most that can be told apart
+    // on a dark ground, where a shadow reads as glow more than as lift.
+    expect(Object.keys(elevation)).toEqual(["none", "card", "hero", "floating"]);
   });
 
   test("the colour tokens are still the ones in use", () => {
@@ -106,13 +107,17 @@ describe("depth is a known quantity", () => {
       .filter((c) => (kind === "black" ? /^"#000/.test(c) : !/^"#000/.test(c)));
   });
 
-  test("elevation has three levels and no more", () => {
-    expect(Object.keys(elevation)).toHaveLength(3);
+  test("the levels are ordered by actual depth", () => {
+    // `elevation` is the Android z-order and the honest ranking; the shadow is
+    // how iOS shows it. A card must not sit above the tab bar.
+    expect(elevation.card.elevation).toBeLessThan(elevation.hero.elevation);
+    expect(elevation.hero.elevation).toBeLessThan(elevation.floating.elevation);
   });
 
-  test("the tokens are ordered: floating sits above card", () => {
-    expect(elevation.floating.shadowOpacity).toBeGreaterThan(elevation.card.shadowOpacity);
-    expect(elevation.floating.shadowOffset.height).toBeGreaterThan(elevation.card.shadowOffset.height);
+  test("the card level is the app's existing card shadow, unchanged", () => {
+    // Derived from what was already there, so consolidating moved nothing on
+    // the surface the app is mostly made of.
+    expect(elevation.card).toMatchObject({ shadowOpacity: 0.22, shadowRadius: 22, elevation: 5 });
   });
 
   test("hand-rolled elevation shadows stay countable", () => {

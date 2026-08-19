@@ -55,7 +55,7 @@ export function TankToolboxCard({
       <Text style={styles.cardText}>You're at capacity ({room.pct}%) — adding more will strain water quality. Consider a bigger tank before more fish.</Text>
     ) : (
       <>
-        <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
+        <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
         <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
           Roughly {room.small} more nano fish (~2") {room.medium ? `or ${room.medium} community fish (~4")` : ""} — add slowly and keep testing. Check ✨ Recommended on Home for compatible picks.
         </Text>
@@ -69,11 +69,11 @@ export function TankToolboxCard({
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View>
             <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>TEMPERATURE</Text>
-            <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
+            <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
           </View>
           <View style={{ alignItems: "flex-end" }}>
             <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>pH</Text>
-            <Text style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
+            <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
           </View>
         </View>
         <Text style={{ color: theme.secondaryText, fontSize: type.caption, lineHeight: 16, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>

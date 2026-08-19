@@ -137,9 +137,9 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               <View style={{ gap: 12 }}>
                 {PREMIUM.map((f) => (
                   <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-                    <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
+                    <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{f.icon}</Text></View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                       <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
                     </View>
                   </View>
@@ -167,7 +167,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               <View style={{ gap: 12 }}>
                 {picks.map((sp) => (
                   <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
-                    <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{sp.emoji}</Text></View>
+                    <View style={styles.iconSquare}><Text style={{ fontSize: type.title }}>{sp.emoji}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
                       <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
@@ -186,7 +186,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             <View style={styles.card}>
               {current.features.map((f) => (
                 <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
-                  <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
+                  <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{f.icon}</Text></View>
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                     <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
@@ -208,7 +208,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             <>
               <GradientButton label="Start Premium" icon="star" onPress={() => { onStartPremium && onStartPremium(); finish(); }} />
               <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Continue with the free version</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Continue with the free version</Text>
               </Pressable>
             </>
           ) : (
@@ -221,7 +221,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                 <GradientButton label={isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
               )}
               <Pressable onPress={() => (isResult ? setStep((s) => s + 1) : finish(false))} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                   {isResult ? "I'll pick my own" : "Skip"}
                 </Text>
               </Pressable>

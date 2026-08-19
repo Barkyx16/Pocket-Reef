@@ -38,14 +38,14 @@ export function FleetCard({ tanks = [], activeTankId, reminderPrefs, onSwitch, n
               accessibilityLabel={`${p.name}${on ? ", active" : ""}. ${p.score == null ? "Not enough logged to score." : `Scoring ${p.score}.`}${alert ? ` Needs attention: ${p.attention.reasons.join(", ")}.` : ""}`}
             >
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", width: 14 }}>{i + 1}</Text>
-              <Text style={{ fontSize: 18 }}>{p.emoji}</Text>
+              <Text style={{ fontSize: type.title }}>{p.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text numberOfLines={1} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}{on ? " · active" : ""}</Text>
+                <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}{on ? " · active" : ""}</Text>
                 <Text style={{ color: alertColor || theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                   {alert ? p.attention.reasons.join(" · ") : `${formatVolume(p.gallons)} · ${p.stocked} stocked${p.measures.testEvery ? ` · tested every ${p.measures.testEvery}d` : ""}`}
                 </Text>
               </View>
-              <Text style={{ color: p.score == null ? theme.secondaryText : theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+              <Text style={{ color: p.score == null ? theme.secondaryText : theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {p.score == null ? "—" : p.score}
               </Text>
             </Pressable>
@@ -56,13 +56,13 @@ export function FleetCard({ tanks = [], activeTankId, reminderPrefs, onSwitch, n
       {/* The point of the whole card: not which is better, but why. */}
       {fleet.differences.length ? (
         <View style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
             What {fleet.best.name} does differently
           </Text>
           <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 4 }}>
             <Text style={{ flex: 1 }} />
-            <Text style={{ width: 62, textAlign: "right", color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{fleet.best.name}</Text>
-            <Text style={{ width: 62, textAlign: "right", color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{fleet.worst.name}</Text>
+            <Text style={{ width: 62, textAlign: "right", color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.best.name}</Text>
+            <Text style={{ width: 62, textAlign: "right", color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.worst.name}</Text>
           </View>
           {fleet.differences.slice(0, 4).map((d) => (
             <View key={d.id} style={{ flexDirection: "row", alignItems: "center", paddingVertical: 4, borderTopWidth: 1, borderTopColor: theme.hairline }}>

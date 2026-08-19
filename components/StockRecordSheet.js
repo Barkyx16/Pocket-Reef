@@ -51,7 +51,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <SpeciesThumb name={name} size={42} />
             <View style={{ flex: 1 }}>
-              <Text numberOfLines={1} style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
+              <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                 {quantity > 1 ? `${quantity} in the tank` : "In the tank"}{tenure ? ` · ${tenure}` : ""}
               </Text>
@@ -240,7 +240,7 @@ const stepBtn = {
 function Field({ label, hint, children }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 6 }}>{label}</Text>
       {children}
       {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
     </View>

@@ -60,8 +60,8 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
           { label: "Years", value: health.yearsLogged || "—" },
         ].map((s) => (
           <View key={s.label} style={{ flex: 1, alignItems: "center", backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 9 }}>
-            <Text style={{ color: theme.text, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.value}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>{s.label}</Text>
+            <Text style={{ color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.value}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" }}>{s.label}</Text>
           </View>
         ))}
       </View>

@@ -121,7 +121,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
                     
             maxLength={TEXT_LIMITS.number}
           />
-                    <Text style={{ color: theme.secondaryText, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>–</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>–</Text>
                     <TextInput
                       value={draft.hi}
                       onChangeText={(v) => setDraft((d) => ({ ...d, hi: decimalText(v) }))}
@@ -142,7 +142,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
                     </Text>
                     {isCustom ? (
                       <Pressable onPress={() => resetOne(p.key)} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel={`Reset ${p.label} to the default`}>
-                        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>Use default</Text>
+                        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Use default</Text>
                       </Pressable>
                     ) : null}
                   </View>
@@ -165,6 +165,6 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
 const rangeInput = {
   width: 62, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm,
   paddingHorizontal: 10, paddingVertical: 7, color: theme.text,
-  borderWidth: 1, borderColor: theme.border, fontSize: 14,
+  borderWidth: 1, borderColor: theme.border, fontSize: type.body,
   fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center",
 };

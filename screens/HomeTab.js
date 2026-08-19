@@ -116,7 +116,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
         <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
           <Text style={{ fontSize: 22 }}>🔥</Text>
           <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
-          <Text style={{ color: theme.warn, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+          <Text style={{ color: theme.warn, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       ) : null}
 

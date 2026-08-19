@@ -342,11 +342,11 @@ function Stepper({ value, onDec, onInc, low }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
       <Pressable onPress={() => { tapHaptic("light"); onDec(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Decrease count">
-        <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
+        <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
       </Pressable>
       <Text style={{ color: low ? theme.warn : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 22, textAlign: "center" }}>{value}</Text>
       <Pressable onPress={() => { tapHaptic("light"); onInc(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Increase count">
-        <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text>
+        <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text>
       </Pressable>
     </View>
   );

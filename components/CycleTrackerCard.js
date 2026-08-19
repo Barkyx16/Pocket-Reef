@@ -32,7 +32,7 @@ export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
           </Text>
         ) : null}
         {coach.needsTest && !coach.cycled ? (
-          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>Test today — a cycle you aren't measuring isn't being managed.</Text>
+          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>Test today — a cycle you aren't measuring isn't being managed.</Text>
         ) : null}
       </View>
 
@@ -45,7 +45,7 @@ export function CycleTrackerCard({ waterTests = [], tankCreatedAt = null }) {
           return (
             <View key={s.key} style={{ flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: radius.lg, borderWidth: 1, backgroundColor: current ? `${color}22` : "rgba(255,255,255,0.03)", borderColor: reached ? color : theme.border }}>
               <Ionicons name={s.icon} size={18} color={reached ? color : theme.secondaryText} style={{ opacity: reached ? 1 : 0.45 }} />
-              <Text style={{ color: reached ? "#fff" : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>{s.label}</Text>
+              <Text style={{ color: reached ? "#fff" : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>{s.label}</Text>
             </View>
           );
         })}

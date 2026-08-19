@@ -34,7 +34,7 @@ export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss 
                 <View key={i} style={{ flexDirection: "row", gap: 12 }}>
                   <Text style={{ fontSize: type.titleLg, width: 26, textAlign: "center" }}>{it.emoji}</Text>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
+                    <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
                     <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 2 }}>{it.text}</Text>
                   </View>
                 </View>

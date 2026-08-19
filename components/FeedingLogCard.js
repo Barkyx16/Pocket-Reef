@@ -43,7 +43,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
 
       <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
         <TextInput value={note} onChangeText={setNote} placeholder="Note (optional) — e.g. mysis + nori" placeholderTextColor={theme.secondaryText}
-          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }} 
             maxLength={TEXT_LIMITS.shortNote}
           />
         <Pressable onPress={add} style={[styles.primaryBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
@@ -55,7 +55,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
         <View style={{ marginTop: 14, gap: 8 }}>
           {feedings.slice(0, visible).map((f) => (
             <View key={f.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, padding: 10, borderWidth: 1, borderColor: theme.border }}>
-              <Text style={{ fontSize: 16 }}>{FOOD_EMOJI[f.food] || "🍽️"}</Text>
+              <Text style={{ fontSize: type.bodyLg }}>{FOOD_EMOJI[f.food] || "🍽️"}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.food}{f.note ? ` · ${f.note}` : ""}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.date}</Text>

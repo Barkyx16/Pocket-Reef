@@ -131,9 +131,9 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: on ? "rgba(6,20,32,0.15)" : "rgba(6,20,32,0.35)" }} />
                   <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 4 }}>
                     {on ? (
-                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>✓ Worn</Text>
                     ) : (
-                      <Text style={{ color: "#fff", fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{b.name}</Text>
                     )}
                   </View>
                 </Pressable>
@@ -180,7 +180,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   ) : null}
                   <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: isUnlocked ? "rgba(6,20,32,0.12)" : "rgba(6,20,32,0.55)" }} />
                   {!isUnlocked ? (
-                    <Text style={{ fontSize: 18 }}>🔒</Text>
+                    <Text style={{ fontSize: type.title }}>🔒</Text>
                   ) : on ? (
                     <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
                       <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
@@ -301,7 +301,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
             >
               <Ionicons name={telemetryOn ? "checkbox" : "square-outline"} size={20} color={telemetryOn ? theme.accent : theme.secondaryText} />
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share anonymous usage data</Text>
+                <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share anonymous usage data</Text>
                 {/* Says exactly what does and doesn't leave the device. Vague
                     copy here is what makes a privacy label wrong later. */}
                 <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>

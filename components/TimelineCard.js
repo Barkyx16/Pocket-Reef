@@ -40,7 +40,7 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
               <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{ev.date}</Text>
               {ev.kind === "journal" ? (
                 <View>
-                  {ev.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
+                  {ev.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{ev.text}</Text> : null}
                   {ev.photo ? <Image source={{ uri: ev.photo }} style={{ width: "100%", height: 140, borderRadius: radius.sm, marginTop: 8 }} resizeMode="cover" /> : null}
                 </View>
               ) : (
@@ -51,7 +51,7 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
                     return (
                       <View key={p.key} style={{ flexDirection: "row", gap: 4, backgroundColor: `${c}18`, borderRadius: radius.xs, paddingHorizontal: 8, paddingVertical: 4 }}>
                         <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
-                        <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ev.values[p.key]}</Text>
+                        <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{ev.values[p.key]}</Text>
                       </View>
                     );
                   })}

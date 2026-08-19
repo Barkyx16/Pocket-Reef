@@ -132,7 +132,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
           {!view || !view.layout ? (
             <View style={[styles.card, { alignItems: "center", paddingVertical: 28 }]}>
               <Ionicons name="analytics-outline" size={28} color={theme.secondaryText} />
-              <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Not enough readings</Text>
+              <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Not enough readings</Text>
               <Text style={[styles.cardText, { textAlign: "center" }]}>Two or more {p.label.toLowerCase()} readings in this range will draw a chart here.</Text>
             </View>
           ) : (

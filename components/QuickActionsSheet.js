@@ -61,10 +61,10 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
             {all.length ? (
               <View style={{ marginBottom: 18 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     Needs you now
                   </Text>
-                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {summary.text}
                   </Text>
                 </View>
@@ -129,7 +129,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
               </View>
             ) : null}
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
               Log something
             </Text>
             <View style={{ gap: 8 }}>
@@ -151,7 +151,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                   </View>
                   {a.instant ? (
                     <View style={{ backgroundColor: "rgba(56,225,198,0.14)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 }}>
-                      <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.3 }}>1 tap</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.3 }}>1 tap</Text>
                     </View>
                   ) : (
                     <Ionicons name="chevron-forward" size={16} color={theme.secondaryText} />
@@ -195,7 +195,7 @@ export function QuickActionsFab({ onPress, onLongPress, bottom = 92, pendingCoun
             borderWidth: 2, borderColor: theme.background,
           }}
         >
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
             {pendingCount > 9 ? "9+" : pendingCount}
           </Text>
         </View>

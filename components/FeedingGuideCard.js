@@ -41,7 +41,7 @@ export function FeedingGuideCard({ tank = [], quantities = {} }) {
       <View style={{ gap: 10, marginTop: 12 }}>
         {recs.map((r, i) => (
           <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
-            <Text style={{ fontSize: 18 }}>{r.icon}</Text>
+            <Text style={{ fontSize: type.title }}>{r.icon}</Text>
             <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{r.text}</Text>
           </View>
         ))}

@@ -16,10 +16,10 @@ export function TroubleshooterCard() {
             <Pressable onPress={() => { tapHaptic("light"); setOpen(on ? null : item.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, padding: 12 }} accessibilityRole="button">
               <Text style={{ fontSize: type.titleLg }}>{item.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{item.problem}</Text>
+                <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{item.problem}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{item.summary}</Text>
               </View>
-              <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{on ? "▲" : "▾"}</Text>
+              <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{on ? "▲" : "▾"}</Text>
             </Pressable>
             {on ? (
               <View style={{ paddingHorizontal: 12, paddingBottom: 12, gap: 8 }}>

@@ -66,13 +66,13 @@ export function DoseLogCard({
         return (
           <View key={key} style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {target.label}
               </Text>
               {doneToday ? (
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                   <Ionicons name="checkmark-circle" size={13} color={theme.accent} />
-                  <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>Dosed today</Text>
+                  <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Dosed today</Text>
                 </View>
               ) : null}
             </View>
@@ -99,7 +99,7 @@ export function DoseLogCard({
                 keyboardType="decimal-pad"
                 placeholder={daily ? String(daily) : "ml"}
                 placeholderTextColor={theme.secondaryText}
-                style={{ width: 76, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
+                style={{ width: 76, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
                 accessibilityLabel={`Millilitres of ${target.label} dosed`}
               
             maxLength={TEXT_LIMITS.number}
@@ -139,7 +139,7 @@ export function DoseLogCard({
                   keyboardType="decimal-pad"
                   placeholder={`e.g. 0.05 ${target.unit}`}
                   placeholderTextColor={theme.secondaryText}
-                  style={{ marginTop: 8, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                  style={{ marginTop: 8, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                   accessibilityLabel={`${target.label} product strength, ${target.unit} per millilitre per gallon`}
                 
             maxLength={TEXT_LIMITS.number}

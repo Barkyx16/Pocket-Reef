@@ -17,7 +17,7 @@ import { decimalText } from "../lib/numericInput";
 function Stat({ label, value, sub, tone }) {
   return (
     <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 9 }}>
-      <Text numberOfLines={1} style={{ color: tone || "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
+      <Text numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
       <Text numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
       {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
     </View>
@@ -66,7 +66,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
     <View style={{ flex: 1 }}>
       <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{label}</Text>
       <TextInput value={val} onChangeText={(t) => set(decimalText(t))} keyboardType="decimal-pad" placeholder="—" placeholderTextColor={theme.secondaryText}
-        style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 16, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
+        style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
             maxLength={TEXT_LIMITS.number}
           />
     </View>
@@ -129,7 +129,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
         <View style={{ marginTop: 14, borderRadius: radius.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: theme.accent, shadowOpacity: 0.22, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
           <LinearGradient colors={["rgba(56,225,198,0.18)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 16, alignItems: "center" }}>
             <Text style={{ color: theme.accent, fontSize: 38, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{pct}%</Text>
-            <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>≈ {formatVolume(gal)}</Text>
+            <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>≈ {formatVolume(gal)}</Text>
             <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, textAlign: "center" }}>Change this much to drop nitrate from {c} → {tg} ppm.</Text>
           </LinearGradient>
         </View>
@@ -152,7 +152,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
 
       {wholeTank ? (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
-          <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{wholeTank}%</Text>
+          <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{wholeTank}%</Text>
           <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
             is the smallest change that brings every parameter back into range, not just nitrate.
           </Text>

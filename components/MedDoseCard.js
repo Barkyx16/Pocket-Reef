@@ -81,7 +81,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>gallons</Text>
       </View>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What kind is it?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What kind is it?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
         {MED_CLASSES.map((c) => (
           <Pill key={c.id} label={c.label} active={cls === c.id} onPress={() => { tapHaptic("light"); setCls(c.id); }} />
@@ -90,7 +90,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
 
       {plan.ok ? (
         <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 14, marginTop: 14 }}>
-          <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.8, textTransform: "uppercase" }}>Full dose</Text>
+          <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.8, textTransform: "uppercase" }}>Full dose</Text>
           <Text style={{ color: "#fff", fontSize: type.display, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
           <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
         </View>
@@ -101,7 +101,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       {/* The re-dose people get wrong in both directions. */}
       {plan.ok ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Re-dosing after a water change</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Re-dosing after a water change</Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
             <TextInput
               value={changePct}
@@ -153,7 +153,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
 
       {doses.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
             This course · {course} ml so far
           </Text>
           <View style={{ gap: 6, marginTop: 8 }}>

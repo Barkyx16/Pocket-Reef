@@ -138,7 +138,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
             placeholder="What needs doing?"
             placeholderTextColor={theme.secondaryText}
             autoFocus
-            style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}
+            style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}
             accessibilityLabel="Name of the new job"
           
             maxLength={TEXT_LIMITS.name}

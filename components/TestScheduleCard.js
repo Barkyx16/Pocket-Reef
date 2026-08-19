@@ -46,7 +46,7 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 5 }}>
-                <Text style={{ color: v.color, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{v.label}</Text>
+                <Text style={{ color: v.color, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{v.label}</Text>
                 {it.actual != null ? (
                   <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     · you test every {it.actual}d

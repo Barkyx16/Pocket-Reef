@@ -20,7 +20,7 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (
           <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.text, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.text, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         ) : null}
       </View>

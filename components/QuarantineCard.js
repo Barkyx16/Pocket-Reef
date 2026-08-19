@@ -35,7 +35,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
 
       <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
         <TextInput value={name} onChangeText={setName} placeholder="New arrival (e.g. Yellow Tang)" placeholderTextColor={theme.secondaryText} accessibilityLabel="Name of the new arrival"
-          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }} 
             maxLength={TEXT_LIMITS.name}
           />
         <Pressable onPress={add} disabled={!name.trim()} style={[name.trim() ? styles.primaryBtn : styles.ghostBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
@@ -55,7 +55,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                   <Ionicons name={a.ready ? "checkmark-circle" : a.overdue ? "alert-circle" : "eye-outline"} size={18} color={tone} />
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{it.name}</Text>
+                    <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{it.name}</Text>
                     <Text style={{ color: tone, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{a.headline}</Text>
                   </View>
                   <Pressable onPress={() => onRemove(it.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Remove ${it.name}`}>
@@ -69,7 +69,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
 
                 {/* What to look for RIGHT NOW — the part the timer never had. */}
                 <View style={{ marginTop: 10 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
                     {a.phase.label}
                   </Text>
                   {a.phase.watch.slice(0, 2).map((w, i) => (

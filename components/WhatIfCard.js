@@ -34,7 +34,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
   return (
     <View>
       {/* Which of the list we're pricing up. */}
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Buying</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Buying</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
         {wishlist.map((n) => {
           const on = !excluded.includes(n);
@@ -83,7 +83,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
               app has never given it. */}
           {result.order.length > 1 ? (
             <View style={{ marginTop: 12 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Add them in this order</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Add them in this order</Text>
               <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 4 }}>
                 Peaceful and hardy first. Put the boldest fish in last, or it owns the tank before the others arrive.
               </Text>
@@ -91,7 +91,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
                 {result.order.map((i, n) => (
                   <View key={i.name} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                     <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", width: 16 }}>{n + 1}</Text>
-                    <Text style={{ fontSize: 14 }}>{i.emoji}</Text>
+                    <Text style={{ fontSize: type.body }}>{i.emoji}</Text>
                     <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       {i.count > 1 ? `${i.count}× ` : ""}{i.name}
                     </Text>
@@ -105,7 +105,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
           {/* Why the rest can't come. */}
           {result.blocked.length ? (
             <View style={{ marginTop: 12, gap: 8 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Won't work here</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Won't work here</Text>
               {result.blocked.map((i) => (
                 <Pressable
                   key={i.name}
@@ -115,7 +115,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
                   accessibilityLabel={`${i.name}: ${i.blockers.map((b) => b.text).join(" ")}`}
                 >
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                    <Text style={{ fontSize: 14 }}>{i.emoji}</Text>
+                    <Text style={{ fontSize: type.body }}>{i.emoji}</Text>
                     <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i.name}</Text>
                     <Ionicons name="chevron-forward" size={13} color={theme.secondaryText} />
                   </View>
@@ -130,7 +130,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
           {/* Cautions on the ones that do work. */}
           {result.viable.some((i) => i.cautions.length) ? (
             <View style={{ marginTop: 12, gap: 4 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Worth knowing</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Worth knowing</Text>
               {result.viable.flatMap((i) => i.cautions.map((c, n) => (
                 <Text key={`${i.name}-${n}`} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
                   <Text style={{ color: theme.text, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i.name}: </Text>{c.text}
@@ -142,7 +142,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
           {/* When nothing on the list works, offer what would. */}
           {alts.length ? (
             <View style={{ marginTop: 14 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>What would fit instead</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>What would fit instead</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
                 {alts.map((s) => (
                   <Pressable key={s.name} onPress={() => onOpenSpecies && onOpenSpecies(s.name)} style={styles.pill} accessibilityRole="button" accessibilityLabel={`${s.name}, an alternative that fits`}>

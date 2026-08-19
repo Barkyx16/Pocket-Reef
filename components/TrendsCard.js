@@ -57,7 +57,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
     return (
       <View style={{ alignItems: "center", paddingVertical: 8 }}>
         <Text style={{ fontSize: 34 }}>📈</Text>
-        <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8, textAlign: "center" }}>See your water trends</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8, textAlign: "center" }}>See your water trends</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Premium charts each parameter over time and warns you when a reading drifts the wrong way.</Text>
         <Pressable onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }} style={[styles.primaryBtn, { marginTop: 12, alignSelf: "stretch" }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Unlock with Premium</Text>

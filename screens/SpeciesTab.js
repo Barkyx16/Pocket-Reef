@@ -142,7 +142,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
   const FilterRow = ({ label, opts, value, onChange }) => (
     <View style={{ marginTop: 12 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         {opts.map(([id, lab]) => (
           <Pill key={id} label={String(lab)} active={value === id} onPress={() => onChange(id)} />
@@ -259,7 +259,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
       {!compareMode && !q && recent.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>RECENTLY VIEWED</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>RECENTLY VIEWED</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
@@ -321,7 +321,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
           <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
             Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
           </Text>
-          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
+          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
         </Pressable>
       ) : list.length > shown ? (
         <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 20, list.length)); }} style={[styles.ghostBtn, { marginTop: 4 }]} accessibilityRole="button">

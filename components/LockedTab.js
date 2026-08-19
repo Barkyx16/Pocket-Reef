@@ -34,7 +34,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
         <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 24, textAlign: "center", letterSpacing: -0.4 }}>
           {title}
         </Text>
-        <Text style={{ color: theme.bodyText, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
           {blurb}
         </Text>
 
@@ -45,7 +45,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
                 <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
                 </View>
-                <Text style={{ flex: 1, color: theme.text, fontSize: 14, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>{p}</Text>
+                <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>{p}</Text>
               </View>
             ))}
           </View>

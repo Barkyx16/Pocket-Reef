@@ -19,7 +19,7 @@ export function WaterDeltaCard({ waterTests = [], waterType = "fresh" }) {
         return (
           <View key={d.key} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, padding: 10, borderWidth: 1, borderColor: theme.border }}>
             <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{d.label}</Text>
-            <Text style={{ color: c, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d.value}{d.unit ? ` ${d.unit}` : ""}</Text>
+            <Text style={{ color: c, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d.value}{d.unit ? ` ${d.unit}` : ""}</Text>
             <Text style={{ width: 66, textAlign: "right", color: d.diff === 0 ? theme.secondaryText : c, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
               {arrow}{d.diff !== 0 ? ` ${Math.abs(d.diff)}` : ""}
             </Text>

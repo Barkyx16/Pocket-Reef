@@ -105,7 +105,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
           return (
             <View key={key}>
               <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", flex: 1 }}>{row.label}</Text>
+                <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", flex: 1 }}>{row.label}</Text>
                 <Text style={{ color: statusColor, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>
                   {row.current} {row.unit}
                 </Text>
@@ -123,7 +123,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                       placeholder="0.0"
                       placeholderTextColor={theme.secondaryText}
                       keyboardType="decimal-pad"
-                      style={{ width: 78, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                      style={{ width: 78, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                       accessibilityLabel={`${row.label} product strength`}
                     
             maxLength={TEXT_LIMITS.number}

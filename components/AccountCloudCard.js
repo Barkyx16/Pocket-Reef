@@ -210,7 +210,7 @@ export function AccountCloudCard({
       }}>
         <Ionicons name={syncError ? "warning" : lastSyncedAt ? "cloud-done" : "phone-portrait-outline"} size={20} color={syncError ? theme.warn : theme.accent} />
         <View style={{ flex: 1 }}>
-          <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {syncError ? "Not syncing right now" : lastSyncedAt ? "Your reef is backed up" : configured ? "Backing up your reef…" : "Saved on this device"}
           </Text>
           <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 2 }}>
@@ -223,7 +223,7 @@ export function AccountCloudCard({
                   : "Cloud accounts aren't configured yet — Export keeps a copy you can restore anywhere."}
           </Text>
         </View>
-        {syncing ? <ActivityIndicator color={theme.accent} /> : lastSyncedAt && !syncError ? <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
+        {syncing ? <ActivityIndicator color={theme.accent} /> : lastSyncedAt && !syncError ? <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
       </View>
 
       {configured && onSyncNow ? (
@@ -246,7 +246,7 @@ export function AccountCloudCard({
           onChangeText={onChangeName}
           placeholder="Your name"
           placeholderTextColor={theme.secondaryText}
-          style={{ color: theme.text, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", paddingVertical: 2, marginTop: 4 }}
+          style={{ color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", paddingVertical: 2, marginTop: 4 }}
           accessibilityLabel="Reef keeper name"
         
             maxLength={TEXT_LIMITS.name}
@@ -298,7 +298,7 @@ export function AccountCloudCard({
             <Pressable onPress={toggleBiometric} style={[styles.accountInfoBox, { flexDirection: "row", alignItems: "center", gap: 12 }]} accessibilityRole="button" accessibilityState={{ checked: bioEnabled }}>
               <Text style={{ fontSize: type.titleLg }}>{bioLabel === "Touch ID" ? "👆" : "🙂"}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioLabel} sign-in</Text>
+                <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioLabel} sign-in</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
                   {bioEnabled ? "On — tap to turn off and forget the saved credentials." : "Off — offered next time you log in with your password."}
                 </Text>

@@ -26,7 +26,7 @@ export function CrashLogCard() {
     <View style={[styles.card, { borderColor: `${theme.warn}44` }]}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <Ionicons name="bug-outline" size={16} color={theme.warn} />
-        <Text style={{ flex: 1, color: theme.warn, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+        <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {crashes.length === 1 ? "1 problem recorded" : `${crashes.length} problems recorded`}
         </Text>
       </View>

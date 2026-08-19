@@ -54,7 +54,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
         checked against the same engine that grades your stock.
       </Text>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 14, marginBottom: 6 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14, marginBottom: 6 }}>
         YOUR EXPERIENCE
       </Text>
       <View style={{ flexDirection: "row", gap: 6 }}>
@@ -75,11 +75,11 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
                 <SpeciesThumb species={p.species} size={42} radius={12} />
                 <View style={{ flex: 1 }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                    <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                    <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                       {p.count}× {p.species.name}
                     </Text>
                   </View>
-                  <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.4, textTransform: "uppercase", marginTop: 2 }}>
+                  <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.4, textTransform: "uppercase", marginTop: 2 }}>
                     {p.roleLabel}
                   </Text>
                   <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 15 }}>
@@ -92,8 +92,8 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
 
           <View style={{ marginTop: 16 }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>ESTIMATED LOAD</Text>
-              <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>ESTIMATED LOAD</Text>
+              <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                 {plan.load}" of {formatVolume(plan.capacity)} · {plan.headroom}" spare
               </Text>
             </View>

@@ -58,18 +58,18 @@ export function AlgaeCard({ tank = {}, waterType = "fresh", onGoToTab }) {
 
           {result.confirmed.length ? (
             <>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>
                 From your own readings
               </Text>
               <View style={{ gap: 8, marginTop: 8 }}>
                 {result.confirmed.map((c, i) => (
                   <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: i === 0 ? "rgba(56,225,198,0.42)" : theme.border, padding: 11 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{i + 1}</Text>
                       <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.label}</Text>
                       {c.free ? (
                         <View style={{ backgroundColor: "rgba(56,225,198,0.16)", borderRadius: radius.pill, paddingHorizontal: 7, paddingVertical: 1 }}>
-                          <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>FREE</Text>
+                          <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>FREE</Text>
                         </View>
                       ) : null}
                     </View>
@@ -83,7 +83,7 @@ export function AlgaeCard({ tank = {}, waterType = "fresh", onGoToTab }) {
           {/* Things the record can't measure. Offered to check, never claimed. */}
           {result.possible.length ? (
             <>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>
                 Worth checking — the app can't see these
               </Text>
               {result.possible.map((c) => (

@@ -50,7 +50,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
   return (
     <View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+        <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
           Observations{list.length ? ` (${list.length})` : ""}
         </Text>
         <Pressable onPress={() => { tapHaptic("light"); setOpen((v) => !v); }} hitSlop={touchSlop(24)} accessibilityRole="button" accessibilityLabel={open ? "Cancel" : `Add an observation for ${name}`}>

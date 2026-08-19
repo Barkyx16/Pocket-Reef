@@ -33,7 +33,7 @@ export function JournalPromptCard({ daysSinceLast }) {
 
   return (
     <View style={{ backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", padding: 16, marginBottom: 16 }}>
-      <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" }}>
+      <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.7, textTransform: "uppercase" }}>
         {first ? "✍️ Start your log" : `✍️ ${daysSinceLast} days since your last entry`}
       </Text>
       <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 6 }}>

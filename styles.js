@@ -54,9 +54,17 @@ export const type = {
 
 // Three levels, so depth means something. The app draws on a dark ground where
 // a shadow reads as glow more than as lift, which is why these are restrained.
+// Three levels, taken from values already in the app rather than invented, so
+// the most common surface — the card — does not move at all. Five hand-rolled
+// recipes collapse onto these: the hero banner and the card were within 0.04
+// opacity of each other and were never going to read as different heights.
 export const elevation = {
   none: {},
-  card: { shadowColor: "#000", shadowOpacity: 0.18, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
+  // Every card, and anything that sits flat on the background.
+  card: { shadowColor: "#000", shadowOpacity: 0.22, shadowRadius: 22, shadowOffset: { width: 0, height: 10 }, elevation: 5 },
+  // The one element per screen that is the screen's subject.
+  hero: { shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+  // Genuinely above the page: the tab bar, the undo snackbar.
   floating: { shadowColor: "#000", shadowOpacity: 0.28, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 14 },
 };
 
@@ -162,28 +170,28 @@ export const styles = StyleSheet.create({
   scroll: { padding: 16, paddingBottom: 186 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
-  heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.26, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
+  heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", ...elevation.card },
   heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 },
-  heroEyebrow: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1.1, textTransform: "uppercase" },
+  heroEyebrow: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 1.1, textTransform: "uppercase" },
   heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
   heroSub: { color: "#cfe6f2", fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 19 },
 
   // ── Profile hero (uncropped banner art + solid info panel below) ───────────
-  profileHero: { borderRadius: 28, marginBottom: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 22, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+  profileHero: { borderRadius: 28, marginBottom: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", ...elevation.hero },
   profileHeroPanel: { padding: 18, backgroundColor: "#0a2233", borderTopWidth: 1, borderTopColor: "rgba(127, 240, 221, 0.18)" },
   profileHeroName: { flexShrink: 1, color: "#ffffff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 },
   profileHeroBannerPill: { backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4, maxWidth: "50%" },
-  profileHeroBannerPillText: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" },
+  profileHeroBannerPillText: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
   profileHeroLevelBadge: { width: 54, height: 54, borderRadius: radius.xl, backgroundColor: "rgba(6,20,32,0.55)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)", alignItems: "center", justifyContent: "center" },
 
   // ── Card (glass chrome) ────────────────────────────────────────────────────
-  card: { backgroundColor: theme.card, borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: theme.border, shadowColor: "#000", shadowOpacity: 0.22, shadowRadius: 22, shadowOffset: { width: 0, height: 10 }, elevation: 5 },
+  card: { backgroundColor: theme.card, borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: theme.border, ...elevation.card },
   // A primary/feature card with a soft accent glow to draw the eye.
   cardElevated: { backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
   cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
-  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
+  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
   cardTitle: { fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
-  cardText: { marginTop: 8, fontSize: 14, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
+  cardText: { marginTop: 8, fontSize: type.body, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
   iconSquare: { width: 32, height: 32, borderRadius: radius.sm, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.18)" },
   primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: radius.pill, backgroundColor: ACCENT, marginBottom: 12 },
 
@@ -193,13 +201,13 @@ export const styles = StyleSheet.create({
   cleanImageWrap: { width: 56, height: 56, borderRadius: radius.xl, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: theme.hairline },
   cleanImage: { width: 56, height: 56 },
   cleanEmoji: { fontSize: 28 },
-  cleanName: { color: "#ffffff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2 },
+  cleanName: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2 },
   cleanMeta: { color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 },
   cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Chips & pills ──────────────────────────────────────────────────────────
   chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: radius.pill, borderWidth: 1 },
-  chipText: { fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" },
+  chipText: { fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" },
   pill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1 },
 
   // ── Buttons ──────────────────────────────────────────────────────────────
@@ -212,7 +220,7 @@ export const styles = StyleSheet.create({
   statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
   statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56,225,198,0.06)", borderRadius: radius.xl, padding: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.14)" },
   statLabel: { color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.2 },
-  statValue: { color: "#ffffff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
+  statValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
 
   // ── Search input ───────────────────────────────────────────────────────────
   search: { fontFamily: "Inter_400Regular", backgroundColor: theme.card, borderRadius: radius.xl, paddingHorizontal: 16, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg },
@@ -223,7 +231,7 @@ export const styles = StyleSheet.create({
   detailEmoji: { fontSize: 68 },
   detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginTop: 12, textAlign: "center" },
   backBtn: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", paddingVertical: 8, paddingHorizontal: 4 },
-  backText: { color: ACCENT, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" },
+  backText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Auth (sign in / sign up) ───────────────────────────────────────────────
   authInput: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_700Bold", fontWeight: "700", paddingHorizontal: 16, paddingVertical: 14 },
@@ -234,14 +242,14 @@ export const styles = StyleSheet.create({
 
   // ── Account / cloud card ───────────────────────────────────────────────────
   accountInfoBox: { backgroundColor: theme.well, borderRadius: radius.lg, padding: 14, borderWidth: 1, borderColor: theme.border, marginBottom: 10 },
-  accountInfoLabel: { color: ACCENT_LIGHT, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.7, textTransform: "uppercase" },
+  accountInfoLabel: { color: ACCENT_LIGHT, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.7, textTransform: "uppercase" },
   accountInfoValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 },
   // Hairline separator between two merged sections inside one card.
   sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: 18 },
   accountSignOutBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, marginTop: 10 },
-  accountSignOutText: { color: "#ffffff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" },
+  accountSignOutText: { color: "#ffffff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" },
   accountDangerBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,123,123,0.08)", borderWidth: 1, borderColor: "rgba(255,123,123,0.45)", marginTop: 10 },
-  accountDangerText: { color: theme.danger, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" },
+  accountDangerText: { color: theme.danger, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
   bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: radius.card, padding: 6, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", ...elevation.floating },

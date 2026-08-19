@@ -59,14 +59,14 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
         Already running? Tell Pocket Reef how long and what it reads, and every score, forecast and maturity figure starts from reality instead of day zero.
       </Text>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>How long has it been running?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>How long has it been running?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
         {AGE_OPTIONS.map((a) => (
           <Pill key={a.id} label={a.label} active={ageId === a.id} onPress={() => { tapHaptic("light"); setAgeId(a.id); }} />
         ))}
       </View>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 16 }}>Where does it sit today?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 16 }}>Where does it sit today?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
         {params.map((p) => (
           <View key={p.key} style={{ width: "48.5%" }}>
@@ -97,7 +97,7 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
           data" without a reason is how a setup screen gets abandoned. */}
       {missing.length ? (
         <View style={{ marginTop: 16, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Still to fill in</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Still to fill in</Text>
           <View style={{ gap: 7, marginTop: 8 }}>
             {missing.map((m) => (
               <View key={m.id} style={{ flexDirection: "row", gap: 8 }}>

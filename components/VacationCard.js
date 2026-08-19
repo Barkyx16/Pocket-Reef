@@ -33,7 +33,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
 
   return (
     <View>
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>How long are you away?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>How long are you away?</Text>
       <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
         {TRIPS.map((d) => (
           <Pill key={d} label={`${d} days`} active={days === d} onPress={() => { tapHaptic("light"); setDays(d); }} />
@@ -54,7 +54,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
         <View style={{ gap: 7, marginTop: 8 }}>
           {prep.map((s, i) => (
             <View key={i} style={{ flexDirection: "row", gap: 8 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", width: 78 }}>{s.when}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", width: 78 }}>{s.when}</Text>
               <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{s.text}</Text>
             </View>
           ))}
@@ -86,7 +86,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
             maxLength={TEXT_LIMITS.phone}
           />
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Each day</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Each day</Text>
           {plan.doList.map((d, i) => (
             <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>• {d}</Text>
           ))}
@@ -95,7 +95,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
 
       {/* Always shown, trip length regardless — a four-day trip still needs the
           neighbour with a key to leave the tank alone. */}
-      <Text style={{ color: theme.danger, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Please don't</Text>
+      <Text style={{ color: theme.danger, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Please don't</Text>
       {plan.dontList.map((d, i) => (
         <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>• {d}</Text>
       ))}

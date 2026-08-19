@@ -72,7 +72,7 @@ export class ErrorBoundary extends Component {
             accessibilityRole="button"
             accessibilityLabel="Try this screen again"
           >
-            <Text style={{ color: "#04202a", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
+            <Text style={{ color: "#04202a", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
           </Pressable>
           <Text style={{ color: "#6f8ea3", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
             {String((error && error.message) || error || "Unknown error").slice(0, 140)}
@@ -92,7 +92,7 @@ export class ErrorBoundary extends Component {
               Something went wrong
             </Text>
             {/* The most important sentence on this screen. */}
-            <Text style={{ color: "#8fb3c7", fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21 }}>
+            <Text style={{ color: "#8fb3c7", fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21 }}>
               Your tanks, logs, and journal are safe on this device — nothing was lost.
               Try again, and if it keeps happening, reopening the app usually clears it.
             </Text>
@@ -126,7 +126,7 @@ export class ErrorBoundary extends Component {
 
           {/* Shown so a user can tell us what happened, not to explain it. */}
           <View style={{ marginTop: 24, padding: 12, borderRadius: radius.md, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
-            <Text style={{ color: "#6f93a8", fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
+            <Text style={{ color: "#6f93a8", fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" }}>
               Details
             </Text>
             <Text style={{ color: "#8fb3c7", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>

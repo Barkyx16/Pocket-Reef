@@ -158,7 +158,7 @@ export function UniversalSearch({
               placeholder="Fish, disease, tank, note or screen…"
               placeholderTextColor={theme.secondaryText}
               returnKeyType="search"
-              style={{ flex: 1, color: theme.text, fontSize: 16, fontFamily: "Inter_600SemiBold", fontWeight: "600", paddingVertical: 12 }}
+              style={{ flex: 1, color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_600SemiBold", fontWeight: "600", paddingVertical: 12 }}
               accessibilityLabel="Search everything"
             
             maxLength={TEXT_LIMITS.search}
@@ -170,7 +170,7 @@ export function UniversalSearch({
             ) : null}
           </View>
           <Pressable onPress={close} hitSlop={8} accessibilityRole="button" accessibilityLabel="Cancel search">
-            <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Done</Text>
+            <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Done</Text>
           </Pressable>
         </View>
 
@@ -198,7 +198,7 @@ export function UniversalSearch({
           ) : total === 0 ? (
             <View style={{ alignItems: "center", paddingTop: 60, paddingHorizontal: 24 }}>
               <Ionicons name="search-outline" size={34} color={theme.secondaryText} />
-              <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>Nothing matched “{query.trim()}”</Text>
+              <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>Nothing matched “{query.trim()}”</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
                 Try a common name (“oto”, “nemo”), a symptom (“white spots”), or a screen name.
               </Text>
@@ -290,7 +290,7 @@ export function UniversalSearch({
 function Section({ title, children }) {
   return (
     <View style={{ marginBottom: 18 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{title}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{title}</Text>
       <View style={{ gap: 6 }}>{children}</View>
     </View>
   );
@@ -312,7 +312,7 @@ function Row({ icon, thumb, title, sub, onPress }) {
         </View>
       )}
       <View style={{ flex: 1 }}>
-        <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
+        <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
         {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
       </View>
       <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />

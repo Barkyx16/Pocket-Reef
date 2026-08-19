@@ -18,7 +18,7 @@ export function CompatibilityMatrix({ tank = [] }) {
 
   const Head = ({ label }) => (
     <View style={{ width: CELL, height: CELL, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
+      <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
     </View>
   );
 
@@ -69,7 +69,7 @@ export function CompatibilityMatrix({ tank = [] }) {
       <View style={{ marginTop: 12, gap: 6 }}>
         {species.map((s, i) => (
           <View key={s.name} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", width: 14 }}>{i + 1}</Text>
+            <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", width: 14 }}>{i + 1}</Text>
             <SpeciesThumb species={s} size={20} radius={7} />
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.name}</Text>
           </View>

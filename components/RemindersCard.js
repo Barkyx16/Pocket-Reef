@@ -24,7 +24,7 @@ const FREQ = [
 function Row({ label, value, onChange }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 8 }}>{label}</Text>
+      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 8 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 8 }}>
         {FREQ.map((f) => (
           <Pill key={f.id} fill label={f.label} active={value === f.id} onPress={() => onChange(f.id)} />
@@ -149,7 +149,7 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
           "follow the above", so a single-tank keeper never sees a decision. */}
       {tank && onChangeTankReminders ? (
         <View style={{ marginTop: 6, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             Just for {tank.name || "this tank"}
           </Text>
           <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3, marginBottom: 10 }}>

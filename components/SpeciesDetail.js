@@ -113,9 +113,9 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 14, paddingVertical: 10 }}>
             <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? <Text style={{ color: quantity < s.minGroup ? theme.warn : theme.secondaryText, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{`  group of ${s.minGroup}+`}</Text> : null}</Text>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <Pressable onPress={() => onSetQuantity(name, quantity - 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Decrease count"><Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text></Pressable>
-              <Text style={{ color: quantity < s.minGroup ? theme.warn : "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 24, textAlign: "center" }}>{quantity}</Text>
-              <Pressable onPress={() => onSetQuantity(name, quantity + 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Increase count"><Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text></Pressable>
+              <Pressable onPress={() => onSetQuantity(name, quantity - 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Decrease count"><Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text></Pressable>
+              <Text style={{ color: quantity < s.minGroup ? theme.warn : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 24, textAlign: "center" }}>{quantity}</Text>
+              <Pressable onPress={() => onSetQuantity(name, quantity + 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Increase count"><Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text></Pressable>
             </View>
           </View>
         ) : null}
@@ -179,9 +179,9 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <View style={{ gap: 8 }}>
           {careRows.map((r) => (
             <View key={r.label} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
-              <Text style={{ fontSize: 18 }}>{r.icon}</Text>
+              <Text style={{ fontSize: type.title }}>{r.icon}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>{r.label}</Text>
+                <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5 }}>{r.label}</Text>
                 <Text style={{ color: r.color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{r.value}</Text>
               </View>
             </View>
@@ -201,7 +201,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
                 <SpeciesThumb species={other} size={24} radius={8} />
                 <View style={{ flex: 1 }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                    <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{n}</Text>
+                    <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{n}</Text>
                     <Chip label={c.level} color={compatColor(c.level)} />
                   </View>
                   <Text style={[styles.cardText, { marginTop: 2 }]}>{c.reason}</Text>
@@ -217,9 +217,9 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <Text accessibilityRole="header" style={styles.cardEyebrow}>PROBLEMS & PROTECTION</Text>
         <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>Diseases to watch for on {s.name} — tap any one for its full guide with treatment steps.</Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
-          <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>🩺 Common Ailments</Text>
+          <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>🩺 Common Ailments</Text>
           <View style={{ backgroundColor: "rgba(255,138,101,0.22)", borderRadius: radius.pill, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
-            <Text style={{ color: theme.coral, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{diseases.length}</Text>
+            <Text style={{ color: theme.coral, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{diseases.length}</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
@@ -229,7 +229,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
                 {getDiseaseImage(d.name) ? (
                   <Image source={getDiseaseImage(d.name)} style={{ width: 32, height: 32 }} resizeMode="cover" />
                 ) : (
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{d.emoji}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{d.emoji}</Text>
                 )}
               </View>
               <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>{d.name}</Text>
@@ -272,7 +272,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
             <Pressable key={link.label} onPress={() => Linking.openURL(link.url).catch(() => {})} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }, pressed && { opacity: 0.75, borderColor: theme.accent }]} accessibilityRole="link" accessibilityLabel={link.label}>
               <Text style={{ fontSize: type.titleLg }}>{link.icon}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{link.label}</Text>
+                <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{link.label}</Text>
                 <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{link.sub}</Text>
               </View>
               <Text style={{ color: theme.accent, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
@@ -341,7 +341,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
             placeholder={`Write notes about ${s.name}…`}
             placeholderTextColor={theme.secondaryText}
             multiline
-            style={{ backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 96, textAlignVertical: "top", marginTop: 10 }}
+            style={{ backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, minHeight: 96, textAlignVertical: "top", marginTop: 10 }}
           
             maxLength={TEXT_LIMITS.note}
           />
@@ -364,7 +364,7 @@ function QuickTile({ icon, label, active, activeColor, onPress }) {
       accessibilityLabel={label}
     >
       <Ionicons name={icon} size={19} color={c} />
-      <Text style={{ color: c, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center" }}>{label}</Text>
+      <Text style={{ color: c, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center" }}>{label}</Text>
     </Pressable>
   );
 }
@@ -376,9 +376,9 @@ function MateGroup({ color, label, names, onOpen }) {
     <View style={{ marginTop: 14 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
         <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: color }} />
-        <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
+        <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
         <View style={{ backgroundColor: `${color}22`, borderRadius: radius.pill, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
-          <Text style={{ color, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{names.length}</Text>
+          <Text style={{ color, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{names.length}</Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>

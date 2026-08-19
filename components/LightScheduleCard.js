@@ -40,7 +40,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone}40`, padding: 14 }}>
             <View style={{ alignItems: "center", minWidth: 54 }}>
               <Text style={{ color: tone, fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900" }}>{assessment.hours}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>hours</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>hours</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ color: tone, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
@@ -76,19 +76,19 @@ export function LightScheduleCard({ tank = {}, onSave }) {
 
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 14 }}>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>On</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>On</Text>
               <TextInput value={on} onChangeText={setOn} placeholder="10:00" placeholderTextColor={theme.secondaryText} accessibilityLabel="Time the lights come on" style={styles.authInput} 
             maxLength={TEXT_LIMITS.time}
           />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Off</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Off</Text>
               <TextInput value={off} onChangeText={setOff} placeholder="20:00" placeholderTextColor={theme.secondaryText} accessibilityLabel="Time the lights go off" style={styles.authInput} 
             maxLength={TEXT_LIMITS.time}
           />
             </View>
             <View style={{ width: 88 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Ramp</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Ramp</Text>
               <TextInput value={ramp} onChangeText={(t) => setRamp(integerText(t))} keyboardType="number-pad" placeholder="0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Ramp minutes" style={styles.authInput} 
             maxLength={TEXT_LIMITS.number}
           />
@@ -99,7 +99,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
             {draftHours != null ? `${draftHours} hours a day` : "Use times like 10:00 and 20:00"}
           </Text>
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What's it lighting?</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What's it lighting?</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
             {PROFILES.map((p) => (
               <Pill key={p.id} label={p.label} active={profile === p.id} onPress={() => { tapHaptic("light"); setProfile(p.id); }} />

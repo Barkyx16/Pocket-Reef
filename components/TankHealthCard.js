@@ -48,7 +48,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
 
           {improvements.length ? (
             <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.border }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
                 Raise your score
               </Text>
               <View style={{ gap: 10 }}>
@@ -61,13 +61,13 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
                   >
                     <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
-                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{imp.action}</Text>
                       {imp.why ? <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
                     </View>
-                    {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
+                    {onGoToTab ? <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
                   </Pressable>
                 ))}
               </View>

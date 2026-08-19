@@ -326,11 +326,11 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 {a.status !== "none" ? (
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
                     {delta ? (
-                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                         {delta.up ? "↑" : "↓"}{delta.amount}
                       </Text>
                     ) : null}
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase" }}>
                       {a.status === "good" ? "Good" : a.status === "caution" ? "Watch" : "High"}
                     </Text>
                   </View>
@@ -516,7 +516,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 return (
                   <View key={p.key} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 6 }}>
                     <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase" }}>{p.label}</Text>
-                    <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 1 }}>
+                    <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                       {lo === hi ? `${lo}` : `${lo}–${hi}`}
                       <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{`  avg ${avg}`}</Text>
                     </Text>
@@ -555,7 +555,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                   return (
                     <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: radius.xs, paddingHorizontal: 8, paddingVertical: 4 }}>
                       <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
-                      <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{shown}</Text>
+                      <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shown}</Text>
                     </View>
                   );
                 })}

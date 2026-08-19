@@ -51,11 +51,11 @@ function EntryLine({ entry, showDate = true }) {
         <Image source={{ uri: entry.photo }} style={{ width: 46, height: 46, borderRadius: radius.md }} resizeMode="cover" />
       ) : (
         <View style={{ width: 46, height: 46, borderRadius: radius.md, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{entry.mood || "📓"}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{entry.mood || "📓"}</Text>
         </View>
       )}
       <View style={{ flex: 1 }}>
-        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{entry.date}</Text> : null}
+        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{entry.date}</Text> : null}
         <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 1 }} numberOfLines={3}>
           {entry.text || "(photo only)"}
         </Text>
@@ -80,7 +80,7 @@ function OnThisDay({ memories }) {
         <View key={m.months} style={{ marginBottom: 14 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <View style={{ height: 1, width: 14, backgroundColor: "rgba(56,225,198,0.42)" }} />
-            <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
             <View style={{ height: 1, flex: 1, backgroundColor: theme.hairline }} />
           </View>
           {m.entries.slice(0, 3).map((e) => <EntryLine key={e.id || e.date} entry={e} />)}
@@ -182,14 +182,14 @@ function Compare({ photos }) {
         {[{ e: a, label: "Before" }, { e: b, label: "After" }].map(({ e, label }) => (
           <View key={label} style={{ flex: 1 }}>
             <Image source={{ uri: e.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-            <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, marginTop: 6, textTransform: "uppercase" }}>{label}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, marginTop: 6, textTransform: "uppercase" }}>{label}</Text>
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
           </View>
         ))}
       </View>
 
       <View style={{ alignItems: "center", marginTop: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: 10 }}>
-        <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {span === 0 ? "Same day" : `${span} ${span === 1 ? "day" : "days"} apart`}
         </Text>
         <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>

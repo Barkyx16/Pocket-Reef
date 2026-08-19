@@ -50,8 +50,8 @@ export function ForecastCard({ forecasts = [] }) {
 
               <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                  <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
-                  <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
+                  <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {f.current}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                 </View>

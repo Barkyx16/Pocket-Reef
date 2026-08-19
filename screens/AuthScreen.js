@@ -506,7 +506,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
                 accessibilityLabel={`Sign in with ${bioLabel}`}
               >
                 <Ionicons name={bioLabel === "Touch ID" ? "finger-print" : "scan-outline"} size={20} color={theme.accent} />
-                <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Sign in with {bioLabel}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Sign in with {bioLabel}</Text>
               </Pressable>
             ) : null}
 

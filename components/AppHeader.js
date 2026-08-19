@@ -34,7 +34,7 @@ export function AppHeader({ tank, tankCount = 1, onOpenTankMenu, onOpenSearch, s
         {tankCount > 1 ? (
           <View style={{ backgroundColor: alertColor ? `${alertColor}22` : "rgba(56,225,198,0.14)", borderRadius: radius.pill, paddingHorizontal: 6, paddingVertical: 1, flexDirection: "row", alignItems: "center", gap: 4 }}>
             {alertColor ? <View style={{ width: 5, height: 5, borderRadius: 3, backgroundColor: alertColor }} /> : null}
-            <Text style={{ color: alertColor || theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{tankCount}</Text>
+            <Text style={{ color: alertColor || theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{tankCount}</Text>
           </View>
         ) : null}
         <Ionicons name="chevron-down" size={13} color={theme.secondaryText} />
@@ -120,7 +120,7 @@ export function TankMenu({ visible, tanks = [], activeTankId, onClose, onSwitch,
                 accessibilityLabel="Add a tank"
               >
                 <Ionicons name="add" size={17} color={theme.accent} />
-                <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>New tank</Text>
+                <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>New tank</Text>
               </Pressable>
             </View>
           </ScrollView>

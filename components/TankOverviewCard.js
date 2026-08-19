@@ -22,7 +22,7 @@ export function TankOverviewCard({ tanks = [], activeTankId, onSwitch }) {
               </Text>
             </View>
             <View style={{ width: 44, height: 44, borderRadius: radius.card, borderWidth: 3, borderColor: h.color, backgroundColor: `${h.color}14`, alignItems: "center", justifyContent: "center", shadowColor: h.color, shadowOpacity: 0.4, shadowRadius: 10, shadowOffset: { width: 0, height: 0 } }}>
-              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{h.score}</Text>
+              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{h.score}</Text>
             </View>
           </Pressable>
         );

@@ -89,7 +89,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                     {iconForEmoji(category.emoji) ? (
                       <Ionicons name={iconForEmoji(category.emoji)} size={14} color={theme.accent} />
                     ) : (
-                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 14 }}>{category.emoji}</Text>
+                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.body }}>{category.emoji}</Text>
                     )}
                   </View>
                   <View style={{ flex: 1 }}>
@@ -125,7 +125,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                 accessibilityState={{ selected: draft.category === c.id }}
                 accessibilityLabel={`Category: ${c.label}`}
               >
-                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.emoji} {c.label}</Text>
+                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.emoji} {c.label}</Text>
               </Pressable>
             ))}
           </View>
@@ -241,7 +241,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 const input = {
   backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12,
   paddingVertical: 9, color: theme.text, borderWidth: 1, borderColor: theme.border,
-  fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600",
+  fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600",
 };
 
 function Stat({ label, value, sub, tone }) {

@@ -114,11 +114,11 @@ function GameHost({ gameId, onBack, onEarnXp }) {
       </View>
       <View style={{ flexDirection: "row", gap: 8, marginBottom: 14 }}>
         <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
-          <Text style={{ color: theme.warn, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>🔥 {bestStreak}</Text>
+          <Text style={{ color: theme.warn, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>🔥 {bestStreak}</Text>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BEST STREAK</Text>
         </View>
         <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
-          <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>⏱️ {bestBlitz}</Text>
+          <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>⏱️ {bestBlitz}</Text>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BLITZ BEST</Text>
         </View>
       </View>
@@ -214,7 +214,7 @@ function OptionBtn({ o, answered, selectedKey, onPress }) {
           circle. Replacing the emoji without this dot would have thrown the
           colour cue away entirely. */}
       {o.dot ? <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: o.dot }} /> : null}
-      <Text style={{ flex: 1, color, fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.label}</Text>
+      <Text style={{ flex: 1, color, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.label}</Text>
       {mark ? <Ionicons name={mark} size={17} color={o.correct ? theme.accent : theme.danger} /> : null}
     </Pressable>
   );
@@ -233,7 +233,7 @@ function TwoSpecies({ a, b, question }) {
     <View>
       <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "center", gap: 14 }}>
         <SpeciesMini s={a} />
-        <Text style={{ color: theme.secondaryText, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 20 }}>+</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 20 }}>+</Text>
         <SpeciesMini s={b} />
       </View>
       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 14 }}>{question}</Text>

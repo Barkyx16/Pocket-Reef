@@ -101,7 +101,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
         <View style={[styles.cardElevated, { flexDirection: "row", alignItems: "center", gap: 12 }]}>
           <Text style={{ fontSize: 26 }}>✅</Text>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>Premium is active</Text>
+            <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>Premium is active</Text>
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Everything below is unlocked and ready to use.</Text>
           </View>
         </View>
@@ -116,7 +116,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
               <View style={styles.iconSquare}><Ionicons name={f.icon} size={16} color={theme.accent} /></View>
               <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                  <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                  <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                   {premiumUnlocked ? <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
                 </View>
                 <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.body}</Text>
@@ -144,8 +144,8 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
                   <Text style={{ color: on ? theme.accent : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}</Text>
                   {/* Localized and formatted by the store — never hardcoded. */}
                   <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2, fontVariant: ["tabular-nums"] }}>{p.priceString}<Text style={{ color: theme.secondaryText, fontSize: type.small }}> {p.per}</Text></Text>
-                  {p.annual && save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{save}</Text></View> : null}
-                  {p.freeTrialDays ? <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>{p.freeTrialDays} days free</Text> : null}
+                  {p.annual && save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{save}</Text></View> : null}
+                  {p.freeTrialDays ? <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{p.freeTrialDays} days free</Text> : null}
                 </Pressable>
               );
             })}
@@ -211,7 +211,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           can flip. Entitlement in production comes from RevenueCat alone. */}
       {__DEV__ ? (
       <View style={{ borderRadius: radius.xl, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>🔧 Developer</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" }}>🔧 Developer</Text>
         <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
           Toggle the premium gate for testing. Debug builds only — stripped from release.
         </Text>
@@ -220,7 +220,7 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           style={({ pressed }) => [{ marginTop: 12, borderRadius: radius.lg, paddingVertical: 12, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
           accessibilityRole="button"
         >
-          <Text style={{ color: premiumUnlocked ? theme.danger : theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: premiumUnlocked ? theme.danger : theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {premiumUnlocked ? " Lock premium (dev)" : "🔓 Unlock premium (dev)"}
           </Text>
         </Pressable>

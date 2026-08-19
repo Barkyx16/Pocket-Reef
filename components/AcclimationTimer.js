@@ -92,9 +92,9 @@ export function AcclimationTimer({ onComplete }) {
   return (
     <View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 }}>
-        <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{current.emoji}</Text></View>
+        <View style={styles.iconSquare}><Text style={{ fontSize: type.title }}>{current.emoji}</Text></View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {done ? "Acclimation complete" : current.label}
           </Text>
           <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
@@ -130,7 +130,7 @@ export function AcclimationTimer({ onComplete }) {
                 borderWidth: 1, borderColor: isNow ? theme.accent : passed ? "rgba(56,225,198,0.45)" : theme.border,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {passed ? "✓" : i + 1}
                 </Text>
               </View>
