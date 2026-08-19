@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 
 // The "Today" hub — a prioritized list of what needs attention right now,
@@ -20,7 +20,7 @@ export function TodayCard({ actions = [], onNavigate }) {
     return (
       <View style={{ alignItems: "center", paddingVertical: 6 }}>
         <Text style={{ fontSize: 28 }}>🎉</Text>
-        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>All caught up</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>All caught up</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Nothing needs your attention today. Nice work keeping the tank happy.</Text>
       </View>
     );
@@ -41,11 +41,11 @@ export function TodayCard({ actions = [], onNavigate }) {
             // classic symptom being a tap landing on the wrong item.
             key={`${a.to}:${a.text}`}
             onPress={tappable ? () => { tapHaptic("light"); onNavigate(a.to); } : undefined}
-            style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: theme.border }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: theme.border }}
             accessibilityRole={tappable ? "button" : undefined}
           >
-            <Text style={{ fontSize: 15 }}>{a.icon}</Text>
-            <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.text}</Text>
+            <Text style={{ fontSize: type.bodyLg }}>{a.icon}</Text>
+            <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.text}</Text>
             {tappable ? <Text style={{ color: theme.accent, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
           </Row>
         );
@@ -58,7 +58,7 @@ export function TodayCard({ actions = [], onNavigate }) {
           accessibilityRole="button"
           accessibilityLabel={`Show ${hidden} more thing${hidden === 1 ? "" : "s"} that need attention`}
         >
-          <Text style={{ color: theme.accent, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {hidden} more {hidden === 1 ? "thing" : "things"} need attention
           </Text>
         </Pressable>
@@ -71,7 +71,7 @@ export function TodayCard({ actions = [], onNavigate }) {
           accessibilityRole="button"
           accessibilityLabel="Show fewer"
         >
-          <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Show fewer</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Show fewer</Text>
         </Pressable>
       ) : null}
     </View>

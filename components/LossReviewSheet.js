@@ -1,6 +1,6 @@
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -39,7 +39,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
           <Text style={{ color: "#fff", fontSize: 19, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {name ? `About ${name}` : "About this loss"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>
             {review.headline}
           </Text>
 
@@ -48,12 +48,12 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
               {review.findings.map((f) => {
                 const t = TONE[f.tone] || TONE.watch;
                 return (
-                  <View key={f.id} style={{ backgroundColor: `${t.color}12`, borderRadius: 14, borderWidth: 1, borderColor: `${t.color}3d`, padding: 12 }}>
+                  <View key={f.id} style={{ backgroundColor: `${t.color}12`, borderRadius: radius.lg, borderWidth: 1, borderColor: `${t.color}3d`, padding: 12 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
                       <Ionicons name={t.icon} size={15} color={t.color} />
-                      <Text style={{ flex: 1, color: t.color, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                      <Text style={{ flex: 1, color: t.color, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                     </View>
-                    <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 5 }}>
+                    <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 5 }}>
                       {f.body}
                     </Text>
                   </View>
@@ -61,7 +61,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
               })}
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 14, textAlign: "center" }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 14, textAlign: "center" }}>
               Drawn from this tank's own record. Animals die of old age and of nothing at all — this is what the log can see, not a verdict.
             </Text>
           </ScrollView>

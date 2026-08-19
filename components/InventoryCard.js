@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Share, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { KINDS, kindOf, newInventoryItem, forecastInventory, suggestedItems, LOW_STOCK_DAYS } from "../lib/inventory";
@@ -73,13 +73,13 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
   return (
     <View>
       {needs.length ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,216,107,0.30)", padding: 12, marginBottom: 12 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.30)", padding: 12, marginBottom: 12 }}>
           <Ionicons name="cart" size={16} color={theme.warn} />
-          <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>
             {needs.length} item{needs.length === 1 ? "" : "s"} to restock before you're stuck mid-water-change.
           </Text>
           <Pressable onPress={share} hitSlop={touchSlop(24)} accessibilityRole="button" accessibilityLabel="Share the shopping list">
-            <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share</Text>
+            <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share</Text>
           </Pressable>
         </View>
       ) : null}
@@ -101,22 +101,22 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
             const st = STATE[state] || STATE.ok;
             const k = kindOf(item.kind);
             return (
-              <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: state === "ok" || state === "unknown" ? theme.border : `${st.color}55`, padding: 12 }}>
+              <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: state === "ok" || state === "unknown" ? theme.border : `${st.color}55`, padding: 12 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 9 }}>
                   <Ionicons name={k.icon} size={16} color={st.color} />
-                  <Text style={{ flex: 1, color: theme.text, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{item.name}</Text>
-                  <View style={{ backgroundColor: `${st.color}1f`, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2 }}>
-                    <Text style={{ color: st.color, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{st.label}</Text>
+                  <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{item.name}</Text>
+                  <View style={{ backgroundColor: `${st.color}1f`, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}>
+                    <Text style={{ color: st.color, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{st.label}</Text>
                   </View>
                   <Pressable onPress={() => onRemove && onRemove(item.id)} hitSlop={touchSlop(22)} accessibilityRole="button" accessibilityLabel={`Remove ${item.name}`}>
                     <Ionicons name="close" size={14} color={theme.secondaryText} />
                   </Pressable>
                 </View>
 
-                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{headline}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{headline}</Text>
 
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {item.stock} {item.unit} left
                     {/* Whether the rate was measured or merely stated changes how
                         much the date is worth, so it's never hidden. */}
@@ -132,7 +132,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                       accessibilityRole="button"
                       accessibilityLabel={`Use one ${item.unit} of ${item.name}`}
                     >
-                      <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>−1</Text>
+                      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>−1</Text>
                     </Pressable>
                     <Pressable
                       onPress={() => { tapHaptic("light"); onSetStock(item.id, item.stock + 1); }}
@@ -140,7 +140,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                       accessibilityRole="button"
                       accessibilityLabel={`Add one ${item.unit} of ${item.name}`}
                     >
-                      <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>+1</Text>
+                      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>+1</Text>
                     </Pressable>
                   </View>
                 ) : null}
@@ -151,7 +151,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
       )}
 
       {adding ? (
-        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
+        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
           <TextInput
             value={draft.name}
             onChangeText={(v) => setDraft((d) => ({ ...d, name: v }))}

@@ -1,7 +1,7 @@
 import { useEffect, useState, memo } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { levelFromXp, getStreak, getLongestStreak, getAchievements, getLifetimeStats, getBanner, BANNERS } from "../core";
 import { getBannerImage } from "../data/bannerImageMap";
 import { ProfileHero } from "../components/ProfileHero";
@@ -120,7 +120,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   key={b.id}
                   onPress={() => wearBanner(b.id)}
                   style={({ pressed }) => [
-                    { width: 92, height: 52, borderRadius: 12, overflow: "hidden", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border, backgroundColor: b.colors[0] },
+                    { width: 92, height: 52, borderRadius: radius.md, overflow: "hidden", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border, backgroundColor: b.colors[0] },
                     pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] },
                   ]}
                   accessibilityRole="button"
@@ -131,9 +131,9 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: on ? "rgba(6,20,32,0.15)" : "rgba(6,20,32,0.35)" }} />
                   <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 4 }}>
                     {on ? (
-                      <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     ) : (
-                      <Text style={{ color: "#fff", fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
                     )}
                   </View>
                 </Pressable>
@@ -157,7 +157,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                 onPress={() => isUnlocked && wearBanner(b.id)}
                 disabled={!isUnlocked}
                 style={({ pressed }) => [
-                  { width: "48%", borderRadius: 14, overflow: "hidden", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border },
+                  { width: "48%", borderRadius: radius.lg, overflow: "hidden", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border },
                   pressed && isUnlocked && { opacity: 0.85, transform: [{ scale: 0.98 }] },
                 ]}
                 accessibilityRole="button"
@@ -182,14 +182,14 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   {!isUnlocked ? (
                     <Text style={{ fontSize: 18 }}>🔒</Text>
                   ) : on ? (
-                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 }}>
-                      <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
+                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
+                      <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     </View>
                   ) : null}
                 </View>
                 <View style={{ padding: 8, backgroundColor: "rgba(255,255,255,0.03)" }}>
-                  <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
+                  <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
                 </View>
               </Pressable>
             );
@@ -242,7 +242,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         <AchievementsCard items={achievements} />
         <View style={styles.sectionDivider} />
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Game Records</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
         <GameRecordsCard />
       </CollapsibleCard>
 
@@ -293,7 +293,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
             <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Help improve Pocket Reef</Text>
             <Pressable
               onPress={() => onSetTelemetry && onSetTelemetry(!telemetryOn)}
-              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: telemetryOn ? theme.accent : theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: telemetryOn ? theme.accent : theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.8 }]}
               accessibilityRole="switch"
               accessibilityState={{ checked: telemetryOn }}
               accessibilityLabel="Share anonymous usage data"
@@ -304,7 +304,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                 <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share anonymous usage data</Text>
                 {/* Says exactly what does and doesn't leave the device. Vague
                     copy here is what makes a privacy label wrong later. */}
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
                   Which features get used, and your app version — nothing else. Never your tanks, water tests, journal, photos, or email. Off by default; switching it off deletes the anonymous id.
                 </Text>
               </View>
@@ -315,11 +315,11 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         {/* Version, for when something goes wrong and you need to say which
             build you are on. */}
         <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>About</Text>
-        <View style={{ marginTop: 8, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }}>
-          <Text selectable style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
+        <View style={{ marginTop: 8, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }}>
+          <Text selectable style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
             {supportLine()}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4 }}>
             Include this line in any bug report.
           </Text>
         </View>

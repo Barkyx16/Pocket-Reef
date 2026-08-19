@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, useResponsiveLayout } from "../styles";
+import { styles, theme, useResponsiveLayout, radius, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SPECIES, getCompatibility, tapHaptic } from "../core";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -21,8 +21,8 @@ const IMG_SPECIES = SPECIES.filter((s) => getSpeciesImage(s.name));
 
 function Pill({ label, active, onPress, fill }) {
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => [{ flex: fill ? 1 : undefined, alignItems: "center", paddingVertical: 8, paddingHorizontal: 14, borderRadius: 999, borderWidth: 1, borderColor: active ? theme.accent : theme.border, backgroundColor: active ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.04)" }, pressed && { opacity: 0.7 }]}>
-      <Text style={{ color: active ? theme.accent : theme.secondaryText, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
+    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => [{ flex: fill ? 1 : undefined, alignItems: "center", paddingVertical: 8, paddingHorizontal: 14, borderRadius: radius.pill, borderWidth: 1, borderColor: active ? theme.accent : theme.border, backgroundColor: active ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.04)" }, pressed && { opacity: 0.7 }]}>
+      <Text style={{ color: active ? theme.accent : theme.secondaryText, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
     </Pressable>
   );
 }
@@ -98,14 +98,14 @@ function GameHost({ gameId, onBack, onEarnXp }) {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
-      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
-        <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Games</Text>
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 12 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button">
+        <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹ Games</Text>
       </Pressable>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <Ionicons name={meta.icon} size={22} color={theme.accent} />
         <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5 }}>{meta.name}</Text>
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 14 }}>{meta.desc}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 14 }}>{meta.desc}</Text>
 
       {/* Mode + best scores */}
       <View style={{ flexDirection: "row", gap: 8, marginBottom: 10 }}>
@@ -113,13 +113,13 @@ function GameHost({ gameId, onBack, onEarnXp }) {
         <Pill fill label="⏱️ 60s Blitz" active={mode === "blitz"} onPress={() => switchMode("blitz")} />
       </View>
       <View style={{ flexDirection: "row", gap: 8, marginBottom: 14 }}>
-        <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
+        <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
           <Text style={{ color: theme.warn, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>🔥 {bestStreak}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BEST STREAK</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BEST STREAK</Text>
         </View>
-        <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
+        <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
           <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>⏱️ {bestBlitz}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BLITZ BEST</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BLITZ BEST</Text>
         </View>
       </View>
 
@@ -163,10 +163,10 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
   if (timed && over) {
     return (
       <View style={[styles.card, { alignItems: "center", paddingVertical: 24 }]}>
-        <Text style={{ fontSize: 40 }}>⏱️</Text>
-        <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Time's up!</Text>
+        <Text style={{ fontSize: type.hero }}>⏱️</Text>
+        <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Time's up!</Text>
         <Text style={{ color: theme.accent, fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, fontVariant: ["tabular-nums"] }}>{score}</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700" }}>correct in 60 seconds · +{gained} XP</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700" }}>correct in 60 seconds · +{gained} XP</Text>
         <GradientButton label="Play again" onPress={() => onReplay && onReplay()} style={{ marginTop: 18, alignSelf: "stretch" }} />
       </View>
     );
@@ -174,12 +174,12 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
 
   return (
     <View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: timed && timeLeft <= 10 ? theme.danger : theme.border, paddingHorizontal: 14, paddingVertical: 10, marginBottom: 16 }}>
-        <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{timed ? `Correct ${score}` : `Score ${score}/${total}`}{!timed && streak > 1 ? `  🔥${streak}` : ""}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: timed && timeLeft <= 10 ? theme.danger : theme.border, paddingHorizontal: 14, paddingVertical: 10, marginBottom: 16 }}>
+        <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{timed ? `Correct ${score}` : `Score ${score}/${total}`}{!timed && streak > 1 ? `  🔥${streak}` : ""}</Text>
         {timed ? (
-          <Text style={{ color: timeLeft <= 10 ? theme.danger : theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>⏱️ {timeLeft}s</Text>
+          <Text style={{ color: timeLeft <= 10 ? theme.danger : theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>⏱️ {timeLeft}s</Text>
         ) : (
-          <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>+{gained} XP earned</Text>
+          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>+{gained} XP earned</Text>
         )}
       </View>
 
@@ -192,7 +192,7 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
         </View>
         {answered && !timed ? (
           <>
-            {round.explain ? <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 12, textAlign: "center" }}>{round.explain}</Text> : null}
+            {round.explain ? <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 12, textAlign: "center" }}>{round.explain}</Text> : null}
             <GradientButton label="Next round" icon="arrow-forward" onPress={next} style={{ marginTop: 14 }} />
           </>
         ) : null}
@@ -209,7 +209,7 @@ function OptionBtn({ o, answered, selectedKey, onPress }) {
     else { color = theme.secondaryText; }
   }
   return (
-    <Pressable disabled={answered} onPress={onPress} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: bg, borderWidth: 1, borderColor: bc, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12 }, pressed && !answered && { opacity: 0.8 }]} accessibilityRole="button">
+    <Pressable disabled={answered} onPress={onPress} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: bg, borderWidth: 1, borderColor: bc, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12 }, pressed && !answered && { opacity: 0.8 }]} accessibilityRole="button">
       {/* The compatibility answers carried their verdict in a coloured emoji
           circle. Replacing the emoji without this dot would have thrown the
           colour cue away entirely. */}
@@ -224,7 +224,7 @@ function SpeciesMini({ s }) {
   return (
     <View style={{ alignItems: "center", width: 110 }}>
       <SpeciesThumb species={s} size={64} radius={16} />
-      <Text style={{ color: "#fff", fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 6 }} numberOfLines={2}>{s.name}</Text>
+      <Text style={{ color: "#fff", fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 6 }} numberOfLines={2}>{s.name}</Text>
     </View>
   );
 }
@@ -236,7 +236,7 @@ function TwoSpecies({ a, b, question }) {
         <Text style={{ color: theme.secondaryText, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 20 }}>+</Text>
         <SpeciesMini s={b} />
       </View>
-      <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 14 }}>{question}</Text>
+      <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 14 }}>{question}</Text>
     </View>
   );
 }
@@ -250,7 +250,7 @@ function makeGuessRound() {
     prompt: (
       <View style={{ alignItems: "center" }}>
         <Image source={getSpeciesImage(answer.name)} style={{ width: 180, height: 180, borderRadius: 24, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-        <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 12 }}>Which fish is this?</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 12 }}>Which fish is this?</Text>
       </View>
     ),
     options,
@@ -293,7 +293,7 @@ function makeTriviaRound() {
     prompt: (
       <View style={{ alignItems: "center" }}>
         <SpeciesThumb species={s} size={72} radius={18} />
-        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 12 }}>{q}</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 12 }}>{q}</Text>
       </View>
     ),
     options,

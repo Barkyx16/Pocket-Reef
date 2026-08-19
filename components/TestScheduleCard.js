@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { testSchedule } from "../lib/cadence";
 import { EmptyState } from "./EmptyState";
 
@@ -27,8 +27,8 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
 
   return (
     <View>
-      <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{schedule.headline}</Text>
-      <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+      <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{schedule.headline}</Text>
+      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
         Each interval is half the time this parameter would take to reach the edge of its safe range at the speed it's actually moving — so a problem is caught on the way, not on arrival.
       </Text>
 
@@ -36,25 +36,25 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
         {schedule.items.map((it) => {
           const v = VERDICT[it.verdict] || VERDICT.unknown;
           return (
-            <View key={it.key} style={{ backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: it.verdict === "too-rare" ? `${v.color}55` : theme.border, padding: 11 }}>
+            <View key={it.key} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: it.verdict === "too-rare" ? `${v.color}55` : theme.border, padding: 11 }}>
               <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <Ionicons name={v.icon} size={14} color={v.color} />
-                <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   every {it.recommended}d
                 </Text>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 5 }}>
-                <Text style={{ color: v.color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{v.label}</Text>
+                <Text style={{ color: v.color, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{v.label}</Text>
                 {it.actual != null ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     · you test every {it.actual}d
                   </Text>
                 ) : null}
               </View>
 
-              <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>
                 {it.reason}
               </Text>
             </View>

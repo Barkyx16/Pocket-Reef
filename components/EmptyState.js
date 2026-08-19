@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { theme } from "../styles";
+import { theme, type } from "../styles";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // A consistent, friendly empty state — a soft glowing emoji medallion over a
@@ -11,7 +11,7 @@ export function EmptyState({ emoji = "🐠", title, subtitle }) {
         <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 34 }}>{emoji}</Text>
       </View>
       {title ? <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 14, textAlign: "center" }}>{title}</Text> : null}
-      {subtitle ? <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19, maxWidth: 300 }}>{subtitle}</Text> : null}
+      {subtitle ? <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19, maxWidth: 300 }}>{subtitle}</Text> : null}
     </View>
   );
 }

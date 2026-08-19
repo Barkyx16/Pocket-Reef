@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { assessDataHealth } from "../lib/dataHealth";
 import { listRestorePoints } from "../lib/restore";
@@ -38,13 +38,13 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone.color}14`, borderRadius: 16, borderWidth: 1, borderColor: `${tone.color}40`, padding: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone.color}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone.color}40`, padding: 14 }}>
         <Ionicons name={tone.icon} size={22} color={tone.color} />
         <View style={{ flex: 1 }}>
-          <Text style={{ color: tone.color, fontSize: 14.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: tone.color, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {health.level === "safe" ? "Your records are safe" : health.level === "partial" ? "Mostly protected" : "At risk"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 2 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 2 }}>
             {health.headline}
           </Text>
         </View>
@@ -59,9 +59,9 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
           { label: "Tanks", value: health.counts.tanks },
           { label: "Years", value: health.yearsLogged || "—" },
         ].map((s) => (
-          <View key={s.label} style={{ flex: 1, alignItems: "center", backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingVertical: 9 }}>
+          <View key={s.label} style={{ flex: 1, alignItems: "center", backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 9 }}>
             <Text style={{ color: theme.text, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.value}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>{s.label}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>{s.label}</Text>
           </View>
         ))}
       </View>
@@ -70,13 +70,13 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
         {health.checks.map((c) => {
           const t = TONE[c.state] || TONE.ok;
           return (
-            <View key={c.id} style={{ flexDirection: "row", gap: 9, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: c.state === "ok" ? theme.border : `${t.color}44`, padding: 11 }}>
+            <View key={c.id} style={{ flexDirection: "row", gap: 9, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: c.state === "ok" ? theme.border : `${t.color}44`, padding: 11 }}>
               <Ionicons name={t.icon} size={15} color={t.color} style={{ marginTop: 1 }} />
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.label}</Text>
-                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 2 }}>{c.detail}</Text>
+                <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.label}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 2 }}>{c.detail}</Text>
                 {c.fix ? (
-                  <Text style={{ color: t.color, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 16, marginTop: 3 }}>{c.fix}</Text>
+                  <Text style={{ color: t.color, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 16, marginTop: 3 }}>{c.fix}</Text>
                 ) : null}
               </View>
             </View>

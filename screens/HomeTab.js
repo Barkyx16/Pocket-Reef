@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { iconForEmoji } from "../lib/icons";
 import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic, successHaptic } from "../core";
@@ -113,9 +113,9 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
 
       {/* STREAK AT RISK */}
       {streak > 0 && !loggedToday ? (
-        <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
           <Text style={{ fontSize: 22 }}>🔥</Text>
-          <Text style={{ flex: 1, color: theme.warn, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
+          <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
           <Text style={{ color: theme.warn, fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       ) : null}
@@ -198,7 +198,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
           <Summary label="Water tests" value={`${weekly.tests}`} />
           <Summary label="Journal notes" value={`${weekly.journal}`} />
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
           {weekly.activeDays >= 5 ? "Great consistency this week — your reef thanks you! 🐠" : weekly.activeDays === 0 ? "Log a test or a note to start this week off." : "Keep the momentum going — small daily touches add up."}
         </Text>
       </View>
@@ -212,14 +212,14 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
               <Pressable
                 key={task.id}
                 onPress={() => onToggleCare && onToggleCare(task.id)}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, padding: 12, borderRadius: 14, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.04)", borderColor: theme.border }, pressed && { opacity: 0.7, backgroundColor: "rgba(56,225,198,0.10)", borderColor: theme.accent }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, padding: 12, borderRadius: radius.lg, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.04)", borderColor: theme.border }, pressed && { opacity: 0.7, backgroundColor: "rgba(56,225,198,0.10)", borderColor: theme.accent }]}
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked: false }}
               >
-                <View style={{ width: 26, height: 26, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", borderWidth: 2, borderColor: theme.border }}>
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 13, color: theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{task.icon}</Text>
+                <View style={{ width: 26, height: 26, borderRadius: radius.pill, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", borderWidth: 2, borderColor: theme.border }}>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.body, color: theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{task.icon}</Text>
                 </View>
-                <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{task.text}</Text>
+                <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{task.text}</Text>
               </Pressable>
             ))}
           </View>
@@ -248,7 +248,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
         <View style={styles.card}>
           <Text accessibilityRole="header" style={[styles.cardEyebrow, { color: theme.warn }]}>Tank Check</Text>
           {warnings.map((w, i) => (
-            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
+            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
           ))}
         </View>
       ) : null}
@@ -260,28 +260,28 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
 
 function ChallengeRow({ c, onNavigate, onComplete, done }) {
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 8 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 8 }}>
       <Pressable
         onPress={onNavigate ? () => { tapHaptic("light"); onNavigate(); } : undefined}
         disabled={!onNavigate}
         style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 }}
         accessibilityRole={onNavigate ? "button" : undefined}
       >
-        <View style={{ width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
+        <View style={{ width: 34, height: 34, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
           {iconForEmoji(c.icon) ? (
             <Ionicons name={iconForEmoji(c.icon)} size={16} color={done ? theme.secondaryText : theme.accent} />
           ) : (
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 17 }}>{c.icon}</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{c.icon}</Text>
           )}
         </View>
-        <Text style={{ flex: 1, color: done ? theme.secondaryText : theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: done ? "line-through" : "none" }}>{c.title}</Text>
+        <Text style={{ flex: 1, color: done ? theme.secondaryText : theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: done ? "line-through" : "none" }}>{c.title}</Text>
       </Pressable>
       {onComplete ? (
         <Pressable
           onPress={() => { successHaptic(); onComplete(); }}
           hitSlop={8}
           disabled={done}
-          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: done ? theme.accent : "rgba(159,196,216,0.45)", backgroundColor: done ? "rgba(56,225,198,0.18)" : "transparent" }, pressed && !done && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
+          style={({ pressed }) => [{ width: 30, height: 30, borderRadius: radius.pill, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: done ? theme.accent : "rgba(159,196,216,0.45)", backgroundColor: done ? "rgba(56,225,198,0.18)" : "transparent" }, pressed && !done && { borderColor: theme.accent, backgroundColor: "rgba(56,225,198,0.18)" }]}
           accessibilityRole="button"
           accessibilityLabel={`Mark "${c.title}" complete`}
         >
@@ -298,8 +298,8 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
 function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: color || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
     </View>
   );
 }

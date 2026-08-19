@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { assessParam, paramStatusColor, getTodayKey, tapHaptic, validateParam, failureHaptic, successHaptic, TROUBLESHOOTING } from "../core";
 import { MAX_FONT_SCALE_COMPACT, touchSlop } from "../lib/a11y";
 import { displayParams } from "../lib/targets";
@@ -229,31 +229,31 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
             autoFocus
             placeholder="YYYY-MM-DD"
             placeholderTextColor={theme.secondaryText}
-            style={{ flex: 1, backgroundColor: theme.well, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.accent, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+            style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.accent, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
             accessibilityLabel="Date this test was taken"
           
             maxLength={TEXT_LIMITS.date}
           />
         ) : (
           <Pressable onPress={() => { tapHaptic("light"); setEditingDate(true); }} hitSlop={touchSlop(26)} accessibilityRole="button" accessibilityLabel={`Tested on ${date === getTodayKey() ? "today" : date}. Tap to change the date.`}>
-            <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
               Tested <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>{date === getTodayKey() ? "today" : date}</Text>
             </Text>
           </Pressable>
         )}
         {date !== getTodayKey() && !editingDate ? (
           <Pressable onPress={() => { tapHaptic("light"); setDate(getTodayKey()); }} hitSlop={touchSlop(26)} accessibilityRole="button" accessibilityLabel="Set the date back to today">
-            <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Today</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Today</Text>
           </Pressable>
         ) : null}
       </View>
 
       {editingIndex != null ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", paddingHorizontal: 11, paddingVertical: 9 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", paddingHorizontal: 11, paddingVertical: 9 }}>
           <Ionicons name="create-outline" size={14} color={theme.accent} />
-          <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Correcting the test from {history[editingIndex] ? history[editingIndex].date : ""}</Text>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Correcting the test from {history[editingIndex] ? history[editingIndex].date : ""}</Text>
           <Pressable onPress={() => { tapHaptic(); reset(); }} hitSlop={touchSlop(26)} accessibilityRole="button" accessibilityLabel="Cancel the correction">
-            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Cancel</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Cancel</Text>
           </Pressable>
         </View>
       ) : null}
@@ -265,31 +265,31 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
         {zerosAvailable ? (
           <Pressable
             onPress={markZeros}
-            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 5, borderRadius: radius.pill, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
             accessibilityRole="button"
             accessibilityLabel="Mark ammonia and nitrite as zero"
           >
-            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Ammonia &amp; nitrite are 0</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Ammonia &amp; nitrite are 0</Text>
           </Pressable>
         ) : null}
         {history[0] && history[0].values ? (
           <Pressable
             onPress={prefillLast}
-            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 999, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 5, borderRadius: radius.pill, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]}
             accessibilityRole="button"
             accessibilityLabel="Prefill with last readings"
           >
-            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>↺ Same as last time</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>↺ Same as last time</Text>
           </Pressable>
         ) : null}
         {filled ? (
           <Pressable
             onPress={() => { tapHaptic("light"); setVals({}); }}
-            style={({ pressed }) => [{ borderRadius: 999, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]}
+            style={({ pressed }) => [{ borderRadius: radius.pill, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]}
             accessibilityRole="button"
             accessibilityLabel="Clear all readings"
           >
-            <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
           </Pressable>
         ) : null}
       </View>
@@ -309,9 +309,9 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
           const diff = prior != null && typed != null && !Number.isNaN(typed) ? tidy(typed - prior) : 0;
           const delta = diff ? { up: diff > 0, amount: Math.abs(diff) } : null;
           return (
-            <View key={p.key} style={{ width: "48.5%", backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: a.status === "none" ? theme.border : `${c}55`, paddingHorizontal: 10, paddingVertical: 8 }}>
+            <View key={p.key} style={{ width: "48.5%", backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: a.status === "none" ? theme.border : `${c}55`, paddingHorizontal: 10, paddingVertical: 8 }}>
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
-                <Text numberOfLines={1} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flexShrink: 1, color: theme.text, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
+                <Text numberOfLines={1} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flexShrink: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
                 {/* Verdict sits beside the label, not below the field — in a
                     narrow column it would otherwise add a third line to every
                     tile and undo the compaction.
@@ -326,18 +326,18 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 {a.status !== "none" ? (
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
                     {delta ? (
-                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                         {delta.up ? "↑" : "↓"}{delta.amount}
                       </Text>
                     ) : null}
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>
                       {a.status === "good" ? "Good" : a.status === "caution" ? "Watch" : "High"}
                     </Text>
                   </View>
                 ) : prior != null ? (
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>was {prior}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>was {prior}</Text>
                 ) : (
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
                 )}
               </View>
               <TextInput
@@ -355,7 +355,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 placeholderTextColor="rgba(165,212,234,0.42)"
                 accessibilityLabel={`${p.label}${p.unit ? ` in ${p.unit}` : ""}, target ${p.ideal}`}
                 maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT}
-                style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7, marginTop: 6, color: theme.text, borderWidth: 1, borderColor: !validateParam(p, vals[p.key]).ok ? theme.danger : a.status === "none" ? theme.border : c, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 7, marginTop: 6, color: theme.text, borderWidth: 1, borderColor: !validateParam(p, vals[p.key]).ok ? theme.danger : a.status === "none" ? theme.border : c, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
               
             maxLength={TEXT_LIMITS.number}
           />
@@ -372,10 +372,10 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
         });
         if (!issues.length) return null;
         return (
-          <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
-            <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 2 }}>⚠️ Watch these</Text>
+          <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
+            <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 2 }}>⚠️ Watch these</Text>
             {issues.map((p) => (
-              <Text key={p.key} style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 4 }}>
+              <Text key={p.key} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 4 }}>
                 <Text style={{ color: theme.text, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}: </Text>{p.tip}
               </Text>
             ))}
@@ -388,17 +388,17 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
           can crash. Refusing the reading would just teach people to log
           somewhere else. */}
       {oddities ? (
-        <View style={{ marginTop: 14, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,216,107,0.35)", padding: 13 }}>
+        <View style={{ marginTop: 14, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.35)", padding: 13 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
             <Ionicons name="help-circle" size={16} color={theme.warn} />
-            <Text style={{ flex: 1, color: theme.warn, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+            <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
               {oddities.length === 1 ? oddities[0].title : `${oddities.length} readings look unusual`}
             </Text>
           </View>
 
           {oddities.map((o) => (
             <View key={o.key} style={{ marginTop: 7 }}>
-              <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{o.message}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{o.message}</Text>
               {o.suggestion != null ? (
                 <Pressable
                   onPress={() => { tapHaptic("light"); setVals((v) => ({ ...v, [o.key]: String(o.suggestion) })); setOddities(null); }}
@@ -406,7 +406,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                   accessibilityRole="button"
                   accessibilityLabel={`Change ${o.label} to ${o.suggestion}`}
                 >
-                  <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Use {o.suggestion}</Text>
+                  <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Use {o.suggestion}</Text>
                 </Pressable>
               ) : null}
             </View>
@@ -447,10 +447,10 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
           an alert dialog would be gone before the keeper could act on it, and
           gone forever if it were tapped away by reflex. */}
       {alarm ? (
-        <View style={{ marginTop: 14, backgroundColor: "rgba(255,107,107,0.10)", borderRadius: 14, borderWidth: 1, borderColor: `${theme.danger}66`, padding: 13 }}>
+        <View style={{ marginTop: 14, backgroundColor: "rgba(255,107,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: `${theme.danger}66`, padding: 13 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
             <Ionicons name="warning" size={16} color={theme.danger} />
-            <Text style={{ flex: 1, color: theme.danger, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+            <Text style={{ flex: 1, color: theme.danger, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
               {alarm.items.length === 1 ? `${alarm.items[0].label} is dangerous` : `${alarm.items.length} readings are dangerous`}
             </Text>
             <Pressable onPress={() => { tapHaptic("light"); setAlarm(null); }} hitSlop={touchSlop(26)} accessibilityRole="button" accessibilityLabel="Dismiss this warning">
@@ -458,16 +458,16 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
             </Pressable>
           </View>
 
-          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
             Logged for {alarm.date === getTodayKey() ? "today" : alarm.date}. The reading is saved — this is what to do about it.
           </Text>
 
           {alarm.items.map((it) => (
             <View key={it.key} style={{ flexDirection: "row", alignItems: "baseline", gap: 6, marginTop: 8 }}>
-              <Text style={{ color: theme.danger, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+              <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {it.label} {it.value}{it.unit ? ` ${it.unit}` : ""}
               </Text>
-              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>target {it.ideal}</Text>
+              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>target {it.ideal}</Text>
             </View>
           ))}
 
@@ -481,8 +481,8 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
               <View style={{ marginTop: 10, gap: 6 }}>
                 {body.map((line, i) => (
                   <View key={i} style={{ flexDirection: "row", gap: 8 }}>
-                    <Text style={{ color: theme.danger, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
-                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{line}</Text>
+                    <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
+                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{line}</Text>
                   </View>
                 ))}
               </View>
@@ -514,9 +514,9 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 const hi = tidy(Math.max(...vals));
                 const avg = tidy(vals.reduce((a, b) => a + b, 0) / vals.length);
                 return (
-                  <View key={p.key} style={{ backgroundColor: theme.well, borderRadius: 10, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 6 }}>
-                    <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase" }}>{p.label}</Text>
-                    <Text style={{ color: theme.text, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 1 }}>
+                  <View key={p.key} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 6 }}>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase" }}>{p.label}</Text>
+                    <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 1 }}>
                       {lo === hi ? `${lo}` : `${lo}–${hi}`}
                       <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{`  avg ${avg}`}</Text>
                     </Text>
@@ -543,7 +543,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 accessibilityRole={onUpdate ? "button" : undefined}
                 accessibilityLabel={onUpdate ? `Test from ${h.date}. Tap to correct it.` : undefined}
               >
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{h.date}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{h.date}</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, flex: 1 }}>
                 {(displayParams(h.water)).map((p) => {
                   if (h.values[p.key] == null) return null;
@@ -553,9 +553,9 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                   const a = assessParam(p, shown);
                   const c = paramStatusColor(a.status);
                   return (
-                    <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-                      <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
-                      <Text style={{ color: c, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>{shown}</Text>
+                    <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: radius.xs, paddingHorizontal: 8, paddingVertical: 4 }}>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
+                      <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{shown}</Text>
                     </View>
                   );
                 })}
@@ -590,7 +590,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
           ) : null}
 
           {onUpdate ? (
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
               Tap a test to correct a mistyped reading.
             </Text>
           ) : null}

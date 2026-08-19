@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { LOSS_REASONS, LOSS_CAUSES, isMortality, tenureLabel, newStockRecord } from "../lib/livestock";
 import { SpeciesThumb } from "./SpeciesThumb";
@@ -52,7 +52,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
             <SpeciesThumb name={name} size={42} />
             <View style={{ flex: 1 }}>
               <Text numberOfLines={1} style={{ color: "#fff", fontSize: 18, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                 {quantity > 1 ? `${quantity} in the tank` : "In the tank"}{tenure ? ` · ${tenure}` : ""}
               </Text>
             </View>
@@ -130,7 +130,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                   accessibilityRole="button"
                   accessibilityLabel={`Record that ${name} left the tank`}
                 >
-                  <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>No longer in the tank…</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>No longer in the tank…</Text>
                 </Pressable>
               </View>
             ) : (
@@ -145,13 +145,13 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                       <Pressable
                         key={r.id}
                         onPress={() => { tapHaptic("light"); setLoss((l) => ({ ...l, reason: r.id })); }}
-                        style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, borderRadius: 12, paddingHorizontal: 11, paddingVertical: 10, borderWidth: 1, backgroundColor: loss.reason === r.id ? "rgba(56,225,198,0.14)" : theme.well, borderColor: loss.reason === r.id ? theme.accent : theme.border }, pressed && { opacity: 0.75 }]}
+                        style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, borderRadius: radius.md, paddingHorizontal: 11, paddingVertical: 10, borderWidth: 1, backgroundColor: loss.reason === r.id ? "rgba(56,225,198,0.14)" : theme.well, borderColor: loss.reason === r.id ? theme.accent : theme.border }, pressed && { opacity: 0.75 }]}
                         accessibilityRole="radio"
                         accessibilityState={{ selected: loss.reason === r.id }}
                         accessibilityLabel={r.label}
                       >
                         <Ionicons name={r.icon} size={15} color={loss.reason === r.id ? theme.accent : theme.secondaryText} />
-                        <Text style={{ color: loss.reason === r.id ? "#fff" : theme.bodyText, fontSize: 13.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{r.label}</Text>
+                        <Text style={{ color: loss.reason === r.id ? "#fff" : theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{r.label}</Text>
                       </Pressable>
                     ))}
                   </View>
@@ -171,7 +171,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                           accessibilityState={{ selected: loss.cause === c }}
                           accessibilityLabel={`Cause: ${c}`}
                         >
-                          <Text style={{ color: loss.cause === c ? theme.onAccent : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c}</Text>
+                          <Text style={{ color: loss.cause === c ? theme.onAccent : theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c}</Text>
                         </Pressable>
                       ))}
                     </View>
@@ -185,11 +185,11 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                       <Pressable onPress={() => setLoss((l) => ({ ...l, count: Math.max(1, l.count - 1) }))} hitSlop={touchSlop(34)} style={stepBtn} accessibilityRole="button" accessibilityLabel="Fewer">
                         <Ionicons name="remove" size={16} color={theme.accent} />
                       </Pressable>
-                      <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 28, textAlign: "center" }}>{loss.count}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 28, textAlign: "center" }}>{loss.count}</Text>
                       <Pressable onPress={() => setLoss((l) => ({ ...l, count: Math.min(quantity, l.count + 1) }))} hitSlop={touchSlop(34)} style={stepBtn} accessibilityRole="button" accessibilityLabel="More">
                         <Ionicons name="add" size={16} color={theme.accent} />
                       </Pressable>
-                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                         {loss.count >= quantity ? "all of them" : `${quantity - loss.count} left`}
                       </Text>
                     </View>
@@ -214,7 +214,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                   <Text style={styles.primaryBtnText}>Save to tank history</Text>
                 </Pressable>
                 <Pressable onPress={() => setMode("edit")} style={({ pressed }) => [{ alignItems: "center", paddingVertical: 13 }, pressed && { opacity: 0.6 }]} accessibilityRole="button" accessibilityLabel="Back to the record">
-                  <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
+                  <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
                 </Pressable>
               </View>
             )}
@@ -227,22 +227,22 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
 }
 
 const inputStyle = {
-  backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10,
-  color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14.5,
+  backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10,
+  color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg,
   fontFamily: "Inter_600SemiBold", fontWeight: "600",
 };
 
 const stepBtn = {
-  width: 34, height: 34, borderRadius: 12, alignItems: "center", justifyContent: "center",
+  width: 34, height: 34, borderRadius: radius.md, alignItems: "center", justifyContent: "center",
   backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)",
 };
 
 function Field({ label, hint, children }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 6 }}>{label}</Text>
       {children}
-      {hint ? <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
+      {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
     </View>
   );
 }

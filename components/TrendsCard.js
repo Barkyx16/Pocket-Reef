@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { assessParam, paramStatusColor, tapHaptic } from "../core";
 import { activeParams } from "../lib/targets";
@@ -103,13 +103,13 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
         return (
           <View key={p.key}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6, gap: 8 }}>
-              <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
-              <Text style={{ color: paramStatusColor(status), fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+              <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
+              <Text style={{ color: paramStatusColor(status), fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {latest}{p.unit ? ` ${p.unit}` : ""} {latest > first ? "↑" : latest < first ? "↓" : "→"}
               </Text>
             </View>
 
-            <View style={{ height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 10, padding: 6, borderWidth: 1, borderColor: theme.hairline, overflow: "hidden" }}>
+            <View style={{ height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: radius.sm, padding: 6, borderWidth: 1, borderColor: theme.hairline, overflow: "hidden" }}>
               <View style={{ flex: 1, position: "relative" }}>
                 {/* Behind the bars, never in front — the readings are the data,
                     the band is the reference. */}
@@ -137,11 +137,11 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
             {/* The axis the chart never had. Sixteen unlabelled bars could have
                 covered a fortnight or two years. */}
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[0].date)}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[bars.length - 1].date)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[0].date)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[bars.length - 1].date)}</Text>
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
               <Text style={{ color: move.warn ? theme.warn : theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{move.text}</Text>
               {`  ·  target ${p.ideal}`}
             </Text>

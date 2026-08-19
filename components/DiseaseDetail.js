@@ -1,5 +1,5 @@
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getDisease, getSpecies } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
@@ -14,10 +14,10 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
   const atRisk = tank.map(getSpecies).filter(Boolean).filter((s) => d.water === "both" || s.water === d.water);
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
         <>
           <Ionicons name="chevron-back" size={16} color={theme.accent} />
-          <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
+          <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
         </>
       </Pressable>
 
@@ -31,8 +31,8 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
           )}
         </View>
         <Text style={styles.detailName}>{d.name}</Text>
-        <View style={{ backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4, marginTop: 8 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5 }}>
+        <View style={{ backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4, marginTop: 8 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5 }}>
             {d.water === "salt" ? "🌊 Saltwater" : d.water === "fresh" ? "💧 Freshwater" : "💧🌊 Fresh & salt"}
           </Text>
         </View>
@@ -64,10 +64,10 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
           <Text style={[styles.cardText, { marginBottom: 10 }]}>These species you're keeping can be affected — watch them closely.</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
             {atRisk.map((s) => (
-              <Pressable key={s.name} onPress={() => onOpenSpecies && onOpenSpecies(s.name)} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: 999, paddingLeft: 4, paddingRight: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,216,107,0.32)" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
+              <Pressable key={s.name} onPress={() => onOpenSpecies && onOpenSpecies(s.name)} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.pill, paddingLeft: 4, paddingRight: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,216,107,0.32)" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
                 <SpeciesThumb species={s} size={20} radius={10} />
-                <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.name}</Text>
-                <Text style={{ color: theme.warn, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+                <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.name}</Text>
+                <Text style={{ color: theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
               </Pressable>
             ))}
           </View>
@@ -80,7 +80,7 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
 function Section({ icon, title, text, color }) {
   return (
     <View style={[styles.card, { flexDirection: "row", gap: 12 }]}>
-      <View style={{ width: 4, borderRadius: 999, backgroundColor: color, opacity: 0.7 }} />
+      <View style={{ width: 4, borderRadius: radius.pill, backgroundColor: color, opacity: 0.7 }} />
       <View style={{ flex: 1 }}>
         <Text accessibilityRole="header" style={[styles.cardEyebrow, { color }]}>{icon} {title.toUpperCase()}</Text>
         <Text style={styles.cardText}>{text}</Text>

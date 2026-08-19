@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { displayParams } from "../lib/targets";
 import { tempFromInput } from "../lib/units";
@@ -45,7 +45,7 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
     return (
       <View style={{ alignItems: "center", paddingVertical: 10 }}>
         <Ionicons name="checkmark-circle" size={28} color={theme.accent} />
-        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Tank dated and logged</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Tank dated and logged</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>
           Maturity, health and the cycle tracker now start from the truth rather than from today.
         </Text>
@@ -59,18 +59,18 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
         Already running? Tell Pocket Reef how long and what it reads, and every score, forecast and maturity figure starts from reality instead of day zero.
       </Text>
 
-      <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>How long has it been running?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>How long has it been running?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
         {AGE_OPTIONS.map((a) => (
           <Pill key={a.id} label={a.label} active={ageId === a.id} onPress={() => { tapHaptic("light"); setAgeId(a.id); }} />
         ))}
       </View>
 
-      <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 16 }}>Where does it sit today?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 16 }}>Where does it sit today?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
         {params.map((p) => (
           <View key={p.key} style={{ width: "48.5%" }}>
-            <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
+            <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
             <TextInput
               value={readings[p.key] ?? ""}
               onChangeText={(t) => setReadings((v) => ({ ...v, [p.key]: decimalText(t) }))}
@@ -78,14 +78,14 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
               placeholder={p.ideal}
               placeholderTextColor="rgba(165,212,234,0.42)"
               accessibilityLabel={`${p.label} today`}
-              style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+              style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
             
             maxLength={TEXT_LIMITS.number}
           />
           </View>
         ))}
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
         Blanks are fine — whatever you have to hand.
       </Text>
 
@@ -97,14 +97,14 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
           data" without a reason is how a setup screen gets abandoned. */}
       {missing.length ? (
         <View style={{ marginTop: 16, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Still to fill in</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Still to fill in</Text>
           <View style={{ gap: 7, marginTop: 8 }}>
             {missing.map((m) => (
               <View key={m.id} style={{ flexDirection: "row", gap: 8 }}>
                 <Ionicons name="ellipse-outline" size={12} color={theme.secondaryText} style={{ marginTop: 3 }} />
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
-                  <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>{m.why}</Text>
+                  <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
+                  <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>{m.why}</Text>
                 </View>
               </View>
             ))}

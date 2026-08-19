@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
@@ -71,7 +71,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
     <View>
       <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
         {MOODS.map((m) => (
-          <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
+          <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
             <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{m}</Text>
           </Pressable>
         ))}
@@ -82,14 +82,14 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         placeholder="What happened in the tank today?"
         placeholderTextColor={theme.secondaryText}
         multiline
-        style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 60, textAlignVertical: "top" }}
+        style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14, minHeight: 60, textAlignVertical: "top" }}
       
             maxLength={TEXT_LIMITS.note}
           />
       {photo ? (
         <View style={{ marginTop: 10 }}>
-          <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: 14 }} resizeMode="cover" />
-          <Pressable onPress={() => setPhoto(null)} hitSlop={8} style={{ position: "absolute", top: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: 999, width: 28, height: 28, alignItems: "center", justifyContent: "center" }} accessibilityRole="button" accessibilityLabel="Remove photo">
+          <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: radius.lg }} resizeMode="cover" />
+          <Pressable onPress={() => setPhoto(null)} hitSlop={8} style={{ position: "absolute", top: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: radius.pill, width: 28, height: 28, alignItems: "center", justifyContent: "center" }} accessibilityRole="button" accessibilityLabel="Remove photo">
             <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         </View>
@@ -116,7 +116,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             onChangeText={setFindText}
             placeholder="Search entries…"
             placeholderTextColor={theme.secondaryText}
-            style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }}
+            style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }}
           
             maxLength={TEXT_LIMITS.search}
           />
@@ -124,14 +124,14 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             {MOODS.map((m) => {
               const on = findMood === m;
               return (
-                <Pressable key={m} hitSlop={touchSlop(34)} onPress={() => { tapHaptic("light"); setFindMood(on ? null : m); }} style={{ width: 38, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
+                <Pressable key={m} hitSlop={touchSlop(34)} onPress={() => { tapHaptic("light"); setFindMood(on ? null : m); }} style={{ width: 38, height: 34, borderRadius: radius.sm, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 16, opacity: on ? 1 : 0.6 }}>{m}</Text>
                 </Pressable>
               );
             })}
             {(fq || findMood) ? (
               <Pressable onPress={() => { setFindText(""); setFindMood(null); }} style={{ justifyContent: "center", paddingHorizontal: 8 }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
               </Pressable>
             ) : null}
           </View>
@@ -144,17 +144,17 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
             <Text style={styles.cardText}>No entries match your search.</Text>
           ) : null}
           {shown.slice(0, visible).map((e) => (
-            <View key={e.id} style={{ backgroundColor: theme.well, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: theme.border }}>
+            <View key={e.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: theme.border }}>
               <View style={{ flexDirection: "row", gap: 10 }}>
-                <Text style={{ fontSize: 20 }}>{e.mood}</Text>
+                <Text style={{ fontSize: type.titleLg }}>{e.mood}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
                   {e.text ? <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
                 </View>
                 <View style={{ flexDirection: "row", gap: 12 }}>
                   {onEdit ? (
                     <Pressable onPress={() => startEdit(e)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Edit entry">
-                      <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>✎</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>✎</Text>
                     </Pressable>
                   ) : null}
                   <Pressable onPress={() => onDelete(e.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Delete entry">
@@ -162,7 +162,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
                   </Pressable>
                 </View>
               </View>
-              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 160, borderRadius: 12, marginTop: 10 }} resizeMode="cover" /> : null}
+              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 160, borderRadius: radius.md, marginTop: 10 }} resizeMode="cover" /> : null}
             </View>
           ))}
           {shown.length > visible ? (

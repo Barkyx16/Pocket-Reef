@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { accentGradient, theme } from "../styles";
+import { accentGradient, theme, radius } from "../styles";
 
 // A rounded progress bar with a gradient fill and a soft track — used for XP,
 // bioload, health, and achievements so every meter in the app reads as one system.
@@ -16,7 +16,7 @@ export function ProgressBar({ pct = 0, height = 8, colors, color, track = "rgba(
     accessibilityValue: { min: 0, max: 100, now: Math.round(Math.max(0, Math.min(100, pct))) },
   };
   return (
-    <View {...a11y} style={{ height, borderRadius: 999, backgroundColor: track, overflow: "hidden" }}>
+    <View {...a11y} style={{ height, borderRadius: radius.pill, backgroundColor: track, overflow: "hidden" }}>
       <LinearGradient
         colors={fill}
         start={{ x: 0, y: 0 }}
@@ -24,7 +24,7 @@ export function ProgressBar({ pct = 0, height = 8, colors, color, track = "rgba(
         style={{
           height,
           width: `${w}%`,
-          borderRadius: 999,
+          borderRadius: radius.pill,
           ...(glow ? { shadowColor: color || theme.accent, shadowOpacity: 0.6, shadowRadius: 6, shadowOffset: { width: 0, height: 0 } } : null),
         }}
       />

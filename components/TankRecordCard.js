@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { MAX_FONT_SCALE_COMPACT, touchSlop } from "../lib/a11y";
 import { mortalitySummary, longestResident, documentedShare, livestockSpend, isMortality, tenureLabel } from "../lib/livestock";
 import { SpeciesThumb } from "./SpeciesThumb";
@@ -55,7 +55,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {/* The honest caveat. A record that's 40% filled shouldn't imply the
           other 60% is a clean bill of health. */}
       {documented.total && documented.pct < 100 ? (
-        <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
           {documented.documented} of {documented.total} animals dated. Tap one below to fill in where it came from and when.
         </Text>
       ) : null}
@@ -63,10 +63,10 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {/* The finding worth acting on. One death is bad luck; the same species
           twice is a husbandry mismatch, and that's a diagnosis. */}
       {mortality.repeatOffenders.length ? (
-        <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
-          <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>Worth a second look</Text>
+        <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)" }}>
+          <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>Worth a second look</Text>
           {mortality.repeatOffenders.slice(0, 3).map((r) => (
-            <Text key={r.name} style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
+            <Text key={r.name} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
               You've lost {r.count}× <Text style={{ fontFamily: "Inter_900Black", fontWeight: "900", color: theme.text }}>{r.name}</Text> — worth checking its needs against your water before trying again.
             </Text>
           ))}
@@ -89,17 +89,17 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
                 <Pressable
                   key={name}
                   onPress={() => onOpenRecord && onOpenRecord(name)}
-                  style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+                  style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
                   accessibilityRole="button"
                   accessibilityLabel={`Record for ${name}`}
                   accessibilityHint={bits.length ? bits.join(", ") : "No details recorded yet"}
                 >
                   <SpeciesThumb name={name} size={30} />
                   <View style={{ flex: 1 }}>
-                    <Text numberOfLines={1} style={{ color: "#fff", fontSize: 13.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                    <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       {qty > 1 ? `${qty}× ` : ""}{name}
                     </Text>
-                    <Text numberOfLines={1} style={{ color: bits.length ? theme.secondaryText : theme.accent, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                    <Text numberOfLines={1} style={{ color: bits.length ? theme.secondaryText : theme.accent, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                       {bits.length ? bits.join(" · ") : "Add details"}
                     </Text>
                   </View>
@@ -117,13 +117,13 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {onShareReport ? (
         <Pressable
           onPress={onShareReport}
-          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 16, paddingVertical: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", backgroundColor: "rgba(56,225,198,0.10)" }, pressed && { opacity: 0.75 }]}
+          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 16, paddingVertical: 12, borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", backgroundColor: "rgba(56,225,198,0.10)" }, pressed && { opacity: 0.75 }]}
           accessibilityRole="button"
           accessibilityLabel="Share a tank report"
           accessibilityHint="Copies everything a fish store or forum will ask for"
         >
           <Ionicons name="document-text-outline" size={16} color={theme.accent} />
-          <Text style={{ color: theme.accent, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share tank report</Text>
+          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share tank report</Text>
         </Pressable>
       ) : null}
 
@@ -133,17 +133,17 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
           <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>No longer with us</Text>
           <View style={{ gap: 6 }}>
             {recent.map((l) => (
-              <View key={l.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 12, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 9 }}>
+              <View key={l.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: radius.md, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 9 }}>
                 <Ionicons
                   name={isMortality(l.reason) ? "heart-dislike-outline" : "swap-horizontal-outline"}
                   size={15}
                   color={isMortality(l.reason) ? theme.danger : theme.secondaryText}
                 />
                 <View style={{ flex: 1 }}>
-                  <Text numberOfLines={1} style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                  <Text numberOfLines={1} style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                     {l.count > 1 ? `${l.count}× ` : ""}{l.name}
                   </Text>
-                  <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                  <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                     {l.date}{l.cause ? ` · ${l.cause}` : ""}{l.tenure ? ` · kept ${l.tenure}` : ""}
                   </Text>
                 </View>
@@ -156,7 +156,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
             ))}
           </View>
           {losses.length > recent.length ? (
-            <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
               +{losses.length - recent.length} more in your history
             </Text>
           ) : null}
@@ -168,10 +168,10 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
 
 function Stat({ label, value, sub, tone }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
-      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
     </View>
   );
 }

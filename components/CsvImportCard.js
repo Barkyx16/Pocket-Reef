@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { importWaterTests } from "../lib/csvImport";
 import { TEXT_LIMITS } from "../lib/textLimits";
@@ -33,7 +33,7 @@ export function CsvImportCard({ waterType = "fresh", existing = [], onImport }) 
     return (
       <View style={{ alignItems: "center", paddingVertical: 12 }}>
         <Ionicons name="checkmark-circle" size={30} color={theme.accent} />
-        <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>
           {done} reading{done === 1 ? "" : "s"} imported
         </Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>
@@ -65,25 +65,25 @@ export function CsvImportCard({ waterType = "fresh", existing = [], onImport }) 
           />
 
       {report ? (
-        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: report.ok ? "rgba(56,225,198,0.35)" : `${theme.warn}44`, padding: 12 }}>
-          <Text style={{ color: report.ok ? theme.accent : theme.warn, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: report.ok ? "rgba(56,225,198,0.35)" : `${theme.warn}44`, padding: 12 }}>
+          <Text style={{ color: report.ok ? theme.accent : theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {report.ok ? report.summary : "Can't read that yet"}
           </Text>
           {!report.ok ? (
-            <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>{report.reason}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>{report.reason}</Text>
           ) : null}
 
           {report.ok ? (
             <>
-              <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
                 Columns understood: {report.matched.join(", ")}
               </Text>
               {report.unmatched.length ? (
-                <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
                   Ignored: {report.unmatched.join(", ")}
                 </Text>
               ) : null}
-              <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
                 {report.entries[report.entries.length - 1].date} to {report.entries[0].date}
               </Text>
             </>
@@ -94,12 +94,12 @@ export function CsvImportCard({ waterType = "fresh", existing = [], onImport }) 
           {report.skipped && report.skipped.length ? (
             <View style={{ marginTop: 8 }}>
               {report.skipped.slice(0, 4).map((s, i) => (
-                <Text key={i} style={{ color: theme.warn, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>
+                <Text key={i} style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>
                   Line {s.line}: {s.reason}
                 </Text>
               ))}
               {report.skipped.length > 4 ? (
-                <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
                   …and {report.skipped.length - 4} more
                 </Text>
               ) : null}

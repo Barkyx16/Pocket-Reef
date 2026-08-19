@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, Share, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { listCrashes, clearCrashes, formatCrashes, MAX_CRASHES } from "../lib/crashLog";
 
@@ -37,11 +37,11 @@ export function CrashLogCard() {
 
       <View style={{ gap: 6, marginTop: 10 }}>
         {crashes.slice(0, MAX_CRASHES).map((c) => (
-          <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: 10, borderWidth: 1, borderColor: theme.border, padding: 9 }}>
-            <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>
+          <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, padding: 9 }}>
+            <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>
               {c.message}
             </Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
               {c.at.slice(0, 16).replace("T", " ")}{c.screen ? ` · ${c.screen}` : ""}
             </Text>
           </View>

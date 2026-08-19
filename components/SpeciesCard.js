@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { careLevelColor, temperamentColor } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -48,7 +48,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
           <Chip label={species.careLevel} color={careLevelColor(species.careLevel)} />
           <Chip label={species.temperament} color={temperamentColor(species.temperament)} />
         </View>
-        {note ? <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
+        {note ? <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
       </View>
       </Pressable>
 
@@ -76,12 +76,12 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
           accessibilityRole="button"
           accessibilityLabel={inTank ? `Remove ${species.name} from tank` : `Add ${species.name} to tank`}
           style={{
-            width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center",
+            width: 38, height: 38, borderRadius: radius.md, alignItems: "center", justifyContent: "center",
             backgroundColor: inTank ? "rgba(255,138,101,0.18)" : "rgba(56,225,198,0.18)",
             borderWidth: 1, borderColor: inTank ? theme.coral : theme.accent,
           }}
         >
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: inTank ? theme.coral : theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: inTank ? theme.coral : theme.accent, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
         </Pressable>
       ) : (
         <Text style={styles.cleanArrow}>›</Text>

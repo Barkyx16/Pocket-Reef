@@ -22,6 +22,44 @@ export const CONTENT_MAX_WIDTH = 700;
 // showing a phone layout down the middle.
 export const TWO_COLUMN_MAX_WIDTH = 1180;
 
+// ── The scales ───────────────────────────────────────────────────────────────
+//
+// Measured before this existed: 37 distinct font sizes, 27 border radii and 22
+// spacing values across the app. Thirteen of the font sizes sat between 9 and
+// 15pt — thirteen different answers to "small text", including seven
+// half-points, across 768 uses. That is not a type scale, it is the residue of
+// nudging one screen at a time until it looked right, and it is the difference
+// between a design that was drawn and one that accumulated.
+//
+// These are the sizes to reach for. They are deliberately few: a scale with a
+// step for every occasion is the same as no scale, because nothing forces a
+// decision about hierarchy.
+//
+// Adopting them wholesale is a visual change that wants eyes on a device, so
+// this is the vocabulary rather than a completed migration. What HAS been done
+// is the half-points: those moved by at most 0.5pt, which no one can see, and
+// they were the clearest sign that nobody was working from a scale.
+export const type = {
+  micro: 10,    // timestamps, unit suffixes, badge counts
+  caption: 11,  // eyebrows, pill labels, secondary metadata
+  small: 12,    // dense list rows, hints
+  body: 13,     // the app's default reading size
+  bodyLg: 15,   // card body copy that needs to breathe
+  title: 17,    // card titles
+  titleLg: 20,  // screen and sheet titles
+  headline: 24, // hero headings
+  display: 30,  // the single biggest number on a card
+  hero: 40,     // splash and empty-state figures
+};
+
+// Three levels, so depth means something. The app draws on a dark ground where
+// a shadow reads as glow more than as lift, which is why these are restrained.
+export const elevation = {
+  none: {},
+  card: { shadowColor: "#000", shadowOpacity: 0.18, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
+  floating: { shadowColor: "#000", shadowOpacity: 0.28, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 14 },
+};
+
 // StyleSheet is built once, so this snapshot is only a sensible starting point.
 // It is wrong the moment the device rotates, an iPad enters split view, or a
 // foldable opens — use useResponsiveLayout() in components that must react.

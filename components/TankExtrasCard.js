@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, type } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { getRecommended } from "../core";
 import { formatVolume } from "../lib/units";
@@ -39,7 +39,7 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
         <Pressable onPress={onShare} style={({ pressed }) => [styles.primaryBtn, { marginTop: 12 }, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>📤 Share my tank</Text>
         </Pressable>
-      ) : <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>Stock your tank first, then you can share it.</Text>}
+      ) : <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>Stock your tank first, then you can share it.</Text>}
     </View>
   );
 

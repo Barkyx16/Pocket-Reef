@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { supabase, isCloudConfigured } from "../lib/supabase";
 import { AUTH_REDIRECT, RESET_REDIRECT } from "../lib/supabaseConfig";
 import {
@@ -396,7 +396,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
               </Text>
             </Pressable>
 
-            <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, textAlign: "center" }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, textAlign: "center" }}>
               Check your spam folder too. The code expires after about an hour — the link in the same email works as well.
             </Text>
 
@@ -471,7 +471,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             ) : null}
 
             {mode === "signup" ? (
-              <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
                 At least 8 characters. We'll email you a 6-digit code to verify the address.
               </Text>
             ) : null}
@@ -501,7 +501,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
               <Pressable
                 onPress={biometricLogin}
                 disabled={busy}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, borderRadius: 16, paddingVertical: 16, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, borderRadius: radius.xl, paddingVertical: 16, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Sign in with ${bioLabel}`}
               >
@@ -539,20 +539,20 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             {/* "Forgot email" help — we can't look an account up by anything but
                 the address, so this points at what the device does remember. */}
             {showEmailHint ? (
-              <View style={{ backgroundColor: theme.well, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: theme.border, marginTop: 4 }}>
-                <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>Finding your account</Text>
+              <View style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 14, borderWidth: 1, borderColor: theme.border, marginTop: 4 }}>
+                <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Finding your account</Text>
                 {lastEmail ? (
                   <Pressable onPress={() => { setEmail(lastEmail); setShowEmailHint(false); tapHaptic(); }} style={{ marginTop: 8 }} accessibilityRole="button">
-                    <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                    <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       Last used on this device: {maskEmail(lastEmail)} — tap to use it
                     </Text>
                   </Pressable>
                 ) : (
-                  <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+                  <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
                     No account has signed in on this device yet.
                   </Text>
                 )}
-                <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
                   Otherwise, search your inbox for “Pocket Reef” — the verification email went to the address you signed up with. If none of your addresses work, sign up again and your reef starts fresh.
                 </Text>
                 <Pressable onPress={resendConfirmation} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
@@ -563,7 +563,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
           </View>
         )}
 
-        <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
           Your reef data is stored under your account and only readable by you.
         </Text>
       </ScrollView>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { DEFAULT_DAYS, assessArrival } from "../lib/quarantine";
@@ -35,7 +35,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
 
       <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
         <TextInput value={name} onChangeText={setName} placeholder="New arrival (e.g. Yellow Tang)" placeholderTextColor={theme.secondaryText} accessibilityLabel="Name of the new arrival"
-          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 14 }} 
             maxLength={TEXT_LIMITS.name}
           />
         <Pressable onPress={add} disabled={!name.trim()} style={[name.trim() ? styles.primaryBtn : styles.ghostBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
@@ -51,12 +51,12 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
             const open = openId === it.id;
             const tone = a.ready ? theme.accent : a.overdue ? theme.warn : theme.text;
             return (
-              <View key={it.id} style={{ backgroundColor: theme.well, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: a.ready ? "rgba(56,225,198,0.32)" : a.overdue ? `${theme.warn}44` : theme.border }}>
+              <View key={it.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: a.ready ? "rgba(56,225,198,0.32)" : a.overdue ? `${theme.warn}44` : theme.border }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                   <Ionicons name={a.ready ? "checkmark-circle" : a.overdue ? "alert-circle" : "eye-outline"} size={18} color={tone} />
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{it.name}</Text>
-                    <Text style={{ color: tone, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{a.headline}</Text>
+                    <Text style={{ color: tone, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{a.headline}</Text>
                   </View>
                   <Pressable onPress={() => onRemove(it.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Remove ${it.name}`}>
                     <Ionicons name="close" size={14} color={theme.secondaryText} />
@@ -69,18 +69,18 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
 
                 {/* What to look for RIGHT NOW — the part the timer never had. */}
                 <View style={{ marginTop: 10 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
                     {a.phase.label}
                   </Text>
                   {a.phase.watch.slice(0, 2).map((w, i) => (
-                    <Text key={i} style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>• {w}</Text>
+                    <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>• {w}</Text>
                   ))}
-                  <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 5 }}>{a.phase.doing}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 5 }}>{a.phase.doing}</Text>
                 </View>
 
                 <Pressable onPress={() => { tapHaptic("light"); setOpenId(open ? null : it.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 10 }} accessibilityRole="button" accessibilityLabel={`Clearance checks for ${it.name}, ${a.met} of ${a.criteria.length} met`}>
                   <Ionicons name={open ? "chevron-down" : "chevron-forward"} size={13} color={theme.accent} />
-                  <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                     Clearance checks · {a.met} of {a.criteria.length}
                   </Text>
                 </Pressable>
@@ -98,7 +98,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
                         accessibilityLabel={c.label}
                       >
                         <Ionicons name={c.met ? "checkbox" : "square-outline"} size={16} color={c.met ? theme.accent : theme.secondaryText} />
-                        <Text style={{ flex: 1, color: c.met ? theme.text : theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                        <Text style={{ flex: 1, color: c.met ? theme.text : theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                           {c.label}{c.auto ? " · counted for you" : ""}
                         </Text>
                       </Pressable>

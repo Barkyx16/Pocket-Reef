@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { radius, type } from "../styles";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // The last line of defence.
@@ -59,21 +60,21 @@ export class ErrorBoundary extends Component {
       return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 28 }}>
           <Text style={{ fontSize: 34 }}>🐠</Text>
-          <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12, textAlign: "center" }}>
+          <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12, textAlign: "center" }}>
             This screen hit a problem
           </Text>
-          <Text style={{ color: "#a5d4ea", fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19, marginTop: 8, textAlign: "center" }}>
+          <Text style={{ color: "#a5d4ea", fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19, marginTop: 8, textAlign: "center" }}>
             Your tank data is safe and untouched. The rest of the app still works — switch tabs, or try this one again.
           </Text>
           <Pressable
             onPress={this.retry}
-            style={{ marginTop: 18, backgroundColor: "#38e1c6", borderRadius: 14, paddingVertical: 12, paddingHorizontal: 24 }}
+            style={{ marginTop: 18, backgroundColor: "#38e1c6", borderRadius: radius.lg, paddingVertical: 12, paddingHorizontal: 24 }}
             accessibilityRole="button"
             accessibilityLabel="Try this screen again"
           >
             <Text style={{ color: "#04202a", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
           </Pressable>
-          <Text style={{ color: "#6f8ea3", fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
+          <Text style={{ color: "#6f8ea3", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
             {String((error && error.message) || error || "Unknown error").slice(0, 140)}
           </Text>
         </View>
@@ -101,7 +102,7 @@ export class ErrorBoundary extends Component {
             onPress={this.retry}
             style={({ pressed }) => [
               {
-                marginTop: 28, borderRadius: 16, paddingVertical: 16, alignItems: "center",
+                marginTop: 28, borderRadius: radius.xl, paddingVertical: 16, alignItems: "center",
                 backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)",
               },
               pressed && { opacity: 0.8 },
@@ -109,7 +110,7 @@ export class ErrorBoundary extends Component {
             accessibilityRole="button"
             accessibilityLabel="Try again"
           >
-            <Text style={{ color: "#38e1c6", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
+            <Text style={{ color: "#38e1c6", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
           </Pressable>
 
           {this.props.onExport ? (
@@ -119,16 +120,16 @@ export class ErrorBoundary extends Component {
               accessibilityRole="button"
               accessibilityLabel="Export a backup of my data"
             >
-              <Text style={{ color: "#8fb3c7", fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Export a backup first</Text>
+              <Text style={{ color: "#8fb3c7", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Export a backup first</Text>
             </Pressable>
           ) : null}
 
           {/* Shown so a user can tell us what happened, not to explain it. */}
-          <View style={{ marginTop: 24, padding: 12, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
-            <Text style={{ color: "#6f93a8", fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
+          <View style={{ marginTop: 24, padding: 12, borderRadius: radius.md, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
+            <Text style={{ color: "#6f93a8", fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase" }}>
               Details
             </Text>
-            <Text style={{ color: "#8fb3c7", fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
+            <Text style={{ color: "#8fb3c7", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
               {detail}
             </Text>
           </View>

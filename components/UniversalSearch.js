@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { SPECIES, DISEASES, getSpecies, tapHaptic } from "../core";
 import { matchesQuery, scoreMatch, buildHaystack, normalize } from "../lib/search";
 import { ACTIONS, DESTINATIONS } from "../lib/shortcuts";
@@ -149,7 +149,7 @@ export function UniversalSearch({
     <Modal visible={visible} animationType="slide" onRequestClose={close} transparent={false} presentationStyle="fullScreen">
       <View style={{ flex: 1, backgroundColor: theme.background, paddingTop: 54, paddingHorizontal: 16 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: theme.well, borderRadius: 16, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12 }}>
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: theme.well, borderRadius: radius.xl, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12 }}>
             <Ionicons name="search" size={17} color={theme.accent} />
             <TextInput
               value={query}
@@ -199,7 +199,7 @@ export function UniversalSearch({
             <View style={{ alignItems: "center", paddingTop: 60, paddingHorizontal: 24 }}>
               <Ionicons name="search-outline" size={34} color={theme.secondaryText} />
               <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>Nothing matched “{query.trim()}”</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
                 Try a common name (“oto”, “nemo”), a symptom (“white spots”), or a screen name.
               </Text>
             </View>
@@ -290,7 +290,7 @@ export function UniversalSearch({
 function Section({ title, children }) {
   return (
     <View style={{ marginBottom: 18 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{title}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{title}</Text>
       <View style={{ gap: 6 }}>{children}</View>
     </View>
   );
@@ -300,20 +300,20 @@ function Row({ icon, thumb, title, sub, onPress }) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }, pressed && { opacity: 0.7, borderColor: theme.accent }]}
+      style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }, pressed && { opacity: 0.7, borderColor: theme.accent }]}
       accessibilityRole="button"
       accessibilityLabel={title}
     >
       {thumb ? (
         <SpeciesThumb species={thumb} size={36} />
       ) : (
-        <View style={{ width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
+        <View style={{ width: 36, height: 36, borderRadius: radius.md, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
           <Ionicons name={icon} size={16} color={theme.accent} />
         </View>
       )}
       <View style={{ flex: 1 }}>
         <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
-        {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
+        {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
       </View>
       <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />
     </Pressable>

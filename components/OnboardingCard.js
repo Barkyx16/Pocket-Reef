@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { getRecommended, SPECIES } from "../core";
 import { GradientButton } from "./GradientButton";
 import { Pill } from "./Pill";
@@ -140,7 +140,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                     <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                      <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
+                      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
                     </View>
                   </View>
                 ))}
@@ -169,15 +169,15 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                   <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
                     <View style={styles.iconSquare}><Text style={{ fontSize: 18 }}>{sp.emoji}</Text></View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
-                      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
+                      <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
                         {sp.careLevel} · {sp.temperament} · {formatVolume(sp.minGallons)} min
                       </Text>
                     </View>
                   </View>
                 ))}
               </View>
-              <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
                 Every pairing is checked against the compatibility engine — water type, temperament,
                 predator size, and parameter overlap.
               </Text>
@@ -188,8 +188,8 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
                 <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
                   <View style={styles.iconSquare}><Text style={{ fontSize: 16 }}>{f.icon}</Text></View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                    <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
+                    <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
                   </View>
                 </View>
               ))}
@@ -199,7 +199,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           {/* DOTS */}
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 8, marginVertical: 16 }}>
             {Array.from({ length: total }).map((_, i) => (
-              <View key={i} style={{ width: i === step ? 22 : 8, height: 8, borderRadius: 999, backgroundColor: i === step ? theme.accent : "rgba(255,255,255,0.2)" }} />
+              <View key={i} style={{ width: i === step ? 22 : 8, height: 8, borderRadius: radius.pill, backgroundColor: i === step ? theme.accent : "rgba(255,255,255,0.2)" }} />
             ))}
           </View>
 

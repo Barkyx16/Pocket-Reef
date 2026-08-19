@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { Pill } from "./Pill";
 import { formatVolume } from "../lib/units";
@@ -39,7 +39,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Name</Text>
         <TextInput value={name} onChangeText={setName} placeholder="e.g. Living Room Reef" placeholderTextColor={theme.secondaryText}
-          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8 }} 
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: 8 }} 
             maxLength={TEXT_LIMITS.name}
           />
 
@@ -53,8 +53,8 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
           {EMOJIS.map((e) => {
             const on = emoji === e;
             return (
-              <Pressable key={e} onPress={() => { tapHaptic("light"); setEmoji(e); }} accessibilityRole="button" accessibilityState={{ selected: on }} accessibilityLabel={`Tank icon ${EMOJI_LABELS[e] || e}`} style={{ width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }}>
-                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 20 }}>{e}</Text>
+              <Pressable key={e} onPress={() => { tapHaptic("light"); setEmoji(e); }} accessibilityRole="button" accessibilityState={{ selected: on }} accessibilityLabel={`Tank icon ${EMOJI_LABELS[e] || e}`} style={{ width: 44, height: 44, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }}>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.titleLg }}>{e}</Text>
               </Pressable>
             );
           })}
@@ -67,7 +67,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
 
         <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
         <TextInput value={notes} onChangeText={setNotes} placeholder="Equipment, dosing, livestock plans…" placeholderTextColor={theme.secondaryText} multiline
-          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} 
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} 
             maxLength={TEXT_LIMITS.note}
           />
 

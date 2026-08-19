@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { displayParams } from "../lib/targets";
 import { SOURCE_KINDS, SOURCE_KEYS, kindOf, newSourceProfile, analyseSource } from "../lib/sourceWater";
@@ -42,34 +42,34 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
     <View>
       {!editing && analysis.ok ? (
         <>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 9, backgroundColor: analysis.clean ? "rgba(56,225,198,0.10)" : "rgba(255,216,107,0.10)", borderRadius: 14, borderWidth: 1, borderColor: analysis.clean ? "rgba(56,225,198,0.35)" : "rgba(255,216,107,0.35)", padding: 12 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 9, backgroundColor: analysis.clean ? "rgba(56,225,198,0.10)" : "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: analysis.clean ? "rgba(56,225,198,0.35)" : "rgba(255,216,107,0.35)", padding: 12 }}>
             <Ionicons name={analysis.clean ? "checkmark-circle" : "alert-circle"} size={16} color={analysis.clean ? theme.accent : theme.warn} />
-            <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{analysis.headline}</Text>
+            <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{analysis.headline}</Text>
           </View>
 
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
             {analysis.kindLabel} · tested {analysis.testedAt}
           </Text>
 
           <View style={{ gap: 8, marginTop: 10 }}>
             {analysis.findings.map((f) => (
-              <View key={f.key} style={{ backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: f.harmful ? `${theme.warn}55` : theme.border, padding: 11 }}>
+              <View key={f.key} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: f.harmful ? `${theme.warn}55` : theme.border, padding: 11 }}>
                 <View style={{ flexDirection: "row", alignItems: "baseline", gap: 6 }}>
-                  <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
-                  <Text style={{ color: f.harmful ? theme.warn : theme.accent, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
+                  <Text style={{ color: f.harmful ? theme.warn : theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                     {f.source}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                   {f.tankNow != null ? (
-                    <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>tank {f.tankNow}</Text>
+                    <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>tank {f.tankNow}</Text>
                   ) : null}
                 </View>
-                <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>{f.note}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>{f.note}</Text>
               </View>
             ))}
           </View>
 
           {analysis.advice ? (
-            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 17, marginTop: 10 }}>{analysis.advice}</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 17, marginTop: 10 }}>{analysis.advice}</Text>
           ) : null}
 
           <Pressable onPress={() => { tapHaptic(); setEditing(true); }} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
@@ -87,12 +87,12 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
               <Pill key={k.id} label={k.label} active={kind === k.id} onPress={() => { tapHaptic("light"); setKind(k.id); }} />
             ))}
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 6 }}>{kindOf(kind).blurb}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 6 }}>{kindOf(kind).blurb}</Text>
 
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
             {params.map((p) => (
               <View key={p.key} style={{ width: "48.5%" }}>
-                <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
+                <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{p.label}</Text>
                 <TextInput
                   value={vals[p.key] ?? ""}
                   onChangeText={(t) => setVals((v) => ({ ...v, [p.key]: decimalText(t) }))}
@@ -100,7 +100,7 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
                   placeholder="0"
                   placeholderTextColor={theme.secondaryText}
                   accessibilityLabel={`${p.label} in your source water`}
-                  style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: 15, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                  style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                 
             maxLength={TEXT_LIMITS.number}
           />

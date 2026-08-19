@@ -1,6 +1,6 @@
 import { Image, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles, theme } from "../styles";
+import { styles, theme, type } from "../styles";
 import { FadeInView } from "./FadeInView";
 import { ProgressBar } from "./ProgressBar";
 
@@ -61,15 +61,15 @@ export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl,
             <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{lvl.level}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900" }}>{lvl.title}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+            <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>{lvl.title}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
               {xp.toLocaleString()} XP total · 🔥 {streak}-day streak{longestStreak > streak ? ` · best ${longestStreak}` : ""}
             </Text>
           </View>
         </View>
 
         <View style={{ marginTop: 12 }}><ProgressBar pct={lvl.pct} height={9} glow /></View>
-        <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }}>
           {lvl.maxed ? "Max level — you're a Reef Legend! 🐠" : `${lvl.toNext.toLocaleString()} XP to Level ${lvl.nextLevel}`}
         </Text>
       </View>

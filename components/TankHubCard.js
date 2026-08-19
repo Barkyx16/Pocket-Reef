@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { getTankHealthScore, tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
 import { GradientButton } from "./GradientButton";
@@ -20,7 +20,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
 
   return (
     <View style={styles.card}>
-      <Text style={{ color: "#fff", fontSize: 24, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
+      <Text style={{ color: "#fff", fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
 
       <GradientButton label="Add a Tank" icon="add" variant="secondary" onPress={onAdd} />
 
@@ -31,22 +31,22 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
           const expanded = on && expandedId === tk.id;
           const n = tk.stock ? tk.stock.length : 0;
           return (
-            <View key={tk.id} style={{ backgroundColor: on ? "rgba(56,225,198,0.08)" : theme.well, borderRadius: 16, borderWidth: 1, borderColor: on ? theme.accent : theme.border, overflow: "hidden" }}>
+            <View key={tk.id} style={{ backgroundColor: on ? "rgba(56,225,198,0.08)" : theme.well, borderRadius: radius.xl, borderWidth: 1, borderColor: on ? theme.accent : theme.border, overflow: "hidden" }}>
               <Pressable
                 onPress={() => onRowPress(tk)}
                 style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, padding: 12 }, pressed && { opacity: 0.85 }]}
                 accessibilityRole="button"
                 accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score == null ? "health not yet measurable" : `${h.score} percent healthy`}, ${expanded ? "collapse" : "open"}`}
               >
-                <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
+                <View style={{ width: 48, height: 48, borderRadius: radius.lg, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.headline }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{formatVolume(tk.gallons)} · {n} stocked</Text>
                 </View>
-                <View style={{ backgroundColor: `${h.color}22`, borderColor: `${h.color}55`, borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 }}>
-                  <Text style={{ color: h.color, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score == null ? "—" : `${h.score}%`}</Text>
+                <View style={{ backgroundColor: `${h.color}22`, borderColor: `${h.color}55`, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
+                  <Text style={{ color: h.color, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{h.score == null ? "—" : `${h.score}%`}</Text>
                 </View>
                 <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900", width: 16, textAlign: "center" }}>{expanded ? "▾" : "▸"}</Text>
               </Pressable>

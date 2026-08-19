@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, type } from "../styles";
 import { supabase } from "../lib/supabase";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { friendlyAuthError } from "../lib/authErrors";
@@ -43,8 +43,8 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
       >
         <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 24 }}>
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Reset password</Text>
-          <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+          <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
             Pick something at least 8 characters long. You'll stay signed in on this device afterwards.
           </Text>
 

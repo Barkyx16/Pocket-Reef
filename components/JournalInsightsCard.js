@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { getJournalStats, getJournalMonth, getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -10,9 +10,9 @@ const DOW = ["S", "M", "T", "W", "T", "F", "S"];
 // One compact stat tile — the four-across strip at the top of the card.
 function Stat({ value, label, tint }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 6, alignItems: "center" }}>
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 6, alignItems: "center" }}>
       <Text style={{ color: tint || "#fff", fontSize: 19, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.3, marginTop: 2, textAlign: "center" }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.3, marginTop: 2, textAlign: "center" }}>{label}</Text>
     </View>
   );
 }
@@ -59,7 +59,7 @@ export function JournalInsightsCard({ journal = [] }) {
         <Stat value={s.photos} label="PHOTOS" />
         <Stat value={s.longestGap} label="LONGEST GAP" tint={s.longestGap > 14 ? theme.warn : "#fff"} />
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>
         {s.daysSinceLast === 0
           ? "Logged today — nice."
           : s.daysSinceLast === 1
@@ -70,7 +70,7 @@ export function JournalInsightsCard({ journal = [] }) {
 
       {/* ── Mood mix ─────────────────────────────────────────────────────── */}
       <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18, marginBottom: 8 }]}>Mood mix</Text>
-      <View style={{ flexDirection: "row", height: 12, borderRadius: 999, overflow: "hidden", backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border }}>
+      <View style={{ flexDirection: "row", height: 12, borderRadius: radius.pill, overflow: "hidden", backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border }}>
         {activeMoods.map((m) => (
           <View key={m.mood} style={{ flex: m.count, backgroundColor: m.color }} />
         ))}
@@ -79,11 +79,11 @@ export function JournalInsightsCard({ journal = [] }) {
         {activeMoods.map((m) => (
           <View
             key={m.mood}
-            style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 4 }}
           >
-            <Text style={{ fontSize: 12 }}>{m.mood}</Text>
-            <Text style={{ color: theme.text, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
-            <Text style={{ color: m.color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{m.count}</Text>
+            <Text style={{ fontSize: type.small }}>{m.mood}</Text>
+            <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
+            <Text style={{ color: m.color, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{m.count}</Text>
           </View>
         ))}
       </View>
@@ -94,7 +94,7 @@ export function JournalInsightsCard({ journal = [] }) {
           onPress={() => canGoBack && step(-1)}
           disabled={!canGoBack}
           hitSlop={10}
-          style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoBack ? 1 : 0.3 }}
+          style={{ width: 30, height: 30, borderRadius: radius.xl, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoBack ? 1 : 0.3 }}
           accessibilityRole="button"
           accessibilityLabel="Previous month"
         >
@@ -102,7 +102,7 @@ export function JournalInsightsCard({ journal = [] }) {
         </Pressable>
         <View style={{ alignItems: "center" }}>
           <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{monthLabel}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>
             {monthCount} {monthCount === 1 ? "day logged" : "days logged"}
           </Text>
         </View>
@@ -110,7 +110,7 @@ export function JournalInsightsCard({ journal = [] }) {
           onPress={() => canGoFwd && step(1)}
           disabled={!canGoFwd}
           hitSlop={10}
-          style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoFwd ? 1 : 0.3 }}
+          style={{ width: 30, height: 30, borderRadius: radius.xl, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border, opacity: canGoFwd ? 1 : 0.3 }}
           accessibilityRole="button"
           accessibilityLabel="Next month"
         >
@@ -120,7 +120,7 @@ export function JournalInsightsCard({ journal = [] }) {
 
       <View style={{ flexDirection: "row" }}>
         {DOW.map((d, i) => (
-          <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d}</Text>
+          <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d}</Text>
         ))}
       </View>
       <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 4 }}>
@@ -134,7 +134,7 @@ export function JournalInsightsCard({ journal = [] }) {
                 style={{
                   width: 27,
                   height: 27,
-                  borderRadius: 10,
+                  borderRadius: radius.sm,
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: has ? `${c.mood.color}2e` : "rgba(255,255,255,0.03)",
@@ -145,9 +145,9 @@ export function JournalInsightsCard({ journal = [] }) {
                 accessibilityLabel={`${c.date}, ${has ? `${c.entries.length} ${c.entries.length === 1 ? "entry" : "entries"}` : "no entries"}`}
               >
                 {has ? (
-                  <Text style={{ fontSize: 12 }}>{c.mood.mood}</Text>
+                  <Text style={{ fontSize: type.small }}>{c.mood.mood}</Text>
                 ) : (
-                  <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", opacity: 0.55 }}>{c.day}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", opacity: 0.55 }}>{c.day}</Text>
                 )}
               </View>
             </View>

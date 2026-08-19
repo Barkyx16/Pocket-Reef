@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 
 // Mirrors the four games in screens/GamesTab.js. Best streak + blitz score are
 // persisted there under pr_game_<id>_streak / pr_game_<id>_blitz; here we just read.
@@ -41,15 +41,15 @@ export function GameRecordsCard() {
           const streak = records[`pr_game_${g.id}_streak`] || 0;
           const blitz = records[`pr_game_${g.id}_blitz`] || 0;
           return (
-            <View key={g.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 12 }}>
-              <Text style={{ fontSize: 20 }}>{g.emoji}</Text>
+            <View key={g.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 12 }}>
+              <Text style={{ fontSize: type.titleLg }}>{g.emoji}</Text>
               <Text style={{ flex: 1, color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{g.name}</Text>
               <View style={{ alignItems: "center", minWidth: 46 }}>
-                <Text style={{ color: theme.warn, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>🔥 {streak}</Text>
+                <Text style={{ color: theme.warn, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>🔥 {streak}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: 9, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>STREAK</Text>
               </View>
               <View style={{ alignItems: "center", minWidth: 46 }}>
-                <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>⏱️ {blitz}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>⏱️ {blitz}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: 9, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>BLITZ</Text>
               </View>
             </View>

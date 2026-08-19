@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -59,10 +59,10 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
       <View style={{ gap: 14 }}>
         {lines.map((l) => (
           <View key={l.text} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-            <View style={styles.iconSquare}><Text style={{ fontSize: 15 }}>{l.icon}</Text></View>
+            <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{l.icon}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", lineHeight: 19 }}>{l.text}</Text>
-              <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
             </View>
           </View>
         ))}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AppState, Linking, Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { reminderStatus, requestPermission } from "../lib/notifications";
 import { tapHaptic } from "../core";
 import { Pill } from "./Pill";
@@ -124,13 +124,13 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
       <Text style={styles.cardText}>Set your care schedule. Reminders arrive as notifications and land on the screen where you act on them.</Text>
 
       {banner ? (
-        <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 9, marginTop: 12, backgroundColor: `${banner.tone}14`, borderRadius: 12, borderWidth: 1, borderColor: `${banner.tone}44`, paddingHorizontal: 11, paddingVertical: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 9, marginTop: 12, backgroundColor: `${banner.tone}14`, borderRadius: radius.md, borderWidth: 1, borderColor: `${banner.tone}44`, paddingHorizontal: 11, paddingVertical: 10 }}>
           <Ionicons name={banner.icon} size={15} color={banner.tone} style={{ marginTop: 1 }} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{banner.text}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{banner.text}</Text>
             {banner.action ? (
               <Pressable onPress={enable} style={{ marginTop: 8 }} accessibilityRole="button" accessibilityLabel={banner.action}>
-                <Text style={{ color: banner.tone, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{banner.action} ›</Text>
+                <Text style={{ color: banner.tone, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{banner.action} ›</Text>
               </Pressable>
             ) : null}
           </View>
@@ -152,7 +152,7 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
           <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             Just for {tank.name || "this tank"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3, marginBottom: 10 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3, marginBottom: 10 }}>
             Leave these on “Same as above” unless this tank runs to its own schedule.
           </Text>
 
@@ -162,7 +162,7 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
             ["feeding", "Feeding check-in"],
           ].map(([key, label]) => (
             <View key={key} style={{ marginBottom: 12 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 6 }}>{label}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 6 }}>{label}</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
                 {[{ id: "", label: "Same as above" }, ...FREQ].map((f) => {
                   const current = (tank.reminders || {})[key] || "";

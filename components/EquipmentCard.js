@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { iconForEmoji } from "../lib/icons";
@@ -66,10 +66,10 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 
       {/* The one thing worth interrupting for: a claim you can still make. */}
       {summary.endingSoon.length ? (
-        <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)", padding: 12 }}>
-          <Text style={{ color: theme.warn, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>Warranty ending</Text>
+        <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)", padding: 12 }}>
+          <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>Warranty ending</Text>
           {summary.endingSoon.slice(0, 3).map((i) => (
-            <Text key={i.id} style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
+            <Text key={i.id} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
               {i.name} — {warrantyLabel(i)}. Worth checking it now while a claim is still possible.
             </Text>
           ))}
@@ -84,8 +84,8 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
               const w = warrantyStatus(item);
               const bits = [ageLabel(item), item.brand || null, item.price != null ? fmtMoney(item.price) : null, item.watts != null ? `${item.watts}W` : null].filter(Boolean);
               return (
-                <View key={item.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
-                  <View style={{ width: 30, height: 30, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
+                <View key={item.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
+                  <View style={{ width: 30, height: 30, borderRadius: radius.sm, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
                     {iconForEmoji(category.emoji) ? (
                       <Ionicons name={iconForEmoji(category.emoji)} size={14} color={theme.accent} />
                     ) : (
@@ -93,12 +93,12 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                     )}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: 13.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.name}</Text>
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.name}</Text>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                       {bits.length ? bits.join(" · ") : "No details recorded"}
                     </Text>
                     {w.state !== "none" ? (
-                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
                         {warrantyLabel(item)}
                       </Text>
                     ) : null}
@@ -114,7 +114,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
       ))}
 
       {adding ? (
-        <View style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.accent, padding: 12 }}>
+        <View style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.accent, padding: 12 }}>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
             {CATEGORIES.map((c) => (
               <Pressable
@@ -125,7 +125,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                 accessibilityState={{ selected: draft.category === c.id }}
                 accessibilityLabel={`Category: ${c.label}`}
               >
-                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: 11.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.emoji} {c.label}</Text>
+                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.emoji} {c.label}</Text>
               </Pressable>
             ))}
           </View>
@@ -151,7 +151,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                 accessibilityRole="button"
                 accessibilityLabel={`Use ${s}`}
               >
-                <Text style={{ color: theme.text, fontSize: 11.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s}</Text>
+                <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s}</Text>
               </Pressable>
             ))}
           </View>
@@ -208,30 +208,30 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 12 }}>
             <Pressable onPress={() => { tapHaptic(); setAdding(false); }} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel="Cancel adding equipment">
-              <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Cancel</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Cancel</Text>
             </Pressable>
             <View style={{ flex: 1 }} />
             <Pressable
               onPress={submit}
               disabled={!draft.name.trim()}
-              style={({ pressed }) => [{ paddingHorizontal: 16, paddingVertical: 9, borderRadius: 10, backgroundColor: draft.name.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ paddingHorizontal: 16, paddingVertical: 9, borderRadius: radius.sm, backgroundColor: draft.name.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
               accessibilityRole="button"
               accessibilityLabel="Save this equipment"
               accessibilityState={{ disabled: !draft.name.trim() }}
             >
-              <Text style={{ color: draft.name.trim() ? theme.onAccent : theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Save</Text>
+              <Text style={{ color: draft.name.trim() ? theme.onAccent : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Save</Text>
             </Pressable>
           </View>
         </View>
       ) : (
         <Pressable
           onPress={() => { tapHaptic(); setAdding(true); }}
-          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 14, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
+          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 14, paddingVertical: 12, borderRadius: radius.md, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
           accessibilityRole="button"
           accessibilityLabel="Add equipment"
         >
           <Ionicons name="add" size={15} color={theme.accent} />
-          <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>Add equipment</Text>
+          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Add equipment</Text>
         </Pressable>
       )}
     </View>
@@ -239,17 +239,17 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 }
 
 const input = {
-  backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 10, paddingHorizontal: 12,
+  backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12,
   paddingVertical: 9, color: theme.text, borderWidth: 1, borderColor: theme.border,
   fontSize: 14, fontFamily: "Inter_600SemiBold", fontWeight: "600",
 };
 
 function Stat({ label, value, sub, tone }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: 10, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
-      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
     </View>
   );
 }

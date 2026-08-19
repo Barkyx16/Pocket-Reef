@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { supabase, isCloudConfigured } from "../lib/supabase";
 import { RESET_REDIRECT } from "../lib/supabaseConfig";
@@ -204,7 +204,7 @@ export function AccountCloudCard({
     <View>
       {/* Cloud status — honest about what actually happened on the last save. */}
       <View style={{
-        flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, padding: 14, marginBottom: 16, borderWidth: 1,
+        flexDirection: "row", alignItems: "center", gap: 12, borderRadius: radius.xl, padding: 14, marginBottom: 16, borderWidth: 1,
         backgroundColor: syncError ? "rgba(255,211,114,0.10)" : "rgba(56,225,198,0.10)",
         borderColor: syncError ? "rgba(255,211,114,0.35)" : "rgba(56,225,198,0.30)",
       }}>
@@ -213,7 +213,7 @@ export function AccountCloudCard({
           <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {syncError ? "Not syncing right now" : lastSyncedAt ? "Your reef is backed up" : configured ? "Backing up your reef…" : "Saved on this device"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 2 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 2 }}>
             {syncError
               ? "Changes are saved on this device and will retry automatically."
               : lastSyncedAt
@@ -266,19 +266,19 @@ export function AccountCloudCard({
         accessibilityRole="button"
         accessibilityLabel={premiumUnlocked ? "Premium active — open the Premium tab" : "Premium inactive — open the Premium tab"}
       >
-        <View style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: premiumUnlocked ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: premiumUnlocked ? "rgba(56,225,198,0.30)" : "rgba(255,216,107,0.3)" }}>
+        <View style={{ width: 40, height: 40, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: premiumUnlocked ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: premiumUnlocked ? "rgba(56,225,198,0.30)" : "rgba(255,216,107,0.3)" }}>
           <Ionicons name="star" size={18} color={theme.accent} />
         </View>
         <View style={{ flex: 1 }}>
           <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={styles.accountInfoLabel}>Premium</Text>
-          <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
+          <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
             {premiumUnlocked ? "Active" : "Inactive"}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
             {premiumUnlocked ? "Every feature unlocked — thank you!" : "Unlock the full reef toolkit."}
           </Text>
         </View>
-        <Text style={{ color: theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+        <Text style={{ color: theme.accent, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
       </Pressable>
 
       {/* Stats grid */}
@@ -296,14 +296,14 @@ export function AccountCloudCard({
 
           {bioAvailable ? (
             <Pressable onPress={toggleBiometric} style={[styles.accountInfoBox, { flexDirection: "row", alignItems: "center", gap: 12 }]} accessibilityRole="button" accessibilityState={{ checked: bioEnabled }}>
-              <Text style={{ fontSize: 20 }}>{bioLabel === "Touch ID" ? "👆" : "🙂"}</Text>
+              <Text style={{ fontSize: type.titleLg }}>{bioLabel === "Touch ID" ? "👆" : "🙂"}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioLabel} sign-in</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
                   {bioEnabled ? "On — tap to turn off and forget the saved credentials." : "Off — offered next time you log in with your password."}
                 </Text>
               </View>
-              <Text style={{ color: bioEnabled ? theme.accent : theme.secondaryText, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioEnabled ? "ON" : "OFF"}</Text>
+              <Text style={{ color: bioEnabled ? theme.accent : theme.secondaryText, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioEnabled ? "ON" : "OFF"}</Text>
             </Pressable>
           ) : null}
 
@@ -351,7 +351,7 @@ export function AccountCloudCard({
                 accessibilityRole="button"
                 accessibilityLabel={showNewPassword ? "Hide password" : "Show password"}
               >
-                <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{showNewPassword ? "HIDE" : "SHOW"}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{showNewPassword ? "HIDE" : "SHOW"}</Text>
               </Pressable>
             </View>
             <TextInput
@@ -368,7 +368,7 @@ export function AccountCloudCard({
             
             maxLength={TEXT_LIMITS.password}
           />
-            <Text style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
               At least 8 characters.{bioEnabled ? ` ${bioLabel} updates automatically.` : ""}
             </Text>
             <Pressable
@@ -396,7 +396,7 @@ export function AccountCloudCard({
 
       {/* Backup actions — the local copy, independent of the account. */}
       <Text style={[styles.accountInfoLabel, { marginTop: 18, marginBottom: 8 }]}>Backup & restore</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 10 }}>Last export {backupLabel}.</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 10 }}>Last export {backupLabel}.</Text>
       <View style={{ flexDirection: "row", gap: 8 }}>
         <Pressable onPress={() => onExport && onExport()} style={[styles.primaryBtn, { flex: 1 }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Export</Text>
@@ -416,7 +416,7 @@ export function AccountCloudCard({
           <Pressable onPress={deleteAccount} style={styles.accountDangerBtn} accessibilityRole="button">
             <Text style={styles.accountDangerText}>🗑 Delete account</Text>
           </Pressable>
-          <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
             Logging out keeps everything in the cloud. Deleting removes your account and its data for good.
           </Text>
         </>
@@ -427,9 +427,9 @@ export function AccountCloudCard({
 
 function Stat({ value, label, small }) {
   return (
-    <View style={{ flexGrow: 1, minWidth: "45%", backgroundColor: theme.well, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: theme.border, alignItems: "center" }}>
+    <View style={{ flexGrow: 1, minWidth: "45%", backgroundColor: theme.well, borderRadius: radius.xl, padding: 14, borderWidth: 1, borderColor: theme.border, alignItems: "center" }}>
       <Text style={{ color: "#fff", fontSize: small ? 15 : 24, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{label}</Text>
     </View>
   );
 }

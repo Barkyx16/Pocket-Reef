@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { TROUBLESHOOTING, tapHaptic } from "../core";
 
 // Emergency troubleshooter — tap a problem to expand fast, ordered first-response
@@ -12,12 +12,12 @@ export function TroubleshooterCard() {
       {TROUBLESHOOTING.map((item) => {
         const on = open === item.id;
         return (
-          <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: on ? theme.accent : theme.border, overflow: "hidden" }}>
+          <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: on ? theme.accent : theme.border, overflow: "hidden" }}>
             <Pressable onPress={() => { tapHaptic("light"); setOpen(on ? null : item.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, padding: 12 }} accessibilityRole="button">
-              <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+              <Text style={{ fontSize: type.titleLg }}>{item.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{item.problem}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{item.summary}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{item.summary}</Text>
               </View>
               <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{on ? "▲" : "▾"}</Text>
             </Pressable>
@@ -25,8 +25,8 @@ export function TroubleshooterCard() {
               <View style={{ paddingHorizontal: 12, paddingBottom: 12, gap: 8 }}>
                 {item.steps.map((step, i) => (
                   <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
-                    <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 16 }}>{i + 1}.</Text>
-                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{step}</Text>
+                    <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 16 }}>{i + 1}.</Text>
+                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{step}</Text>
                   </View>
                 ))}
               </View>

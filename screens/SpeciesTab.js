@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, memo } from "react";
 import { FlatList, Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, useResponsiveLayout } from "../styles";
+import { styles, theme, useResponsiveLayout, radius, type } from "../styles";
 import { SPECIES, DISEASES, getSpecies, getCompatibility, speciesFitsTank, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -142,7 +142,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
   const FilterRow = ({ label, opts, value, onChange }) => (
     <View style={{ marginTop: 12 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         {opts.map(([id, lab]) => (
           <Pill key={id} label={String(lab)} active={value === id} onPress={() => onChange(id)} />
@@ -165,9 +165,9 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
         colors={["#123a5e", "#0c2a45", "#071d2e"]}
       />
 
-      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: 16, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: radius.xl, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
         <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: 8 }} />
-        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: 15 }} 
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: type.bodyLg }} 
             maxLength={TEXT_LIMITS.search}
           />
         {query ? (
@@ -183,11 +183,11 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       {narrowing ? (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
           <Ionicons name="funnel" size={12} color={theme.accent} />
-          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
             Showing {list.length} of {SPECIES.length} · {narrowing} filter{narrowing === 1 ? "" : "s"} on
           </Text>
           <Pressable onPress={clearAll} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear all filters">
-            <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear all</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear all</Text>
           </Pressable>
         </View>
       ) : null}
@@ -250,7 +250,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
             </Pressable>
             {activeCount ? (
               <Pressable onPress={() => { tapHaptic(); resetFilters(); }} accessibilityRole="button">
-                <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>Reset</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Reset</Text>
               </Pressable>
             ) : null}
           </View>
@@ -259,14 +259,14 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
       {!compareMode && !q && recent.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>RECENTLY VIEWED</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 6 }}>RECENTLY VIEWED</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
               if (!sp) return null;
               return (
                 <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
-                  <Text style={{ color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{sp.emoji} {n}</Text>
+                  <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{sp.emoji} {n}</Text>
                 </Pressable>
               );
             })}
@@ -314,11 +314,11 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
           accessibilityRole="button"
           accessibilityLabel="Unlock the full species catalog with Premium"
         >
-          <Text style={{ fontSize: 30 }}>🔒</Text>
-          <Text style={{ color: "#fff", fontSize: 17, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
+          <Text style={{ fontSize: type.display }}>🔒</Text>
+          <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
             {list.length - shown} more species
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
             Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
           </Text>
           <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
@@ -384,4 +384,4 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 })
 
 const pillStyle = (on) => ({ backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border });
-const pillText = (on) => ({ color: on ? theme.onAccent : theme.text, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" });
+const pillText = (on) => ({ color: on ? theme.onAccent : theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" });

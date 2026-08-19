@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, type } from "../styles";
 import { paramStatusColor } from "../core";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -45,31 +45,31 @@ export function ForecastCard({ forecasts = [] }) {
           return (
             <View key={f.key} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
               <View style={[styles.iconSquare, { borderColor: `${color}66`, backgroundColor: `${color}1f` }]}>
-                <Text style={{ color, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{arrow}</Text>
+                <Text style={{ color, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{arrow}</Text>
               </View>
 
               <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                   <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
-                  <Text style={{ color: paramStatusColor(f.status), fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                     {f.current}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                 </View>
 
-                <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
                   {f.perWeek > 0 ? "Rising" : "Falling"} about {Math.abs(f.perWeek)}{f.unit ? ` ${f.unit}` : ""} per week
                   {f.n ? ` · ${f.n} readings` : ""}
                 </Text>
 
                 {f.daysToEdge != null ? (
-                  <Text style={{ color, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
+                  <Text style={{ color, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
                     Out of range in about {f.daysToEdge} day{f.daysToEdge === 1 ? "" : "s"}
                   </Text>
                 ) : (
                   // Deliberately not a date. The fit isn't strong enough to
                   // justify one, and a wrong countdown costs more trust than a
                   // vague one earns.
-                  <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                     Not enough of a pattern yet to predict a date
                   </Text>
                 )}

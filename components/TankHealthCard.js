@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { tapHaptic, getHealthImprovements } from "../core";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
@@ -28,9 +28,9 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
           <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score == null ? "—" : health.score}</Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: health.color, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{health.label}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Overall health, out of 100.</Text>
-          <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{open ? "Hide breakdown ▲" : "Tap for breakdown ▾"}</Text>
+          <Text style={{ color: health.color, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{health.label}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Overall health, out of 100.</Text>
+          <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{open ? "Hide breakdown ▲" : "Tap for breakdown ▾"}</Text>
         </View>
       </Pressable>
 
@@ -38,17 +38,17 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
         <View style={{ marginTop: 14, gap: 8 }}>
           {health.factors.map((f) => (
             <View key={f.label} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <View style={{ width: 22, height: 22, borderRadius: 8, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
-                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: CLR[String(f.state)], fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
+              <View style={{ width: 22, height: 22, borderRadius: radius.xs, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: CLR[String(f.state)], fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
               </View>
-              <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.label}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.detail}</Text>
+              <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.label}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.detail}</Text>
             </View>
           ))}
 
           {improvements.length ? (
             <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.border }}>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 }}>
                 Raise your score
               </Text>
               <View style={{ gap: 10 }}>
@@ -60,12 +60,12 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
                     accessibilityRole={onGoToTab ? "button" : undefined}
                     accessibilityLabel={`${imp.action}, worth up to ${imp.points} points`}
                   >
-                    <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
-                      <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
+                    <View style={{ minWidth: 40, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>+{imp.points}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{imp.action}</Text>
-                      {imp.why ? <Text style={{ color: theme.bodyText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
+                      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{imp.action}</Text>
+                      {imp.why ? <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 15 }}>{imp.why}</Text> : null}
                     </View>
                     {onGoToTab ? <Text style={{ color: theme.accent, fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
                   </Pressable>

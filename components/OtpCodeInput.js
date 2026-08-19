@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Platform, Pressable, Text, TextInput, View } from "react-native";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 
 // Six boxes for the code from the verification email.
 //
@@ -55,7 +55,7 @@ export function OtpCodeInput({ value, onChange, onComplete, editable = true, aut
                 flex: 1,
                 aspectRatio: 0.82,
                 maxHeight: 60,
-                borderRadius: 14,
+                borderRadius: radius.lg,
                 borderWidth: 1.5,
                 borderColor: isCaret ? theme.accent : filled ? "rgba(56,225,198,0.42)" : theme.border,
                 backgroundColor: filled ? "rgba(56,225,198,0.10)" : "rgba(255,255,255,0.07)",
@@ -64,7 +64,7 @@ export function OtpCodeInput({ value, onChange, onComplete, editable = true, aut
               }}
             >
               {char ? (
-                <Text style={{ color: theme.text, fontSize: 24, fontFamily: "Inter_900Black", fontWeight: "900" }}>{char}</Text>
+                <Text style={{ color: theme.text, fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900" }}>{char}</Text>
               ) : isCaret ? (
                 <View style={{ width: 16, height: 2, borderRadius: 1, backgroundColor: theme.accent }} />
               ) : null}

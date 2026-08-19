@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { getSpecies, tapHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { MED_CLASSES, classOf, planMedDose, safetyFor, newMedDose, courseTotal } from "../lib/meds";
@@ -66,7 +66,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         
             maxLength={TEXT_LIMITS.number}
           />
-        <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>ml per</Text>
+        <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>ml per</Text>
         <TextInput
           value={labelPer}
           onChangeText={(t) => setLabelPer(decimalText(t))}
@@ -78,10 +78,10 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         
             maxLength={TEXT_LIMITS.number}
           />
-        <Text style={{ color: theme.bodyText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>gallons</Text>
+        <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>gallons</Text>
       </View>
 
-      <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What kind is it?</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What kind is it?</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
         {MED_CLASSES.map((c) => (
           <Pill key={c.id} label={c.label} active={cls === c.id} onPress={() => { tapHaptic("light"); setCls(c.id); }} />
@@ -89,19 +89,19 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       </View>
 
       {plan.ok ? (
-        <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 14, marginTop: 14 }}>
-          <Text style={{ color: theme.accentLight, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.8, textTransform: "uppercase" }}>Full dose</Text>
-          <Text style={{ color: "#fff", fontSize: 30, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
-          <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
+        <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 14, marginTop: 14 }}>
+          <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.8, textTransform: "uppercase" }}>Full dose</Text>
+          <Text style={{ color: "#fff", fontSize: type.display, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{plan.reason}</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{plan.reason}</Text>
       )}
 
       {/* The re-dose people get wrong in both directions. */}
       {plan.ok ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Re-dosing after a water change</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Re-dosing after a water change</Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
             <TextInput
               value={changePct}
@@ -114,12 +114,12 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
             
             maxLength={TEXT_LIMITS.number}
           />
-            <Text style={{ flex: 1, color: theme.bodyText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+            <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
               % changed → <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>{plan.topUp} {plan.unit}</Text>
             </Text>
           </View>
           {plan.topUpNote ? (
-            <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.topUpNote}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.topUpNote}</Text>
           ) : null}
         </View>
       ) : null}
@@ -153,17 +153,17 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
 
       {doses.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
             This course · {course} ml so far
           </Text>
           <View style={{ gap: 6, marginTop: 8 }}>
             {doses.slice(0, 6).map((d) => (
               <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <Ionicons name="flask-outline" size={13} color={theme.secondaryText} />
-                <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {d.name} · {d.amount} {d.unit}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d.date}</Text>
                 {onDeleteMedDose ? (
                   <Pressable onPress={() => onDeleteMedDose(d.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the ${fmt(d.amount)} ml dose from ${d.date}`}>
                     <Ionicons name="close" size={13} color={theme.secondaryText} />
@@ -175,15 +175,15 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         </View>
       ) : null}
 
-      <View style={{ backgroundColor: "rgba(255,107,107,0.08)", borderRadius: 14, borderWidth: 1, borderColor: `${theme.danger}44`, padding: 12, marginTop: 14 }}>
+      <View style={{ backgroundColor: "rgba(255,107,107,0.08)", borderRadius: radius.lg, borderWidth: 1, borderColor: `${theme.danger}44`, padding: 12, marginTop: 14 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
           <Ionicons name="warning" size={14} color={theme.danger} />
-          <Text style={{ color: theme.danger, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Before you dose</Text>
+          <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Before you dose</Text>
         </View>
         {warnings.map((w, i) => (
-          <Text key={i} style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>• {w}</Text>
+          <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>• {w}</Text>
         ))}
-        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
           {classOf(cls).label} · these are general to the class. The product label overrides everything here.
         </Text>
       </View>

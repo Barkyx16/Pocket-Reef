@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { runningCost, ownershipTotal, categoryLabel, DEFAULT_RATE } from "../lib/running";
 import { equipmentSummary } from "../lib/equipment";
@@ -47,11 +47,11 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
 
   return (
     <View>
-      <View style={{ borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
+      <View style={{ borderRadius: radius.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
-          <Text style={{ color: theme.accentLight, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Electricity, per month</Text>
+          <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 1, textTransform: "uppercase" }}>Electricity, per month</Text>
           <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(running.perMonth)}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
             {running.kWhPerMonth} kWh · {fmtMoney(running.perYear)} a year
           </Text>
         </LinearGradient>
@@ -61,14 +61,14 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
       {running.confidence !== "measured" ? (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
           <Ionicons name="information-circle-outline" size={14} color={theme.secondaryText} />
-          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
+          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
             {running.estimatedCount} item{running.estimatedCount === 1 ? "" : "s"} use a typical wattage for their type. Add real figures in the equipment record for an accurate bill.
           </Text>
         </View>
       ) : null}
 
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}>
-        <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Your rate</Text>
+        <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Your rate</Text>
         <TextInput
           value={rate}
           onChangeText={(t) => setRate(decimalText(t))}
@@ -80,19 +80,19 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
         
             maxLength={TEXT_LIMITS.number}
           />
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>per kWh</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>per kWh</Text>
       </View>
 
       <View style={{ gap: 8, marginTop: 14 }}>
         {running.rows.map((r) => (
-          <View key={r.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
+          <View key={r.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{r.name}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+              <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{r.name}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                 {r.watts}W{r.estimated ? " (typical)" : ""} · {r.hoursPerDay}h a day · {categoryLabel(r.category)}
               </Text>
             </View>
-            <Text style={{ color: theme.accent, fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(r.costPerMonth)}</Text>
+            <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(r.costPerMonth)}</Text>
           </View>
         ))}
       </View>
@@ -100,9 +100,9 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
       {/* The lever. An hour of photoperiod with a price on it is a different
           argument from "consider reducing your lighting". */}
       {running.perLightHour ? (
-        <View style={{ flexDirection: "row", gap: 9, marginTop: 12, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
+        <View style={{ flexDirection: "row", gap: 9, marginTop: 12, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
           <Ionicons name="bulb-outline" size={15} color={theme.accent} style={{ marginTop: 1 }} />
-          <Text style={{ flex: 1, color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
             Each hour of photoperiod costs about <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(running.perLightHour)}</Text> a month{running.lightHours ? `, and you run ${running.lightHours}` : ""}.
           </Text>
         </View>
@@ -110,10 +110,10 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
 
       {ownership.ok && ownership.total != null ? (
         <View style={{ marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Since you set it up</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Since you set it up</Text>
           <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 6 }}>
-            <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(ownership.total)}</Text>
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(ownership.total)}</Text>
+            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
               {fmtMoney(ownership.spent)} bought · {fmtMoney(ownership.electricity)} run · {ownership.months} months
             </Text>
           </View>

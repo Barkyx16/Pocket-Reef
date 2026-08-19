@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
@@ -97,7 +97,7 @@ export function AcclimationTimer({ onComplete }) {
           <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {done ? "Acclimation complete" : current.label}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
             {done ? "Net the fish across and discard the bag water." : current.detail}
           </Text>
         </View>
@@ -114,7 +114,7 @@ export function AcclimationTimer({ onComplete }) {
         glow
         label={`Acclimation progress, step ${currentIndex + 1} of ${PHASES.length}`}
       />
-      <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
         Step {currentIndex + 1} of {PHASES.length} · {mmss(elapsedSec)} elapsed of ~{TOTAL_MINUTES} min
       </Text>
 
@@ -125,20 +125,20 @@ export function AcclimationTimer({ onComplete }) {
           return (
             <View key={p.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, opacity: passed ? 0.55 : 1 }}>
               <View style={{
-                width: 20, height: 20, borderRadius: 10,
+                width: 20, height: 20, borderRadius: radius.sm,
                 backgroundColor: passed ? "rgba(56,225,198,0.18)" : isNow ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)",
                 borderWidth: 1, borderColor: isNow ? theme.accent : passed ? "rgba(56,225,198,0.45)" : theme.border,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                <Text style={{ color: passed ? theme.accent : theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {passed ? "✓" : i + 1}
                 </Text>
               </View>
-              <Text style={{ flex: 1, color: isNow ? "#fff" : theme.text, fontSize: 13, fontWeight: isNow ? "900" : "700" }}>
+              <Text style={{ flex: 1, color: isNow ? "#fff" : theme.text, fontSize: type.body, fontWeight: isNow ? "900" : "700" }}>
                 {p.label}
               </Text>
               {p.minutes ? (
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.minutes}m</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.minutes}m</Text>
               ) : null}
             </View>
           );
@@ -153,7 +153,7 @@ export function AcclimationTimer({ onComplete }) {
         />
       ) : (
         <Pressable onPress={reset} style={({ pressed }) => [{ marginTop: 14, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
-          <Text style={{ color: theme.secondaryText, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Cancel</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Cancel</Text>
         </Pressable>
       )}
     </View>

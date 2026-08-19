@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { LayoutAnimation, Platform, Pressable, Text, UIManager, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, radius } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { useReduceMotion, touchSlop } from "../lib/a11y";
 
@@ -89,7 +89,7 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
           {eyebrow ? <Text style={styles.cardEyebrow}>{eyebrow}</Text> : null}
           <Text style={styles.cardTitle}>{text}</Text>
         </View>
-        <View style={{ width: 30, height: 30, borderRadius: 16, alignItems: "center", justifyContent: "center", backgroundColor: open ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: open ? "rgba(56,225,198,0.30)" : theme.border, marginLeft: 12 }}>
+        <View style={{ width: 30, height: 30, borderRadius: radius.xl, alignItems: "center", justifyContent: "center", backgroundColor: open ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: open ? "rgba(56,225,198,0.30)" : theme.border, marginLeft: 12 }}>
           <Ionicons name={open ? "chevron-down" : "chevron-forward"} size={16} color={theme.accent} />
         </View>
       </Pressable>

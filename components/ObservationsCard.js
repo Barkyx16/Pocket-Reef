@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import * as ImagePicker from "expo-image-picker";
@@ -50,21 +50,21 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
   return (
     <View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
+        <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>
           Observations{list.length ? ` (${list.length})` : ""}
         </Text>
         <Pressable onPress={() => { tapHaptic("light"); setOpen((v) => !v); }} hitSlop={touchSlop(24)} accessibilityRole="button" accessibilityLabel={open ? "Cancel" : `Add an observation for ${name}`}>
-          <Text style={{ color: theme.accent, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{open ? "Cancel" : "+ Add"}</Text>
+          <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{open ? "Cancel" : "+ Add"}</Text>
         </Pressable>
       </View>
 
       {/* Growth is the payoff: a number rather than a feeling. */}
       {g.ok ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 10, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 11 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 10, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 11 }}>
           <Ionicons name={g.direction === "shrank" ? "trending-down" : "trending-up"} size={15} color={g.direction === "shrank" ? theme.warn : theme.accent} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{g.summary}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+            <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{g.summary}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
               {g.first.size} → {g.last.size} {g.unit} across {g.points} measurements
             </Text>
           </View>
@@ -79,21 +79,21 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           <View style={{ flexDirection: "row", gap: 8 }}>
             {[shots.first, shots.last].map((shot, i) => (
               <View key={shot.id} style={{ flex: 1 }}>
-                <Image source={{ uri: shot.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: 12, backgroundColor: theme.well }} resizeMode="cover" accessibilityLabel={`${name} on ${shot.date}`} />
-                <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
+                <Image source={{ uri: shot.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: radius.md, backgroundColor: theme.well }} resizeMode="cover" accessibilityLabel={`${name} on ${shot.date}`} />
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
                   {i === 0 ? "Then" : "Now"} · {shot.date}
                 </Text>
               </View>
             ))}
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
             {shots.days} days apart{shots.shots.length > 2 ? ` · ${shots.shots.length} photos` : ""}
           </Text>
         </View>
       ) : null}
 
       {open ? (
-        <View style={{ marginTop: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
+        <View style={{ marginTop: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {KINDS.map((k) => (
               <Pill key={k.id} label={k.label} active={kind === k.id} onPress={() => { tapHaptic("light"); setKind(k.id); }} />
@@ -122,7 +122,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             
             maxLength={TEXT_LIMITS.number}
           />
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
+            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
               inches — optional, but it's the only thing growth can be measured from.
             </Text>
           </View>
@@ -131,7 +131,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
               <Text style={styles.ghostBtnText}>{photo ? "Change photo" : "+ Photo"}</Text>
             </Pressable>
             {photo ? (
-              <Image source={{ uri: photo }} style={{ width: 40, height: 40, borderRadius: 8 }} accessibilityLabel="Selected photo" />
+              <Image source={{ uri: photo }} style={{ width: 40, height: 40, borderRadius: radius.xs }} accessibilityLabel="Selected photo" />
             ) : null}
           </View>
 
@@ -147,10 +147,10 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             <View key={o.id} style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}>
               <Ionicons name={kindOf(o.kind).icon} size={13} color={theme.secondaryText} style={{ marginTop: 2 }} />
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
                   {o.text}{o.size ? `${o.text ? " · " : ""}${o.size} ${o.unit}` : ""}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 10.5, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{o.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{o.date}</Text>
               </View>
               {onRemove ? (
                 <Pressable onPress={() => onRemove(name, o.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the observation from ${o.date}`}>
@@ -161,7 +161,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           ))}
         </View>
       ) : !open ? (
-        <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 8 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 8 }}>
           Nothing recorded yet. Spawning, colour, a size to measure growth from — the things that get lost in the journal.
         </Text>
       ) : null}

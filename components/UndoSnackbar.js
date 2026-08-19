@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { useReduceMotion, MAX_FONT_SCALE, touchSlop } from "../lib/a11y";
 
@@ -48,18 +48,18 @@ export function UndoSnackbar({ undo, onUndo, onDismiss, bottom = 92 }) {
         transform: [{ translateY: slide.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 0 : 24, 0] }) }],
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "#0d3145", borderRadius: 16, borderWidth: 1, borderColor: theme.border, paddingLeft: 14, paddingRight: 8, paddingVertical: 11, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "#0d3145", borderRadius: radius.xl, borderWidth: 1, borderColor: theme.border, paddingLeft: 14, paddingRight: 8, paddingVertical: 11, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 14 }}>
         <Ionicons name={undo.icon || "checkmark-circle"} size={17} color={theme.accent} />
-        <Text numberOfLines={2} maxFontSizeMultiplier={MAX_FONT_SCALE} style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>{undo.message}</Text>
+        <Text numberOfLines={2} maxFontSizeMultiplier={MAX_FONT_SCALE} style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>{undo.message}</Text>
         {undo.onUndo ? (
           <Pressable
             onPress={() => { tapHaptic("medium"); onUndo(); }}
             hitSlop={touchSlop(34)}
-            style={({ pressed }) => [{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 12, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.7 }]}
+            style={({ pressed }) => [{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: radius.md, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.7 }]}
             accessibilityRole="button"
             accessibilityLabel={`Undo: ${undo.message}`}
           >
-            <Text style={{ color: theme.accent, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>Undo</Text>
+            <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Undo</Text>
           </Pressable>
         ) : (
           <Pressable onPress={onDismiss} hitSlop={touchSlop(16)} accessibilityRole="button" accessibilityLabel="Dismiss">

@@ -1,7 +1,7 @@
 import { Pressable, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import { accentGradient, styles, theme } from "../styles";
+import { accentGradient, styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 
 // The app's call-to-action.
@@ -18,7 +18,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
         onPress={() => { tapHaptic("light"); onPress && onPress(); }}
         style={({ pressed }) => [
           {
-            borderRadius: 16,
+            borderRadius: radius.xl,
             paddingVertical: 12,
             alignItems: "center",
             justifyContent: "center",
@@ -35,7 +35,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
         accessibilityLabel={label}
       >
         {icon ? <Ionicons name={icon} size={16} color={theme.accent} /> : null}
-        <Text style={{ color: theme.accent, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
+        <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
       </Pressable>
     );
   }
@@ -43,7 +43,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
   return (
     <Pressable
       onPress={() => { tapHaptic(haptic); onPress && onPress(); }}
-      style={({ pressed }) => [{ borderRadius: 16, overflow: "hidden", shadowColor: theme.accent, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 }, pressed && { transform: [{ scale: 0.97 }], opacity: 0.95 }, style]}
+      style={({ pressed }) => [{ borderRadius: radius.xl, overflow: "hidden", shadowColor: theme.accent, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 }, pressed && { transform: [{ scale: 0.97 }], opacity: 0.95 }, style]}
       accessibilityRole="button"
       accessibilityLabel={label}
     >

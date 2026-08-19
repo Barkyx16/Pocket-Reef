@@ -1,6 +1,6 @@
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { ACTIONS, QUICK_ACTION_IDS } from "../lib/shortcuts";
 import { pendingSummary } from "../lib/pending";
@@ -47,7 +47,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <Text style={{ color: "#fff", fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 }}>Quick actions</Text>
+            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 }}>Quick actions</Text>
             <Pressable onPress={onClose} hitSlop={10} style={({ pressed }) => [{ width: 34, height: 34, borderRadius: 17, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
               <Ionicons name="close" size={17} color={theme.text} />
             </Pressable>
@@ -61,10 +61,10 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
             {all.length ? (
               <View style={{ marginBottom: 18 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     Needs you now
                   </Text>
-                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                     {summary.text}
                   </Text>
                 </View>
@@ -75,27 +75,27 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                         above a single tank's jobs is noise. */}
                     {multiTank ? (
                       <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 2 }}>
-                        <Text style={{ fontSize: 13 }}>{group.tank.emoji || "🐠"}</Text>
-                        <Text numberOfLines={1} style={{ flex: 1, color: theme.bodyText, fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>{group.tank.name}</Text>
-                        <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{group.items.length}</Text>
+                        <Text style={{ fontSize: type.body }}>{group.tank.emoji || "🐠"}</Text>
+                        <Text numberOfLines={1} style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{group.tank.name}</Text>
+                        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{group.items.length}</Text>
                       </View>
                     ) : null}
                   {group.items.map((item) => (
                     <View
                       key={item.id}
-                      style={{ flexDirection: "row", alignItems: "center", gap: 11, backgroundColor: theme.well, borderRadius: 14, borderWidth: 1, borderColor: item.urgent ? "rgba(255,123,123,0.4)" : theme.border, paddingHorizontal: 11, paddingVertical: 10 }}
+                      style={{ flexDirection: "row", alignItems: "center", gap: 11, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: item.urgent ? "rgba(255,123,123,0.4)" : theme.border, paddingHorizontal: 11, paddingVertical: 10 }}
                     >
                       <View style={{ width: 34, height: 34, borderRadius: 11, alignItems: "center", justifyContent: "center", backgroundColor: item.urgent ? "rgba(255,123,123,0.12)" : "rgba(56,225,198,0.13)", borderWidth: 1, borderColor: item.urgent ? "rgba(255,123,123,0.32)" : "rgba(56,225,198,0.28)" }}>
                         {iconForEmoji(item.icon) ? (
                           <Ionicons name={iconForEmoji(item.icon)} size={15} color={item.urgent ? theme.danger : theme.accent} />
                         ) : (
-                          <Text style={{ fontSize: 15 }}>{item.icon}</Text>
+                          <Text style={{ fontSize: type.bodyLg }}>{item.icon}</Text>
                         )}
                       </View>
 
                       <View style={{ flex: 1 }}>
-                        <Text numberOfLines={1} style={{ color: "#fff", fontSize: 13.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.label}</Text>
-                        <Text numberOfLines={1} style={{ color: item.urgent ? theme.danger : theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{item.sub}</Text>
+                        <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.label}</Text>
+                        <Text numberOfLines={1} style={{ color: item.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{item.sub}</Text>
                       </View>
 
                       {/* A job is finished here. A water test isn't — it needs
@@ -104,11 +104,11 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                       <Pressable
                         onPress={() => { tapHaptic("medium"); onComplete(item); }}
                         hitSlop={touchSlop(32)}
-                        style={({ pressed }) => [{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 10, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
+                        style={({ pressed }) => [{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
                         accessibilityRole="button"
                         accessibilityLabel={item.kind === "upkeep" ? `Mark ${item.label} done` : `Open ${item.label}`}
                       >
-                        <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                        <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                           {item.kind === "upkeep" ? "Done" : "Open"}
                         </Text>
                       </Pressable>
@@ -121,15 +121,15 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
               // Only claim all-clear when the round was actually computed. On a
               // free account it isn't, and telling someone with two overdue
               // jobs that nothing needs them is simply untrue.
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 18, backgroundColor: "rgba(56,225,198,0.08)", borderRadius: 14, borderWidth: 1, borderColor: "rgba(56,225,198,0.24)", paddingHorizontal: 12, paddingVertical: 11 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 18, backgroundColor: "rgba(56,225,198,0.08)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(56,225,198,0.24)", paddingHorizontal: 12, paddingVertical: 11 }}>
                 <Ionicons name="checkmark-circle" size={16} color={theme.accent} />
-                <Text style={{ flex: 1, color: theme.accent, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
+                <Text style={{ flex: 1, color: theme.accent, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                   Nothing needs you right now.
                 </Text>
               </View>
             ) : null}
 
-            <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
               Log something
             </Text>
             <View style={{ gap: 8 }}>
@@ -137,21 +137,21 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                 <Pressable
                   key={a.id}
                   onPress={() => { tapHaptic("medium"); onRun(a); }}
-                  style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 13, backgroundColor: theme.well, borderRadius: 16, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+                  style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 13, backgroundColor: theme.well, borderRadius: radius.xl, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
                   accessibilityRole="button"
                   accessibilityLabel={a.label}
                   accessibilityHint={a.hint}
                 >
-                  <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
+                  <View style={{ width: 40, height: 40, borderRadius: radius.md, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
                     <Ionicons name={a.icon} size={18} color={theme.accent} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{a.label}</Text>
-                    <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{a.hint}</Text>
+                    <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{a.label}</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{a.hint}</Text>
                   </View>
                   {a.instant ? (
-                    <View style={{ backgroundColor: "rgba(56,225,198,0.14)", borderRadius: 999, paddingHorizontal: 8, paddingVertical: 3 }}>
-                      <Text style={{ color: theme.accent, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.3 }}>1 tap</Text>
+                    <View style={{ backgroundColor: "rgba(56,225,198,0.14)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 }}>
+                      <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.3 }}>1 tap</Text>
                     </View>
                   ) : (
                     <Ionicons name="chevron-forward" size={16} color={theme.secondaryText} />
@@ -195,7 +195,7 @@ export function QuickActionsFab({ onPress, onLongPress, bottom = 92, pendingCoun
             borderWidth: 2, borderColor: theme.background,
           }}
         >
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {pendingCount > 9 ? "9+" : pendingCount}
           </Text>
         </View>

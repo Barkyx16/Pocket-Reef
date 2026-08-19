@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../styles";
+import { theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 import { tankStability, stabilityHeadline } from "../lib/stability";
 import { ParameterChart } from "./ParameterChart";
@@ -33,23 +33,23 @@ export function StabilityCard({ tank = {}, waterType = "fresh", now }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone.color}14`, borderRadius: 16, borderWidth: 1, borderColor: `${tone.color}44`, padding: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone.color}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone.color}44`, padding: 14 }}>
         <View style={{ alignItems: "center", minWidth: 58 }}>
-          <Text style={{ color: tone.color, fontSize: 30, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{result.score}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: 9.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Steady</Text>
+          <Text style={{ color: tone.color, fontSize: type.display, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{result.score}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6, textTransform: "uppercase" }}>Steady</Text>
         </View>
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
             <Ionicons name={tone.icon} size={15} color={tone.color} />
-            <Text style={{ color: tone.color, fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900" }}>{result.gradeLabel}</Text>
+            <Text style={{ color: tone.color, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{result.gradeLabel}</Text>
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>
             {stabilityHeadline(result)}
           </Text>
         </View>
       </View>
 
-      <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 12 }}>
+      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 12 }}>
         This grades <Text style={{ color: theme.text, fontFamily: "Inter_900Black", fontWeight: "900" }}>movement</Text>, not position. A tank averaging a perfect number by swinging to get there is harder on its inhabitants than one sitting slightly off and never moving.
       </Text>
 
@@ -60,18 +60,18 @@ export function StabilityCard({ tank = {}, waterType = "fresh", now }) {
             <Pressable
               key={it.key}
               onPress={() => { tapHaptic("light"); setOpenParam(it.key); }}
-              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: 12, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }, pressed && { opacity: 0.75, borderColor: t.color }]}
+              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }, pressed && { opacity: 0.75, borderColor: t.color }]}
               accessibilityRole="button"
               accessibilityLabel={`${it.label}: ${it.gradeLabel}. Moving ${fmt(it.perDay)} per day against a safe ${it.limit}. Tap for the full chart.`}
             >
               <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: t.color }} />
               <View style={{ flex: 1 }}>
-                <Text style={{ color: theme.text, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                   {it.low}–{it.high}{it.unit ? ` ${it.unit}` : ""} · {it.perDay}/day of {it.limit} allowed
                 </Text>
               </View>
-              <Text style={{ color: t.color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.gradeLabel}</Text>
+              <Text style={{ color: t.color, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.gradeLabel}</Text>
               <Ionicons name="chevron-forward" size={14} color={theme.secondaryText} />
             </Pressable>
           );

@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { styles, theme, radius, type } from "../styles";
 import { tapHaptic } from "../core";
 
 // The first-run path.
@@ -23,7 +23,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
     <View style={[styles.card, { borderColor: "rgba(56,225,198,0.30)" }]}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Get your tank set up</Text>
-        <Text style={{ color: theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{done}/{steps.length}</Text>
+        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_900Black", fontWeight: "900" }}>{done}/{steps.length}</Text>
       </View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
         Three steps and Pocket Reef can actually tell you something about your water.
@@ -44,7 +44,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
               onPress={s.done ? undefined : () => { tapHaptic("medium"); onDo(s); }}
               disabled={s.done}
               style={({ pressed }) => [{
-                flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 12,
+                flexDirection: "row", alignItems: "center", gap: 12, borderRadius: radius.lg, paddingHorizontal: 12, paddingVertical: 12,
                 borderWidth: 1,
                 backgroundColor: isNext ? "rgba(56,225,198,0.10)" : theme.well,
                 borderColor: isNext ? theme.accent : theme.border,
@@ -54,7 +54,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
               accessibilityLabel={s.done ? `${s.title}, done` : s.title}
               accessibilityState={{ disabled: s.done }}
             >
-              <View style={{ width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: s.done ? theme.accent : "rgba(159,196,216,0.4)", backgroundColor: s.done ? "rgba(56,225,198,0.18)" : "transparent" }}>
+              <View style={{ width: 30, height: 30, borderRadius: radius.pill, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: s.done ? theme.accent : "rgba(159,196,216,0.4)", backgroundColor: s.done ? "rgba(56,225,198,0.18)" : "transparent" }}>
                 {s.done ? <Ionicons name="checkmark" size={15} color={theme.accent} /> : <Ionicons name={s.icon} size={14} color={theme.secondaryText} />}
               </View>
               <View style={{ flex: 1 }}>
@@ -62,7 +62,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
                 {/* Only the step you're on explains itself. Three subtitles at
                     once is a wall of text where a checklist should be. */}
                 {isNext && s.hint ? (
-                  <Text style={{ color: theme.bodyText, fontSize: 12, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>{s.hint}</Text>
+                  <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>{s.hint}</Text>
                 ) : null}
               </View>
               {!s.done ? <Ionicons name="chevron-forward" size={16} color={isNext ? theme.accent : theme.secondaryText} /> : null}
