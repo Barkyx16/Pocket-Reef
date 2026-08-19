@@ -310,7 +310,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
                 onPress={() => onOpenSpecies && onOpenSpecies(o.name)}
                 style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 7, backgroundColor: theme.well, borderRadius: 999, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 7 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
                 accessibilityRole="button"
-                accessibilityLabel={`${o.name}, ${o.careLevel} care, minimum ${o.minGallons} gallons`}
+                accessibilityLabel={`${o.name}, ${o.careLevel} care, minimum ${formatVolume(o.minGallons)}`}
               >
                 <SpeciesThumb species={o} size={18} />
                 <Text style={{ color: theme.text, fontSize: 12.5, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{o.name}</Text>

@@ -9,6 +9,7 @@ import { TREATMENTS, getTreatment, getTreatableDiseases } from "./data/treatment
 import { activeParams } from "./lib/targets";
 import { allTasks, sortedByUrgency } from "./lib/upkeep";
 import { dayKey as localDayKey, instantOf as localInstantOf } from "./lib/day";
+import { formatVolume, formatTempRange } from "./lib/units";
 
 // Launch-time snapshot. Correct for one-off calculations that don't need to
 // survive rotation; anything that lays out should use useWindowDimensions.
@@ -61,7 +62,7 @@ export function assessAddition(name, { tank = [], tankGallons = 0, tankWater = n
       ok: false,
       severity: "warn",
       title: "Bigger tank needed",
-      reason: `${s.name} needs at least ${s.minGallons} gallons and this tank is ${tankGallons}. Cramped fish grow slowly, foul the water faster, and turn on each other.`,
+      reason: `${s.name} needs at least ${formatVolume(s.minGallons)} and this tank is ${formatVolume(tankGallons)}. Cramped fish grow slowly, foul the water faster, and turn on each other.`,
     };
   }
 
@@ -110,7 +111,7 @@ export function getTankWarnings(gallons, stockedNames = [], quantities = {}) {
   // Tank too small for a species.
   stocked.forEach((s) => {
     if (gallons && s.minGallons > gallons) {
-      warnings.push({ level: "avoid", text: `${s.name} needs at least ${s.minGallons} gal — your tank is ${gallons} gal.` });
+      warnings.push({ level: "avoid", text: `${s.name} needs at least ${formatVolume(s.minGallons)} — your tank is ${formatVolume(gallons)}.` });
     }
   });
 
@@ -119,7 +120,7 @@ export function getTankWarnings(gallons, stockedNames = [], quantities = {}) {
   if (gallons) {
     const inches = Math.round(stocked.reduce((sum, s) => sum + (s.adultInches || 0) * (quantities[s.name] || 1) * bioWeight(s), 0) * 10) / 10;
     if (inches > gallons) {
-      warnings.push({ level: "caution", text: `Stocking looks heavy (~${inches}" of fish for ${gallons} gal) — watch water quality closely.` });
+      warnings.push({ level: "caution", text: `Stocking looks heavy (~${inches}" of fish for ${formatVolume(gallons)}) — watch water quality closely.` });
     }
   }
 
@@ -222,7 +223,7 @@ export function getCareTips(s) {
   if (s.kind === "fish" && s.reefSafe === true) tips.push("Reef-safe — a good citizen in a coral tank.");
   if (s.careLevel === "Advanced") tips.push("Advanced care — best for experienced keepers with a stable, mature system.");
   if (s.adultInches >= 10) tips.push(`Grows large (~${s.adultInches}") — make sure you have the long-term space and filtration.`);
-  tips.push(`Give it at least ${s.minGallons} gallons, held at ${s.tempMinF}–${s.tempMaxF}°F.`);
+  tips.push(`Give it at least ${formatVolume(s.minGallons)}, held at ${formatTempRange(s.tempMinF, s.tempMaxF)}.`);
   return tips;
 }
 
@@ -1509,7 +1510,7 @@ export function compatColor(level) {
   return level === "excellent" ? "#38e1c6" : level === "caution" ? "#ffd86b" : "#ff7b7b";
 }
 export function tempRange(s) {
-  return `${s.tempMinF}–${s.tempMaxF}°F`;
+  return formatTempRange(s.tempMinF, s.tempMaxF);
 }
 export function phRange(s) {
   return `pH ${s.phMin}–${s.phMax}`;

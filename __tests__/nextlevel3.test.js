@@ -75,7 +75,7 @@ describe("the medication calculator", () => {
     type(byLabel(tree, "Gallons that dose treats"), "10");
     const shown = textOf(tree);
     expect(shown).toContain("33.75 ml");
-    expect(shown).toMatch(/not the 75 on the box/i);
+    expect(shown).toMatch(/not the 75 gal the tank is rated for/i);
     tree.unmount();
   });
 
