@@ -13,6 +13,7 @@ import { OtpCodeInput } from "../components/OtpCodeInput";
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { friendlyAuthError, isUnconfirmedError } from "../lib/authErrors";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // The gate in front of the app: create an account or sign in, with Face ID /
 // Touch ID for returning users, password reset, and a hint for "which email did
@@ -339,7 +340,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             {mode === "verify" ? (
               <Ionicons name="mail-unread-outline" size={34} color={theme.accent} />
             ) : (
-              <Text style={{ fontSize: 38 }}>🐠</Text>
+              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 38 }}>🐠</Text>
             )}
           </View>
           <Text style={[styles.heroEyebrow, { marginTop: 16 }]}>Pocket Reef</Text>

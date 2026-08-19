@@ -64,7 +64,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                   {iconForEmoji(task.emoji) ? (
                     <Ionicons name={iconForEmoji(task.emoji)} size={15} color={theme.accent} />
                   ) : (
-                    <Text style={{ fontSize: 15 }}>{task.emoji}</Text>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 15 }}>{task.emoji}</Text>
                   )}
                 </View>
 

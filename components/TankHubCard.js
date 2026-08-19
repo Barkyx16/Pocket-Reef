@@ -4,6 +4,7 @@ import { styles, theme } from "../styles";
 import { getTankHealthScore, tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
 import { GradientButton } from "./GradientButton";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // The Tank tab's hub — add a tank, plus a tappable row per tank that expands in
 // place to reveal that tank's full contents (stats, health, conflicts, fish),
@@ -38,7 +39,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                 accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score == null ? "health not yet measurable" : `${h.score} percent healthy`}, ${expanded ? "collapse" : "open"}`}
               >
                 <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-                  <Text style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 24 }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: "#fff", fontSize: 16, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>

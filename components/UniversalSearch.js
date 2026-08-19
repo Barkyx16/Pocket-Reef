@@ -12,6 +12,7 @@ import { forecastItem } from "../lib/inventory";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { fmtMoney } from "../lib/format";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // One search box for the whole app, reachable from the header on every screen.
 //
@@ -311,7 +312,7 @@ function Row({ icon, thumb, title, sub, onPress }) {
         </View>
       )}
       <View style={{ flex: 1 }}>
-        <Text numberOfLines={1} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
+        <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
         {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: 11.5, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
       </View>
       <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />

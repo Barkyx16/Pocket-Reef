@@ -4,6 +4,7 @@ import { styles, theme } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { assessParam, paramStatusColor, tapHaptic } from "../core";
 import { activeParams } from "../lib/targets";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // A unified tank timeline — the reef version of Pocket Planter's Garden Timeline.
 // Merges journal entries and water tests into one chronological feed with a
@@ -30,7 +31,7 @@ export function TimelineCard({ journal = [], waterTests = [] }) {
             {/* Rail */}
             <View style={{ alignItems: "center", width: 30 }}>
               <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: ev.kind === "test" ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: ev.kind === "test" ? "rgba(56,225,198,0.42)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 15 }}>{ev.kind === "test" ? "🧪" : ev.mood || "📓"}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 15 }}>{ev.kind === "test" ? "🧪" : ev.mood || "📓"}</Text>
               </View>
               {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: 4, minHeight: 16 }} /> : null}
             </View>

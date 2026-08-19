@@ -5,7 +5,7 @@ import { tapHaptic } from "../core";
 import { ACTIONS, QUICK_ACTION_IDS } from "../lib/shortcuts";
 import { pendingSummary } from "../lib/pending";
 import { iconForEmoji } from "../lib/icons";
-import { touchSlop } from "../lib/a11y";
+import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // The quick-action sheet, opened by the floating button that rides above the
 // tab bar on every screen.
@@ -191,7 +191,7 @@ export function QuickActionsFab({ onPress, onLongPress, bottom = 92, pendingCoun
             borderWidth: 2, borderColor: theme.background,
           }}
         >
-          <Text style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {pendingCount > 9 ? "9+" : pendingCount}
           </Text>
         </View>

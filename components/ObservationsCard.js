@@ -3,7 +3,7 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from "react-nativ
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { tapHaptic } from "../core";
-import { touchSlop } from "../lib/a11y";
+import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import * as ImagePicker from "expo-image-picker";
 import { persistPhoto } from "../lib/photoStore";
 import { KINDS, kindOf, newObservation, observationsFor, growth, photoTimeline } from "../lib/observations";
@@ -32,7 +32,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
   const pickPhoto = async () => {
     tapHaptic("light");
     try {
-      const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.6 });
+      const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], quality: 0.6 });
       if (!res.canceled && res.assets && res.assets[0]) setPhoto(await persistPhoto(res.assets[0].uri));
     } catch (e) { /* a failed pick just means no photo on this entry */ }
   };
@@ -136,7 +136,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           </View>
 
           <Pressable onPress={submit} disabled={!ready} style={[ready ? styles.primaryBtn : styles.ghostBtn, { marginTop: 10 }]} accessibilityRole="button">
-            <Text style={ready ? styles.primaryBtnText : styles.ghostBtnText}>Record it</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={ready ? styles.primaryBtnText : styles.ghostBtnText}>Record it</Text>
           </Pressable>
         </View>
       ) : null}

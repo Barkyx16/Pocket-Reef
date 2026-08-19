@@ -3,6 +3,7 @@ import { styles, theme } from "../styles";
 import { getTreatment, getTreatmentProgress, tapHaptic, successHaptic } from "../core";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // A running treatment course.
@@ -104,7 +105,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                 borderWidth: 1, borderColor: step.done ? theme.accent : `${color}66`,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text style={{ color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{step.done ? "✓" : step.day}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900" }}>{step.done ? "✓" : step.day}</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>

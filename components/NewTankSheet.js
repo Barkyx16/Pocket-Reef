@@ -5,6 +5,7 @@ import { tapHaptic } from "../core";
 import { Pill } from "./Pill";
 import { formatVolume } from "../lib/units";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // Create or edit a tank profile — name, water type, emoji, and size. Declaring
 // the water type up front lets the app tailor gear, recommendations, and cycle
@@ -53,7 +54,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
             const on = emoji === e;
             return (
               <Pressable key={e} onPress={() => { tapHaptic("light"); setEmoji(e); }} accessibilityRole="button" accessibilityState={{ selected: on }} accessibilityLabel={`Tank icon ${EMOJI_LABELS[e] || e}`} style={{ width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }}>
-                <Text style={{ fontSize: 20 }}>{e}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 20 }}>{e}</Text>
               </Pressable>
             );
           })}

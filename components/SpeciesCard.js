@@ -6,6 +6,7 @@ import { careLevelColor, temperamentColor } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
 import { Chip } from "./Chip";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // A tappable species row styled exactly like Pocket Planter's plant card:
 // a 54px image well, bold name, meta line, care/temperament chips, and an
@@ -80,7 +81,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
             borderWidth: 1, borderColor: inTank ? theme.coral : theme.accent,
           }}
         >
-          <Text style={{ color: inTank ? theme.coral : theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: inTank ? theme.coral : theme.accent, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inTank ? "−" : "+"}</Text>
         </Pressable>
       ) : (
         <Text style={styles.cleanArrow}>›</Text>

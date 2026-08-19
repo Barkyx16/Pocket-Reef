@@ -2,6 +2,7 @@ import { ScrollView, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { GradientButton } from "./GradientButton";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // The wall a free user hits on a Premium tab.
 //
@@ -42,7 +43,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
             {perks.map((p) => (
               <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                 <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
-                  <Text style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
                 </View>
                 <Text style={{ flex: 1, color: theme.text, fontSize: 14, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20 }}>{p}</Text>
               </View>

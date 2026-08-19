@@ -4,6 +4,7 @@ import { styles, theme } from "../styles";
 import { getJournalOnThisDay, getTodayKey, journalDaySpan, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { Pill } from "./Pill";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // Moods that count as a milestone worth putting on the timeline — an arrival or
 // a piece of work done, as opposed to a passing observation.
@@ -50,7 +51,7 @@ function EntryLine({ entry, showDate = true }) {
         <Image source={{ uri: entry.photo }} style={{ width: 46, height: 46, borderRadius: 12 }} resizeMode="cover" />
       ) : (
         <View style={{ width: 46, height: 46, borderRadius: 12, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ fontSize: 18 }}>{entry.mood || "📓"}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{entry.mood || "📓"}</Text>
         </View>
       )}
       <View style={{ flex: 1 }}>
@@ -110,7 +111,7 @@ function Milestones({ entries }) {
             {/* Rail — matches the connector style used by TimelineCard. */}
             <View style={{ alignItems: "center", width: 30 }}>
               <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: e.mood === "🐠" ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: e.mood === "🐠" ? "rgba(56,225,198,0.42)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 15 }}>{e.mood}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 15 }}>{e.mood}</Text>
               </View>
               {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: 4, minHeight: 14 }} /> : null}
             </View>

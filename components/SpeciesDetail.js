@@ -16,6 +16,7 @@ import { tenureLabel } from "../lib/livestock";
 import { ObservationsCard } from "./ObservationsCard";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { fmtMoney } from "../lib/format";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // Full species detail — modeled on Pocket Planter's plant detail: quick actions,
 // a journey prompt, smart-care rows, tappable problems & protection, step-by-step,
@@ -97,7 +98,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         <View style={{ width: 30, height: 30, borderRadius: 16, backgroundColor: `${vColor}2e`, borderWidth: 1, borderColor: `${vColor}77`, alignItems: "center", justifyContent: "center" }}>
           <Ionicons name={verdict.good ? "checkmark-circle" : "warning"} size={17} color={verdict.good ? theme.accent : theme.warn} />
         </View>
-        <Text style={{ flex: 1, color: vColor, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{verdict.text}</Text>
+        <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: vColor, fontSize: 13, fontFamily: "Inter_900Black", fontWeight: "900" }}>{verdict.text}</Text>
       </View>
 
       {/* QUICK ACTIONS */}
@@ -227,7 +228,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
                 {getDiseaseImage(d.name) ? (
                   <Image source={getDiseaseImage(d.name)} style={{ width: 32, height: 32 }} resizeMode="cover" />
                 ) : (
-                  <Text style={{ fontSize: 18 }}>{d.emoji}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{d.emoji}</Text>
                 )}
               </View>
               <Text style={{ flex: 1, color: theme.text, fontSize: 12, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>{d.name}</Text>

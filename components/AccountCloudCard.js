@@ -10,6 +10,7 @@ import {
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { friendlyAuthError } from "../lib/authErrors";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // Cloud save / account card — the reef version of Pocket Planter's
 // AccountCloudCard, wired to a real account: sync status from the last
@@ -252,7 +253,7 @@ export function AccountCloudCard({
           <Ionicons name="star" size={18} color={theme.accent} />
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={styles.accountInfoLabel}>Premium</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={styles.accountInfoLabel}>Premium</Text>
           <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: 15, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
             {premiumUnlocked ? "Active" : "Inactive"}
           </Text>

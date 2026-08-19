@@ -3,6 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import { styles, theme } from "../styles";
 import { getJournalStats, getJournalMonth, getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 const DOW = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -97,7 +98,7 @@ export function JournalInsightsCard({ journal = [] }) {
           accessibilityRole="button"
           accessibilityLabel="Previous month"
         >
-          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>‹</Text>
         </Pressable>
         <View style={{ alignItems: "center" }}>
           <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>{monthLabel}</Text>
@@ -113,7 +114,7 @@ export function JournalInsightsCard({ journal = [] }) {
           accessibilityRole="button"
           accessibilityLabel="Next month"
         >
-          <Text style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       </View>
 

@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { styles, theme } from "../styles";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // New-fish acclimation guide — the reef version of Pocket Planter's step-by-step
 // planting guide. A calm, correct routine for adding a new arrival.
@@ -20,7 +21,7 @@ export function AcclimationCard() {
         <View key={i} style={{ flexDirection: "row", gap: 12 }}>
           <View style={{ alignItems: "center", width: 26 }}>
             <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", alignItems: "center", justifyContent: "center" }}>
-              <Text style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
+              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
             </View>
             {i < STEPS.length - 1 ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.30)", marginTop: 2, minHeight: 14 }} /> : null}
           </View>

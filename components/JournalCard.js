@@ -7,7 +7,7 @@ import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { persistPhoto } from "../lib/photoStore";
 import { TEXT_LIMITS } from "../lib/textLimits";
-import { touchSlop } from "../lib/a11y";
+import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 const MOODS = ["🐠", "🌱", "😍", "🛠️", "⚠️"];
 // A screen reader announces an emoji by its Unicode name — "hammer and wrench"
@@ -35,7 +35,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
   const pickPhoto = async () => {
     tapHaptic("light");
     try {
-      const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.6 });
+      const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], quality: 0.6 });
       if (!res.canceled && res.assets && res.assets[0]) {
         // The picker hands back a cache URI, which iOS is free to delete. Copy
         // it somewhere permanent before it ever reaches a journal entry.
@@ -72,7 +72,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
       <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
         {MOODS.map((m) => (
           <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
-            <Text style={{ fontSize: 18 }}>{m}</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 18 }}>{m}</Text>
           </Pressable>
         ))}
       </View>
@@ -90,7 +90,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         <View style={{ marginTop: 10 }}>
           <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: 14 }} resizeMode="cover" />
           <Pressable onPress={() => setPhoto(null)} hitSlop={8} style={{ position: "absolute", top: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: 999, width: 28, height: 28, alignItems: "center", justifyContent: "center" }} accessibilityRole="button" accessibilityLabel="Remove photo">
-            <Text style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: 14, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         </View>
       ) : null}
@@ -125,7 +125,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
               const on = findMood === m;
               return (
                 <Pressable key={m} hitSlop={touchSlop(34)} onPress={() => { tapHaptic("light"); setFindMood(on ? null : m); }} style={{ width: 38, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
-                  <Text style={{ fontSize: 16, opacity: on ? 1 : 0.6 }}>{m}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 16, opacity: on ? 1 : 0.6 }}>{m}</Text>
                 </Pressable>
               );
             })}

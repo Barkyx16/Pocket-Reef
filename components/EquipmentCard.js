@@ -89,7 +89,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                     {iconForEmoji(category.emoji) ? (
                       <Ionicons name={iconForEmoji(category.emoji)} size={14} color={theme.accent} />
                     ) : (
-                      <Text style={{ fontSize: 14 }}>{category.emoji}</Text>
+                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 14 }}>{category.emoji}</Text>
                     )}
                   </View>
                   <View style={{ flex: 1 }}>

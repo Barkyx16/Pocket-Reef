@@ -3,6 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../styles";
 import { tapHaptic } from "../core";
 import { ACTIONS, TAB_SHORTCUTS } from "../lib/shortcuts";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // Long-press a tab to jump straight to what that tab is *for*, the way a
 // long-pressed home-screen icon works on both platforms.
@@ -40,7 +41,7 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
                 <View style={{ width: 34, height: 34, borderRadius: 12, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
                   <Ionicons name={a.icon} size={16} color={theme.accent} />
                 </View>
-                <Text style={{ flex: 1, color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.label}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: "#fff", fontSize: 14, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.label}</Text>
                 {a.instant ? (
                   <Text style={{ color: theme.accent, fontSize: 10, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase" }}>1 tap</Text>
                 ) : (

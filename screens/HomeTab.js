@@ -215,7 +215,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
                 accessibilityState={{ checked: false }}
               >
                 <View style={{ width: 26, height: 26, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", borderWidth: 2, borderColor: theme.border }}>
-                  <Text style={{ fontSize: 13, color: theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{task.icon}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 13, color: theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{task.icon}</Text>
                 </View>
                 <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{task.text}</Text>
               </Pressable>
@@ -269,7 +269,7 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
           {iconForEmoji(c.icon) ? (
             <Ionicons name={iconForEmoji(c.icon)} size={16} color={done ? theme.secondaryText : theme.accent} />
           ) : (
-            <Text style={{ fontSize: 17 }}>{c.icon}</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 17 }}>{c.icon}</Text>
           )}
         </View>
         <Text style={{ flex: 1, color: done ? theme.secondaryText : theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: done ? "line-through" : "none" }}>{c.title}</Text>

@@ -19,7 +19,14 @@ values (
   10485760, -- 10 MB per photo
   array['image/jpeg', 'image/png', 'image/webp', 'image/heic']
 )
-on conflict (id) do nothing;
+on conflict (id) do update set
+  -- Not "do nothing": a bucket created by hand before this script was run keeps
+  -- whatever it was created with, and the default in the dashboard is PUBLIC.
+  -- The comment above promised private; only this makes it true. These are
+  -- also the settings a later Supabase change could quietly reset.
+  public             = false,
+  file_size_limit    = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 -- Every object lives under <user-id>/..., and each policy checks that the first
 -- path segment is the caller's own id. That's what keeps one account's photos

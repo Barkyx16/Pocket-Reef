@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { theme } from "../styles";
 import { tapHaptic, getHealthImprovements } from "../core";
+import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // The overall reef-health score with a factor breakdown. The score ring shows at
 // a glance; tap the header to expand or collapse the six-factor breakdown so the
@@ -24,7 +25,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
         accessibilityLabel={health.score == null ? `Tank health not yet measurable, ${open ? "hide" : "show"} breakdown` : `Tank health ${health.score} of 100, ${open ? "hide" : "show"} breakdown`}
       >
         <View style={{ width: 76, height: 76, borderRadius: 38, borderWidth: 5, borderColor: health.color, alignItems: "center", justifyContent: "center", backgroundColor: `${health.color}14`, shadowColor: health.color, shadowOpacity: 0.4, shadowRadius: 14, shadowOffset: { width: 0, height: 0 }, elevation: 4 }}>
-          <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score == null ? "—" : health.score}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{health.score == null ? "—" : health.score}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text style={{ color: health.color, fontSize: 20, fontFamily: "Inter_900Black", fontWeight: "900" }}>{health.label}</Text>
@@ -38,7 +39,7 @@ export function TankHealthCard({ health, defaultOpen = false, onGoToTab }) {
           {health.factors.map((f) => (
             <View key={f.label} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
               <View style={{ width: 22, height: 22, borderRadius: 8, backgroundColor: `${CLR[String(f.state)]}22`, borderWidth: 1, borderColor: `${CLR[String(f.state)]}88`, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ color: CLR[String(f.state)], fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: CLR[String(f.state)], fontSize: 12, fontFamily: "Inter_900Black", fontWeight: "900" }}>{ICON[String(f.state)]}</Text>
               </View>
               <Text style={{ flex: 1, color: theme.text, fontSize: 13, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.label}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.detail}</Text>
