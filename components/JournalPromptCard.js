@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { getTodayKey } from "../core";
 
 // Starter prompts for a blank or stale journal — the hardest part of keeping one
@@ -32,17 +32,17 @@ export function JournalPromptCard({ daysSinceLast }) {
   const first = daysSinceLast === null;
 
   return (
-    <View style={{ backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", padding: 16, marginBottom: 16 }}>
+    <View style={{ backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", padding: space.lg, marginBottom: space.lg }}>
       <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
         {first ? "✍️ Start your log" : `✍️ ${daysSinceLast} days since your last entry`}
       </Text>
-      <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 6 }}>
+      <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: space.sm }}>
         {first
           ? "Not sure what to write? Any of these works — a line is better than nothing."
           : "Pick one of these up and get back into it:"}
       </Text>
       {prompts.map((p) => (
-        <View key={p} style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
+        <View key={p} style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
           <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
           <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19 }}>{p}</Text>
         </View>

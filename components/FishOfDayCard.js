@@ -1,5 +1,5 @@
 import { Image, Pressable, Text, View } from "react-native";
-import { styles } from "../styles";
+import { styles, space } from "../styles";
 import { getFishOfDay, careLevelColor, temperamentColor, tapHaptic } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -14,7 +14,7 @@ export function FishOfDayCard({ waterType = null, onOpenSpecies }) {
   return (
     <Pressable
       onPress={() => { tapHaptic(); onOpenSpecies && onOpenSpecies(s.name); }}
-      style={{ flexDirection: "row", gap: 14, alignItems: "center" }}
+      style={{ flexDirection: "row", gap: space.lg, alignItems: "center" }}
       accessibilityRole="button"
       accessibilityLabel={`Fish of the day: ${s.name}`}
     >
@@ -26,7 +26,7 @@ export function FishOfDayCard({ waterType = null, onOpenSpecies }) {
         <Text style={styles.cleanMeta} numberOfLines={2}>
           {s.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {formatVolume(s.minGallons)}+ · {formatTempRange(s.tempMinF, s.tempMaxF)}
         </Text>
-        <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           <Chip label={s.careLevel} color={careLevelColor(s.careLevel)} />
           <Chip label={s.temperament} color={temperamentColor(s.temperament)} />
         </View>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image, Linking, Pressable, ScrollView, Share, Text, TextInput, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   careLevelColor, temperamentColor, compatColor, phRange,
@@ -71,7 +71,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 14, marginBottom: 4 }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
+      <Pressable style={({ pressed }) => [{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: space.xs, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingVertical: space.sm, paddingHorizontal: space.lg, marginBottom: space.xs }, pressed && { opacity: 0.7 }]} onPress={onBack} accessibilityRole="button" accessibilityLabel="Back">
         <>
           <Ionicons name="chevron-back" size={16} color={theme.accent} />
           <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
@@ -89,13 +89,13 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           )}
         </View>
         <Text style={styles.detailName}>{s.name}</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs }}>
           {s.water === "salt" ? "Saltwater" : "Freshwater"} {s.kind} · {s.careLevel} care · {cap(s.temperament)}
         </Text>
       </View>
 
       {/* VERDICT */}
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: `${vColor}18`, borderRadius: radius.lg, borderWidth: 1, borderColor: `${vColor}55`, padding: 12, marginBottom: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: `${vColor}18`, borderRadius: radius.lg, borderWidth: 1, borderColor: `${vColor}55`, padding: space.md, marginBottom: space.lg }}>
         <View style={{ width: 30, height: 30, borderRadius: radius.xl, backgroundColor: `${vColor}2e`, borderWidth: 1, borderColor: `${vColor}77`, alignItems: "center", justifyContent: "center" }}>
           <Ionicons name={verdict.good ? "checkmark-circle" : "warning"} size={17} color={verdict.good ? theme.accent : theme.warn} />
         </View>
@@ -104,15 +104,15 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
 
       {/* QUICK ACTIONS */}
       <View style={styles.card}>
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>Quick Actions</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Quick Actions</Text>
         <Pressable onPress={() => onToggleTank && onToggleTank(name)} style={inTank ? styles.ghostBtn : styles.primaryBtn} accessibilityRole="button">
           <Text style={inTank ? styles.ghostBtnText : styles.primaryBtnText}>{inTank ? "− Remove from my tank" : "＋ Add to my tank"}</Text>
         </Pressable>
 
         {inTank && onSetQuantity ? (
-          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 14, paddingVertical: 10 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingVertical: space.md }}>
             <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? <Text style={{ color: quantity < s.minGroup ? theme.warn : theme.secondaryText, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{`  group of ${s.minGroup}+`}</Text> : null}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: space.md }}>
               <Pressable onPress={() => onSetQuantity(name, quantity - 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Decrease count"><Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text></Pressable>
               <Text style={{ color: quantity < s.minGroup ? theme.warn : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 24, textAlign: "center" }}>{quantity}</Text>
               <Pressable onPress={() => onSetQuantity(name, quantity + 1)} hitSlop={6} style={qtyBtn} accessibilityRole="button" accessibilityLabel="Increase count"><Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text></Pressable>
@@ -128,7 +128,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           <Pressable
             onPress={() => onOpenRecord && onOpenRecord(name)}
             disabled={!onOpenRecord}
-            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 14, paddingVertical: 11 }, pressed && onOpenRecord && { opacity: 0.75, borderColor: theme.accent }]}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingVertical: space.md }, pressed && onOpenRecord && { opacity: 0.75, borderColor: theme.accent }]}
             accessibilityRole={onOpenRecord ? "button" : undefined}
             accessibilityLabel={record && record.addedAt ? `Your record: kept ${tenureLabel(record)}` : "Add your record for this animal"}
           >
@@ -137,7 +137,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
               <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                 {record && record.addedAt ? `Yours for ${tenureLabel(record)}` : "Your record"}
               </Text>
-              <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+              <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>
                 {record && (record.source || record.price != null)
                   ? [record.source, record.price != null ? fmtMoney(record.price) : null].filter(Boolean).join(" · ")
                   : "Add where it came from and what it cost"}
@@ -147,7 +147,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           </Pressable>
         ) : null}
 
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
           <QuickTile icon={inWishlist ? "heart" : "heart-outline"} label={inWishlist ? "Saved" : "Save"} active={inWishlist} activeColor={theme.coral} onPress={() => onToggleWishlist && onToggleWishlist(name)} />
           <QuickTile icon="share-outline" label="Share" onPress={shareSpecies} />
           <QuickTile icon="cart-outline" label="Shop" onPress={() => Linking.openURL(shopLinks[0].url).catch(() => {})} />
@@ -155,7 +155,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
         </View>
 
         {tanks.length > 1 && inTanks.length ? (
-          <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12, textAlign: "center" }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md, textAlign: "center" }}>
             🐠 In your {inTanks.length === 1 ? "tank" : `${inTanks.length} tanks`}: {inTanks.map((tk) => `${tk.emoji || "🐠"} ${tk.name}`).join(" · ")}
           </Text>
         ) : null}
@@ -164,9 +164,9 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* JOURNEY / TIMELINE */}
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>{s.name}'s Journey</Text>
-        <Text style={[styles.cardText, { marginTop: 6 }]}>{inTank ? `Track ${s.name}'s progress — log photos and notes in your Journal.` : `Add ${s.name} to your tank, then log its journey with dated photos and notes.`}</Text>
+        <Text style={[styles.cardText, { marginTop: space.sm }]}>{inTank ? `Track ${s.name}'s progress — log photos and notes in your Journal.` : `Add ${s.name} to your tank, then log its journey with dated photos and notes.`}</Text>
         {onGoToTab ? (
-          <Pressable onPress={() => onGoToTab("journal")} style={({ pressed }) => [styles.ghostBtn, { marginTop: 12 }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
+          <Pressable onPress={() => onGoToTab("journal")} style={({ pressed }) => [styles.ghostBtn, { marginTop: space.md }, pressed && { opacity: 0.8 }]} accessibilityRole="button">
             <Text style={styles.ghostBtnText}>Open Journal</Text>
           </Pressable>
         ) : null}
@@ -175,14 +175,14 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* SMART CARE */}
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Smart Care</Text>
-        <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>{s.summary}</Text>
-        <View style={{ gap: 8 }}>
+        <Text style={[styles.cardText, { marginTop: space.sm, marginBottom: space.md }]}>{s.summary}</Text>
+        <View style={{ gap: space.sm }}>
           {careRows.map((r) => (
-            <View key={r.label} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
+            <View key={r.label} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
               <Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{r.icon}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>{r.label}</Text>
-                <Text style={{ color: r.color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{r.value}</Text>
+                <Text style={{ color: r.color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.hair }}>{r.value}</Text>
               </View>
             </View>
           ))}
@@ -197,14 +197,14 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
             const c = getCompatibility(name, n);
             const other = getSpecies(n);
             return (
-              <View key={n} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10, marginTop: 10 }}>
+              <View key={n} style={{ flexDirection: "row", alignItems: "flex-start", gap: space.md, marginTop: space.md }}>
                 <SpeciesThumb species={other} size={24} radius={8} />
                 <View style={{ flex: 1 }}>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                     <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{n}</Text>
                     <Chip label={c.level} color={compatColor(c.level)} />
                   </View>
-                  <Text style={[styles.cardText, { marginTop: 2 }]}>{c.reason}</Text>
+                  <Text style={[styles.cardText, { marginTop: space.hair }]}>{c.reason}</Text>
                 </View>
               </View>
             );
@@ -215,16 +215,16 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* PROBLEMS & PROTECTION */}
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>PROBLEMS & PROTECTION</Text>
-        <Text style={[styles.cardText, { marginTop: 6, marginBottom: 12 }]}>Diseases to watch for on {s.name} — tap any one for its full guide with treatment steps.</Text>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
+        <Text style={[styles.cardText, { marginTop: space.sm, marginBottom: space.md }]}>Diseases to watch for on {s.name} — tap any one for its full guide with treatment steps.</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginBottom: space.sm }}>
           <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>🩺 Common Ailments</Text>
-          <View style={{ backgroundColor: "rgba(255,138,101,0.22)", borderRadius: radius.pill, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
+          <View style={{ backgroundColor: "rgba(255,138,101,0.22)", borderRadius: radius.pill, minWidth: 20, paddingHorizontal: space.sm, paddingVertical: space.hair, alignItems: "center" }}>
             <Text style={{ color: theme.coral, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{diseases.length}</Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
           {diseases.map((d) => (
-            <Pressable key={d.name} onPress={() => onOpenDisease && onOpenDisease(d.name)} style={({ pressed }) => [{ width: "47.5%", flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,138,101,0.10)", borderWidth: 1, borderColor: "rgba(255,138,101,0.35)", borderRadius: radius.lg, padding: 8 }, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
+            <Pressable key={d.name} onPress={() => onOpenDisease && onOpenDisease(d.name)} style={({ pressed }) => [{ width: "47.5%", flexDirection: "row", alignItems: "center", gap: space.sm, backgroundColor: "rgba(255,138,101,0.10)", borderWidth: 1, borderColor: "rgba(255,138,101,0.35)", borderRadius: radius.lg, padding: space.sm }, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
               <View style={{ width: 32, height: 32, borderRadius: radius.sm, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                 {getDiseaseImage(d.name) ? (
                   <Image source={getDiseaseImage(d.name)} style={{ width: 32, height: 32 }} resizeMode="cover" />
@@ -237,14 +237,14 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           ))}
         </View>
         {watchFor.length ? (
-          <View style={{ flexDirection: "row", gap: 8, marginTop: 14 }}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.lg }}>
             <Text style={{ fontSize: type.bodyLg }}>⚠️</Text>
             <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
               <Text style={{ color: theme.warn, fontFamily: "Inter_900Black", fontWeight: "900" }}>Watch for: </Text>{watchFor.join(", ")}.
             </Text>
           </View>
         ) : null}
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           <Ionicons name="checkmark-circle" size={17} color={theme.accent} />
           <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>
             <Text style={{ color: theme.accent, fontFamily: "Inter_900Black", fontWeight: "900" }}>Prevent & treat: </Text>Quarantine new arrivals, keep water pristine and stable, don't overstock, and act at the very first sign.
@@ -267,13 +267,13 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>SHOP & SUPPLY</Text>
         <Text style={styles.cardText}>Find {s.name}, the right food, and gear from trusted sources.</Text>
-        <View style={{ gap: 10, marginTop: 12 }}>
+        <View style={{ gap: space.md, marginTop: space.md }}>
           {shopLinks.map((link) => (
-            <Pressable key={link.label} onPress={() => Linking.openURL(link.url).catch(() => {})} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }, pressed && { opacity: 0.75, borderColor: theme.accent }]} accessibilityRole="link" accessibilityLabel={link.label}>
+            <Pressable key={link.label} onPress={() => Linking.openURL(link.url).catch(() => {})} style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: space.md }, pressed && { opacity: 0.75, borderColor: theme.accent }]} accessibilityRole="link" accessibilityLabel={link.label}>
               <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{link.icon}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{link.label}</Text>
-                <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{link.sub}</Text>
+                <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>{link.sub}</Text>
               </View>
               <Text style={{ color: theme.accent, fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
             </Pressable>
@@ -284,10 +284,10 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       {/* WHAT IT NEEDS FROM YOU — the numbers above, turned into instructions. */}
       {careTips.length ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Keeping {s.name}</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>Keeping {s.name}</Text>
           {careTips.map((tip, i) => (
-            <View key={i} style={{ flexDirection: "row", gap: 8, marginTop: i ? 8 : 0 }}>
-              <Ionicons name="ellipse" size={7} color={theme.accent} style={{ marginTop: 6 }} />
+            <View key={i} style={{ flexDirection: "row", gap: space.sm, marginTop: i ? 8 : 0 }}>
+              <Ionicons name="ellipse" size={7} color={theme.accent} style={{ marginTop: space.sm }} />
               <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19 }}>{tip}</Text>
             </View>
           ))}
@@ -299,16 +299,16 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
           act on. */}
       {similar.length ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>If you like {s.name}</Text>
-          <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.xs }]}>If you like {s.name}</Text>
+          <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>
             Similar size, temperament and care level — useful when this one doesn't fit your tank.
           </Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
             {similar.map((o) => (
               <Pressable
                 key={o.name}
                 onPress={() => onOpenSpecies && onOpenSpecies(o.name)}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 7, backgroundColor: theme.well, borderRadius: radius.pill, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 7 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.sm, backgroundColor: theme.well, borderRadius: radius.pill, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.sm }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
                 accessibilityRole="button"
                 accessibilityLabel={`${o.name}, ${o.careLevel} care, minimum ${formatVolume(o.minGallons)}`}
               >
@@ -341,7 +341,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
             placeholder={`Write notes about ${s.name}…`}
             placeholderTextColor={theme.secondaryText}
             multiline
-            style={{ backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, minHeight: 96, textAlignVertical: "top", marginTop: 10 }}
+            style={{ backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: space.lg, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, minHeight: 96, textAlignVertical: "top", marginTop: space.md }}
           
             maxLength={TEXT_LIMITS.note}
           />
@@ -349,7 +349,7 @@ export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onTogg
       ) : null}
 
       {/* BACK (bottom) */}
-      <GradientButton label="Back to species" icon="chevron-back" variant="secondary" onPress={onBack} style={{ marginTop: 4, marginBottom: 8 }} />
+      <GradientButton label="Back to species" icon="chevron-back" variant="secondary" onPress={onBack} style={{ marginTop: space.xs, marginBottom: space.sm }} />
     </ScrollView>
   );
 }
@@ -359,7 +359,7 @@ function QuickTile({ icon, label, active, activeColor, onPress }) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [{ flex: 1, alignItems: "center", gap: 6, paddingVertical: 12, borderRadius: radius.xl, borderWidth: 1, backgroundColor: active ? `${activeColor || theme.accent}18` : "rgba(255,255,255,0.04)", borderColor: active ? (activeColor || theme.accent) : theme.border }, pressed && { opacity: 0.7 }]}
+      style={({ pressed }) => [{ flex: 1, alignItems: "center", gap: space.sm, paddingVertical: space.md, borderRadius: radius.xl, borderWidth: 1, backgroundColor: active ? `${activeColor || theme.accent}18` : "rgba(255,255,255,0.04)", borderColor: active ? (activeColor || theme.accent) : theme.border }, pressed && { opacity: 0.7 }]}
       accessibilityRole="button"
       accessibilityLabel={label}
     >
@@ -373,17 +373,17 @@ function QuickTile({ icon, label, active, activeColor, onPress }) {
 function MateGroup({ color, label, names, onOpen }) {
   if (!names || !names.length) return null;
   return (
-    <View style={{ marginTop: 14 }}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
+    <View style={{ marginTop: space.lg }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginBottom: space.sm }}>
         <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: color }} />
         <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
-        <View style={{ backgroundColor: `${color}22`, borderRadius: radius.pill, minWidth: 20, paddingHorizontal: 8, paddingVertical: 1, alignItems: "center" }}>
+        <View style={{ backgroundColor: `${color}22`, borderRadius: radius.pill, minWidth: 20, paddingHorizontal: space.sm, paddingVertical: space.hair, alignItems: "center" }}>
           <Text style={{ color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{names.length}</Text>
         </View>
       </View>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {names.map((n) => (
-          <Pressable key={n} onPress={() => onOpen && onOpen(n)} style={({ pressed }) => [{ width: "47.5%", flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: `${color}14`, borderWidth: 1, borderColor: `${color}44`, borderRadius: radius.lg, padding: 8 }, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} accessibilityRole="button" accessibilityLabel={n}>
+          <Pressable key={n} onPress={() => onOpen && onOpen(n)} style={({ pressed }) => [{ width: "47.5%", flexDirection: "row", alignItems: "center", gap: space.sm, backgroundColor: `${color}14`, borderWidth: 1, borderColor: `${color}44`, borderRadius: radius.lg, padding: space.sm }, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} accessibilityRole="button" accessibilityLabel={n}>
             <SpeciesThumb name={n} size={32} radius={9} />
             <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{n}</Text>
           </Pressable>

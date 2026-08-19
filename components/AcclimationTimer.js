@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
@@ -84,20 +84,20 @@ export function AcclimationTimer({ onComplete }) {
           A guided {TOTAL_MINUTES}-minute acclimation. Float, mix, and move — the timer tells you
           when each step is up so you can keep both hands on the bag.
         </Text>
-        <GradientButton label="Start acclimation" icon="stopwatch-outline" onPress={start} style={{ marginTop: 14 }} />
+        <GradientButton label="Start acclimation" icon="stopwatch-outline" onPress={start} style={{ marginTop: space.lg }} />
       </View>
     );
   }
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginBottom: space.md }}>
         <View style={styles.iconSquare}><Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{current.emoji}</Text></View>
         <View style={{ flex: 1 }}>
           <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {done ? "Acclimation complete" : current.label}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>
             {done ? "Net the fish across and discard the bag water." : current.detail}
           </Text>
         </View>
@@ -114,16 +114,16 @@ export function AcclimationTimer({ onComplete }) {
         glow
         label={`Acclimation progress, step ${currentIndex + 1} of ${PHASES.length}`}
       />
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>
         Step {currentIndex + 1} of {PHASES.length} · {mmss(elapsedSec)} elapsed of ~{TOTAL_MINUTES} min
       </Text>
 
-      <View style={{ marginTop: 16, gap: 8 }}>
+      <View style={{ marginTop: space.lg, gap: space.sm }}>
         {PHASES.map((p, i) => {
           const passed = i < currentIndex || done;
           const isNow = i === currentIndex && !done;
           return (
-            <View key={p.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, opacity: passed ? 0.55 : 1 }}>
+            <View key={p.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, opacity: passed ? 0.55 : 1 }}>
               <View style={{
                 width: 20, height: 20, borderRadius: radius.sm,
                 backgroundColor: passed ? "rgba(56,225,198,0.18)" : isNow ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)",
@@ -149,10 +149,10 @@ export function AcclimationTimer({ onComplete }) {
         <GradientButton
           label="Done — log it 🐠"
           onPress={() => { tapHaptic("medium"); if (onComplete) onComplete(); setStartedAt(null); }}
-          style={{ marginTop: 16 }}
+          style={{ marginTop: space.lg }}
         />
       ) : (
-        <Pressable onPress={reset} style={({ pressed }) => [{ marginTop: 14, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
+        <Pressable onPress={reset} style={({ pressed }) => [{ marginTop: space.lg, paddingVertical: space.md, alignItems: "center" }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
           <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Cancel</Text>
         </Pressable>
       )}

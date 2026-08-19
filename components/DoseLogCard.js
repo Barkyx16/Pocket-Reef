@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { REEF_TARGETS } from "../lib/dosing";
 import {
@@ -64,13 +64,13 @@ export function DoseLogCard({
         const doneToday = today.includes(key);
 
         return (
-          <View key={key} style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <View key={key} style={{ marginTop: space.lg, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
               <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {target.label}
               </Text>
               {doneToday ? (
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.xs }}>
                   <Ionicons name="checkmark-circle" size={13} color={theme.accent} />
                   <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Dosed today</Text>
                 </View>
@@ -79,12 +79,12 @@ export function DoseLogCard({
 
             {/* The finding, stated plainly — or the specific reason there isn't
                 one yet, never a blank or a fabricated figure. */}
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: rate.ok ? theme.bodyText : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: rate.ok ? theme.bodyText : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>
               {describeConsumption(key, rate)}
             </Text>
 
             {daily ? (
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 8, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.sm, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", paddingHorizontal: 10, paddingVertical: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.sm, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.sm, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", paddingHorizontal: space.md, paddingVertical: space.sm }}>
                 <Ionicons name="repeat" size={13} color={theme.accent} />
                 <Text style={{ flex: 1, color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   Dose {daily} ml/day to hold steady
@@ -92,14 +92,14 @@ export function DoseLogCard({
               </View>
             ) : null}
 
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md }}>
               <TextInput
                 value={amounts[key] ?? ""}
                 onChangeText={(v) => setAmounts((a) => ({ ...a, [key]: decimalText(v) }))}
                 keyboardType="decimal-pad"
                 placeholder={daily ? String(daily) : "ml"}
                 placeholderTextColor={theme.secondaryText}
-                style={{ width: 76, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
+                style={{ width: 76, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
                 accessibilityLabel={`Millilitres of ${target.label} dosed`}
               
             maxLength={TEXT_LIMITS.number}
@@ -109,7 +109,7 @@ export function DoseLogCard({
               <Pressable
                 onPress={() => log(key)}
                 disabled={!amounts[key]}
-                style={({ pressed }) => [{ paddingHorizontal: 14, paddingVertical: 9, borderRadius: radius.sm, backgroundColor: amounts[key] ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
+                style={({ pressed }) => [{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderRadius: radius.sm, backgroundColor: amounts[key] ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Log ${target.label} dose`}
                 accessibilityState={{ disabled: !amounts[key] }}
@@ -129,7 +129,7 @@ export function DoseLogCard({
             </View>
 
             {showStrength === key ? (
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: space.md }}>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17 }}>
                   How much does 1 ml raise {target.label.toLowerCase()} in 1 gallon? It's on the bottle — every product differs, so there's no sensible default.
                 </Text>
@@ -139,7 +139,7 @@ export function DoseLogCard({
                   keyboardType="decimal-pad"
                   placeholder={`e.g. 0.05 ${target.unit}`}
                   placeholderTextColor={theme.secondaryText}
-                  style={{ marginTop: 8, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 8, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                  style={{ marginTop: space.sm, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                   accessibilityLabel={`${target.label} product strength, ${target.unit} per millilitre per gallon`}
                 
             maxLength={TEXT_LIMITS.number}
@@ -152,11 +152,11 @@ export function DoseLogCard({
 
       {/* THE LOG */}
       {recent.length ? (
-        <View style={{ marginTop: 16 }}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Recent doses</Text>
-          <View style={{ gap: 6 }}>
+        <View style={{ marginTop: space.lg }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>Recent doses</Text>
+          <View style={{ gap: space.sm }}>
             {recent.map((d) => (
-              <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: radius.md, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 8 }}>
+              <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: radius.md, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: space.md, paddingVertical: space.sm }}>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{d.date}</Text>
                 <Text numberOfLines={1} style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {(REEF_TARGETS[d.key] || {}).label} {d.ml}ml

@@ -1,7 +1,7 @@
 import { useEffect, useState, memo } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { levelFromXp, getStreak, getLongestStreak, getAchievements, getLifetimeStats, getBanner, BANNERS } from "../core";
 import { getBannerImage } from "../data/bannerImageMap";
 import { ProfileHero } from "../components/ProfileHero";
@@ -70,7 +70,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       <AdaptiveColumns lead={1}>
       {/* 1 — CLOUD SAVE: account, sync, premium status, security, backup. */}
       <View style={styles.card}>
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>Cloud Save</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.xs }]}>Cloud Save</Text>
         <AccountCloudCard
           user={user}
           lastSyncedAt={lastSyncedAt}
@@ -106,11 +106,11 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
 
       {/* QUICK SWAP — every unlocked banner, one tap to wear it. */}
       {unlocked.length > 1 ? (
-        <View style={{ marginTop: -8, marginBottom: 16 }}>
+        <View style={{ marginTop: -8, marginBottom: space.lg }}>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 8, paddingHorizontal: 2, paddingVertical: 2 }}
+            contentContainerStyle={{ gap: space.sm, paddingHorizontal: space.hair, paddingVertical: space.hair }}
           >
             {unlocked.map((b) => {
               const on = b.id === bannerId;
@@ -129,7 +129,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                 >
                   {img ? <Image source={img} style={{ position: "absolute", width: "100%", height: "100%" }} resizeMode="cover" /> : null}
                   <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: on ? "rgba(6,20,32,0.15)" : "rgba(6,20,32,0.35)" }} />
-                  <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 4 }}>
+                  <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: space.xs }}>
                     {on ? (
                       <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>✓ Worn</Text>
                     ) : (
@@ -145,8 +145,8 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
 
       {/* 3 — BANNER LIBRARY: earn one every 5 levels. */}
       <CollapsibleCard storageKey="banners" title="🎏 Profile Banners" eyebrow={`${unlockedBanners}/${BANNERS.length} unlocked`}>
-        <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>Earn a new banner every 5 levels — tap an unlocked one to wear it on your profile. Locked ones stay blurred until you reach their level.</Text>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>Earn a new banner every 5 levels — tap an unlocked one to wear it on your profile. Locked ones stay blurred until you reach their level.</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
           {BANNERS.map((b) => {
             const isUnlocked = lvl.level >= b.level;
             const on = b.id === bannerId;
@@ -182,14 +182,14 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   {!isUnlocked ? (
                     <Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>🔒</Text>
                   ) : on ? (
-                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
+                    <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: radius.pill, paddingHorizontal: space.md, paddingVertical: space.xs }}>
                       <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
                     </View>
                   ) : null}
                 </View>
-                <View style={{ padding: 8, backgroundColor: "rgba(255,255,255,0.03)" }}>
+                <View style={{ padding: space.sm, backgroundColor: "rgba(255,255,255,0.03)" }}>
                   <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
                 </View>
               </Pressable>
             );
@@ -234,7 +234,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         <LifetimeStatsCard stats={lifetime} />
         <View style={styles.sectionDivider} />
         <Text accessibilityRole="header" style={styles.cardEyebrow}>My Collection</Text>
-        <View style={{ marginTop: 10 }}><CollectionInsightsCard tanks={tanks} /></View>
+        <View style={{ marginTop: space.md }}><CollectionInsightsCard tanks={tanks} /></View>
       </CollapsibleCard>
 
       {/* 5 — ACHIEVEMENTS, with Game Records folded in below them. */}
@@ -242,7 +242,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         <AchievementsCard items={achievements} />
         <View style={styles.sectionDivider} />
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Game Records</Text>
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 10 }}>Best streak & Blitz score from Reef Games.</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs, marginBottom: space.md }}>Best streak & Blitz score from Reef Games.</Text>
         <GameRecordsCard />
       </CollapsibleCard>
 
@@ -250,19 +250,19 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
       <CollapsibleCard storageKey="settings" title="⚙️ Settings & More">
         {/* Reminders */}
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Care Reminders</Text>
-        <View style={{ marginTop: 8 }}><RemindersCard prefs={reminderPrefs} onChange={onChangeReminders} tank={tanks.length > 1 ? activeTank : null} onChangeTankReminders={onChangeTankReminders} /></View>
+        <View style={{ marginTop: space.sm }}><RemindersCard prefs={reminderPrefs} onChange={onChangeReminders} tank={tanks.length > 1 ? activeTank : null} onChangeTankReminders={onChangeTankReminders} /></View>
 
         {/* Language */}
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>🌐 {t("common.language")}</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>🌐 {t("common.language")}</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           {LANGUAGES.map((l) => (
             <Pill key={l.code} fill label={l.label} active={lang === l.code} onPress={() => onSetLanguage && onSetLanguage(l.code)} />
           ))}
         </View>
 
         {/* Units */}
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Units</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Units</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           {[{ code: "imperial", label: "°F · gal" }, { code: "metric", label: "°C · L" }].map((u) => (
             <Pill key={u.code} fill label={u.label} active={unit === u.code} onPress={() => onSetUnit && onSetUnit(u.code)} />
           ))}
@@ -271,8 +271,8 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
         {/* Currency — the symbol on every price the keeper logs. Not a
             conversion: the figures they typed are already in their own money,
             and the app has no rates to convert with. */}
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Currency</Text>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Currency</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.sm }}>
           {CURRENCIES.map((c) => (
             <Pill
               key={c.code}
@@ -290,10 +290,10 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
             toggle that does nothing is worse than no toggle. */}
         {telemetryConfigured ? (
           <>
-            <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Help improve Pocket Reef</Text>
+            <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Help improve Pocket Reef</Text>
             <Pressable
               onPress={() => onSetTelemetry && onSetTelemetry(!telemetryOn)}
-              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: telemetryOn ? theme.accent : theme.border, paddingHorizontal: 12, paddingVertical: 12 }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.sm, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: telemetryOn ? theme.accent : theme.border, paddingHorizontal: space.md, paddingVertical: space.md }, pressed && { opacity: 0.8 }]}
               accessibilityRole="switch"
               accessibilityState={{ checked: telemetryOn }}
               accessibilityLabel="Share anonymous usage data"
@@ -304,7 +304,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Share anonymous usage data</Text>
                 {/* Says exactly what does and doesn't leave the device. Vague
                     copy here is what makes a privacy label wrong later. */}
-                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3, lineHeight: 17 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>
                   Which features get used, and your app version — nothing else. Never your tanks, water tests, journal, photos, or email. Off by default; switching it off deletes the anonymous id.
                 </Text>
               </View>
@@ -314,19 +314,19 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
 
         {/* Version, for when something goes wrong and you need to say which
             build you are on. */}
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>About</Text>
-        <View style={{ marginTop: 8, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>About</Text>
+        <View style={{ marginTop: space.sm, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.md }}>
           <Text selectable style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
             {supportLine()}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs }}>
             Include this line in any bug report.
           </Text>
         </View>
 
         {/* Backup */}
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Backup</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Backup</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           <Pressable onPress={() => onExport && onExport()} style={({ pressed }) => [styles.ghostBtn, { flex: 1 }, pressed && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel="Export a backup of all your data">
             <Text style={styles.ghostBtnText}>Export</Text>
           </Pressable>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getTodayKey, tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
 
@@ -30,7 +30,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
         Small amounts, once or twice a day.
       </Text>
 
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 12 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
         {FOODS.map(([f, e]) => {
           const on = food === f;
           return (
@@ -41,20 +41,20 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
         })}
       </View>
 
-      <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
+      <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
         <TextInput value={note} onChangeText={setNote} placeholder="Note (optional) — e.g. mysis + nori" placeholderTextColor={theme.secondaryText}
-          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }} 
+          style={{ fontFamily: "Inter_400Regular", flex: 1, backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }} 
             maxLength={TEXT_LIMITS.shortNote}
           />
-        <Pressable onPress={add} style={[styles.primaryBtn, { flex: 0, paddingHorizontal: 18, justifyContent: "center" }]} accessibilityRole="button">
+        <Pressable onPress={add} style={[styles.primaryBtn, { flex: 0, paddingHorizontal: space.xl, justifyContent: "center" }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Log</Text>
         </Pressable>
       </View>
 
       {feedings.length ? (
-        <View style={{ marginTop: 14, gap: 8 }}>
+        <View style={{ marginTop: space.lg, gap: space.sm }}>
           {feedings.slice(0, visible).map((f) => (
-            <View key={f.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, padding: 10, borderWidth: 1, borderColor: theme.border }}>
+            <View key={f.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, padding: space.md, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: type.bodyLg }}>{FOOD_EMOJI[f.food] || "🍽️"}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.food}{f.note ? ` · ${f.note}` : ""}</Text>

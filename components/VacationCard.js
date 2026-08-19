@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Share, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { buildSitterPlan, sitterSheet, preparationSteps } from "../lib/vacation";
 import { Pill } from "./Pill";
@@ -34,26 +34,26 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
   return (
     <View>
       <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>How long are you away?</Text>
-      <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
+      <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
         {TRIPS.map((d) => (
           <Pill key={d} label={`${d} days`} active={days === d} onPress={() => { tapHaptic("light"); setDays(d); }} />
         ))}
       </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 12, backgroundColor: plan.unattended ? "rgba(56,225,198,0.10)" : "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: plan.unattended ? "rgba(56,225,198,0.35)" : "rgba(255,216,107,0.35)", padding: 12 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md, backgroundColor: plan.unattended ? "rgba(56,225,198,0.10)" : "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: plan.unattended ? "rgba(56,225,198,0.35)" : "rgba(255,216,107,0.35)", padding: space.md }}>
         <Ionicons name={plan.unattended ? "checkmark-circle" : "person-outline"} size={16} color={plan.unattended ? theme.accent : theme.warn} />
         <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{plan.headline}</Text>
       </View>
 
       {/* The half that actually prevents the disaster, and happens days early. */}
-      <Pressable onPress={() => { tapHaptic("light"); setShowPrep((v) => !v); }} style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 12 }} accessibilityRole="button" accessibilityLabel="Before you go">
+      <Pressable onPress={() => { tapHaptic("light"); setShowPrep((v) => !v); }} style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md }} accessibilityRole="button" accessibilityLabel="Before you go">
         <Ionicons name={showPrep ? "chevron-down" : "chevron-forward"} size={13} color={theme.accent} />
         <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Before you go ({prep.length})</Text>
       </Pressable>
       {showPrep ? (
-        <View style={{ gap: 7, marginTop: 8 }}>
+        <View style={{ gap: space.sm, marginTop: space.sm }}>
           {prep.map((s, i) => (
-            <View key={i} style={{ flexDirection: "row", gap: 8 }}>
+            <View key={i} style={{ flexDirection: "row", gap: space.sm }}>
               <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", width: 78 }}>{s.when}</Text>
               <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{s.text}</Text>
             </View>
@@ -63,7 +63,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
 
       {!plan.unattended ? (
         <>
-          <View style={{ flexDirection: "row", gap: 8, marginTop: 14 }}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.lg }}>
             <TextInput
               value={sitterName}
               onChangeText={setSitterName}
@@ -81,29 +81,29 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
             placeholder="Your number, for the call-me list"
             placeholderTextColor={theme.secondaryText}
             accessibilityLabel="Your contact details"
-            style={[styles.authInput, { marginTop: 8 }]}
+            style={[styles.authInput, { marginTop: space.sm }]}
           
             maxLength={TEXT_LIMITS.phone}
           />
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Each day</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: space.lg }}>Each day</Text>
           {plan.doList.map((d, i) => (
-            <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>• {d}</Text>
+            <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>• {d}</Text>
           ))}
         </>
       ) : null}
 
       {/* Always shown, trip length regardless — a four-day trip still needs the
           neighbour with a key to leave the tank alone. */}
-      <Text style={{ color: theme.danger, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>Please don't</Text>
+      <Text style={{ color: theme.danger, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: space.lg }}>Please don't</Text>
       {plan.dontList.map((d, i) => (
-        <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>• {d}</Text>
+        <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>• {d}</Text>
       ))}
 
-      <Pressable onPress={share} style={[styles.primaryBtn, { marginTop: 16 }]} accessibilityRole="button" accessibilityLabel="Share the care notes">
+      <Pressable onPress={share} style={[styles.primaryBtn, { marginTop: space.lg }]} accessibilityRole="button" accessibilityLabel="Share the care notes">
         <Text style={styles.primaryBtnText}>Share the care notes</Text>
       </Pressable>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, textAlign: "center", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, textAlign: "center", marginTop: space.sm }}>
         Plain text — send it, print it, or stick it on the cabinet.
       </Text>
     </View>

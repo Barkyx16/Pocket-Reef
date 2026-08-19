@@ -1,7 +1,7 @@
 import { useMemo, useState, memo } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { DISEASES, SYMPTOMS, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -64,7 +64,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
         <Text style={styles.cleanName}>{d.name}</Text>
         <Text style={styles.cleanMeta} numberOfLines={2}>{d.description}</Text>
       </View>
-      {badge ? <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginRight: 6 }}>{badge}</Text> : null}
+      {badge ? <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginRight: space.sm }}>{badge}</Text> : null}
       <Text style={styles.cleanArrow}>›</Text>
     </Pressable>
   );
@@ -85,7 +85,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
       {hidden > 0 ? (
         <Pressable
           onPress={() => { tapHaptic("light"); setShowAll((v) => !v); }}
-          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 12, paddingVertical: 10, marginBottom: 14 }, pressed && { opacity: 0.75 }]}
+          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.sm, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.md, marginBottom: space.lg }, pressed && { opacity: 0.75 }]}
           accessibilityRole="button"
           accessibilityLabel={showAll ? `Showing all guides. Tap to show only ${waterType === "salt" ? "saltwater" : "freshwater"} ones.` : `Showing ${waterType === "salt" ? "saltwater" : "freshwater"} guides only. Tap to show all ${DISEASES.length}.`}
         >
@@ -113,7 +113,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
 
       {/* SYMPTOM CHECKER */}
       <View style={styles.card}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: space.sm }}>
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Symptom checker</Text>
           {symptoms.length ? (
             <Pressable onPress={() => { tapHaptic(); setSymptoms([]); }} accessibilityRole="button">
@@ -121,12 +121,12 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
             </Pressable>
           ) : null}
         </View>
-        <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Tap what you're seeing — matching guides rise to the top.</Text>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+        <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>Tap what you're seeing — matching guides rise to the top.</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
           {SYMPTOMS.map((s) => {
             const on = symptoms.includes(s);
             return (
-              <Pressable key={s} onPress={() => toggleSymptom(s)} style={[styles.pill, { paddingVertical: 8, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
+              <Pressable key={s} onPress={() => toggleSymptom(s)} style={[styles.pill, { paddingVertical: space.sm, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
                 <Text style={{ color: on ? theme.onAccent : theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s}</Text>
               </Pressable>
             );
@@ -134,7 +134,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
         </View>
       </View>
 
-      <Text style={[styles.cleanMeta, { marginBottom: 10 }]}>
+      <Text style={[styles.cleanMeta, { marginBottom: space.md }]}>
         {matches
           ? (list.length ? `${list.length} guide${list.length > 1 ? "s" : ""} match your symptoms` : "No guides match — browse all below")
           : `Showing ${Math.min(visible, pool.length)} of ${pool.length} guides`}
@@ -152,7 +152,7 @@ export const HealthTab = memo(function HealthTab({ openDisease, waterType = "fre
       )}
 
       {!matches && pool.length > visible ? (
-        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 8, pool.length)); }} style={[styles.ghostBtn, { marginTop: 4 }]} accessibilityRole="button" accessibilityLabel={`Show ${pool.length - visible} more guides`}>
+        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 8, pool.length)); }} style={[styles.ghostBtn, { marginTop: space.xs }]} accessibilityRole="button" accessibilityLabel={`Show ${pool.length - visible} more guides`}>
           <Text style={styles.ghostBtnText}>Show more ({pool.length - visible})</Text>
         </Pressable>
       ) : null}

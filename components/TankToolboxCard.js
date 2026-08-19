@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { getSpecies, getBioload, getStockingRoom, getTankParamWindow } from "../core";
 import { formatVolume, formatTempRange } from "../lib/units";
@@ -34,15 +34,15 @@ export function TankToolboxCard({
 
   const stocking = () => empty ? emptyHint("Stock your tank to see its bioload and stocking level.") : (
     <>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 10 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: space.md }}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Stocking level</Text>
         <Text style={{ color: bio.color, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bio.level} · {bio.pct}%</Text>
       </View>
       <ProgressBar pct={bio.pct} color={bio.color} height={12} />
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>
         ~{bio.inches}" of adult fish for {formatVolume(tankGallons)} (guideline: ~1" per gallon). {bio.pct > 100 ? "Consider a bigger tank or fewer fish — and test water often." : "Room to grow — add slowly and watch your parameters."}
       </Text>
-      <View style={{ flexDirection: "row", gap: 16, marginTop: 10, flexWrap: "wrap" }}>
+      <View style={{ flexDirection: "row", gap: space.lg, marginTop: space.md, flexWrap: "wrap" }}>
         <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🐟 {fishN} fish</Text>
         {invertN ? <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🦐 {invertN} inverts</Text> : null}
         {coralN ? <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>🪸 {coralN} corals</Text> : null}
@@ -56,7 +56,7 @@ export function TankToolboxCard({
     ) : (
       <>
         <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>~{room.roomInches}" of room left</Text>
-        <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6, lineHeight: 18 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm, lineHeight: 18 }}>
           Roughly {room.small} more nano fish (~2") {room.medium ? `or ${room.medium} community fish (~4")` : ""} — add slowly and keep testing. Check ✨ Recommended on Home for compatible picks.
         </Text>
       </>
@@ -69,14 +69,14 @@ export function TankToolboxCard({
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View>
             <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>TEMPERATURE</Text>
-            <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
+            <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.hair }}>{formatTempRange(paramWindow.tempLo, paramWindow.tempHi)}</Text>
           </View>
           <View style={{ alignItems: "flex-end" }}>
             <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>pH</Text>
-            <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
+            <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.hair }}>{paramWindow.phLo}–{paramWindow.phHi}</Text>
           </View>
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, lineHeight: 16, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, lineHeight: 16, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
           The overlap that keeps every species in your tank comfortable — aim your heater and buffering here.
         </Text>
       </>
@@ -97,7 +97,7 @@ export function TankToolboxCard({
       // it, one hand on the bag.
       <View>
         <AcclimationTimer />
-        <View style={{ height: 1, backgroundColor: theme.border, marginVertical: 18 }} />
+        <View style={{ height: 1, backgroundColor: theme.border, marginVertical: space.xl }} />
         <AcclimationCard />
       </View>
     ) },
@@ -117,13 +117,13 @@ export function TankToolboxCard({
 
   return (
     <View style={styles.card}>
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Tank Tools</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {TOOLS.map((tool) => (
           <Pill key={tool.id} icon={iconForEmoji(tool.emoji)} label={tool.label} active={sel === tool.id} onPress={() => pick(tool.id)} />
         ))}
       </View>
-      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: 12, paddingTop: 16 }}>
+      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: space.md, paddingTop: space.lg }}>
         {active.render()}
       </View>
     </View>

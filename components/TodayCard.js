@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 
 // The "Today" hub — a prioritized list of what needs attention right now,
@@ -18,9 +18,9 @@ export function TodayCard({ actions = [], onNavigate }) {
   const [expanded, setExpanded] = useState(false);
   if (!actions.length) {
     return (
-      <View style={{ alignItems: "center", paddingVertical: 6 }}>
+      <View style={{ alignItems: "center", paddingVertical: space.sm }}>
         <Text style={{ fontSize: 28, letterSpacing: -0.4 }}>🎉</Text>
-        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>All caught up</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.sm }}>All caught up</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Nothing needs your attention today. Nice work keeping the tank happy.</Text>
       </View>
     );
@@ -29,7 +29,7 @@ export function TodayCard({ actions = [], onNavigate }) {
   const hidden = actions.length - shown.length;
 
   return (
-    <View style={{ gap: 8 }}>
+    <View style={{ gap: space.sm }}>
       {shown.map((a) => {
         const tappable = onNavigate && a.to;
         const Row = tappable ? Pressable : View;
@@ -41,7 +41,7 @@ export function TodayCard({ actions = [], onNavigate }) {
             // classic symptom being a tap landing on the wrong item.
             key={`${a.to}:${a.text}`}
             onPress={tappable ? () => { tapHaptic("light"); onNavigate(a.to); } : undefined}
-            style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: theme.border }}
+            style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, padding: space.md, borderWidth: 1, borderColor: theme.border }}
             accessibilityRole={tappable ? "button" : undefined}
           >
             <Text style={{ fontSize: type.bodyLg }}>{a.icon}</Text>
@@ -54,7 +54,7 @@ export function TodayCard({ actions = [], onNavigate }) {
       {hidden > 0 ? (
         <Pressable
           onPress={() => { tapHaptic("light"); setExpanded(true); }}
-          style={{ alignItems: "center", paddingVertical: 8 }}
+          style={{ alignItems: "center", paddingVertical: space.sm }}
           accessibilityRole="button"
           accessibilityLabel={`Show ${hidden} more thing${hidden === 1 ? "" : "s"} that need attention`}
         >
@@ -67,7 +67,7 @@ export function TodayCard({ actions = [], onNavigate }) {
       {expanded && actions.length > SHOWN ? (
         <Pressable
           onPress={() => { tapHaptic("light"); setExpanded(false); }}
-          style={{ alignItems: "center", paddingVertical: 8 }}
+          style={{ alignItems: "center", paddingVertical: space.sm }}
           accessibilityRole="button"
           accessibilityLabel="Show fewer"
         >

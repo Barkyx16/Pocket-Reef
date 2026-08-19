@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { getSpecies, getCompatibility, compatColor, tapHaptic } from "../core";
 import { SpeciesThumb } from "./SpeciesThumb";
@@ -45,7 +45,7 @@ export function CompatibilityMatrix({ tank = [] }) {
                 const color = compatColor(c.level);
                 const isSel = sel && ((sel.a === row.name && sel.b === col.name) || (sel.a === col.name && sel.b === row.name));
                 return (
-                  <Pressable key={ci} onPress={() => { tapHaptic("light"); setSel({ a: row.name, b: col.name, level: c.level, reason: c.reason }); }} style={({ pressed }) => [{ width: CELL, height: CELL, padding: 2.5 }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel={`${row.name} with ${col.name}: ${c.level}`}>
+                  <Pressable key={ci} onPress={() => { tapHaptic("light"); setSel({ a: row.name, b: col.name, level: c.level, reason: c.reason }); }} style={({ pressed }) => [{ width: CELL, height: CELL, padding: space.hair }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel={`${row.name} with ${col.name}: ${c.level}`}>
                     <View style={{ flex: 1, borderRadius: radius.xs, backgroundColor: `${color}3a`, borderWidth: isSel ? 2 : 1, borderColor: isSel ? color : `${color}99` }} />
                   </Pressable>
                 );
@@ -57,18 +57,18 @@ export function CompatibilityMatrix({ tank = [] }) {
 
       {/* Selected pair reason */}
       {sel ? (
-        <View style={{ marginTop: 12, backgroundColor: `${compatColor(sel.level)}18`, borderRadius: radius.md, borderWidth: 1, borderColor: `${compatColor(sel.level)}55`, padding: 12 }}>
-          <Text style={{ color: compatColor(sel.level), fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", marginBottom: 4 }}>{sel.level}</Text>
+        <View style={{ marginTop: space.md, backgroundColor: `${compatColor(sel.level)}18`, borderRadius: radius.md, borderWidth: 1, borderColor: `${compatColor(sel.level)}55`, padding: space.md }}>
+          <Text style={{ color: compatColor(sel.level), fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", marginBottom: space.xs }}>{sel.level}</Text>
           <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{getSpecies(sel.a)?.emoji} {sel.a} + {getSpecies(sel.b)?.emoji} {sel.b}: {sel.reason}</Text>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>Tap any square to see why that pair scores the way it does.</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>Tap any square to see why that pair scores the way it does.</Text>
       )}
 
       {/* Legend: numbers → names */}
-      <View style={{ marginTop: 12, gap: 6 }}>
+      <View style={{ marginTop: space.md, gap: space.sm }}>
         {species.map((s, i) => (
-          <View key={s.name} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <View key={s.name} style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
             <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", width: 14 }}>{i + 1}</Text>
             <SpeciesThumb species={s} size={20} radius={7} />
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.name}</Text>
@@ -77,11 +77,11 @@ export function CompatibilityMatrix({ tank = [] }) {
       </View>
 
       {/* Color key */}
-      <View style={{ flexDirection: "row", gap: 14, marginTop: 12, flexWrap: "wrap" }}>
+      <View style={{ flexDirection: "row", gap: space.lg, marginTop: space.md, flexWrap: "wrap" }}>
         {[["excellent", "Great"], ["caution", "Caution"], ["avoid", "Avoid"]].map(([lvl, lab]) => {
           const color = compatColor(lvl);
           return (
-            <View key={lvl} style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+            <View key={lvl} style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
               <View style={{ width: 16, height: 16, borderRadius: 5, backgroundColor: `${color}3a`, borderWidth: 1, borderColor: `${color}99` }} />
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{lab}</Text>
             </View>

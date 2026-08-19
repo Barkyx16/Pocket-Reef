@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getJournalStats, getJournalMonth, getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -10,9 +10,9 @@ const DOW = ["S", "M", "T", "W", "T", "F", "S"];
 // One compact stat tile — the four-across strip at the top of the card.
 function Stat({ value, label, tint }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 6, alignItems: "center" }}>
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: space.md, paddingHorizontal: space.sm, alignItems: "center" }}>
       <Text style={{ color: tint || "#fff", fontSize: 19, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, marginTop: 2, textAlign: "center" }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, marginTop: space.hair, textAlign: "center" }}>{label}</Text>
     </View>
   );
 }
@@ -53,13 +53,13 @@ export function JournalInsightsCard({ journal = [] }) {
   return (
     <View>
       {/* ── Rhythm ───────────────────────────────────────────────────────── */}
-      <View style={{ flexDirection: "row", gap: 8 }}>
+      <View style={{ flexDirection: "row", gap: space.sm }}>
         <Stat value={s.streak} label="DAY STREAK" tint={s.streak > 0 ? theme.accent : "#fff"} />
         <Stat value={s.thisMonth} label="THIS MONTH" />
         <Stat value={s.photos} label="PHOTOS" />
         <Stat value={s.longestGap} label="LONGEST GAP" tint={s.longestGap > 14 ? theme.warn : "#fff"} />
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.sm }}>
         {s.daysSinceLast === 0
           ? "Logged today — nice."
           : s.daysSinceLast === 1
@@ -69,17 +69,17 @@ export function JournalInsightsCard({ journal = [] }) {
       </Text>
 
       {/* ── Mood mix ─────────────────────────────────────────────────────── */}
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18, marginBottom: 8 }]}>Mood mix</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl, marginBottom: space.sm }]}>Mood mix</Text>
       <View style={{ flexDirection: "row", height: 12, borderRadius: radius.pill, overflow: "hidden", backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border }}>
         {activeMoods.map((m) => (
           <View key={m.mood} style={{ flex: m.count, backgroundColor: m.color }} />
         ))}
       </View>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
         {activeMoods.map((m) => (
           <View
             key={m.mood}
-            style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 4 }}
+            style={{ flexDirection: "row", alignItems: "center", gap: space.xs, backgroundColor: `${m.color}1f`, borderWidth: 1, borderColor: `${m.color}55`, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: space.xs }}
           >
             <Text style={{ fontSize: type.small }}>{m.mood}</Text>
             <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{m.label}</Text>
@@ -89,7 +89,7 @@ export function JournalInsightsCard({ journal = [] }) {
       </View>
 
       {/* ── Month calendar ───────────────────────────────────────────────── */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 18, marginBottom: 8 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: space.xl, marginBottom: space.sm }}>
         <Pressable
           onPress={() => canGoBack && step(-1)}
           disabled={!canGoBack}
@@ -102,7 +102,7 @@ export function JournalInsightsCard({ journal = [] }) {
         </Pressable>
         <View style={{ alignItems: "center" }}>
           <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{monthLabel}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>
             {monthCount} {monthCount === 1 ? "day logged" : "days logged"}
           </Text>
         </View>
@@ -123,7 +123,7 @@ export function JournalInsightsCard({ journal = [] }) {
           <Text key={i} style={{ width: `${100 / 7}%`, textAlign: "center", color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d}</Text>
         ))}
       </View>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 4 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: space.xs }}>
         {cells.map((c, i) => {
           if (!c) return <View key={`b${i}`} style={{ width: `${100 / 7}%`, height: 34 }} />;
           const isToday = c.date === today;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getRecommended, SPECIES } from "../core";
 import { GradientButton } from "./GradientButton";
 import { Pill } from "./Pill";
@@ -119,7 +119,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
         style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
       />
       <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
-        <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1, justifyContent: "center" }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ padding: space.xl, flexGrow: 1, justifyContent: "center" }} showsVerticalScrollIndicator={false}>
           {/* HERO */}
           <View style={styles.heroBanner}>
             <LinearGradient colors={hero.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />
@@ -133,14 +133,14 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           {/* BODY */}
           {isPremium ? (
             <View style={styles.card}>
-              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything Premium unlocks</Text>
-              <View style={{ gap: 12 }}>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Everything Premium unlocks</Text>
+              <View style={{ gap: space.md }}>
                 {PREMIUM.map((f) => (
-                  <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+                  <View key={f.title} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
                     <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{f.icon}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.text}</Text>
+                      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>{f.text}</Text>
                     </View>
                   </View>
                 ))}
@@ -149,13 +149,13 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           ) : isSize ? (
             <View style={styles.card}>
               <Text accessibilityRole="header" style={styles.cardEyebrow}>Water type</Text>
-              <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
+              <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
                 {[{ id: "fresh", label: "💧 Freshwater" }, { id: "salt", label: "🌊 Saltwater" }].map((w) => (
                   <Pill key={w.id} fill label={w.label} active={water === w.id} onPress={() => setWater(w.id)} />
                 ))}
               </View>
-              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Tank size</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
                 {TANK_PRESETS.map((g) => (
                   <Pill key={g} label={formatVolume(g)} active={gallons === g} onPress={() => setGallons(g)} />
                 ))}
@@ -163,21 +163,21 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
             </View>
           ) : isResult ? (
             <View style={styles.card}>
-              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Recommended for you</Text>
-              <View style={{ gap: 12 }}>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Recommended for you</Text>
+              <View style={{ gap: space.md }}>
                 {picks.map((sp) => (
-                  <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+                  <View key={sp.name} style={{ flexDirection: "row", gap: space.md, alignItems: "center" }}>
                     <View style={styles.iconSquare}><Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{sp.emoji}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
-                      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>
                         {sp.careLevel} · {sp.temperament} · {formatVolume(sp.minGallons)} min
                       </Text>
                     </View>
                   </View>
                 ))}
               </View>
-              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, lineHeight: 18 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.lg, lineHeight: 18 }}>
                 Every pairing is checked against the compatibility engine — water type, temperament,
                 predator size, and parameter overlap.
               </Text>
@@ -185,11 +185,11 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           ) : (
             <View style={styles.card}>
               {current.features.map((f) => (
-                <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
+                <View key={f.title} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start", marginBottom: space.md }}>
                   <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{f.icon}</Text></View>
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
-                    <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{f.text}</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>{f.text}</Text>
                   </View>
                 </View>
               ))}
@@ -197,7 +197,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           )}
 
           {/* DOTS */}
-          <View style={{ flexDirection: "row", justifyContent: "center", gap: 8, marginVertical: 16 }}>
+          <View style={{ flexDirection: "row", justifyContent: "center", gap: space.sm, marginVertical: space.lg }}>
             {Array.from({ length: total }).map((_, i) => (
               <View key={i} style={{ width: i === step ? 22 : 8, height: 8, borderRadius: radius.pill, backgroundColor: i === step ? theme.accent : "rgba(255,255,255,0.2)" }} />
             ))}
@@ -207,7 +207,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           {isPremium ? (
             <>
               <GradientButton label="Start Premium" icon="star" onPress={() => { onStartPremium && onStartPremium(); finish(); }} />
-              <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
+              <Pressable onPress={finish} style={{ alignItems: "center", paddingVertical: space.lg }} accessibilityRole="button">
                 <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Continue with the free version</Text>
               </Pressable>
             </>
@@ -220,7 +220,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               ) : (
                 <GradientButton label={isSize ? "Show me what fits →" : "Next"} onPress={() => setStep((s) => s + 1)} />
               )}
-              <Pressable onPress={() => (isResult ? setStep((s) => s + 1) : finish(false))} style={{ alignItems: "center", paddingVertical: 14 }} accessibilityRole="button">
+              <Pressable onPress={() => (isResult ? setStep((s) => s + 1) : finish(false))} style={{ alignItems: "center", paddingVertical: space.lg }} accessibilityRole="button">
                 <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                   {isResult ? "I'll pick my own" : "Skip"}
                 </Text>

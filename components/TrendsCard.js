@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { assessParam, paramStatusColor, tapHaptic } from "../core";
 import { activeParams } from "../lib/targets";
@@ -55,11 +55,11 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
 
   if (!premiumUnlocked) {
     return (
-      <View style={{ alignItems: "center", paddingVertical: 8 }}>
+      <View style={{ alignItems: "center", paddingVertical: space.sm }}>
         <Text style={{ fontSize: 34, letterSpacing: -0.6 }}>📈</Text>
-        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8, textAlign: "center" }}>See your water trends</Text>
+        <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.sm, textAlign: "center" }}>See your water trends</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Premium charts each parameter over time and warns you when a reading drifts the wrong way.</Text>
-        <Pressable onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }} style={[styles.primaryBtn, { marginTop: 12, alignSelf: "stretch" }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }} style={[styles.primaryBtn, { marginTop: space.md, alignSelf: "stretch" }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>Unlock with Premium</Text>
         </Pressable>
       </View>
@@ -78,7 +78,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
   }
 
   return (
-    <View style={{ gap: 16 }}>
+    <View style={{ gap: space.lg }}>
       {params.map((p) => {
         const points = withValues(p.key);
         if (!points.length) return null;
@@ -102,14 +102,14 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
 
         return (
           <View key={p.key}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6, gap: 8 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: space.sm, gap: space.sm }}>
               <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
               <Text style={{ color: paramStatusColor(status), fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {latest}{p.unit ? ` ${p.unit}` : ""} {latest > first ? "↑" : latest < first ? "↓" : "→"}
               </Text>
             </View>
 
-            <View style={{ height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: radius.sm, padding: 6, borderWidth: 1, borderColor: theme.hairline, overflow: "hidden" }}>
+            <View style={{ height: 46, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: radius.sm, padding: space.xs, borderWidth: 1, borderColor: theme.hairline, overflow: "hidden" }}>
               <View style={{ flex: 1, position: "relative" }}>
                 {/* Behind the bars, never in front — the readings are the data,
                     the band is the reference. */}
@@ -122,7 +122,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
                     borderTopWidth: 1, borderTopColor: "rgba(56,225,198,0.38)",
                   }}
                 />
-                <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-end", gap: 4 }}>
+                <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-end", gap: space.xs }}>
                   {bars.map((b, i) => {
                     const h = Math.max(3, Math.round((b.v / scale) * PLOT));
                     const c = paramStatusColor(assessParam(p, b.v).status);
@@ -136,12 +136,12 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
 
             {/* The axis the chart never had. Sixteen unlabelled bars could have
                 covered a fortnight or two years. */}
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: space.xs }}>
               <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[0].date)}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[bars.length - 1].date)}</Text>
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs }}>
               <Text style={{ color: move.warn ? theme.warn : theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{move.text}</Text>
               {`  ·  target ${p.ideal}`}
             </Text>

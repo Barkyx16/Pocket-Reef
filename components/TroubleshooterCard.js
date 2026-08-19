@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { TROUBLESHOOTING, tapHaptic } from "../core";
 
 // Emergency troubleshooter — tap a problem to expand fast, ordered first-response
@@ -8,23 +8,23 @@ import { TROUBLESHOOTING, tapHaptic } from "../core";
 export function TroubleshooterCard() {
   const [open, setOpen] = useState(null);
   return (
-    <View style={{ gap: 8 }}>
+    <View style={{ gap: space.sm }}>
       {TROUBLESHOOTING.map((item) => {
         const on = open === item.id;
         return (
           <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: on ? theme.accent : theme.border, overflow: "hidden" }}>
-            <Pressable onPress={() => { tapHaptic("light"); setOpen(on ? null : item.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, padding: 12 }} accessibilityRole="button">
+            <Pressable onPress={() => { tapHaptic("light"); setOpen(on ? null : item.id); }} style={{ flexDirection: "row", alignItems: "center", gap: space.md, padding: space.md }} accessibilityRole="button">
               <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{item.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{item.problem}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{item.summary}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>{item.summary}</Text>
               </View>
               <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{on ? "▲" : "▾"}</Text>
             </Pressable>
             {on ? (
-              <View style={{ paddingHorizontal: 12, paddingBottom: 12, gap: 8 }}>
+              <View style={{ paddingHorizontal: space.md, paddingBottom: space.md, gap: space.sm }}>
                 {item.steps.map((step, i) => (
-                  <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
+                  <View key={i} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
                     <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 16 }}>{i + 1}.</Text>
                     <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{step}</Text>
                   </View>

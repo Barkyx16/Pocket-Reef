@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -51,24 +51,24 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
       accessibilityRole="button"
       accessibilityLabel="See what Premium unlocks for your tank"
     >
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginBottom: space.md }}>
         <Ionicons name="lock-closed" size={13} color={theme.accent} />
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Waiting for you</Text>
       </View>
 
-      <View style={{ gap: 14 }}>
+      <View style={{ gap: space.lg }}>
         {lines.map((l) => (
-          <View key={l.text} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+          <View key={l.text} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
             <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{l.icon}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", lineHeight: 19 }}>{l.text}</Text>
-              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>{l.hint}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>{l.hint}</Text>
             </View>
           </View>
         ))}
       </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.border }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: space.lg, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.border }}>
         <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Unlock with Premium</Text>
         <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
       </View>

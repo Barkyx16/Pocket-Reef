@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getSpecies, tapHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { MED_CLASSES, classOf, planMedDose, safetyFor, newMedDose, courseTotal } from "../lib/meds";
@@ -54,7 +54,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         Read the dose off the bottle and Pocket Reef does the rest. It never guesses a strength — products differ, and the label always wins.
       </Text>
 
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 14 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.lg }}>
         <TextInput
           value={labelDose}
           onChangeText={(t) => setLabelDose(decimalText(t))}
@@ -81,28 +81,28 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>gallons</Text>
       </View>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What kind is it?</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: space.lg }}>What kind is it?</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.sm }}>
         {MED_CLASSES.map((c) => (
           <Pill key={c.id} label={c.label} active={cls === c.id} onPress={() => { tapHaptic("light"); setCls(c.id); }} />
         ))}
       </View>
 
       {plan.ok ? (
-        <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 14, marginTop: 14 }}>
+        <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: space.lg, marginTop: space.lg }}>
           <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Full dose</Text>
-          <Text style={{ color: "#fff", fontSize: type.display, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
+          <Text style={{ color: "#fff", fontSize: type.display, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.hair }}>{plan.fullDose} {plan.unit}</Text>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.sm }}>{plan.volumeNote}</Text>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{plan.reason}</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.lg }}>{plan.reason}</Text>
       )}
 
       {/* The re-dose people get wrong in both directions. */}
       {plan.ok ? (
-        <View style={{ marginTop: 14 }}>
+        <View style={{ marginTop: space.lg }}>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Re-dosing after a water change</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.sm }}>
             <TextInput
               value={changePct}
               onChangeText={(t) => setChangePct(integerText(t))}
@@ -119,7 +119,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
             </Text>
           </View>
           {plan.topUpNote ? (
-            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.topUpNote}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.sm }}>{plan.topUpNote}</Text>
           ) : null}
         </View>
       ) : null}
@@ -127,7 +127,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       {/* Recording it. A dose you can't remember giving is a dose you give
           twice. */}
       {plan.ok && onLogMedDose ? (
-        <View style={{ marginTop: 14 }}>
+        <View style={{ marginTop: space.lg }}>
           <TextInput
             value={medName}
             onChangeText={setMedName}
@@ -138,12 +138,12 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
           
             maxLength={TEXT_LIMITS.name}
           />
-          <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
-            <Pressable onPress={() => logDose(plan.fullDose)} style={[styles.primaryBtn, { flex: 1, paddingVertical: 11 }]} accessibilityRole="button" accessibilityLabel={`Record a full dose of ${plan.fullDose} millilitres`}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
+            <Pressable onPress={() => logDose(plan.fullDose)} style={[styles.primaryBtn, { flex: 1, paddingVertical: space.md }]} accessibilityRole="button" accessibilityLabel={`Record a full dose of ${plan.fullDose} millilitres`}>
               <Text style={styles.primaryBtnText}>Log {plan.fullDose} ml</Text>
             </Pressable>
             {plan.topUp > 0 ? (
-              <Pressable onPress={() => logDose(plan.topUp)} style={[styles.ghostBtn, { flex: 1, paddingVertical: 11 }]} accessibilityRole="button" accessibilityLabel={`Record a top-up of ${plan.topUp} millilitres`}>
+              <Pressable onPress={() => logDose(plan.topUp)} style={[styles.ghostBtn, { flex: 1, paddingVertical: space.md }]} accessibilityRole="button" accessibilityLabel={`Record a top-up of ${plan.topUp} millilitres`}>
                 <Text style={styles.ghostBtnText}>Log {plan.topUp} ml top-up</Text>
               </Pressable>
             ) : null}
@@ -152,13 +152,13 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
       ) : null}
 
       {doses.length ? (
-        <View style={{ marginTop: 14 }}>
+        <View style={{ marginTop: space.lg }}>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
             This course · {course} ml so far
           </Text>
-          <View style={{ gap: 6, marginTop: 8 }}>
+          <View style={{ gap: space.sm, marginTop: space.sm }}>
             {doses.slice(0, 6).map((d) => (
-              <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+              <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                 <Ionicons name="flask-outline" size={13} color={theme.secondaryText} />
                 <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {d.name} · {d.amount} {d.unit}
@@ -175,15 +175,15 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         </View>
       ) : null}
 
-      <View style={{ backgroundColor: "rgba(255,107,107,0.08)", borderRadius: radius.lg, borderWidth: 1, borderColor: `${theme.danger}44`, padding: 12, marginTop: 14 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+      <View style={{ backgroundColor: "rgba(255,107,107,0.08)", borderRadius: radius.lg, borderWidth: 1, borderColor: `${theme.danger}44`, padding: space.md, marginTop: space.lg }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
           <Ionicons name="warning" size={14} color={theme.danger} />
           <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Before you dose</Text>
         </View>
         {warnings.map((w, i) => (
-          <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>• {w}</Text>
+          <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.xs }}>• {w}</Text>
         ))}
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.sm }}>
           {classOf(cls).label} · these are general to the class. The product label overrides everything here.
         </Text>
       </View>

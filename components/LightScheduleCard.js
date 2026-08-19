@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { PROFILES, newLightSchedule, assessLighting, suggestProfile, suggestSchedule, dailyHours, hasSchedule } from "../lib/lighting";
 import { Pill } from "./Pill";
@@ -37,7 +37,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
     <View>
       {!editing && assessment.ok ? (
         <>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone}40`, padding: 14 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: `${tone}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone}40`, padding: space.lg }}>
             <View style={{ alignItems: "center", minWidth: 54 }}>
               <Text style={{ color: tone, fontSize: 26, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>{assessment.hours}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>hours</Text>
@@ -46,14 +46,14 @@ export function LightScheduleCard({ tank = {}, onSave }) {
               <Text style={{ color: tone, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {assessment.schedule.on} – {assessment.schedule.off} · {assessment.profile.label}
               </Text>
-              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>{assessment.note}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.xs }}>{assessment.note}</Text>
             </View>
           </View>
 
           {better ? (
             <Pressable
               onPress={() => save(better)}
-              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(56,225,198,0.35)", padding: 12 }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(56,225,198,0.35)", padding: space.md }, pressed && { opacity: 0.8 }]}
               accessibilityRole="button"
               accessibilityLabel={`Change the schedule to ${better.on} to ${better.off}`}
             >
@@ -64,7 +64,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
             </Pressable>
           ) : null}
 
-          <Pressable onPress={() => { tapHaptic(); setEditing(true); }} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
+          <Pressable onPress={() => { tapHaptic(); setEditing(true); }} style={[styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
             <Text style={styles.ghostBtnText}>Change schedule</Text>
           </Pressable>
         </>
@@ -74,42 +74,42 @@ export function LightScheduleCard({ tank = {}, onSave }) {
             Photoperiod drives algae as much as nutrients do, and it's the only one of the two that's free to change. Times are 24-hour.
           </Text>
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 14 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.lg }}>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>On</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: space.xs }}>On</Text>
               <TextInput value={on} onChangeText={setOn} placeholder="10:00" placeholderTextColor={theme.secondaryText} accessibilityLabel="Time the lights come on" style={styles.authInput} 
             maxLength={TEXT_LIMITS.time}
           />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Off</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: space.xs }}>Off</Text>
               <TextInput value={off} onChangeText={setOff} placeholder="20:00" placeholderTextColor={theme.secondaryText} accessibilityLabel="Time the lights go off" style={styles.authInput} 
             maxLength={TEXT_LIMITS.time}
           />
             </View>
             <View style={{ width: 88 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 5 }}>Ramp</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: space.xs }}>Ramp</Text>
               <TextInput value={ramp} onChangeText={(t) => setRamp(integerText(t))} keyboardType="number-pad" placeholder="0" placeholderTextColor={theme.secondaryText} accessibilityLabel="Ramp minutes" style={styles.authInput} 
             maxLength={TEXT_LIMITS.number}
           />
             </View>
           </View>
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>
             {draftHours != null ? `${draftHours} hours a day` : "Use times like 10:00 and 20:00"}
           </Text>
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 14 }}>What's it lighting?</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: space.lg }}>What's it lighting?</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.sm }}>
             {PROFILES.map((p) => (
               <Pill key={p.id} label={p.label} active={profile === p.id} onPress={() => { tapHaptic("light"); setProfile(p.id); }} />
             ))}
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.sm }}>
             {(PROFILES.find((p) => p.id === profile) || PROFILES[0]).blurb}
           </Text>
 
-          <Pressable onPress={() => save()} disabled={draftHours == null} style={[draftHours != null ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button">
+          <Pressable onPress={() => save()} disabled={draftHours == null} style={[draftHours != null ? styles.primaryBtn : styles.ghostBtn, { marginTop: space.lg }]} accessibilityRole="button">
             <Text style={draftHours != null ? styles.primaryBtnText : styles.ghostBtnText}>Save schedule</Text>
           </Pressable>
           {existing ? (

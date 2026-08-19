@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic, warningHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { listRestorePoints, createRestorePoint, restoreToPoint, deleteRestorePoint, describeAge, describeSize, MAX_POINTS } from "../lib/restore";
@@ -71,26 +71,26 @@ export function RestorePointsCard({ onRestored }) {
       </Text>
 
       {points === null ? (
-        <ActivityIndicator color={theme.accent} style={{ marginTop: 16 }} />
+        <ActivityIndicator color={theme.accent} style={{ marginTop: space.lg }} />
       ) : !points.length ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
           No snapshots yet — the first is taken automatically next time the app opens.
         </Text>
       ) : (
-        <View style={{ gap: 8, marginTop: 12 }}>
+        <View style={{ gap: space.sm, marginTop: space.md }}>
           {points.map((e) => (
-            <View key={e.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
+            <View key={e.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
               <Ionicons name={e.auto ? "time-outline" : "bookmark-outline"} size={15} color={theme.accent} />
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{describeAge(e.at)}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>
                   {e.reason} · {describeSize(e.bytes)}
                 </Text>
               </View>
               <Pressable
                 onPress={() => restore(e)}
                 disabled={busy}
-                style={[styles.pill, { paddingHorizontal: 12 }]}
+                style={[styles.pill, { paddingHorizontal: space.md }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Restore everything to how it was ${describeAge(e.at)}`}
               >
@@ -104,7 +104,7 @@ export function RestorePointsCard({ onRestored }) {
         </View>
       )}
 
-      <Pressable onPress={take} disabled={busy} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button" accessibilityLabel={busy ? "Taking a snapshot" : "Take a snapshot now"} accessibilityState={{ busy }}>
+      <Pressable onPress={take} disabled={busy} style={[styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button" accessibilityLabel={busy ? "Taking a snapshot" : "Take a snapshot now"} accessibilityState={{ busy }}>
         {busy ? <ActivityIndicator color={theme.accent} /> : <Text style={styles.ghostBtnText}>Take a snapshot now</Text>}
       </Pressable>
     </View>

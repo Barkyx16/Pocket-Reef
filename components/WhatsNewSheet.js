@@ -1,6 +1,6 @@
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { itemsToShow, unseenReleases } from "../lib/whatsNew";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -22,26 +22,26 @@ export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onDismiss}>
       <View style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.82)", justifyContent: "flex-end" }}>
-        <View style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 18, paddingTop: 12, paddingBottom: Math.max(26, insets.bottom + 12), maxHeight: "86%" }}>
-          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
+        <View style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: Math.max(26, insets.bottom + 12), maxHeight: "86%" }}>
+          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: space.lg }} />
 
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Updated to {currentVersion}</Text>
-          <Text style={{ color: "#fff", fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: 2 }}>{title}</Text>
+          <Text style={{ color: "#fff", fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: space.hair }}>{title}</Text>
 
-          <ScrollView style={{ marginTop: 14 }} showsVerticalScrollIndicator={false}>
-            <View style={{ gap: 14 }}>
+          <ScrollView style={{ marginTop: space.lg }} showsVerticalScrollIndicator={false}>
+            <View style={{ gap: space.lg }}>
               {items.map((it, i) => (
-                <View key={i} style={{ flexDirection: "row", gap: 12 }}>
+                <View key={i} style={{ flexDirection: "row", gap: space.md }}>
                   <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2, width: 26, textAlign: "center" }}>{it.emoji}</Text>
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
-                    <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 2 }}>{it.text}</Text>
+                    <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.hair }}>{it.text}</Text>
                   </View>
                 </View>
               ))}
             </View>
 
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 18 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.xl }}>
               <Ionicons name="search" size={14} color={theme.secondaryText} />
               <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
                 All of it is searchable — tap the search icon and type what you want, like "algae" or "holiday".
@@ -51,7 +51,7 @@ export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss 
 
           <Pressable
             onPress={() => { tapHaptic("medium"); onDismiss && onDismiss(); }}
-            style={[styles.primaryBtn, { marginTop: 16 }]}
+            style={[styles.primaryBtn, { marginTop: space.lg }]}
             accessibilityRole="button"
             accessibilityLabel="Close what's new"
           >

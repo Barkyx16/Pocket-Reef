@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { getPresets, builtInParam, effectiveParams, customisedKeys, applyPreset, formatIdeal, validTarget } from "../lib/targets";
 import { MAX_FONT_SCALE_COMPACT, touchSlop } from "../lib/a11y";
@@ -56,32 +56,32 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
       </Text>
 
       {/* PRESETS */}
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Start from a tank type</Text>
-      <View style={{ gap: 6 }}>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.lg, marginBottom: space.sm }]}>Start from a tank type</Text>
+      <View style={{ gap: space.sm }}>
         {presets.map((preset) => (
           <Pressable
             key={preset.id}
             onPress={() => { tapHaptic("medium"); onSetAll(applyPreset(targets, preset)); }}
-            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 11, paddingVertical: 10 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.md }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
             accessibilityRole="button"
             accessibilityLabel={`Use ${preset.label} targets`}
             accessibilityHint={preset.blurb}
           >
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{preset.label}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{preset.blurb}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>{preset.blurb}</Text>
             </View>
             <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />
           </Pressable>
         ))}
       </View>
       {/* Says plainly that a preset won't stamp on work you've already done. */}
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 17 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.sm, lineHeight: 17 }}>
         A preset fills in the parameters you haven't set yourself — anything you've hand-tuned is left alone.
       </Text>
 
       {/* PER-PARAMETER */}
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 18, marginBottom: 8 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", marginTop: space.xl, marginBottom: space.sm }}>
         <Text accessibilityRole="header" style={[styles.cardEyebrow, { flex: 1 }]}>Your ranges</Text>
         {custom.length ? (
           <Pressable onPress={resetAll} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel="Reset every target to the default">
@@ -90,16 +90,16 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
         ) : null}
       </View>
 
-      <View style={{ gap: 6 }}>
+      <View style={{ gap: space.sm }}>
         {params.map((p) => {
           const isEditing = editing === p.key;
           const isCustom = !!p.custom;
           const builtIn = builtInParam(waterType, p.key);
           return (
-            <View key={p.key} style={{ backgroundColor: isCustom ? "rgba(56,225,198,0.08)" : theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: isCustom ? "rgba(56,225,198,0.30)" : theme.border, paddingHorizontal: 11, paddingVertical: 10 }}>
+            <View key={p.key} style={{ backgroundColor: isCustom ? "rgba(56,225,198,0.08)" : theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: isCustom ? "rgba(56,225,198,0.30)" : theme.border, paddingHorizontal: space.md, paddingVertical: space.md }}>
               <Pressable
                 onPress={() => (isEditing ? setEditing(null) : startEdit(p))}
-                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+                style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}
                 accessibilityRole="button"
                 accessibilityLabel={`${p.label} target, currently ${p.ideal}`}
                 accessibilityHint="Opens the range editor"
@@ -110,8 +110,8 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
               </Pressable>
 
               {isEditing ? (
-                <View style={{ marginTop: 10 }}>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <View style={{ marginTop: space.md }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                     <TextInput
                       value={draft.lo}
                       onChangeText={(v) => setDraft((d) => ({ ...d, lo: decimalText(v) }))}
@@ -132,11 +132,11 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
             maxLength={TEXT_LIMITS.number}
           />
                     <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", width: 40 }}>{p.unit}</Text>
-                    <Pressable onPress={() => commit(p)} style={({ pressed }) => [{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: radius.sm, backgroundColor: theme.accent }, pressed && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel={`Save ${p.label} target`}>
+                    <Pressable onPress={() => commit(p)} style={({ pressed }) => [{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderRadius: radius.sm, backgroundColor: theme.accent }, pressed && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel={`Save ${p.label} target`}>
                       <Text style={{ color: theme.onAccent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Set</Text>
                     </Pressable>
                   </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.sm }}>
                     <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
                       Default is {builtIn ? formatIdeal(builtIn.good, builtIn.unit) : "—"}
                     </Text>
@@ -154,7 +154,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
       </View>
 
       {custom.length ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.md, lineHeight: 17 }}>
           {custom.length} parameter{custom.length === 1 ? "" : "s"} set to your tank. Trends, the health score and today's actions all use these.
         </Text>
       ) : null}
@@ -164,7 +164,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
 
 const rangeInput = {
   width: 62, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm,
-  paddingHorizontal: 10, paddingVertical: 7, color: theme.text,
+  paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text,
   borderWidth: 1, borderColor: theme.border, fontSize: type.body,
   fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center",
 };

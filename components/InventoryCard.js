@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Share, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { touchSlop } from "../lib/a11y";
 import { KINDS, kindOf, newInventoryItem, forecastInventory, suggestedItems, LOW_STOCK_DAYS } from "../lib/inventory";
@@ -73,7 +73,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
   return (
     <View>
       {needs.length ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.30)", padding: 12, marginBottom: 12 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.30)", padding: space.md, marginBottom: space.md }}>
           <Ionicons name="cart" size={16} color={theme.warn} />
           <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>
             {needs.length} item{needs.length === 1 ? "" : "s"} to restock before you're stuck mid-water-change.
@@ -88,7 +88,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
         <>
           <EmptyState emoji="🧂" title="Nothing on the shelf yet" subtitle={`Add what you keep in stock and Pocket Reef works out how fast you get through it — from the water changes and doses you already log — and warns you ${LOW_STOCK_DAYS} days before you run out.`} />
           {suggestions.length ? (
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 12 }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
               {suggestions.map((s) => (
                 <Pill key={s.name} label={`+ ${s.name}`} onPress={() => addSuggested(s)} />
               ))}
@@ -96,16 +96,16 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           ) : null}
         </>
       ) : (
-        <View style={{ gap: 8 }}>
+        <View style={{ gap: space.sm }}>
           {rows.map(({ item, state, headline, rate, daysLeft }) => {
             const st = STATE[state] || STATE.ok;
             const k = kindOf(item.kind);
             return (
-              <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: state === "ok" || state === "unknown" ? theme.border : `${st.color}55`, padding: 12 }}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 9 }}>
+              <View key={item.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: state === "ok" || state === "unknown" ? theme.border : `${st.color}55`, padding: space.md }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                   <Ionicons name={k.icon} size={16} color={st.color} />
                   <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{item.name}</Text>
-                  <View style={{ backgroundColor: `${st.color}1f`, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}>
+                  <View style={{ backgroundColor: `${st.color}1f`, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: space.hair }}>
                     <Text style={{ color: st.color, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{st.label}</Text>
                   </View>
                   <Pressable onPress={() => onRemove && onRemove(item.id)} hitSlop={touchSlop(22)} accessibilityRole="button" accessibilityLabel={`Remove ${item.name}`}>
@@ -113,9 +113,9 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                   </Pressable>
                 </View>
 
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{headline}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>{headline}</Text>
 
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.sm }}>
                   <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {item.stock} {item.unit} left
                     {/* Whether the rate was measured or merely stated changes how
@@ -125,10 +125,10 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                 </View>
 
                 {onSetStock ? (
-                  <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
+                  <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
                     <Pressable
                       onPress={() => { tapHaptic("light"); onSetStock(item.id, Math.max(0, item.stock - 1)); }}
-                      style={[styles.pill, { paddingHorizontal: 14 }]}
+                      style={[styles.pill, { paddingHorizontal: space.lg }]}
                       accessibilityRole="button"
                       accessibilityLabel={`Use one ${item.unit} of ${item.name}`}
                     >
@@ -136,7 +136,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                     </Pressable>
                     <Pressable
                       onPress={() => { tapHaptic("light"); onSetStock(item.id, item.stock + 1); }}
-                      style={[styles.pill, { paddingHorizontal: 14 }]}
+                      style={[styles.pill, { paddingHorizontal: space.lg }]}
                       accessibilityRole="button"
                       accessibilityLabel={`Add one ${item.unit} of ${item.name}`}
                     >
@@ -151,7 +151,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
       )}
 
       {adding ? (
-        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: 12 }}>
+        <View style={{ marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
           <TextInput
             value={draft.name}
             onChangeText={(v) => setDraft((d) => ({ ...d, name: v }))}
@@ -162,13 +162,13 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           
             maxLength={TEXT_LIMITS.name}
           />
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
             {kinds.map((k) => (
               <Pill key={k.id} label={k.label} active={draft.kind === k.id} onPress={() => setDraft((d) => ({ ...d, kind: k.id, doseKey: k.id === "supplement" ? "alk" : null }))} />
             ))}
           </View>
 
-          <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
             <TextInput
               value={draft.stock}
               onChangeText={(v) => setDraft((d) => ({ ...d, stock: decimalText(v) }))}
@@ -191,12 +191,12 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
               placeholder={`${kindOf(draft.kind).unit} per gallon of new water`}
               placeholderTextColor={theme.secondaryText}
               accessibilityLabel="Amount used per gallon of new water"
-              style={[styles.authInput, { marginTop: 8 }]}
+              style={[styles.authInput, { marginTop: space.sm }]}
             
             maxLength={TEXT_LIMITS.number}
           />
           ) : kindOf(draft.kind).source === "dose" ? (
-            <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
+            <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
               {["alk", "calcium", "magnesium"].map((k) => (
                 <Pill key={k} label={k === "alk" ? "Alk" : k === "calcium" ? "Calcium" : "Mag"} active={draft.doseKey === k} onPress={() => setDraft((d) => ({ ...d, doseKey: k }))} />
               ))}
@@ -209,13 +209,13 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
               placeholder={`Used per day (${kindOf(draft.kind).unit}) — optional`}
               placeholderTextColor={theme.secondaryText}
               accessibilityLabel="Amount used per day"
-              style={[styles.authInput, { marginTop: 8 }]}
+              style={[styles.authInput, { marginTop: space.sm }]}
             
             maxLength={TEXT_LIMITS.number}
           />
           )}
 
-          <Pressable onPress={submit} disabled={!draft.name.trim()} style={[draft.name.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
+          <Pressable onPress={submit} disabled={!draft.name.trim()} style={[draft.name.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
             <Text style={draft.name.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Add to the shelf</Text>
           </Pressable>
           <Pressable onPress={reset} style={styles.authLinkBtn} accessibilityRole="button">
@@ -223,7 +223,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
           </Pressable>
         </View>
       ) : (
-        <Pressable onPress={() => { tapHaptic(); setAdding(true); }} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); setAdding(true); }} style={[styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
           <Text style={styles.ghostBtnText}>+ Add an item</Text>
         </Pressable>
       )}

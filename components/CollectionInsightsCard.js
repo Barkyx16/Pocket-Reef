@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { getSpecies } from "../core";
 
@@ -29,8 +29,8 @@ export function CollectionInsightsCard({ tanks = [] }) {
       </View>
 
       {fresh && salt ? (
-        <View style={{ marginTop: 14 }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
+        <View style={{ marginTop: space.lg }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: space.sm }}>
             <Text style={{ color: theme.accentLight, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>💧 Fresh {fresh}</Text>
             <Text style={{ color: theme.coral, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Salt {salt} 🌊</Text>
           </View>
@@ -39,7 +39,7 @@ export function CollectionInsightsCard({ tanks = [] }) {
           </View>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
           You keep {fresh ? "freshwater" : "saltwater"} species — a focused {fresh ? "freshwater" : "reef"} keeper. 🐠
         </Text>
       )}

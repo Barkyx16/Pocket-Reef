@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
-import { styles, theme, CONTENT_MAX_WIDTH, radius } from "../styles";
+import { styles, theme, CONTENT_MAX_WIDTH, radius, space } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { tapHaptic } from "../core";
 
@@ -46,14 +46,14 @@ export function PhotoGalleryCard({ journal = [], onOpen }) {
   const remaining = photos.length - shown.length;
   return (
     <View>
-      <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
+      <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>
         {photos.length} photo{photos.length > 1 ? "s" : ""} from your journal{remaining > 0 ? `, showing the newest ${shown.length}` : ""}.
       </Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {shown.map((e) => (
           <Pressable key={e.id} onPress={() => onOpen && onOpen(e)} accessibilityRole="button" accessibilityLabel={`Photo from ${e.date}`}>
             <Image source={{ uri: e.photo }} style={{ width: size, height: size, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-            <Text style={{ color: theme.secondaryText, fontSize: 9, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textAlign: "center" }}>{e.date ? e.date.slice(5) : ""}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: 9, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs, textAlign: "center" }}>{e.date ? e.date.slice(5) : ""}</Text>
           </Pressable>
         ))}
       </View>
@@ -61,7 +61,7 @@ export function PhotoGalleryCard({ journal = [], onOpen }) {
       {remaining > 0 ? (
         <Pressable
           onPress={() => { tapHaptic(); setVisible((v) => v + PAGE); }}
-          style={[styles.ghostBtn, { marginTop: 12 }]}
+          style={[styles.ghostBtn, { marginTop: space.md }]}
           accessibilityRole="button"
           accessibilityLabel={`Show ${Math.min(PAGE, remaining)} more photos`}
         >

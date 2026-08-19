@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import * as ImagePicker from "expo-image-picker";
@@ -49,7 +49,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
           Observations{list.length ? ` (${list.length})` : ""}
         </Text>
@@ -60,11 +60,11 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
 
       {/* Growth is the payoff: a number rather than a feeling. */}
       {g.ok ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 10, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 11 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md, backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: space.md }}>
           <Ionicons name={g.direction === "shrank" ? "trending-down" : "trending-up"} size={15} color={g.direction === "shrank" ? theme.warn : theme.accent} />
           <View style={{ flex: 1 }}>
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{g.summary}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>
               {g.first.size} → {g.last.size} {g.unit} across {g.points} measurements
             </Text>
           </View>
@@ -75,26 +75,26 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           and the app has stored photos for years without ever being able to
           line the same subject up over time. */}
       {shots.comparable ? (
-        <View style={{ marginTop: 10 }}>
-          <View style={{ flexDirection: "row", gap: 8 }}>
+        <View style={{ marginTop: space.md }}>
+          <View style={{ flexDirection: "row", gap: space.sm }}>
             {[shots.first, shots.last].map((shot, i) => (
               <View key={shot.id} style={{ flex: 1 }}>
                 <Image source={{ uri: shot.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: radius.md, backgroundColor: theme.well }} resizeMode="cover" accessibilityLabel={`${name} on ${shot.date}`} />
-                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs }}>
                   {i === 0 ? "Then" : "Now"} · {shot.date}
                 </Text>
               </View>
             ))}
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>
             {shots.days} days apart{shots.shots.length > 2 ? ` · ${shots.shots.length} photos` : ""}
           </Text>
         </View>
       ) : null}
 
       {open ? (
-        <View style={{ marginTop: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+        <View style={{ marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
             {KINDS.map((k) => (
               <Pill key={k.id} label={k.label} active={kind === k.id} onPress={() => { tapHaptic("light"); setKind(k.id); }} />
             ))}
@@ -106,11 +106,11 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             placeholderTextColor={theme.secondaryText}
             accessibilityLabel="What you observed"
             multiline
-            style={[styles.authInput, { marginTop: 10, minHeight: 56, textAlignVertical: "top", fontFamily: "Inter_400Regular" }]}
+            style={[styles.authInput, { marginTop: space.md, minHeight: 56, textAlignVertical: "top", fontFamily: "Inter_400Regular" }]}
           
             maxLength={TEXT_LIMITS.note}
           />
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.sm }}>
             <TextInput
               value={size}
               onChangeText={(t) => setSize(decimalText(t))}
@@ -126,8 +126,8 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
               inches — optional, but it's the only thing growth can be measured from.
             </Text>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
-            <Pressable onPress={pickPhoto} style={[styles.ghostBtn, { flex: 1, paddingVertical: 10 }]} accessibilityRole="button" accessibilityLabel="Add a photo to this observation">
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.sm }}>
+            <Pressable onPress={pickPhoto} style={[styles.ghostBtn, { flex: 1, paddingVertical: space.md }]} accessibilityRole="button" accessibilityLabel="Add a photo to this observation">
               <Text style={styles.ghostBtnText}>{photo ? "Change photo" : "+ Photo"}</Text>
             </Pressable>
             {photo ? (
@@ -135,22 +135,22 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             ) : null}
           </View>
 
-          <Pressable onPress={submit} disabled={!ready} style={[ready ? styles.primaryBtn : styles.ghostBtn, { marginTop: 10 }]} accessibilityRole="button">
+          <Pressable onPress={submit} disabled={!ready} style={[ready ? styles.primaryBtn : styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
             <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={ready ? styles.primaryBtnText : styles.ghostBtnText}>Record it</Text>
           </Pressable>
         </View>
       ) : null}
 
       {list.length ? (
-        <View style={{ gap: 7, marginTop: 10 }}>
+        <View style={{ gap: space.sm, marginTop: space.md }}>
           {list.slice(0, 8).map((o) => (
-            <View key={o.id} style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}>
-              <Ionicons name={kindOf(o.kind).icon} size={13} color={theme.secondaryText} style={{ marginTop: 2 }} />
+            <View key={o.id} style={{ flexDirection: "row", alignItems: "flex-start", gap: space.sm }}>
+              <Ionicons name={kindOf(o.kind).icon} size={13} color={theme.secondaryText} style={{ marginTop: space.hair }} />
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
                   {o.text}{o.size ? `${o.text ? " · " : ""}${o.size} ${o.unit}` : ""}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{o.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>{o.date}</Text>
               </View>
               {onRemove ? (
                 <Pressable onPress={() => onRemove(name, o.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the observation from ${o.date}`}>
@@ -161,7 +161,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           ))}
         </View>
       ) : !open ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: 8 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17, marginTop: space.sm }}>
           Nothing recorded yet. Spawning, colour, a size to measure growth from — the things that get lost in the journal.
         </Text>
       ) : null}

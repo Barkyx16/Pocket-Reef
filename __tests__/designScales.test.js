@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { type, radius, space, elevation, theme } from "../styles";
+import { type, radius, space, elevation, theme, styles } from "../styles";
 
 const ROOT = path.join(__dirname, "..");
 const FILES = ["components", "screens"].flatMap((dir) =>
@@ -70,8 +70,21 @@ describe("the scales themselves are coherent", () => {
     expect(Object.keys(radius).length).toBeLessThanOrEqual(10);
   });
 
-  test("spacing is a 4pt grid", () => {
-    for (const n of Object.values(space)) expect(n % 4).toBe(0);
+  test("spacing is a 4pt grid, with one deliberate hairline step", () => {
+    // `hair` is 2 on purpose: optical alignment sometimes needs a nudge
+    // smaller than the grid, and 63 margins were already using it for that.
+    // Everything else is a multiple of 4.
+    expect(space.hair).toBe(2);
+    for (const [k, n] of Object.entries(space)) {
+      if (k === "hair") continue;
+      expect([k, n % 4]).toEqual([k, 0]);
+    }
+  });
+
+  test("the scale stops before structural values", () => {
+    // A hero inset or a modal offset is not part of a rhythm; snapping those
+    // to the top step would be a layout change dressed as consistency.
+    expect(Math.max(...Object.values(space))).toBe(32);
   });
 
   test("elevation has few enough levels that depth means something", () => {
@@ -191,5 +204,52 @@ describe("type is optically tracked", () => {
     const n = [...FILES, "styles.js"].reduce(
       (t, f) => t + (read(f).match(/letterSpacing:/g) || []).length, 0);
     expect(n).toBeGreaterThan(300);
+  });
+});
+
+describe("the layout has a rhythm", () => {
+  // 1,620 spacing values across 22 distinct numbers before this — including 1,
+  // 2.5, 5, 7, 9, 11 and 13, which are the fingerprints of nudging a gap until
+  // it looked right rather than choosing from a set. A layout cannot feel
+  // deliberate when every gap is its own number.
+  const PROPS = /(gap|rowGap|columnGap|margin\w*|padding\w*): ([\d.]+)(?![\d.])/g;
+  const ALL = [...FILES, "styles.js"];
+
+  test("almost every gap comes from the scale", () => {
+    const tokened = ALL.reduce((n, f) =>
+      n + (read(f).match(/(gap|rowGap|columnGap|margin\w*|padding\w*): space\./g) || []).length, 0);
+    expect(tokened).toBeGreaterThan(1500);
+  });
+
+  test("nothing below the top of the scale is still a raw number", () => {
+    // Above 32 is structural — a hero inset, a modal offset, the scroll
+    // padding that clears the tab bar — and is deliberately not on the grid.
+    const strays = [];
+    for (const f of ALL) {
+      const src = read(f);
+      for (const m of src.matchAll(PROPS)) {
+        const v = Number(m[2]);
+        if (v === 0 || v > 32) continue;
+        strays.push(`${f}:${src.slice(0, m.index).split("\n").length} ${m[1]}=${v}`);
+      }
+    }
+    expect(strays).toEqual([]);
+  });
+
+  test("no half-point spacing survives", () => {
+    // The clearest evidence of nudging, same as the half-point font sizes.
+    const halves = [];
+    for (const f of ALL) {
+      for (const m of read(f).matchAll(PROPS)) {
+        if (Number(m[2]) % 1 !== 0) halves.push(`${f} ${m[1]}=${m[2]}`);
+      }
+    }
+    expect(halves).toEqual([]);
+  });
+
+  test("the scroll padding that clears the tab bar is left alone", () => {
+    // Load-bearing: it was computed against the bar's position, not chosen
+    // from a rhythm, and rounding it puts the FAB back on the last card.
+    expect(styles.scroll.paddingBottom).toBe(186);
   });
 });

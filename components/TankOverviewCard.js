@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { getTankHealthScore, tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -8,16 +8,16 @@ import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 // one to make it active. Only shown when you keep more than one tank.
 export function TankOverviewCard({ tanks = [], activeTankId, onSwitch }) {
   return (
-    <View style={{ gap: 10 }}>
+    <View style={{ gap: space.md }}>
       {tanks.map((tk) => {
         const h = getTankHealthScore({ tank: tk.stock, tankGallons: tk.gallons, waterTests: tk.waterTests, maintenance: tk.maintenance, quantities: tk.quantities, waterType: tk.water });
         const on = tk.id === activeTankId;
         return (
-          <Pressable key={tk.id} onPress={() => { tapHaptic(); onSwitch(tk.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
+          <Pressable key={tk.id} onPress={() => { tapHaptic(); onSwitch(tk.id); }} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.lg, padding: space.md, borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
             <Text style={{ fontSize: 22, letterSpacing: -0.4 }}>{tk.emoji || "🐠"}</Text>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{tk.name}{on ? "  ·  active" : ""}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>
                 {formatVolume(tk.gallons)} · {tk.stock ? tk.stock.length : 0} species · {tk.water === "salt" ? "🌊 Salt" : "💧 Fresh"}
               </Text>
             </View>

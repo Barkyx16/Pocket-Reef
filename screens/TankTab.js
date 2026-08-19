@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Alert, Pressable, ScrollView, Share, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getSpecies, getTankStatus, getTankWarnings, getTankMaturity, getTankHealthScore, getBioload, getConflictFixes, tapHaptic } from "../core";
 import { HeroBanner } from "../components/HeroBanner";
 import { EmptyState } from "../components/EmptyState";
@@ -68,26 +68,26 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
   // The active tank's full detail — stats, health, conflicts/positives, its fish,
   // and controls — rendered inside the tappable hub row.
   const renderDetail = () => (
-    <View style={{ paddingTop: 12 }}>
+    <View style={{ paddingTop: space.md }}>
       <View style={{ flexDirection: "row" }}>
         <Stat label="Stocked" value={`${tank.length}`} />
         <Stat label="Water" value={waterType} divider />
         <Stat label="Bioload" value={tank.length ? `${bio.pct}%` : "—"} color={tank.length ? bio.color : undefined} divider />
         <Stat label="Age" value={maturity ? `${maturity.days}d` : "New"} color={maturity ? maturity.color : undefined} divider />
       </View>
-      {tank.length ? <View style={{ marginTop: 12 }}><ProgressBar pct={bio.pct} color={bio.color} height={8} /></View> : null}
+      {tank.length ? <View style={{ marginTop: space.md }}><ProgressBar pct={bio.pct} color={bio.color} height={8} /></View> : null}
       {maturity && maturity.days < 42 ? (
-        <Text style={{ color: theme.warn, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
+        <Text style={{ color: theme.warn, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
       ) : null}
 
       {/* Conflicts / positives */}
       {tank.length ? (
-        <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+        <View style={{ marginTop: space.lg, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text accessibilityRole="header" style={[styles.cardEyebrow, { color: warnings.length ? theme.warn : theme.accent }]}>{warnings.length ? "⚠️ Things to Check" : "✅ All Compatible"}</Text>
           {warnings.length ? warnings.map((w, i) => (
-            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
+            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: space.sm }}>• {w.text}</Text>
           )) : (
-            <Text style={[styles.cardText, { marginTop: 6 }]}>Everything in your tank gets along and fits the space. Nice work! 🐠</Text>
+            <Text style={[styles.cardText, { marginTop: space.sm }]}>Everything in your tank gets along and fits the space. Nice work! 🐠</Text>
           )}
 
           {/* What to actually DO about a conflict. getConflictFixes has worked
@@ -96,19 +96,19 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
               a problem and withholding the answer is the least useful thing an
               app can do. */}
           {conflictFixes.length ? (
-            <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>Ways to fix it</Text>
+            <View style={{ marginTop: space.md, paddingTop: space.md, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+              <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>Ways to fix it</Text>
               {conflictFixes.map((f, i) => (
-                <View key={i} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11, marginTop: 8 }}>
+                <View key={i} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: space.md, marginTop: space.sm }}>
                   <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                     Rehome {f.replace}, keep {f.keeping}
                   </Text>
                   {f.alternatives.length ? (
                     <>
-                      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs }}>
                         Similar and compatible:
                       </Text>
-                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.sm }}>
                         {f.alternatives.map((alt) => (
                           <Pressable key={alt.name} onPress={() => openSpecies(alt.name)} style={styles.pill} accessibilityRole="button" accessibilityLabel={`${alt.name}, a compatible alternative to ${f.replace}`}>
                             <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{alt.emoji} {alt.name}</Text>
@@ -126,15 +126,15 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
 
       {/* Health */}
       {tank.length ? (
-        <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>Tank Health</Text>
+        <View style={{ marginTop: space.lg, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Tank Health</Text>
           <CardBoundary name="Tank Health"><TankHealthCard health={health} onGoToTab={onGoToTab} /></CardBoundary>
         </View>
       ) : null}
 
       {/* Fish in this tank */}
-      <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>In This Tank</Text>
+      <View style={{ marginTop: space.lg, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>In This Tank</Text>
         {species.length === 0 ? (
           <EmptyState emoji="🐠" title="Your tank is empty" subtitle="Head to the Species tab and tap ＋ to stock it — Pocket Reef flags any conflicts instantly." />
         ) : (
@@ -142,7 +142,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
             <View key={s.name}>
               <SpeciesCard species={s} onPress={() => openSpecies(s.name)} inTank={true} onToggleTank={() => toggleTank(s.name)} />
               {onSetQuantity ? (
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 10, marginTop: -6, marginBottom: 12, paddingRight: 4 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: space.md, marginTop: -6, marginBottom: space.md, paddingRight: space.xs }}>
                   <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? ` · group of ${s.minGroup}+` : ""}</Text>
                   <Stepper value={qty(s.name)} onDec={() => onSetQuantity(s.name, qty(s.name) - 1)} onInc={() => onSetQuantity(s.name, qty(s.name) + 1)} low={s.minGroup > 1 && qty(s.name) < s.minGroup} />
                 </View>
@@ -153,8 +153,8 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       </View>
 
       {/* Size */}
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 16, marginBottom: 8 }]}>Tank size</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.lg, marginBottom: space.sm }]}>Tank size</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {TANK_PRESETS.map((g) => (
           <Pill key={g} label={formatVolume(g)} active={tankGallons === g} onPress={() => setTankGallons && setTankGallons(g)} />
         ))}
@@ -162,15 +162,15 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
 
       {/* Notes */}
       {tankNotes && tankNotes.trim() ? (
-        <View style={{ marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+        <View style={{ marginTop: space.lg, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Notes</Text>
-          <Text style={[styles.cardText, { marginTop: 8 }]}>{tankNotes}</Text>
+          <Text style={[styles.cardText, { marginTop: space.sm }]}>{tankNotes}</Text>
         </View>
       ) : null}
 
       {/* Clear */}
       {species.length && onClearStock ? (
-        <Pressable onPress={() => Alert.alert("Clear this tank?", "This removes every species and its count from the tank. Your logs, journal, and costs are kept.", [{ text: "Cancel", style: "cancel" }, { text: "Clear tank", style: "destructive", onPress: () => onClearStock() }])} style={[styles.ghostBtn, { marginTop: 14, borderColor: "rgba(255,123,123,0.4)" }]} accessibilityRole="button">
+        <Pressable onPress={() => Alert.alert("Clear this tank?", "This removes every species and its count from the tank. Your logs, journal, and costs are kept.", [{ text: "Cancel", style: "cancel" }, { text: "Clear tank", style: "destructive", onPress: () => onClearStock() }])} style={[styles.ghostBtn, { marginTop: space.lg, borderColor: "rgba(255,123,123,0.4)" }]} accessibilityRole="button">
           <Text style={[styles.ghostBtnText, { color: theme.danger }]}>🗑️ Clear tank stock</Text>
         </Pressable>
       ) : null}
@@ -330,7 +330,7 @@ function Stat({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
       <Text style={{ color: color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
     </View>
   );
 }
@@ -340,7 +340,7 @@ function Stat({ label, value, color, divider }) {
 function Stepper({ value, onDec, onInc, low }) {
   const btn = { width: 30, height: 30, borderRadius: radius.sm, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.accent };
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
       <Pressable onPress={() => { tapHaptic("light"); onDec(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Decrease count">
         <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
       </Pressable>

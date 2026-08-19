@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme } from "../styles";
+import { styles, theme, space } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { Pill } from "./Pill";
 import { CycleTrackerCard } from "./CycleTrackerCard";
@@ -131,10 +131,10 @@ export function TankToolkitCard({
 
   return (
     <View style={styles.card}>
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Tank Tools</Text>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Tank Tools</Text>
       {/* Pills carry a number where one exists, so the row says something about
           your tank instead of being nine identical words. */}
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 4 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginBottom: space.xs }}>
         {ordered.map((tool) => (
           <Pill
             key={tool.id}
@@ -145,7 +145,7 @@ export function TankToolkitCard({
           />
         ))}
       </View>
-      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: 12, paddingTop: 16 }}>
+      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: space.md, paddingTop: space.lg }}>
         {active.render()}
       </View>
     </View>

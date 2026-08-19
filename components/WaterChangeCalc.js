@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { summarise } from "../lib/waterChanges";
 import { formatVolume } from "../lib/units";
@@ -16,10 +16,10 @@ import { decimalText } from "../lib/numericInput";
 // logged nitrate.
 function Stat({ label, value, sub, tone }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 9 }}>
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.sm, paddingVertical: space.sm }}>
       <Text numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
-      {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
+      <Text numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>{sub}</Text> : null}
     </View>
   );
 }
@@ -64,9 +64,9 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
 
   const field = (label, val, set) => (
     <View style={{ flex: 1 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: space.xs }}>{label}</Text>
       <TextInput value={val} onChangeText={(t) => set(decimalText(t))} keyboardType="decimal-pad" placeholder="—" placeholderTextColor={theme.secondaryText}
-        style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
+        style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} 
             maxLength={TEXT_LIMITS.number}
           />
     </View>
@@ -91,7 +91,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
           Water changes were only ever written into journal prose, so none of
           this could be asked of the data before. */}
       {history.count ? (
-        <View style={{ flexDirection: "row", gap: 8, marginBottom: 14 }}>
+        <View style={{ flexDirection: "row", gap: space.sm, marginBottom: space.lg }}>
           <Stat label="Last change" value={history.last === 0 ? "Today" : `${history.last}d ago`} />
           <Stat
             label="Changed (30d)"
@@ -108,39 +108,39 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
       ) : null}
 
       <Text style={styles.cardText}>How big a water change to lower your nitrate — sized to your {formatVolume(tankGallons)} tank{sourceNitrate ? `, and to the ${sourceNitrate} ppm in your source water` : ""}.</Text>
-      <View style={{ flexDirection: "row", gap: 12, marginTop: 12 }}>
+      <View style={{ flexDirection: "row", gap: space.md, marginTop: space.md }}>
         {field("Current nitrate (ppm)", current, setCurrent)}
         {field("Target nitrate (ppm)", target, setTarget)}
       </View>
 
       {unreachable ? (
-        <View style={{ marginTop: 14, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.35)", padding: 13 }}>
+        <View style={{ marginTop: space.lg, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.lg, borderWidth: 1, borderColor: "rgba(255,216,107,0.35)", padding: space.md }}>
           <Text style={{ color: theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>No water change reaches {tg} ppm</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 5 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>
             Your source water reads {sourceNitrate} ppm, so that's the floor — even a 100% change lands there. {explainsStubborn(tank, "nitrate") ? "" : "Aim above it, or use RO water for changes."}
           </Text>
           {explainsStubborn(tank, "nitrate") ? (
-            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 5 }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>
               {explainsStubborn(tank, "nitrate")}
             </Text>
           ) : null}
         </View>
       ) : valid && msg == null ? (
-        <View style={{ marginTop: 14, borderRadius: radius.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: theme.accent, shadowOpacity: 0.22, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
-          <LinearGradient colors={["rgba(56,225,198,0.18)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: 16, alignItems: "center" }}>
+        <View style={{ marginTop: space.lg, borderRadius: radius.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: theme.accent, shadowOpacity: 0.22, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
+          <LinearGradient colors={["rgba(56,225,198,0.18)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ padding: space.lg, alignItems: "center" }}>
             <Text style={{ color: theme.accent, fontSize: 38, letterSpacing: -0.6, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{pct}%</Text>
             <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>≈ {formatVolume(gal)}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, textAlign: "center" }}>Change this much to drop nitrate from {c} → {tg} ppm.</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs, textAlign: "center" }}>Change this much to drop nitrate from {c} → {tg} ppm.</Text>
           </LinearGradient>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{msg}</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.lg }}>{msg}</Text>
       )}
 
       {onLogChange ? (
         <Pressable
           onPress={() => { tapHaptic("medium"); onLogChange(valid && msg == null ? { pct, gallons: gal } : null); setLogged(true); setTimeout(() => setLogged(false), 2200); }}
-          style={[logged ? styles.ghostBtn : styles.primaryBtn, { marginTop: 14 }]}
+          style={[logged ? styles.ghostBtn : styles.primaryBtn, { marginTop: space.lg }]}
           accessibilityRole="button"
           accessibilityLabel={valid && msg == null ? `Log a ${pct}% water change, about ${formatVolume(gal)}` : "Log a water change"}
         >
@@ -151,7 +151,7 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
       ) : null}
 
       {wholeTank ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 9, marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.lg, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: space.md }}>
           <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{wholeTank}%</Text>
           <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
             is the smallest change that brings every parameter back into range, not just nitrate.
@@ -160,10 +160,10 @@ export function WaterChangeCalc({ waterChanges = [], everyDays = 7, tankGallons 
       ) : null}
 
       {valid ? (
-        <View style={{ marginTop: 14 }}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>Quick changes</Text>
+        <View style={{ marginTop: space.lg }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>Quick changes</Text>
           {[25, 50].map((p) => (
-            <View key={p} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderTopWidth: 1, borderTopColor: theme.border }}>
+            <View key={p} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: space.sm, borderTopWidth: 1, borderTopColor: theme.border }}>
               <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p}% change ({formatVolume(Math.round((p / 100) * tankGallons * 10) / 10)})</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>nitrate → {Math.round((c * (1 - p / 100) + sourceNitrate * (p / 100)) * 10) / 10} ppm</Text>
             </View>

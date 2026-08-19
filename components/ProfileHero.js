@@ -1,6 +1,6 @@
 import { Image, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { FadeInView } from "./FadeInView";
 import { ProgressBar } from "./ProgressBar";
 
@@ -46,7 +46,7 @@ export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl,
 
       {/* PANEL — solid, so every line reads at full contrast regardless of art. */}
       <View style={styles.profileHeroPanel}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: space.md }}>
           <Text style={styles.profileHeroName} numberOfLines={1}>
             {profileName ? `Hi, ${profileName}` : "Your profile"}
           </Text>
@@ -55,21 +55,21 @@ export function ProfileHero({ image, bannerName, bannerColors, profileName, lvl,
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 14 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.lg }}>
           <View style={styles.profileHeroLevelBadge}>
             <Text style={{ color: theme.accentLight, fontSize: 8.5, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.6 }}>LEVEL</Text>
             <Text style={{ color: "#fff", fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{lvl.level}</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{lvl.title}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>
               {xp.toLocaleString()} XP total · 🔥 {streak}-day streak{longestStreak > streak ? ` · best ${longestStreak}` : ""}
             </Text>
           </View>
         </View>
 
-        <View style={{ marginTop: 12 }}><ProgressBar pct={lvl.pct} height={9} glow /></View>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }}>
+        <View style={{ marginTop: space.md }}><ProgressBar pct={lvl.pct} height={9} glow /></View>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.sm }}>
           {lvl.maxed ? "Max level — you're a Reef Legend! 🐠" : `${lvl.toNext.toLocaleString()} XP to Level ${lvl.nextLevel}`}
         </Text>
       </View>

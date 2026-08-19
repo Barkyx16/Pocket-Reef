@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 import { iconForEmoji } from "../lib/icons";
@@ -44,7 +44,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
   return (
     <View>
       {equipment.length ? (
-        <View style={{ flexDirection: "row", gap: 8 }}>
+        <View style={{ flexDirection: "row", gap: space.sm }}>
           <Stat label="Items" value={String(summary.count)} />
           <Stat
             label="Build cost"
@@ -66,8 +66,8 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 
       {/* The one thing worth interrupting for: a claim you can still make. */}
       {summary.endingSoon.length ? (
-        <View style={{ marginTop: 12, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)", padding: 12 }}>
-          <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: 4 }}>Warranty ending</Text>
+        <View style={{ marginTop: space.md, backgroundColor: "rgba(255,216,107,0.08)", borderRadius: radius.md, borderWidth: 1, borderColor: "rgba(255,216,107,0.24)", padding: space.md }}>
+          <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginBottom: space.xs }}>Warranty ending</Text>
           {summary.endingSoon.slice(0, 3).map((i) => (
             <Text key={i.id} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
               {i.name} — {warrantyLabel(i)}. Worth checking it now while a claim is still possible.
@@ -77,14 +77,14 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
       ) : null}
 
       {groups.map(({ category, items }) => (
-        <View key={category.id} style={{ marginTop: 14 }}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 6 }]}>{category.label}</Text>
-          <View style={{ gap: 6 }}>
+        <View key={category.id} style={{ marginTop: space.lg }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>{category.label}</Text>
+          <View style={{ gap: space.sm }}>
             {items.map((item) => {
               const w = warrantyStatus(item);
               const bits = [ageLabel(item), item.brand || null, item.price != null ? fmtMoney(item.price) : null, item.watts != null ? `${item.watts}W` : null].filter(Boolean);
               return (
-                <View key={item.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
+                <View key={item.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.sm, paddingVertical: space.sm }}>
                   <View style={{ width: 30, height: 30, borderRadius: radius.sm, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
                     {iconForEmoji(category.emoji) ? (
                       <Ionicons name={iconForEmoji(category.emoji)} size={14} color={theme.accent} />
@@ -94,11 +94,11 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.name}</Text>
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>
                       {bits.length ? bits.join(" · ") : "No details recorded"}
                     </Text>
                     {w.state !== "none" ? (
-                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>
                         {warrantyLabel(item)}
                       </Text>
                     ) : null}
@@ -114,8 +114,8 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
       ))}
 
       {adding ? (
-        <View style={{ marginTop: 14, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.accent, padding: 12 }}>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+        <View style={{ marginTop: space.lg, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.accent, padding: space.md }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginBottom: space.md }}>
             {CATEGORIES.map((c) => (
               <Pressable
                 key={c.id}
@@ -142,7 +142,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
             maxLength={TEXT_LIMITS.name}
           />
 
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.sm }}>
             {(SUGGESTIONS[draft.category] || []).map((s) => (
               <Pressable
                 key={s}
@@ -156,7 +156,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
             ))}
           </View>
 
-          <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.md }}>
             <TextInput
               value={draft.price}
               onChangeText={(v) => setDraft((d) => ({ ...d, price: decimalText(v) }))}
@@ -189,7 +189,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
             keyboardType="decimal-pad"
             placeholder="Watts (optional — powers the running-cost estimate)"
             placeholderTextColor={theme.secondaryText}
-            style={[input, { marginTop: 8 }]}
+            style={[input, { marginTop: space.sm }]}
             accessibilityLabel="Power draw in watts"
           
             maxLength={TEXT_LIMITS.number}
@@ -200,13 +200,13 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
             onChangeText={(v) => setDraft((d) => ({ ...d, installedAt: v }))}
             placeholder="Installed (YYYY-MM-DD, blank = today)"
             placeholderTextColor={theme.secondaryText}
-            style={[input, { marginTop: 8 }]}
+            style={[input, { marginTop: space.sm }]}
             accessibilityLabel="Date installed"
           
             maxLength={TEXT_LIMITS.date}
           />
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 12 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginTop: space.md }}>
             <Pressable onPress={() => { tapHaptic(); setAdding(false); }} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel="Cancel adding equipment">
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Cancel</Text>
             </Pressable>
@@ -214,7 +214,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
             <Pressable
               onPress={submit}
               disabled={!draft.name.trim()}
-              style={({ pressed }) => [{ paddingHorizontal: 16, paddingVertical: 9, borderRadius: radius.sm, backgroundColor: draft.name.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderRadius: radius.sm, backgroundColor: draft.name.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
               accessibilityRole="button"
               accessibilityLabel="Save this equipment"
               accessibilityState={{ disabled: !draft.name.trim() }}
@@ -226,7 +226,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
       ) : (
         <Pressable
           onPress={() => { tapHaptic(); setAdding(true); }}
-          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 14, paddingVertical: 12, borderRadius: radius.md, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
+          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: space.sm, marginTop: space.lg, paddingVertical: space.md, borderRadius: radius.md, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
           accessibilityRole="button"
           accessibilityLabel="Add equipment"
         >
@@ -239,17 +239,17 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
 }
 
 const input = {
-  backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12,
-  paddingVertical: 9, color: theme.text, borderWidth: 1, borderColor: theme.border,
+  backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md,
+  paddingVertical: space.sm, color: theme.text, borderWidth: 1, borderColor: theme.border,
   fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600",
 };
 
 function Stat({ label, value, sub, tone }) {
   return (
-    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
+    <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.md }}>
       <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
-      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs }}>{sub}</Text> : null}
     </View>
   );
 }

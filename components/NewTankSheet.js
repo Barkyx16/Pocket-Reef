@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { Pill } from "./Pill";
 import { formatVolume } from "../lib/units";
@@ -39,17 +39,17 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
       <View style={styles.card}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Name</Text>
         <TextInput value={name} onChangeText={setName} placeholder="e.g. Living Room Reef" placeholderTextColor={theme.secondaryText}
-          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: 8 }} 
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.lg, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: space.sm }} 
             maxLength={TEXT_LIMITS.name}
           />
 
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Water type</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Water type</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           {WATERS.map((w) => <Pill key={w.id} fill label={w.label} active={water === w.id} onPress={() => setWater(w.id)} />)}
         </View>
 
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Icon</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Icon</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm, flexWrap: "wrap" }}>
           {EMOJIS.map((e) => {
             const on = emoji === e;
             return (
@@ -60,18 +60,18 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
           })}
         </View>
 
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Tank size</Text>
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Tank size</Text>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm, flexWrap: "wrap" }}>
           {PRESETS.map((g) => <Pill key={g} label={formatVolume(g)} active={gallons === g} onPress={() => setGallons(g)} />)}
         </View>
 
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: 18 }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginTop: space.xl }]}>Notes <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>(optional)</Text></Text>
         <TextInput value={notes} onChangeText={setNotes} placeholder="Equipment, dosing, livestock plans…" placeholderTextColor={theme.secondaryText} multiline
-          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: 8, minHeight: 70, textAlignVertical: "top" }} 
+          style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.lg, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg, marginTop: space.sm, minHeight: 70, textAlignVertical: "top" }} 
             maxLength={TEXT_LIMITS.note}
           />
 
-        <Pressable onPress={() => { tapHaptic("medium"); onSave({ name, water, emoji, gallons, notes: notes.trim() }); }} style={[styles.primaryBtn, { marginTop: 20 }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic("medium"); onSave({ name, water, emoji, gallons, notes: notes.trim() }); }} style={[styles.primaryBtn, { marginTop: space.xl }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>{mode === "edit" ? "Save changes" : "Create tank"}</Text>
         </Pressable>
       </View>

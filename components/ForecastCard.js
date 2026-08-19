@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { paramStatusColor } from "../core";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -34,42 +34,42 @@ export function ForecastCard({ forecasts = [] }) {
 
   return (
     <View>
-      <Text style={[styles.cardText, { marginTop: 0, marginBottom: 14 }]}>
+      <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.lg }]}>
         Based on your recent tests. A trend needs a clean fit before we'll put a date on it.
       </Text>
 
-      <View style={{ gap: 14 }}>
+      <View style={{ gap: space.lg }}>
         {forecasts.map((f) => {
           const arrow = f.trend === "up" ? "↑" : f.trend === "down" ? "↓" : "→";
           const color = urgencyColor(f.daysToEdge);
           return (
-            <View key={f.key} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+            <View key={f.key} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
               <View style={[styles.iconSquare, { borderColor: `${color}66`, backgroundColor: `${color}1f` }]}>
                 <Text style={{ color, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{arrow}</Text>
               </View>
 
               <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                   <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
                   <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {f.current}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                 </View>
 
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>
                   {f.perWeek > 0 ? "Rising" : "Falling"} about {Math.abs(f.perWeek)}{f.unit ? ` ${f.unit}` : ""} per week
                   {f.n ? ` · ${f.n} readings` : ""}
                 </Text>
 
                 {f.daysToEdge != null ? (
-                  <Text style={{ color, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
+                  <Text style={{ color, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.xs }}>
                     Out of range in about {f.daysToEdge} day{f.daysToEdge === 1 ? "" : "s"}
                   </Text>
                 ) : (
                   // Deliberately not a date. The fit isn't strong enough to
                   // justify one, and a wrong countdown costs more trust than a
                   // vague one earns.
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs }}>
                     Not enough of a pattern yet to predict a date
                   </Text>
                 )}

@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getEquipmentPlan } from "../lib/planner";
 import { getSpecies } from "../core";
 import { formatVolume } from "../lib/units";
@@ -34,15 +34,15 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
   return (
     <View>
       {equipment.ok ? (
-        <View style={{ gap: 12, marginBottom: 16 }}>
+        <View style={{ gap: space.md, marginBottom: space.lg }}>
           {equipment.items.map((it) => (
-            <View key={it.id} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-              <View style={{ minWidth: 74, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
+            <View key={it.id} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
+              <View style={{ minWidth: 74, paddingHorizontal: space.sm, paddingVertical: space.xs, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center" }}>
                 <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.value}</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 16 }}>{it.detail}</Text>
               </View>
             </View>
           ))}
@@ -50,13 +50,13 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
       ) : null}
 
       <Text style={styles.cardText}>Recommended gear for your {formatVolume(tankGallons)} tank:</Text>
-      <View style={{ gap: 12, marginTop: 12 }}>
+      <View style={{ gap: space.md, marginTop: space.md }}>
         {items.map((it, i) => (
-          <View key={i} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+          <View key={i} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
             <View style={styles.iconSquare}><Text style={{ fontSize: type.bodyLg }}>{it.icon}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.title}</Text>
-              <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 19 }}>{it.text}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 19 }}>{it.text}</Text>
             </View>
           </View>
         ))}

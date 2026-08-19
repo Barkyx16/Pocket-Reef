@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getJournalOnThisDay, getTodayKey, journalDaySpan, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
 import { Pill } from "./Pill";
@@ -31,7 +31,7 @@ export function JournalMemoriesCard({ journal = [] }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", gap: 6, marginBottom: 14 }}>
+      <View style={{ flexDirection: "row", gap: space.sm, marginBottom: space.lg }}>
         <Pill label="On this day" active={view === "onthisday"} onPress={() => setView("onthisday")} fill />
         <Pill label="Milestones" active={view === "milestones"} onPress={() => setView("milestones")} fill />
         <Pill label="Compare" active={view === "compare"} onPress={() => setView("compare")} fill />
@@ -46,7 +46,7 @@ export function JournalMemoriesCard({ journal = [] }) {
 
 function EntryLine({ entry, showDate = true }) {
   return (
-    <View style={{ flexDirection: "row", gap: 10, marginTop: 10 }}>
+    <View style={{ flexDirection: "row", gap: space.md, marginTop: space.md }}>
       {entry.photo ? (
         <Image source={{ uri: entry.photo }} style={{ width: 46, height: 46, borderRadius: radius.md }} resizeMode="cover" />
       ) : (
@@ -56,7 +56,7 @@ function EntryLine({ entry, showDate = true }) {
       )}
       <View style={{ flex: 1 }}>
         {showDate ? <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{entry.date}</Text> : null}
-        <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 1 }} numberOfLines={3}>
+        <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: space.hair }} numberOfLines={3}>
           {entry.text || "(photo only)"}
         </Text>
       </View>
@@ -77,8 +77,8 @@ function OnThisDay({ memories }) {
   return (
     <View>
       {memories.map((m) => (
-        <View key={m.months} style={{ marginBottom: 14 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <View key={m.months} style={{ marginBottom: space.lg }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
             <View style={{ height: 1, width: 14, backgroundColor: "rgba(56,225,198,0.42)" }} />
             <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>{m.label}</Text>
             <View style={{ height: 1, flex: 1, backgroundColor: theme.hairline }} />
@@ -107,18 +107,18 @@ function Milestones({ entries }) {
       {shown.map((e, i) => {
         const last = i === shown.length - 1;
         return (
-          <View key={e.id || `${e.date}-${i}`} style={{ flexDirection: "row", gap: 12 }}>
+          <View key={e.id || `${e.date}-${i}`} style={{ flexDirection: "row", gap: space.md }}>
             {/* Rail — matches the connector style used by TimelineCard. */}
             <View style={{ alignItems: "center", width: 30 }}>
               <View style={{ width: 30, height: 30, borderRadius: radius.sm, backgroundColor: e.mood === "🐠" ? "rgba(56,225,198,0.14)" : "rgba(255,216,107,0.14)", borderWidth: 1, borderColor: e.mood === "🐠" ? "rgba(56,225,198,0.42)" : "rgba(255,216,107,0.35)", alignItems: "center", justifyContent: "center" }}>
                 <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.bodyLg }}>{e.mood}</Text>
               </View>
-              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: 4, minHeight: 14 }} /> : null}
+              {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: space.xs, minHeight: 14 }} /> : null}
             </View>
-            <View style={{ flex: 1, paddingBottom: 14 }}>
+            <View style={{ flex: 1, paddingBottom: space.lg }}>
               <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
-              {e.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 2 }}>{e.text}</Text> : null}
-              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 120, borderRadius: radius.sm, marginTop: 8 }} resizeMode="cover" /> : null}
+              {e.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: space.hair }}>{e.text}</Text> : null}
+              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 120, borderRadius: radius.sm, marginTop: space.sm }} resizeMode="cover" /> : null}
             </View>
           </View>
         );
@@ -178,27 +178,27 @@ function Compare({ photos }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", gap: 8 }}>
+      <View style={{ flexDirection: "row", gap: space.sm }}>
         {[{ e: a, label: "Before" }, { e: b, label: "After" }].map(({ e, label }) => (
           <View key={label} style={{ flex: 1 }}>
             <Image source={{ uri: e.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border }} resizeMode="cover" />
-            <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, marginTop: 6, textTransform: "uppercase" }}>{label}</Text>
+            <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, marginTop: space.sm, textTransform: "uppercase" }}>{label}</Text>
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
           </View>
         ))}
       </View>
 
-      <View style={{ alignItems: "center", marginTop: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: 10 }}>
+      <View style={{ alignItems: "center", marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingVertical: space.md }}>
         <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {span === 0 ? "Same day" : `${span} ${span === 1 ? "day" : "days"} apart`}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>
           Tap a photo below to set the {next === "a" ? "before" : "after"} shot
           {photos.length > STRIP_MAX ? ` · showing the oldest and newest ${STRIP_MAX} of ${photos.length}` : ""}
         </Text>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingVertical: 12, paddingHorizontal: 2 }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm, paddingVertical: space.md, paddingHorizontal: space.hair }}>
         {stripPhotos.map((e, i) => {
           const k = keyOfEntry(e, i);
           const on = k === (aId ?? keyOfEntry(first, 0)) || k === (bId ?? keyOfEntry(last, photos.length - 1));

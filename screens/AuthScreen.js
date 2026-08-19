@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { supabase, isCloudConfigured } from "../lib/supabase";
 import { AUTH_REDIRECT, RESET_REDIRECT } from "../lib/supabaseConfig";
 import {
@@ -330,12 +330,12 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
       <ScrollView
         // Clamped: the shell is wide enough for two columns now, and a sign-in
         // form spanning a tablet is a form nobody can read across.
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 24, paddingBottom: 48, width: "100%", maxWidth: 520, alignSelf: "center" }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: space.xxl, paddingBottom: 48, width: "100%", maxWidth: 520, alignSelf: "center" }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         {/* HERO */}
-        <View style={{ alignItems: "center", marginBottom: 24 }}>
+        <View style={{ alignItems: "center", marginBottom: space.xxl }}>
           <View style={{ width: 74, height: 74, borderRadius: 24, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
             {mode === "verify" ? (
               <Ionicons name="mail-unread-outline" size={34} color={theme.accent} />
@@ -343,8 +343,8 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
               <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 38, letterSpacing: -0.6 }}>🐠</Text>
             )}
           </View>
-          <Text style={[styles.heroEyebrow, { marginTop: 16 }]}>Pocket Reef</Text>
-          <Text accessibilityRole="header" style={[styles.heroTitle, { textAlign: "center", fontSize: 29, letterSpacing: -0.4, marginTop: 8 }]}>{heading}</Text>
+          <Text style={[styles.heroEyebrow, { marginTop: space.lg }]}>Pocket Reef</Text>
+          <Text accessibilityRole="header" style={[styles.heroTitle, { textAlign: "center", fontSize: 29, letterSpacing: -0.4, marginTop: space.sm }]}>{heading}</Text>
           <Text style={[styles.heroSub, { textAlign: "center", maxWidth: 330 }]}>{sub}</Text>
         </View>
 
@@ -355,7 +355,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             <Text style={styles.cardText}>
               Paste your Supabase project URL and anon key into lib/supabaseConfig.js to turn on accounts and cross-device sync. Until then Pocket Reef runs on this device, and nothing is lost — your data is here waiting when you connect it.
             </Text>
-            <Pressable onPress={() => { tapHaptic(); onContinueOffline && onContinueOffline(); }} style={[styles.primaryBtn, { marginTop: 16 }]} accessibilityRole="button">
+            <Pressable onPress={() => { tapHaptic(); onContinueOffline && onContinueOffline(); }} style={[styles.primaryBtn, { marginTop: space.lg }]} accessibilityRole="button">
               <Text style={styles.primaryBtnText}>Continue on this device</Text>
             </Pressable>
           </View>
@@ -376,7 +376,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             <Pressable
               onPress={() => submitCode()}
               disabled={busy || code.length !== 6}
-              style={({ pressed }) => [styles.primaryBtn, { marginTop: 16 }, (pressed || busy) && { opacity: 0.8 }, code.length !== 6 && { opacity: 0.45 }]}
+              style={({ pressed }) => [styles.primaryBtn, { marginTop: space.lg }, (pressed || busy) && { opacity: 0.8 }, code.length !== 6 && { opacity: 0.45 }]}
               accessibilityRole="button"
               accessibilityLabel={busy ? "Verifying your code" : "Verify"}
               accessibilityState={{ busy, disabled: busy || code.length !== 6 }}
@@ -427,7 +427,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
           />
 
             {mode !== "forgot" ? (
-              <View style={{ position: "relative", justifyContent: "center", marginTop: 12 }}>
+              <View style={{ position: "relative", justifyContent: "center", marginTop: space.md }}>
                 <TextInput
                   value={password}
                   onChangeText={(v) => { setPassword(v); clearMessages(); }}
@@ -462,7 +462,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
                 autoCapitalize="none"
                 placeholder="Confirm password"
                 placeholderTextColor={theme.secondaryText}
-                style={[styles.authInput, { marginTop: 12 }]}
+                style={[styles.authInput, { marginTop: space.md }]}
                 editable={!busy}
                 accessibilityLabel="Confirm password"
               
@@ -471,7 +471,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             ) : null}
 
             {mode === "signup" ? (
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.md }}>
                 At least 8 characters. We'll email you a 6-digit code to verify the address.
               </Text>
             ) : null}
@@ -482,7 +482,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             <Pressable
               onPress={submit}
               disabled={busy}
-              style={({ pressed }) => [styles.primaryBtn, { marginTop: 16 }, (pressed || busy) && { opacity: 0.8 }]}
+              style={({ pressed }) => [styles.primaryBtn, { marginTop: space.lg }, (pressed || busy) && { opacity: 0.8 }]}
               accessibilityRole="button"
               accessibilityLabel={busy ? "Working" : mode === "signup" ? "Create account" : mode === "forgot" ? "Send code" : "Log in"}
               accessibilityState={{ busy, disabled: busy }}
@@ -501,7 +501,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
               <Pressable
                 onPress={biometricLogin}
                 disabled={busy}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, borderRadius: radius.xl, paddingVertical: 16, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: space.sm, marginTop: space.md, borderRadius: radius.xl, paddingVertical: space.lg, backgroundColor: "rgba(56,225,198,0.10)", borderWidth: 1, borderColor: "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Sign in with ${bioLabel}`}
               >
@@ -539,23 +539,23 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             {/* "Forgot email" help — we can't look an account up by anything but
                 the address, so this points at what the device does remember. */}
             {showEmailHint ? (
-              <View style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 14, borderWidth: 1, borderColor: theme.border, marginTop: 4 }}>
+              <View style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: space.lg, borderWidth: 1, borderColor: theme.border, marginTop: space.xs }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Finding your account</Text>
                 {lastEmail ? (
-                  <Pressable onPress={() => { setEmail(lastEmail); setShowEmailHint(false); tapHaptic(); }} style={{ marginTop: 8 }} accessibilityRole="button">
+                  <Pressable onPress={() => { setEmail(lastEmail); setShowEmailHint(false); tapHaptic(); }} style={{ marginTop: space.sm }} accessibilityRole="button">
                     <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       Last used on this device: {maskEmail(lastEmail)} — tap to use it
                     </Text>
                   </Pressable>
                 ) : (
-                  <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+                  <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
                     No account has signed in on this device yet.
                   </Text>
                 )}
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
                   Otherwise, search your inbox for “Pocket Reef” — the verification email went to the address you signed up with. If none of your addresses work, sign up again and your reef starts fresh.
                 </Text>
-                <Pressable onPress={resendConfirmation} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
+                <Pressable onPress={resendConfirmation} style={[styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
                   <Text style={styles.ghostBtnText}>Send a verification code</Text>
                 </Pressable>
               </View>
@@ -563,7 +563,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
           </View>
         )}
 
-        <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: space.xs }}>
           Your reef data is stored under your account and only readable by you.
         </Text>
       </ScrollView>

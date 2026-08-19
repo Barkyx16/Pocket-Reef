@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme, useResponsiveLayout, radius, type } from "../styles";
+import { styles, theme, useResponsiveLayout, radius, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
@@ -98,28 +98,28 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
 
       {/* Active banner */}
       {premiumUnlocked ? (
-        <View style={[styles.cardElevated, { flexDirection: "row", alignItems: "center", gap: 12 }]}>
+        <View style={[styles.cardElevated, { flexDirection: "row", alignItems: "center", gap: space.md }]}>
           <Text style={{ fontSize: 26, letterSpacing: -0.4 }}>✅</Text>
           <View style={{ flex: 1 }}>
             <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>Premium is active</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Everything below is unlocked and ready to use.</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>Everything below is unlocked and ready to use.</Text>
           </View>
         </View>
       ) : null}
 
       {/* Everything included */}
       <View style={styles.card}>
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Everything included</Text>
-        <View style={{ gap: 12 }}>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Everything included</Text>
+        <View style={{ gap: space.md }}>
           {FEATURES.map((f) => (
-            <View key={f.title} style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+            <View key={f.title} style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
               <View style={styles.iconSquare}><Ionicons name={f.icon} size={16} color={theme.accent} /></View>
               <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                   <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                   {premiumUnlocked ? <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
                 </View>
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1, lineHeight: 17 }}>{f.body}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>{f.body}</Text>
               </View>
             </View>
           ))}
@@ -129,31 +129,31 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
       {/* Plan selector + CTA (only until unlocked) */}
       {!premiumUnlocked ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Choose your plan</Text>
-          <View style={{ flexDirection: "row", gap: 10 }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Choose your plan</Text>
+          <View style={{ flexDirection: "row", gap: space.md }}>
             {plans.map((p) => {
               const on = plan && plan.id === p.id;
               const badge = p.annual ? "BEST VALUE" : "POPULAR";
               const badgeBg = p.annual ? theme.warn : theme.accent;
               const badgeColor = p.annual ? "#3d2c00" : theme.onAccent;
               return (
-                <Pressable key={p.id} onPress={() => setPlan(p)} style={({ pressed }) => [{ flex: 1, borderRadius: radius.xl, padding: 14, backgroundColor: on ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }, pressed && { opacity: 0.9 }]} accessibilityRole="button">
-                  <View style={{ alignSelf: "flex-start", backgroundColor: badgeBg, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2, marginBottom: 8 }}>
+                <Pressable key={p.id} onPress={() => setPlan(p)} style={({ pressed }) => [{ flex: 1, borderRadius: radius.xl, padding: space.lg, backgroundColor: on ? "rgba(56,225,198,0.14)" : "rgba(255,255,255,0.05)", borderWidth: on ? 2 : 1, borderColor: on ? theme.accent : theme.border }, pressed && { opacity: 0.9 }]} accessibilityRole="button">
+                  <View style={{ alignSelf: "flex-start", backgroundColor: badgeBg, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: space.hair, marginBottom: space.sm }}>
                     <Text style={{ color: badgeColor, fontSize: 9, letterSpacing: 0.6, fontFamily: "Inter_900Black", fontWeight: "900" }}>{badge}</Text>
                   </View>
                   <Text style={{ color: on ? theme.accent : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}</Text>
                   {/* Localized and formatted by the store — never hardcoded. */}
-                  <Text style={{ color: "#fff", fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2, fontVariant: ["tabular-nums"] }}>{p.priceString}<Text style={{ color: theme.secondaryText, fontSize: type.small }}> {p.per}</Text></Text>
-                  {p.annual && save ? <View style={{ marginTop: 6, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}><Text style={{ color: theme.warn, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{save}</Text></View> : null}
-                  {p.freeTrialDays ? <Text style={{ color: theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{p.freeTrialDays} days free</Text> : null}
+                  <Text style={{ color: "#fff", fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.hair, fontVariant: ["tabular-nums"] }}>{p.priceString}<Text style={{ color: theme.secondaryText, fontSize: type.small }}> {p.per}</Text></Text>
+                  {p.annual && save ? <View style={{ marginTop: space.sm, alignSelf: "flex-start", backgroundColor: "rgba(255,216,107,0.16)", borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: space.hair }}><Text style={{ color: theme.warn, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{save}</Text></View> : null}
+                  {p.freeTrialDays ? <Text style={{ color: theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>{p.freeTrialDays} days free</Text> : null}
                 </Pressable>
               );
             })}
           </View>
           {loadingPlans ? (
-            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 14 }}>Loading plans…</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: space.lg }}>Loading plans…</Text>
           ) : !plans.length ? (
-            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 14, lineHeight: 18 }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: space.lg, lineHeight: 18 }}>
               Plans aren't available right now. Check your connection and try again.
             </Text>
           ) : null}
@@ -166,28 +166,28 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
                 : "Unlock Premium"
             }
             onPress={() => canBuy && !buying && onPurchase && onPurchase(plan)}
-            style={{ marginTop: 16, opacity: canBuy && !buying ? 1 : 0.55 }}
+            style={{ marginTop: space.lg, opacity: canBuy && !buying ? 1 : 0.55 }}
           />
           {!storeReady ? (
-            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: 8, lineHeight: 16 }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: space.sm, lineHeight: 16 }}>
               In-app purchases need a device build — they don't run in Expo Go.
             </Text>
           ) : null}
           {/* The App Store requires restore to be reachable, and it's how a
               reinstall or a new device gets an existing subscription back. */}
-          <Pressable onPress={() => onRestore && onRestore()} style={({ pressed }) => [{ marginTop: 12, paddingVertical: 8 }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
+          <Pressable onPress={() => onRestore && onRestore()} style={({ pressed }) => [{ marginTop: space.md, paddingVertical: space.sm }, pressed && { opacity: 0.7 }]} accessibilityRole="button">
             <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}>Restore purchases</Text>
           </Pressable>
           {/* Auto-renew disclosure. App Store review requires this verbatim-ish
               wording next to the CTA, along with reachable terms and privacy. */}
-          <Text style={{ color: theme.bodyText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", textAlign: "center", marginTop: 10, lineHeight: 15 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", textAlign: "center", marginTop: space.md, lineHeight: 15 }}>
             {plan
               ? `${trialDays ? `Free for ${trialDays} days, then ` : ""}${plan.priceString}${plan.per}. `
               : ""}
             Subscriptions renew automatically unless cancelled at least 24 hours before the period
             ends. Manage or cancel in your App Store settings.
           </Text>
-          <View style={{ flexDirection: "row", justifyContent: "center", gap: 18, marginTop: 8 }}>
+          <View style={{ flexDirection: "row", justifyContent: "center", gap: space.xl, marginTop: space.sm }}>
             <Pressable onPress={() => Linking.openURL(TERMS_URL).catch(() => {})} hitSlop={8} accessibilityRole="link" accessibilityLabel="Terms of use, opens in your browser">
               <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: "underline" }}>Terms</Text>
             </Pressable>
@@ -195,9 +195,9 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
               <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: "underline" }}>Privacy</Text>
             </Pressable>
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "center", gap: 16, marginTop: 12 }}>
+          <View style={{ flexDirection: "row", justifyContent: "center", gap: space.lg, marginTop: space.md }}>
             {[["", "Secure"], ["", "Cancel anytime"], ["", "Cloud sync"]].map(([i, l]) => (
-              <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+              <View key={l} style={{ flexDirection: "row", alignItems: "center", gap: space.xs }}>
                 <Text style={{ fontSize: type.body }}>{i}</Text>
                 <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{l}</Text>
               </View>
@@ -210,14 +210,14 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
           build: a premium switch the app can flip is a premium switch anyone
           can flip. Entitlement in production comes from RevenueCat alone. */}
       {__DEV__ ? (
-      <View style={{ borderRadius: radius.xl, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: 14, marginBottom: 4 }}>
+      <View style={{ borderRadius: radius.xl, borderWidth: 1, borderStyle: "dashed", borderColor: "rgba(255,255,255,0.18)", padding: space.lg, marginBottom: space.xs }}>
         <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>🔧 Developer</Text>
-        <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>
           Toggle the premium gate for testing. Debug builds only — stripped from release.
         </Text>
         <Pressable
           onPress={() => onSetPremium && onSetPremium(!premiumUnlocked)}
-          style={({ pressed }) => [{ marginTop: 12, borderRadius: radius.lg, paddingVertical: 12, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
+          style={({ pressed }) => [{ marginTop: space.md, borderRadius: radius.lg, paddingVertical: space.md, alignItems: "center", borderWidth: 1, backgroundColor: premiumUnlocked ? "rgba(255,123,123,0.10)" : "rgba(56,225,198,0.10)", borderColor: premiumUnlocked ? "rgba(255,123,123,0.4)" : "rgba(56,225,198,0.42)" }, pressed && { opacity: 0.8 }]}
           accessibilityRole="button"
         >
           <Text style={{ color: premiumUnlocked ? theme.danger : theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>

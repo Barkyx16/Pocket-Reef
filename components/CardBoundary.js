@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Pressable, Text, View } from "react-native";
-import { radius, type } from "../styles";
+import { radius, type, space } from "../styles";
 
 // A boundary around one card.
 //
@@ -57,8 +57,8 @@ export class CardBoundary extends Component {
           borderRadius: 18,
           borderWidth: 1,
           borderColor: "rgba(255,107,107,0.28)",
-          padding: 16,
-          marginBottom: 14,
+          padding: space.lg,
+          marginBottom: space.lg,
         }}
         accessibilityRole="alert"
         accessibilityLabel={`${name} couldn't be shown. The rest of the app is fine and your records are safe.`}
@@ -69,12 +69,12 @@ export class CardBoundary extends Component {
         {/* Said plainly and first: the thing people actually fear when a screen
             breaks is that the data behind it is gone. It isn't — nothing here
             writes, and the records are on disk untouched. */}
-        <Text style={{ color: "#c9dced", fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+        <Text style={{ color: "#c9dced", fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
           Everything else on this screen still works, and your tank records are safe — this is a display problem, not a data one.
         </Text>
         <Pressable
           onPress={this.retry}
-          style={{ alignSelf: "flex-start", marginTop: 12, borderRadius: radius.pill, paddingHorizontal: 14, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)" }}
+          style={{ alignSelf: "flex-start", marginTop: space.md, borderRadius: radius.pill, paddingHorizontal: space.lg, paddingVertical: space.sm, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)" }}
           accessibilityRole="button"
           accessibilityLabel={`Try showing ${name} again`}
         >

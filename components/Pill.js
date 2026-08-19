@@ -1,5 +1,5 @@
 import { Pressable, Text } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { selectionHaptic } from "../core";
 
@@ -23,7 +23,7 @@ export function Pill({ label, active, onPress, haptic = "light", fill = false, i
       accessibilityState={{ selected: !!active }}
     >
       {icon ? (
-        <Ionicons name={icon} size={13} color={active ? theme.onAccent : theme.accent} style={{ marginRight: 6 }} />
+        <Ionicons name={icon} size={13} color={active ? theme.onAccent : theme.accent} style={{ marginRight: space.sm }} />
       ) : null}
       <Text style={{ color: active ? theme.onAccent : theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{label}</Text>
     </Pressable>

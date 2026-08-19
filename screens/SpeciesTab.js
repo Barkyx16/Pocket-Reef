@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, memo } from "react";
 import { FlatList, Image, ScrollView, Text, TextInput, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, useResponsiveLayout, radius, type } from "../styles";
+import { styles, theme, useResponsiveLayout, radius, type, space } from "../styles";
 import { SPECIES, DISEASES, getSpecies, getCompatibility, speciesFitsTank, tapHaptic } from "../core";
 import { getDiseaseImage } from "../data/diseaseImageMap";
 import { HeroBanner } from "../components/HeroBanner";
@@ -141,9 +141,9 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
   };
 
   const FilterRow = ({ label, opts, value, onChange }) => (
-    <View style={{ marginTop: 12 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>{label}</Text>
-      <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
+    <View style={{ marginTop: space.md }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: space.sm }}>{label}</Text>
+      <View style={{ flexDirection: "row", gap: space.sm, flexWrap: "wrap" }}>
         {opts.map(([id, lab]) => (
           <Pill key={id} label={String(lab)} active={value === id} onPress={() => onChange(id)} />
         ))}
@@ -165,14 +165,14 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
         colors={["#123a5e", "#0c2a45", "#071d2e"]}
       />
 
-      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: radius.xl, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: 14 }}>
-        <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: 8 }} />
-        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: 12, color: theme.text, fontSize: type.bodyLg }} 
+      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: theme.card, borderRadius: radius.xl, borderWidth: 1, borderColor: query ? theme.accent : theme.border, paddingHorizontal: space.lg }}>
+        <Ionicons name="search" size={16} color={theme.secondaryText} style={{ marginRight: space.sm }} />
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search species, diet, or description…" placeholderTextColor={theme.secondaryText} style={{ fontFamily: "Inter_400Regular", flex: 1, paddingVertical: space.md, color: theme.text, fontSize: type.bodyLg }} 
             maxLength={TEXT_LIMITS.search}
           />
         {query ? (
           <Pressable onPress={() => setQuery("")} hitSlop={8} accessibilityRole="button" accessibilityLabel="Clear search">
-            <Ionicons name="close-circle" size={17} color={theme.secondaryText} style={{ marginLeft: 6 }} />
+            <Ionicons name="close-circle" size={17} color={theme.secondaryText} style={{ marginLeft: space.sm }} />
           </Pressable>
         ) : null}
       </View>
@@ -181,7 +181,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
           filter set silently is worse than not restoring it — this is the line
           that stops "where did the other 300 fish go?". */}
       {narrowing ? (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md }}>
           <Ionicons name="funnel" size={12} color={theme.accent} />
           <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
             Showing {list.length} of {SPECIES.length} · {narrowing} filter{narrowing === 1 ? "" : "s"} on
@@ -192,7 +192,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
         </View>
       ) : null}
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 12 }} contentContainerStyle={{ flexDirection: "row", gap: 8, paddingRight: 8 }} keyboardShouldPersistTaps="handled">
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: space.md }} contentContainerStyle={{ flexDirection: "row", gap: space.sm, paddingRight: space.sm }} keyboardShouldPersistTaps="handled">
         {WATER_FILTERS.map((w) => {
           const on = water === w.id;
           return (
@@ -226,7 +226,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       </ScrollView>
 
       {compareMode ? (
-        <View style={{ marginTop: 12 }}>
+        <View style={{ marginTop: space.md }}>
           {compareSel.length === 2 ? (
             <CardBoundary name="Compare"><CompareCard a={compareSel[0]} b={compareSel[1]} /></CardBoundary>
           ) : (
@@ -239,12 +239,12 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       ) : null}
 
       {showFilters ? (
-        <View style={[styles.card, { marginTop: 12 }]}>
+        <View style={[styles.card, { marginTop: space.md }]}>
           <FilterRow label="SORT BY" opts={SORT_OPTS} value={sort} onChange={setSort} />
           <FilterRow label="CARE LEVEL" opts={CARE_OPTS} value={care} onChange={setCare} />
           <FilterRow label="TEMPERAMENT" opts={TEMP_OPTS} value={temper} onChange={setTemper} />
           <FilterRow label="ADULT SIZE" opts={SIZE_OPTS} value={size} onChange={setSize} />
-          <View style={{ marginTop: 12, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <View style={{ marginTop: space.md, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <Pressable onPress={() => { tapHaptic("light"); setReefOnly((v) => !v); }} style={[styles.pill, pillStyle(reefOnly)]} accessibilityRole="button">
               <Text style={pillText(reefOnly)}>🪸 Reef-safe only</Text>
             </Pressable>
@@ -258,14 +258,14 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       ) : null}
 
       {!compareMode && !q && recent.length ? (
-        <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>RECENTLY VIEWED</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+        <View style={{ marginTop: space.lg }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: space.sm }}>RECENTLY VIEWED</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
               if (!sp) return null;
               return (
-                <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
+                <Pressable key={n} onPress={() => openSpecies(n)} style={[styles.pill, { paddingVertical: space.sm, backgroundColor: "rgba(255,255,255,0.05)", borderColor: theme.border }]} accessibilityRole="button">
                   <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{sp.emoji} {n}</Text>
                 </Pressable>
               );
@@ -275,10 +275,10 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       ) : null}
 
       {diseaseMatches.length && openDisease ? (
-        <View style={{ marginTop: 14 }}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 8 }]}>Health guides</Text>
+        <View style={{ marginTop: space.lg }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.sm }]}>Health guides</Text>
           {diseaseMatches.map((d) => (
-            <Pressable key={d.name} onPress={() => openDisease(d.name)} style={[styles.cleanRow, { paddingVertical: 10 }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
+            <Pressable key={d.name} onPress={() => openDisease(d.name)} style={[styles.cleanRow, { paddingVertical: space.md }]} accessibilityRole="button" accessibilityLabel={`${d.name} guide`}>
               <View style={styles.cleanImageWrap}>
                 {getDiseaseImage(d.name) ? (
                   <Image source={getDiseaseImage(d.name)} style={styles.cleanImage} resizeMode="cover" />
@@ -296,7 +296,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
         </View>
       ) : null}
 
-      <Text style={[styles.cleanMeta, { marginTop: 12, marginBottom: 10 }]}>
+      <Text style={[styles.cleanMeta, { marginTop: space.md, marginBottom: space.md }]}>
         {list.length ? `Showing ${Math.min(shown, list.length)} of ${list.length} species` : "0 species"}
       </Text>
 
@@ -310,21 +310,21 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
         // just stopping — the number is the pitch.
         <Pressable
           onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }}
-          style={({ pressed }) => [styles.card, { marginTop: 6, alignItems: "center" }, pressed && { opacity: 0.85 }]}
+          style={({ pressed }) => [styles.card, { marginTop: space.sm, alignItems: "center" }, pressed && { opacity: 0.85 }]}
           accessibilityRole="button"
           accessibilityLabel="Unlock the full species catalog with Premium"
         >
           <Text style={{ fontSize: type.display, letterSpacing: -0.4 }}>🔒</Text>
-          <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
+          <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.md, textAlign: "center" }}>
             {list.length - shown} more species
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.sm, textAlign: "center", lineHeight: 19 }}>
             Free accounts preview {freeLimit} species. Unlock all {SPECIES.length} with care guides, compatibility, and wishlist.
           </Text>
-          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12 }}>See Premium 👑</Text>
+          <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.md }}>See Premium 👑</Text>
         </Pressable>
       ) : list.length > shown ? (
-        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 20, list.length)); }} style={[styles.ghostBtn, { marginTop: 4 }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 20, list.length)); }} style={[styles.ghostBtn, { marginTop: space.xs }]} accessibilityRole="button">
           <Text style={styles.ghostBtnText}>Show more ({list.length - shown})</Text>
         </Pressable>
       ) : null}
@@ -363,7 +363,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       // event that already re-renders everything.
       key={columns}
       numColumns={columns}
-      columnWrapperStyle={columns > 1 ? { gap: 10 } : undefined}
+      columnWrapperStyle={columns > 1 ? { gap: space.md } : undefined}
       data={list.slice(0, shown)}
       renderItem={renderItem}
       keyExtractor={(item) => item.name}

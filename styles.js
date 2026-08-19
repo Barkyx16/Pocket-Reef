@@ -174,8 +174,31 @@ export const tint = {
 // Accent gradient stops, reused by buttons, bars, and rings.
 export const accentGradient = ["#7ff0dd", "#38e1c6", "#1fb6a0"];
 
-// 4pt spacing scale.
-export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 };
+// ── Spacing rhythm ───────────────────────────────────────────────────────────
+//
+// A 4pt grid, plus one hairline step. Measured before adopting it: 1,620
+// spacing values across 22 distinct numbers, including 1, 2.5, 5, 7, 9, 11 and
+// 13 — the fingerprints of nudging a gap until it looked right rather than
+// choosing from a set. Rhythm is what makes a layout feel deliberate, and there
+// is none when every gap is its own number.
+//
+// `hair` is 2 and exists on purpose: optical alignment sometimes needs a nudge
+// smaller than the grid, and 63 margins were already using it for exactly that.
+// Rounding those up to 4 would have doubled them.
+//
+// The scale stops at 32. Values above it are structural — a hero's inset, a
+// modal's top offset — and are not part of a rhythm; snapping them to the top
+// step would be a layout change dressed up as consistency.
+export const space = {
+  hair: 2,   // optical nudges, not layout
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  huge: 32,
+};
 
 const ACCENT = theme.accent;
 const ACCENT_LIGHT = theme.accentLight;
@@ -190,93 +213,93 @@ export const styles = StyleSheet.create({
   // Devices without an indicator get 18pt of empty space below the last card,
   // which nobody will ever notice; the alternative is the FAB back on top of
   // the last card's controls on every iPhone that has one.
-  scroll: { padding: 16, paddingBottom: 186 },
+  scroll: { padding: space.lg, paddingBottom: 186 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
-  heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", ...elevation.card },
-  heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 },
+  heroBanner: { borderRadius: 24, padding: space.xl, marginBottom: space.lg, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", ...elevation.card },
+  heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: space.md, paddingVertical: space.xs, marginBottom: space.md },
   heroEyebrow: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
-  heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: 2 },
-  heroSub: { color: "#cfe6f2", fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 19 },
+  heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: space.hair },
+  heroSub: { color: "#cfe6f2", fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.sm, lineHeight: 19 },
 
   // ── Profile hero (uncropped banner art + solid info panel below) ───────────
-  profileHero: { borderRadius: 28, marginBottom: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", ...elevation.hero },
-  profileHeroPanel: { padding: 18, backgroundColor: "#0a2233", borderTopWidth: 1, borderTopColor: "rgba(127, 240, 221, 0.18)" },
+  profileHero: { borderRadius: 28, marginBottom: space.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", backgroundColor: "#082031", ...elevation.hero },
+  profileHeroPanel: { padding: space.xl, backgroundColor: "#0a2233", borderTopWidth: 1, borderTopColor: "rgba(127, 240, 221, 0.18)" },
   profileHeroName: { flexShrink: 1, color: "#ffffff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 },
-  profileHeroBannerPill: { backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4, maxWidth: "50%" },
+  profileHeroBannerPill: { backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: space.md, paddingVertical: space.xs, maxWidth: "50%" },
   profileHeroBannerPillText: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
   profileHeroLevelBadge: { width: 54, height: 54, borderRadius: radius.xl, backgroundColor: "rgba(6,20,32,0.55)", borderWidth: 1, borderColor: "rgba(56,225,198,0.45)", alignItems: "center", justifyContent: "center" },
 
   // ── Card (glass chrome) ────────────────────────────────────────────────────
-  card: { backgroundColor: theme.card, borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: theme.border, ...elevation.card },
+  card: { backgroundColor: theme.card, borderRadius: radius.card, padding: space.xl, marginBottom: space.lg, borderWidth: 1, borderColor: theme.border, ...elevation.card },
   // A primary/feature card with a soft accent glow to draw the eye.
-  cardElevated: { backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
-  cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
-  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.6, color: ACCENT_LIGHT },
+  cardElevated: { backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.card, padding: space.lg, marginBottom: space.lg, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
+  cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: space.md },
+  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: space.sm, textTransform: "uppercase", letterSpacing: 0.6, color: ACCENT_LIGHT },
   cardTitle: { fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
-  cardText: { marginTop: 8, fontSize: type.body, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
-  iconSquare: { width: 32, height: 32, borderRadius: radius.sm, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.18)" },
-  primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: radius.pill, backgroundColor: ACCENT, marginBottom: 12 },
+  cardText: { marginTop: space.sm, fontSize: type.body, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
+  iconSquare: { width: 32, height: 32, borderRadius: radius.sm, marginRight: space.md, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.18)" },
+  primaryFeatureAccentBar: { height: 4, width: 44, borderRadius: radius.pill, backgroundColor: ACCENT, marginBottom: space.md },
 
   // ── Species / list row (glass) ─────────────────────────────────────────────
-  listGap: { gap: 12 },
-  cleanRow: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(9, 30, 45, 0.66)", borderRadius: 20, padding: 12, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: 12 },
+  listGap: { gap: space.md },
+  cleanRow: { flexDirection: "row", alignItems: "center", gap: space.lg, backgroundColor: "rgba(9, 30, 45, 0.66)", borderRadius: 20, padding: space.md, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: space.md },
   cleanImageWrap: { width: 56, height: 56, borderRadius: radius.xl, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: theme.hairline },
   cleanImage: { width: 56, height: 56 },
   cleanEmoji: { fontSize: 28, letterSpacing: -0.4 },
   cleanName: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
-  cleanMeta: { color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 },
+  cleanMeta: { color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs },
   cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Chips & pills ──────────────────────────────────────────────────────────
-  chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: radius.pill, borderWidth: 1 },
+  chip: { paddingHorizontal: space.md, paddingVertical: space.xs, borderRadius: radius.pill, borderWidth: 1 },
   chipText: { fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" },
-  pill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1 },
+  pill: { paddingHorizontal: space.md, paddingVertical: space.sm, borderRadius: radius.pill, borderWidth: 1 },
 
   // ── Buttons ──────────────────────────────────────────────────────────────
-  primaryBtn: { backgroundColor: ACCENT, borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", shadowColor: ACCENT, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 },
+  primaryBtn: { backgroundColor: ACCENT, borderRadius: radius.xl, paddingVertical: space.md, alignItems: "center", shadowColor: ACCENT, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 },
   primaryBtnText: { color: "#04202a", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
-  ghostBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border },
+  ghostBtn: { borderRadius: radius.xl, paddingVertical: space.md, alignItems: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border },
   ghostBtnText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
 
   // ── Stat tiles ─────────────────────────────────────────────────────────────
-  statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
-  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56,225,198,0.06)", borderRadius: radius.xl, padding: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.14)" },
+  statGrid: { flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md },
+  statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56,225,198,0.06)", borderRadius: radius.xl, padding: space.md, borderWidth: 1, borderColor: "rgba(56,225,198,0.14)" },
   statLabel: { color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.6 },
-  statValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
+  statValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.xs, fontVariant: ["tabular-nums"] },
 
   // ── Search input ───────────────────────────────────────────────────────────
-  search: { fontFamily: "Inter_400Regular", backgroundColor: theme.card, borderRadius: radius.xl, paddingHorizontal: 16, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg },
+  search: { fontFamily: "Inter_400Regular", backgroundColor: theme.card, borderRadius: radius.xl, paddingHorizontal: space.lg, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg },
 
   // ── Detail ─────────────────────────────────────────────────────────────────
-  detailHeroWrap: { alignItems: "center", paddingVertical: 12 },
+  detailHeroWrap: { alignItems: "center", paddingVertical: space.md },
   detailImageWrap: { width: 136, height: 136, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.18, shadowRadius: 20, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
   detailEmoji: { fontSize: 68, letterSpacing: -1 },
-  detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: 12, textAlign: "center" },
-  backBtn: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", paddingVertical: 8, paddingHorizontal: 4 },
+  detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: space.md, textAlign: "center" },
+  backBtn: { flexDirection: "row", alignItems: "center", gap: space.sm, alignSelf: "flex-start", paddingVertical: space.sm, paddingHorizontal: space.xs },
   backText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Auth (sign in / sign up) ───────────────────────────────────────────────
-  authInput: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_700Bold", fontWeight: "700", paddingHorizontal: 16, paddingVertical: 14 },
-  authLinkBtn: { paddingVertical: 12, alignItems: "center" },
+  authInput: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_700Bold", fontWeight: "700", paddingHorizontal: space.lg, paddingVertical: space.lg },
+  authLinkBtn: { paddingVertical: space.md, alignItems: "center" },
   authLinkText: { color: ACCENT, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" },
-  authError: { color: theme.danger, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18, marginTop: 10 },
-  authNotice: { color: ACCENT_LIGHT, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18, marginTop: 10 },
+  authError: { color: theme.danger, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18, marginTop: space.md },
+  authNotice: { color: ACCENT_LIGHT, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18, marginTop: space.md },
 
   // ── Account / cloud card ───────────────────────────────────────────────────
-  accountInfoBox: { backgroundColor: theme.well, borderRadius: radius.lg, padding: 14, borderWidth: 1, borderColor: theme.border, marginBottom: 10 },
+  accountInfoBox: { backgroundColor: theme.well, borderRadius: radius.lg, padding: space.lg, borderWidth: 1, borderColor: theme.border, marginBottom: space.md },
   accountInfoLabel: { color: ACCENT_LIGHT, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
-  accountInfoValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 },
+  accountInfoValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.xs },
   // Hairline separator between two merged sections inside one card.
-  sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: 18 },
-  accountSignOutBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, marginTop: 10 },
+  sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: space.xl },
+  accountSignOutBtn: { borderRadius: radius.xl, paddingVertical: space.md, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, marginTop: space.md },
   accountSignOutText: { color: "#ffffff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" },
-  accountDangerBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,123,123,0.08)", borderWidth: 1, borderColor: "rgba(255,123,123,0.45)", marginTop: 10 },
+  accountDangerBtn: { borderRadius: radius.xl, paddingVertical: space.lg, alignItems: "center", backgroundColor: "rgba(255,123,123,0.08)", borderWidth: 1, borderColor: "rgba(255,123,123,0.45)", marginTop: space.md },
   accountDangerText: { color: theme.danger, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Floating bottom tab bar ────────────────────────────────────────────────
-  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: radius.card, padding: 6, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", ...elevation.floating },
-  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 8, borderRadius: radius.xl, gap: 4 },
+  bottomTabs: { position: "absolute", left: 8, right: 8, bottom: 16, flexDirection: "row", backgroundColor: "rgba(7, 24, 38, 0.92)", borderRadius: radius.card, padding: space.sm, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.12)", ...elevation.floating },
+  bottomTabButton: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: space.sm, borderRadius: radius.xl, gap: space.xs },
   // A tinted well rather than a filled, glowing capsule. The active tab should
   // be obvious at a glance without being the brightest thing on the screen.
   bottomTabButtonActive: { backgroundColor: "rgba(56,225,198,0.14)" },

@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { EmptyState } from "./EmptyState";
 import { getWaterStats, assessParam, paramStatusColor } from "../core";
 import { activeParams } from "../lib/targets";
@@ -28,7 +28,7 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
   return (
     <View>
       {inRangePct != null ? (
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14, backgroundColor: theme.well, borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: theme.border }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.lg, backgroundColor: theme.well, borderRadius: radius.md, padding: space.md, borderWidth: 1, borderColor: theme.border }}>
           <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Tests fully in range</Text>
           <Text style={{ color: pctColor, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inRangePct}%</Text>
         </View>
@@ -41,12 +41,12 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
           </View>
         ))}
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
         {stats.count} test{stats.count > 1 ? "s" : ""} logged{stats.cadence != null ? ` · about every ${stats.cadence} day${stats.cadence === 1 ? "" : "s"}` : ""}.
         {stats.cadence != null && stats.cadence > 10 ? " Testing a little more often will catch problems sooner." : stats.cadence != null ? " Great testing habit! 🧪" : ""}
       </Text>
       {onExport ? (
-        <Pressable onPress={onExport} style={[styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button">
+        <Pressable onPress={onExport} style={[styles.ghostBtn, { marginTop: space.lg }]} accessibilityRole="button">
           <Text style={styles.ghostBtnText}>📤 Export water log (CSV)</Text>
         </Pressable>
       ) : null}

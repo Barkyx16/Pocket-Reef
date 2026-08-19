@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 
 // Badge grid — the reef version of Pocket Planter's achievements. Earned badges
@@ -18,24 +18,24 @@ export function AchievementsCard({ items = [] }) {
 
   return (
     <View>
-      <Text style={[styles.cardText, { marginBottom: 12 }]}>{earned} of {items.length} unlocked — keep caring for your reef to earn them all.</Text>
-      <View style={{ flexDirection: "row", gap: 6, marginBottom: 14 }}>
+      <Text style={[styles.cardText, { marginBottom: space.md }]}>{earned} of {items.length} unlocked — keep caring for your reef to earn them all.</Text>
+      <View style={{ flexDirection: "row", gap: space.sm, marginBottom: space.lg }}>
         {FILTERS.map(([id, label]) => {
           const on = filter === id;
           return (
-            <Pressable key={id} onPress={() => { tapHaptic("light"); setFilter(id); setVisible(12); }} style={[styles.pill, { flex: 1, alignItems: "center", paddingVertical: 8, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
+            <Pressable key={id} onPress={() => { tapHaptic("light"); setFilter(id); setVisible(12); }} style={[styles.pill, { flex: 1, alignItems: "center", paddingVertical: space.sm, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
               <Text style={{ color: on ? theme.onAccent : theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
             </Pressable>
           );
         })}
       </View>
       {shown.length === 0 ? <Text style={styles.cardText}>Nothing here yet.</Text> : null}
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.md }}>
         {shown.map((a) => (
           <View
             key={a.id}
             style={{
-              width: "31%", minWidth: 96, flexGrow: 1, alignItems: "center", padding: 12, borderRadius: radius.xl, borderWidth: 1,
+              width: "31%", minWidth: 96, flexGrow: 1, alignItems: "center", padding: space.md, borderRadius: radius.xl, borderWidth: 1,
               backgroundColor: a.earned ? "rgba(56,225,198,0.10)" : "rgba(255,255,255,0.03)",
               borderColor: a.earned ? "rgba(56,225,198,0.30)" : theme.border,
               opacity: a.earned ? 1 : 0.5,
@@ -43,13 +43,13 @@ export function AchievementsCard({ items = [] }) {
             }}
           >
             <Text style={{ fontSize: 26, letterSpacing: -0.4 }}>{a.earned ? a.emoji : "🔒"}</Text>
-            <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>{a.title}</Text>
-            <Text style={{ color: theme.bodyText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
+            <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.sm, textAlign: "center" }}>{a.title}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
           </View>
         ))}
       </View>
       {filtered.length > visible ? (
-        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 18, filtered.length)); }} style={[styles.ghostBtn, { marginTop: 12 }]} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); setVisible((v) => Math.min(v + 18, filtered.length)); }} style={[styles.ghostBtn, { marginTop: space.md }]} accessibilityRole="button">
           <Text style={styles.ghostBtnText}>Show more ({filtered.length - visible})</Text>
         </Pressable>
       ) : null}

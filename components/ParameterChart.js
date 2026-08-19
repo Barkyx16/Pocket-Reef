@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, View, useWindowDimensions } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { assessParam, paramStatusColor, tapHaptic } from "../core";
 import { displayParams } from "../lib/targets";
 import { tempToDisplay } from "../lib/units";
@@ -95,7 +95,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose} transparent={false}>
       <View style={{ flex: 1, backgroundColor: theme.background }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 16, paddingTop: 56, paddingBottom: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, paddingHorizontal: space.lg, paddingTop: 56, paddingBottom: space.md }}>
           <Pressable onPress={() => { tapHaptic("light"); onClose(); }} hitSlop={12} accessibilityRole="button" accessibilityLabel="Close chart">
             <Ionicons name="chevron-back" size={24} color={theme.accent} />
           </Pressable>
@@ -110,8 +110,8 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
           ) : null}
         </View>
 
-        <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 48 }} showsVerticalScrollIndicator={false}>
-          <View style={{ flexDirection: "row", gap: 6, marginBottom: 14 }}>
+        <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: 48 }} showsVerticalScrollIndicator={false}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginBottom: space.lg }}>
             {RANGES.map((r) => {
               const on = days === r.id;
               return (
@@ -130,9 +130,9 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
           </View>
 
           {!view || !view.layout ? (
-            <View style={[styles.card, { alignItems: "center", paddingVertical: 28 }]}>
+            <View style={[styles.card, { alignItems: "center", paddingVertical: space.huge }]}>
               <Ionicons name="analytics-outline" size={28} color={theme.secondaryText} />
-              <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Not enough readings</Text>
+              <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.sm }}>Not enough readings</Text>
               <Text style={[styles.cardText, { textAlign: "center" }]}>Two or more {p.label.toLowerCase()} readings in this range will draw a chart here.</Text>
             </View>
           ) : (
@@ -140,7 +140,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
               <View style={{ flexDirection: "row" }}>
                 {/* Y axis. Three labels is enough to read a value off the line
                     without turning the chart into a spreadsheet. */}
-                <View style={{ width: 40, height: plotH, justifyContent: "space-between", alignItems: "flex-end", paddingRight: 6 }}>
+                <View style={{ width: 40, height: plotH, justifyContent: "space-between", alignItems: "flex-end", paddingRight: space.sm }}>
                   {[view.layout.scale.max, (view.layout.scale.max + view.layout.scale.min) / 2, view.layout.scale.min].map((v, i) => (
                     <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                       {Math.round(v * 100) / 100}
@@ -208,7 +208,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
               </View>
 
               {/* X axis */}
-              <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 40, marginTop: 6 }}>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 40, marginTop: space.sm }}>
                 {(view.ticks || []).map((d, i) => (
                   <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{short(d)}</Text>
                 ))}
@@ -216,11 +216,11 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
 
               {/* What the guide lines mean. */}
               {view.events && view.events.length ? (
-                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 12, marginLeft: 40 }}>
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.md, marginTop: space.md, marginLeft: 40 }}>
                   {[...new Set(view.events.map((e) => String(e.type).split(":")[0]))].map((t) => {
                     const st = styleFor(t);
                     return (
-                      <View key={t} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+                      <View key={t} style={{ flexDirection: "row", alignItems: "center", gap: space.xs }}>
                         <View style={{ width: 2, height: 11, backgroundColor: st.color, borderRadius: 1 }} />
                         <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{st.label}</Text>
                       </View>
@@ -229,7 +229,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
                 </View>
               ) : null}
 
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
                 {view.layout.dots.length} readings · {short(view.layout.span.from)} to {short(view.layout.span.to)}
               </Text>
             </View>
@@ -237,9 +237,9 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
 
           {/* Stability — the reading behind the reading. */}
           {stability ? (
-            <View style={[styles.card, { marginTop: 12 }]}>
+            <View style={[styles.card, { marginTop: space.md }]}>
               <Text accessibilityRole="header" style={styles.cardEyebrow}>How steady it is</Text>
-              <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 4 }}>
+              <View style={{ flexDirection: "row", alignItems: "baseline", gap: space.sm, marginTop: space.xs }}>
                 <Text style={{ color: stability.grade === "unstable" ? theme.danger : stability.grade === "swinging" ? theme.warn : theme.accent, fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {stability.gradeLabel}
                 </Text>
@@ -247,7 +247,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
                   {stability.readings} readings over {stability.spanDays} days
                 </Text>
               </View>
-              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
                 Fastest move {stability.perDay}{p.unit ? ` ${p.unit}` : ""} a day, against {stability.limit} that's safe. Ranged {stability.low}–{stability.high}, averaging {stability.mean}.
               </Text>
             </View>
@@ -255,20 +255,20 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
 
           {/* What moves it. */}
           {related.length ? (
-            <View style={[styles.card, { marginTop: 12 }]}>
+            <View style={[styles.card, { marginTop: space.md }]}>
               <Text accessibilityRole="header" style={styles.cardEyebrow}>What moves it</Text>
               {related.map((c, i) => {
                 const note = interpret(c);
                 return (
-                  <View key={i} style={{ marginTop: 8 }}>
+                  <View key={i} style={{ marginTop: space.sm }}>
                     <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>{c.text}</Text>
                     {note && note.note ? (
-                      <Text style={{ color: note.tone === "warn" ? theme.warn : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 2 }}>{note.note}</Text>
+                      <Text style={{ color: note.tone === "warn" ? theme.warn : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.hair }}>{note.note}</Text>
                     ) : null}
                   </View>
                 );
               })}
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15, marginTop: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15, marginTop: space.md }}>
                 Patterns in your own log, not proof of cause.
               </Text>
             </View>

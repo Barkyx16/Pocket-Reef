@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme, useResponsiveLayout, radius, type } from "../styles";
+import { styles, theme, useResponsiveLayout, radius, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { tapHaptic } from "../core";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -16,7 +16,7 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
   const isLocked = (id) => Boolean(lockedIds && lockedIds.has(id));
   return (
     <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.scroll, layout.contentStyle]} showsVerticalScrollIndicator={false}>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 24 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: space.sm, marginBottom: space.xxl }}>
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (
           <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
@@ -25,12 +25,12 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
         ) : null}
       </View>
 
-      <View style={{ gap: 6 }}>
+      <View style={{ gap: space.sm }}>
         {items.map((it) => (
           <Pressable
             key={it.id}
             onPress={() => { tapHaptic(); onNavigate && onNavigate(it.id); }}
-            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 14, paddingVertical: 10, borderRadius: radius.xl }, pressed && { opacity: 0.65 }]}
+            style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.lg, paddingVertical: space.sm, borderRadius: radius.xl }, pressed && { opacity: 0.65 }]}
             accessibilityRole="button"
             accessibilityLabel={it.label}
           >
@@ -42,12 +42,12 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
               {/* The description lived in MORE_ITEMS all along and was never
                   rendered, which is why this sheet read as five bare words. */}
               {isLocked(it.id) ? (
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.xs, marginTop: space.hair }}>
                   <Ionicons name="lock-closed" size={11} color={theme.accent} />
                   <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Premium</Text>
                 </View>
               ) : it.desc ? (
-                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{it.desc}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>{it.desc}</Text>
               ) : null}
             </View>
             <Text style={{ color: theme.accent, fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>

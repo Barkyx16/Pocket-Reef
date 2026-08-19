@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 // New-fish acclimation guide — the reef version of Pocket Planter's step-by-step
@@ -16,16 +16,16 @@ const STEPS = [
 export function AcclimationCard() {
   return (
     <View>
-      <Text style={[styles.cardText, { marginBottom: 12 }]}>Adding a new fish? Take it slow — a careful acclimation prevents shock and disease.</Text>
+      <Text style={[styles.cardText, { marginBottom: space.md }]}>Adding a new fish? Take it slow — a careful acclimation prevents shock and disease.</Text>
       {STEPS.map((step, i) => (
-        <View key={i} style={{ flexDirection: "row", gap: 12 }}>
+        <View key={i} style={{ flexDirection: "row", gap: space.md }}>
           <View style={{ alignItems: "center", width: 26 }}>
             <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", alignItems: "center", justifyContent: "center" }}>
               <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{i + 1}</Text>
             </View>
-            {i < STEPS.length - 1 ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.30)", marginTop: 2, minHeight: 14 }} /> : null}
+            {i < STEPS.length - 1 ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.30)", marginTop: space.hair, minHeight: 14 }} /> : null}
           </View>
-          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20, paddingBottom: 14 }}>{step}</Text>
+          <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20, paddingBottom: space.lg }}>{step}</Text>
         </View>
       ))}
     </View>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { iconForEmoji } from "../lib/icons";
 import { getRecommended } from "../core";
 import { formatVolume } from "../lib/units";
@@ -18,7 +18,7 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
 
   const recommendedTool = () => recommended.length ? (
     <View>
-      <Text style={[styles.cardText, { marginTop: 0, marginBottom: 6 }]}>{tank.length ? "Fits your tank and gets along with your stock:" : "Great beginner picks that fit your tank:"}</Text>
+      <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.sm }]}>{tank.length ? "Fits your tank and gets along with your stock:" : "Great beginner picks that fit your tank:"}</Text>
       {recommended.map((s) => {
         const bits = [];
         if (s.temperament === "peaceful") bits.push("Peaceful");
@@ -36,10 +36,10 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
     <View>
       <Text style={styles.cardText}>Share a snapshot of your tank — size, species, health score, and latest water reading — with anyone.</Text>
       {tank.length ? (
-        <Pressable onPress={onShare} style={({ pressed }) => [styles.primaryBtn, { marginTop: 12 }, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]} accessibilityRole="button">
+        <Pressable onPress={onShare} style={({ pressed }) => [styles.primaryBtn, { marginTop: space.md }, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]} accessibilityRole="button">
           <Text style={styles.primaryBtnText}>📤 Share my tank</Text>
         </Pressable>
-      ) : <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>Stock your tank first, then you can share it.</Text>}
+      ) : <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm }}>Stock your tank first, then you can share it.</Text>}
     </View>
   );
 
@@ -63,13 +63,13 @@ export function TankExtrasCard({ tank = [], tankGallons, tankWater, quantities =
 
   return (
     <View style={styles.card}>
-      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Explore & More</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+      <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Explore & More</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {TOOLS.map((tool) => (
           <Pill key={tool.id} icon={iconForEmoji(tool.emoji)} label={tool.label} active={sel === tool.id} onPress={() => pick(tool.id)} />
         ))}
       </View>
-      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: 12, paddingTop: 16 }}>
+      <View style={{ borderTopWidth: 1, borderTopColor: theme.hairline, marginTop: space.md, paddingTop: space.lg }}>
         {active.render()}
       </View>
     </View>

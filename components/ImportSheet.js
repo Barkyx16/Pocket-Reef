@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { TEXT_LIMITS } from "../lib/textLimits";
 
@@ -35,12 +35,12 @@ export function ImportSheet({ onImport, onClose }) {
           placeholder="Paste exported JSON here…"
           placeholderTextColor={theme.secondaryText}
           multiline
-          style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: error ? theme.danger : theme.border, fontSize: type.small, minHeight: 140, textAlignVertical: "top", marginTop: 12 }}
+          style={{ backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: error ? theme.danger : theme.border, fontSize: type.small, minHeight: 140, textAlignVertical: "top", marginTop: space.md }}
         
             maxLength={TEXT_LIMITS.note}
           />
-        {error ? <Text style={{ color: theme.danger, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 8 }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
-        <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: 14 }]} accessibilityRole="button" accessibilityLabel="Restore this backup, replacing everything on this device" accessibilityState={{ disabled: !raw.trim() }}>
+        {error ? <Text style={{ color: theme.danger, fontSize: type.small, lineHeight: 18, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.sm }}>That doesn't look like a valid Pocket Reef backup. Check you copied the whole thing.</Text> : null}
+        <Pressable onPress={restore} disabled={!raw.trim()} style={[raw.trim() ? styles.primaryBtn : styles.ghostBtn, { marginTop: space.lg }]} accessibilityRole="button" accessibilityLabel="Restore this backup, replacing everything on this device" accessibilityState={{ disabled: !raw.trim() }}>
           <Text style={raw.trim() ? styles.primaryBtnText : styles.ghostBtnText}>Restore</Text>
         </Pressable>
       </View>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { iconForEmoji } from "../lib/icons";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -53,13 +53,13 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
           : "Everything's on schedule. Tap a job when you do it and the countdown resets."}
       </Text>
 
-      <View style={{ gap: 6, marginTop: 12 }}>
+      <View style={{ gap: space.sm, marginTop: space.md }}>
         {rows.map(({ task, status }) => {
           const color = STATE_COLOR[status.state];
           const isEditing = editing === task.id;
           return (
-            <View key={task.id} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: status.state === "overdue" ? "rgba(255,123,123,0.4)" : theme.border, paddingHorizontal: 10, paddingVertical: 9 }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <View key={task.id} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: status.state === "overdue" ? "rgba(255,123,123,0.4)" : theme.border, paddingHorizontal: space.sm, paddingVertical: space.sm }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: space.md }}>
                 <View style={{ width: 32, height: 32, borderRadius: radius.sm, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
                   {iconForEmoji(task.emoji) ? (
                     <Ionicons name={iconForEmoji(task.emoji)} size={15} color={theme.accent} />
@@ -75,7 +75,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                   accessibilityLabel={`${task.label}. ${statusLabel(status)}. Tap to change how often.`}
                 >
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{task.label}</Text>
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{statusLabel(status)}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.hair }}>{statusLabel(status)}</Text>
                 </Pressable>
 
                 {/* One tap is the whole interaction — the countdown resets and
@@ -83,7 +83,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                 <Pressable
                   onPress={() => { successHaptic(); onLog(task.id); }}
                   hitSlop={touchSlop(32)}
-                  style={({ pressed }) => [{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
+                  style={({ pressed }) => [{ paddingHorizontal: space.md, paddingVertical: space.sm, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }, pressed && { opacity: 0.7 }]}
                   accessibilityRole="button"
                   accessibilityLabel={`Mark ${task.label} done`}
                 >
@@ -94,19 +94,19 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
               {/* A progress bar only means something once there's a last-done
                   date to measure from. */}
               {status.state !== "never" ? (
-                <View style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.08)", marginTop: 8, overflow: "hidden" }}>
+                <View style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.08)", marginTop: space.sm, overflow: "hidden" }}>
                   <View style={{ width: `${status.pct}%`, height: "100%", backgroundColor: color, borderRadius: 2 }} />
                 </View>
               ) : null}
 
               {isEditing ? (
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md }}>
                   <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Every</Text>
                   <TextInput
                     defaultValue={String(status.interval)}
                     onChangeText={(v) => onSetInterval(task, integerText(v))}
                     keyboardType="number-pad"
-                    style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
+                    style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
                     accessibilityLabel={`How often ${task.label} is due, in days`}
                   
             maxLength={TEXT_LIMITS.number}
@@ -131,14 +131,14 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
 
       {/* ADD */}
       {adding ? (
-        <View style={{ marginTop: 12, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.accent, padding: 12 }}>
+        <View style={{ marginTop: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.accent, padding: space.md }}>
           <TextInput
             value={draft.label}
             onChangeText={(v) => setDraft((d) => ({ ...d, label: v }))}
             placeholder="What needs doing?"
             placeholderTextColor={theme.secondaryText}
             autoFocus
-            style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}
+            style={{ backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}
             accessibilityLabel="Name of the new job"
           
             maxLength={TEXT_LIMITS.name}
@@ -146,7 +146,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
 
           {/* Nobody should have to invent "replace the UV bulb" from a blank
               field, so the common ones are one tap. */}
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm, marginTop: space.md }}>
             {suggestions.map((s) => (
               <Pressable
                 key={s.label}
@@ -160,13 +160,13 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
             ))}
           </View>
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.md }}>
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Every</Text>
             <TextInput
               value={draft.days}
               onChangeText={(v) => setDraft((d) => ({ ...d, days: integerText(v) }))}
               keyboardType="number-pad"
-              style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 6, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
+              style={{ width: 58, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}
               accessibilityLabel="How often the new job is due, in days"
             
             maxLength={TEXT_LIMITS.number}
@@ -178,7 +178,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
             <Pressable
               onPress={submit}
               disabled={!draft.label.trim()}
-              style={({ pressed }) => [{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: radius.sm, backgroundColor: draft.label.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderRadius: radius.sm, backgroundColor: draft.label.trim() ? theme.accent : "rgba(255,255,255,0.06)" }, pressed && { opacity: 0.8 }]}
               accessibilityRole="button"
               accessibilityLabel="Add this job"
               accessibilityState={{ disabled: !draft.label.trim() }}
@@ -190,7 +190,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
       ) : (
         <Pressable
           onPress={() => { tapHaptic(); setAdding(true); }}
-          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, paddingVertical: 12, borderRadius: radius.md, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
+          style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: space.sm, marginTop: space.md, paddingVertical: space.md, borderRadius: radius.md, borderWidth: 1, borderStyle: "dashed", borderColor: theme.border }, pressed && { opacity: 0.7 }]}
           accessibilityRole="button"
           accessibilityLabel="Add a job to this tank"
         >

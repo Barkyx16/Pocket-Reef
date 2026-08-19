@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { testSchedule } from "../lib/cadence";
 import { EmptyState } from "./EmptyState";
 
@@ -28,16 +28,16 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
   return (
     <View>
       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{schedule.headline}</Text>
-      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 6 }}>
+      <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
         Each interval is half the time this parameter would take to reach the edge of its safe range at the speed it's actually moving — so a problem is caught on the way, not on arrival.
       </Text>
 
-      <View style={{ gap: 8, marginTop: 12 }}>
+      <View style={{ gap: space.sm, marginTop: space.md }}>
         {schedule.items.map((it) => {
           const v = VERDICT[it.verdict] || VERDICT.unknown;
           return (
-            <View key={it.key} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: it.verdict === "too-rare" ? `${v.color}55` : theme.border, padding: 11 }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <View key={it.key} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: it.verdict === "too-rare" ? `${v.color}55` : theme.border, padding: space.md }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                 <Ionicons name={v.icon} size={14} color={v.color} />
                 <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
                 <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
@@ -45,7 +45,7 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
                 </Text>
               </View>
 
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 5 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginTop: space.xs }}>
                 <Text style={{ color: v.color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{v.label}</Text>
                 {it.actual != null ? (
                   <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
@@ -54,7 +54,7 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
                 ) : null}
               </View>
 
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.xs }}>
                 {it.reason}
               </Text>
             </View>

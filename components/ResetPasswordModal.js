@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { supabase } from "../lib/supabase";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { friendlyAuthError } from "../lib/authErrors";
@@ -39,12 +39,12 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
           covered both password fields and the button that submits them. */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: 24 }}
+        style={{ flex: 1, backgroundColor: "rgba(3,12,20,0.88)", alignItems: "center", justifyContent: "center", padding: space.xxl }}
       >
-        <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: 24 }}>
+        <View style={{ width: "100%", maxWidth: 420, backgroundColor: theme.cardSolid, borderRadius: 24, borderWidth: 1, borderColor: theme.border, padding: space.xxl }}>
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Reset password</Text>
-          <Text style={{ color: "#fff", fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>Set a new password</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 8 }}>
+          <Text style={{ color: "#fff", fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.xs }}>Set a new password</Text>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.sm }}>
             Pick something at least 8 characters long. You'll stay signed in on this device afterwards.
           </Text>
 
@@ -55,7 +55,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
             autoCapitalize="none"
             placeholder="New password"
             placeholderTextColor={theme.secondaryText}
-            style={[styles.authInput, { marginTop: 16 }]}
+            style={[styles.authInput, { marginTop: space.lg }]}
             accessibilityLabel="New password"
           
             maxLength={TEXT_LIMITS.password}
@@ -67,7 +67,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
             autoCapitalize="none"
             placeholder="Confirm new password"
             placeholderTextColor={theme.secondaryText}
-            style={[styles.authInput, { marginTop: 12 }]}
+            style={[styles.authInput, { marginTop: space.md }]}
             accessibilityLabel="Confirm new password"
           
             maxLength={TEXT_LIMITS.password}
@@ -75,7 +75,7 @@ export function ResetPasswordModal({ visible, onDone, onCancel }) {
 
           {error ? <Text style={styles.authError}>{error}</Text> : null}
 
-          <Pressable onPress={submit} disabled={busy} style={({ pressed }) => [styles.primaryBtn, { marginTop: 16 }, (pressed || busy) && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel={busy ? "Updating password" : "Update password"} accessibilityState={{ busy }}>
+          <Pressable onPress={submit} disabled={busy} style={({ pressed }) => [styles.primaryBtn, { marginTop: space.lg }, (pressed || busy) && { opacity: 0.8 }]} accessibilityRole="button" accessibilityLabel={busy ? "Updating password" : "Update password"} accessibilityState={{ busy }}>
             {busy ? <ActivityIndicator color={theme.onAccent} /> : <Text style={styles.primaryBtnText}>Update password</Text>}
           </Pressable>
           <Pressable onPress={() => close(onCancel)} style={styles.authLinkBtn} accessibilityRole="button">

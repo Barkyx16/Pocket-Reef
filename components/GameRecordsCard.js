@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 
 // Mirrors the four games in screens/GamesTab.js. Best streak + blitz score are
 // persisted there under pr_game_<id>_streak / pr_game_<id>_blitz; here we just read.
@@ -35,13 +35,13 @@ export function GameRecordsCard() {
 
   return (
     <View>
-      <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>Your personal bests across Reef Games — beat them in Practice or 60s Blitz.</Text>
-      <View style={{ gap: 8 }}>
+      <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>Your personal bests across Reef Games — beat them in Practice or 60s Blitz.</Text>
+      <View style={{ gap: space.sm }}>
         {GAMES.map((g) => {
           const streak = records[`pr_game_${g.id}_streak`] || 0;
           const blitz = records[`pr_game_${g.id}_blitz`] || 0;
           return (
-            <View key={g.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 12 }}>
+            <View key={g.id} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: space.md, paddingHorizontal: space.md }}>
               <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{g.emoji}</Text>
               <Text style={{ flex: 1, color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{g.name}</Text>
               <View style={{ alignItems: "center", minWidth: 46 }}>

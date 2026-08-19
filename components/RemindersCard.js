@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AppState, Linking, Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { reminderStatus, requestPermission } from "../lib/notifications";
 import { tapHaptic } from "../core";
 import { Pill } from "./Pill";
@@ -23,9 +23,9 @@ const FREQ = [
 
 function Row({ label, value, onChange }) {
   return (
-    <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 8 }}>{label}</Text>
-      <View style={{ flexDirection: "row", gap: 8 }}>
+    <View style={{ marginBottom: space.lg }}>
+      <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: space.sm }}>{label}</Text>
+      <View style={{ flexDirection: "row", gap: space.sm }}>
         {FREQ.map((f) => (
           <Pill key={f.id} fill label={f.label} active={value === f.id} onPress={() => onChange(f.id)} />
         ))}
@@ -124,12 +124,12 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
       <Text style={styles.cardText}>Set your care schedule. Reminders arrive as notifications and land on the screen where you act on them.</Text>
 
       {banner ? (
-        <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 9, marginTop: 12, backgroundColor: `${banner.tone}14`, borderRadius: radius.md, borderWidth: 1, borderColor: `${banner.tone}44`, paddingHorizontal: 11, paddingVertical: 10 }}>
-          <Ionicons name={banner.icon} size={15} color={banner.tone} style={{ marginTop: 1 }} />
+        <View style={{ flexDirection: "row", alignItems: "flex-start", gap: space.sm, marginTop: space.md, backgroundColor: `${banner.tone}14`, borderRadius: radius.md, borderWidth: 1, borderColor: `${banner.tone}44`, paddingHorizontal: space.md, paddingVertical: space.md }}>
+          <Ionicons name={banner.icon} size={15} color={banner.tone} style={{ marginTop: space.hair }} />
           <View style={{ flex: 1 }}>
             <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{banner.text}</Text>
             {banner.action ? (
-              <Pressable onPress={enable} style={{ marginTop: 8 }} accessibilityRole="button" accessibilityLabel={banner.action}>
+              <Pressable onPress={enable} style={{ marginTop: space.sm }} accessibilityRole="button" accessibilityLabel={banner.action}>
                 <Text style={{ color: banner.tone, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{banner.action} ›</Text>
               </Pressable>
             ) : null}
@@ -137,7 +137,7 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
         </View>
       ) : null}
 
-      <View style={{ marginTop: 14 }}>
+      <View style={{ marginTop: space.lg }}>
         <Row label="Test water" value={p.waterTest || "weekly"} onChange={(v) => set("waterTest", v)} />
         <Row label="Water change" value={p.waterChange || "weekly"} onChange={(v) => set("waterChange", v)} />
         <Row label="Feeding check-in" value={p.feeding || "off"} onChange={(v) => set("feeding", v)} />
@@ -148,11 +148,11 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
           bare QT box was reported overdue on the display's rhythm. Defaults to
           "follow the above", so a single-tank keeper never sees a decision. */}
       {tank && onChangeTankReminders ? (
-        <View style={{ marginTop: 6, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
+        <View style={{ marginTop: space.sm, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             Just for {tank.name || "this tank"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3, marginBottom: 10 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.xs, marginBottom: space.md }}>
             Leave these on “Same as above” unless this tank runs to its own schedule.
           </Text>
 
@@ -161,9 +161,9 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
             ["waterChange", "Water change"],
             ["feeding", "Feeding check-in"],
           ].map(([key, label]) => (
-            <View key={key} style={{ marginBottom: 12 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 6 }}>{label}</Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+            <View key={key} style={{ marginBottom: space.md }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: space.sm }}>{label}</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
                 {[{ id: "", label: "Same as above" }, ...FREQ].map((f) => {
                   const current = (tank.reminders || {})[key] || "";
                   return (

@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { careLevelColor, temperamentColor } from "../core";
 import { formatTempRange, formatVolume } from "../lib/units";
 import { getSpeciesImage } from "../data/speciesImageMap";
@@ -24,7 +24,7 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
     // inside it. The details tap target is now their sibling.
     <View style={[styles.cleanRow, { borderLeftWidth: 3, borderLeftColor: species.water === "salt" ? theme.coral : theme.accent }]}>
       <Pressable
-        style={({ pressed }) => [{ flex: 1, flexDirection: "row", alignItems: "center", gap: 14 }, pressed && { opacity: 0.75 }]}
+        style={({ pressed }) => [{ flex: 1, flexDirection: "row", alignItems: "center", gap: space.lg }, pressed && { opacity: 0.75 }]}
         onPress={onPress}
         accessibilityRole="button"
         accessibilityLabel={`${species.name}. ${species.water === "salt" ? "Saltwater" : "Freshwater"}, ${species.careLevel} care, ${species.temperament}, minimum ${formatVolume(species.minGallons)}.${inTank ? " In your tank." : ""}${inWishlist ? " On your wishlist." : ""}`}
@@ -44,11 +44,11 @@ function SpeciesCardBase({ species, onPress, inTank, onToggleTank, note, inWishl
         <Text style={styles.cleanMeta} numberOfLines={2}>
           {species.water === "salt" ? "🌊 Saltwater" : "💧 Freshwater"} · {formatVolume(species.minGallons)}+ · {formatTempRange(species.tempMinF, species.tempMaxF)}
         </Text>
-        <View style={{ flexDirection: "row", gap: 6, marginTop: 8 }}>
+        <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm }}>
           <Chip label={species.careLevel} color={careLevelColor(species.careLevel)} />
           <Chip label={species.temperament} color={temperamentColor(species.temperament)} />
         </View>
-        {note ? <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 6 }} numberOfLines={1}>{note}</Text> : null}
+        {note ? <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.sm }} numberOfLines={1}>{note}</Text> : null}
       </View>
       </Pressable>
 

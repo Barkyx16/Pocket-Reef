@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getTodayKey, tapHaptic } from "../core";
 import { EmptyState } from "./EmptyState";
@@ -69,7 +69,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
 
   return (
     <View>
-      <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
+      <View style={{ flexDirection: "row", gap: space.sm, marginBottom: space.sm }}>
         {MOODS.map((m) => (
           <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
             <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title, letterSpacing: -0.2 }}>{m}</Text>
@@ -82,12 +82,12 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         placeholder="What happened in the tank today?"
         placeholderTextColor={theme.secondaryText}
         multiline
-        style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: 14, paddingVertical: 12, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, minHeight: 60, textAlignVertical: "top" }}
+        style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.lg, paddingHorizontal: space.lg, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body, minHeight: 60, textAlignVertical: "top" }}
       
             maxLength={TEXT_LIMITS.note}
           />
       {photo ? (
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: space.md }}>
           <Image source={{ uri: photo }} style={{ width: "100%", height: 160, borderRadius: radius.lg }} resizeMode="cover" />
           <Pressable onPress={() => setPhoto(null)} hitSlop={8} style={{ position: "absolute", top: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: radius.pill, width: 28, height: 28, alignItems: "center", justifyContent: "center" }} accessibilityRole="button" accessibilityLabel="Remove photo">
             <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
@@ -95,32 +95,32 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
         </View>
       ) : null}
 
-      <View style={{ flexDirection: "row", gap: 10, marginTop: 10 }}>
-        <Pressable onPress={pickPhoto} style={[styles.ghostBtn, { flex: 0, paddingHorizontal: 16 }]} accessibilityRole="button" accessibilityLabel="Add photo">
+      <View style={{ flexDirection: "row", gap: space.md, marginTop: space.md }}>
+        <Pressable onPress={pickPhoto} style={[styles.ghostBtn, { flex: 0, paddingHorizontal: space.lg }]} accessibilityRole="button" accessibilityLabel="Add photo">
           <Ionicons name="camera-outline" size={17} color={theme.accent} />
         </Pressable>
         <Pressable onPress={add} disabled={!text.trim() && !photo} style={[(text.trim() || photo) ? styles.primaryBtn : styles.ghostBtn, { flex: 1 }]} accessibilityRole="button">
           <Text style={(text.trim() || photo) ? styles.primaryBtnText : styles.ghostBtnText}>{editingId ? "Save changes" : "Add to journal"}</Text>
         </Pressable>
         {editingId ? (
-          <Pressable onPress={cancelEdit} style={[styles.ghostBtn, { flex: 0, paddingHorizontal: 16 }]} accessibilityRole="button">
+          <Pressable onPress={cancelEdit} style={[styles.ghostBtn, { flex: 0, paddingHorizontal: space.lg }]} accessibilityRole="button">
             <Text style={styles.ghostBtnText}>Cancel</Text>
           </Pressable>
         ) : null}
       </View>
 
       {entries.length > 3 ? (
-        <View style={{ marginTop: 16 }}>
+        <View style={{ marginTop: space.lg }}>
           <TextInput
             value={findText}
             onChangeText={setFindText}
             placeholder="Search entries…"
             placeholderTextColor={theme.secondaryText}
-            style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }}
+            style={{ fontFamily: "Inter_400Regular", backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.md, color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.body }}
           
             maxLength={TEXT_LIMITS.search}
           />
-          <View style={{ flexDirection: "row", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
+          <View style={{ flexDirection: "row", gap: space.sm, marginTop: space.sm, flexWrap: "wrap" }}>
             {MOODS.map((m) => {
               const on = findMood === m;
               return (
@@ -130,7 +130,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
               );
             })}
             {(fq || findMood) ? (
-              <Pressable onPress={() => { setFindText(""); setFindMood(null); }} style={{ justifyContent: "center", paddingHorizontal: 8 }} accessibilityRole="button">
+              <Pressable onPress={() => { setFindText(""); setFindMood(null); }} style={{ justifyContent: "center", paddingHorizontal: space.sm }} accessibilityRole="button">
                 <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Clear</Text>
               </Pressable>
             ) : null}
@@ -139,19 +139,19 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
       ) : null}
 
       {entries.length ? (
-        <View style={{ marginTop: 16, gap: 10 }}>
+        <View style={{ marginTop: space.lg, gap: space.md }}>
           {shown.length === 0 ? (
             <Text style={styles.cardText}>No entries match your search.</Text>
           ) : null}
           {shown.slice(0, visible).map((e) => (
-            <View key={e.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: theme.border }}>
-              <View style={{ flexDirection: "row", gap: 10 }}>
+            <View key={e.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: space.md, borderWidth: 1, borderColor: theme.border }}>
+              <View style={{ flexDirection: "row", gap: space.md }}>
                 <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{e.mood}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: space.xs }}>{e.date}</Text>
                   {e.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
                 </View>
-                <View style={{ flexDirection: "row", gap: 12 }}>
+                <View style={{ flexDirection: "row", gap: space.md }}>
                   {onEdit ? (
                     <Pressable onPress={() => startEdit(e)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Edit entry">
                       <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>✎</Text>
@@ -162,7 +162,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
                   </Pressable>
                 </View>
               </View>
-              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 160, borderRadius: radius.md, marginTop: 10 }} resizeMode="cover" /> : null}
+              {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 160, borderRadius: radius.md, marginTop: space.md }} resizeMode="cover" /> : null}
             </View>
           ))}
           {shown.length > visible ? (

@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { GradientButton } from "./GradientButton";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -31,17 +31,17 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
           <Ionicons name={icon} size={40} color={theme.accent} />
         </View>
 
-        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 24, textAlign: "center", letterSpacing: -0.4 }}>
+        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: space.xxl, textAlign: "center", letterSpacing: -0.4 }}>
           {title}
         </Text>
-        <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.md, textAlign: "center", lineHeight: 21, maxWidth: 320 }}>
           {blurb}
         </Text>
 
         {perks.length ? (
-          <View style={{ marginTop: 24, alignSelf: "stretch", gap: 12 }}>
+          <View style={{ marginTop: space.xxl, alignSelf: "stretch", gap: space.md }}>
             {perks.map((p) => (
-              <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <View key={p} style={{ flexDirection: "row", alignItems: "center", gap: space.md }}>
                 <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text>
                 </View>
@@ -51,7 +51,7 @@ export function LockedTab({ icon = "lock-closed-outline", title, blurb, perks = 
           </View>
         ) : null}
 
-        <GradientButton label="See Premium" icon="star" onPress={onOpenPremium} style={{ marginTop: 32, alignSelf: "stretch" }} />
+        <GradientButton label="See Premium" icon="star" onPress={onOpenPremium} style={{ marginTop: space.huge, alignSelf: "stretch" }} />
       </View>
     </ScrollView>
   );

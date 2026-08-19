@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Platform, Pressable, Text, TextInput, View } from "react-native";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 
 // Six boxes for the code from the verification email.
 //
@@ -37,13 +37,13 @@ export function OtpCodeInput({ value, onChange, onComplete, editable = true, aut
   return (
     <Pressable
       onPress={() => inputRef.current?.focus()}
-      style={{ marginTop: 4 }}
+      style={{ marginTop: space.xs }}
       accessibilityRole="none"
       // The boxes are decoration; the hidden field below carries the real label.
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", gap: space.sm }}>
         {Array.from({ length: CELLS }).map((_, i) => {
           const char = digits[i];
           const isCaret = focused && i === digits.length;

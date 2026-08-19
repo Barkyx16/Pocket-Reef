@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, Share, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { listCrashes, clearCrashes, formatCrashes, MAX_CRASHES } from "../lib/crashLog";
 
@@ -24,7 +24,7 @@ export function CrashLogCard() {
 
   return (
     <View style={[styles.card, { borderColor: `${theme.warn}44` }]}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <Ionicons name="bug-outline" size={16} color={theme.warn} />
         <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {crashes.length === 1 ? "1 problem recorded" : `${crashes.length} problems recorded`}
@@ -35,20 +35,20 @@ export function CrashLogCard() {
         Something went wrong recently. Your tank data was never touched — these are notes about what failed, kept on this device only. Sending them is the difference between "it crashed" and a fix.
       </Text>
 
-      <View style={{ gap: 6, marginTop: 10 }}>
+      <View style={{ gap: space.sm, marginTop: space.md }}>
         {crashes.slice(0, MAX_CRASHES).map((c) => (
-          <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, padding: 9 }}>
+          <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, padding: space.sm }}>
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>
               {c.message}
             </Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.hair }}>
               {c.at.slice(0, 16).replace("T", " ")}{c.screen ? ` · ${c.screen}` : ""}
             </Text>
           </View>
         ))}
       </View>
 
-      <Pressable onPress={share} style={[styles.primaryBtn, { marginTop: 12 }]} accessibilityRole="button" accessibilityLabel="Share the problem report">
+      <Pressable onPress={share} style={[styles.primaryBtn, { marginTop: space.md }]} accessibilityRole="button" accessibilityLabel="Share the problem report">
         <Text style={styles.primaryBtnText}>Send the report</Text>
       </Pressable>
       <Pressable

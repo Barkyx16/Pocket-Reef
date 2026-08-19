@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getDosingPlan, REEF_TARGETS } from "../lib/dosing";
 import { formatVolume } from "../lib/units";
 import { TEXT_LIMITS } from "../lib/textLimits";
@@ -80,9 +80,9 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
       {magnesiumFirst ? (
         // Not cosmetic ordering — this is the chemistry. Correcting Ca or Alk
         // over low Mg mostly produces precipitate rather than a higher reading.
-        <View style={{ backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.32)", borderRadius: radius.lg, padding: 12, marginBottom: 14 }}>
+        <View style={{ backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.32)", borderRadius: radius.lg, padding: space.md, marginBottom: space.lg }}>
           <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Fix magnesium first</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>
             Magnesium holds calcium and alkalinity in solution. Dosing those while magnesium
             is low mostly makes precipitate instead of raising your numbers.
           </Text>
@@ -90,12 +90,12 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
       ) : null}
 
       {!anyLow ? (
-        <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
+        <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>
           Everything's in range — nothing to dose right now.
         </Text>
       ) : null}
 
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: space.lg }}>
         {ORDER.map((key) => {
           const row = plans.find((p) => p.key === key);
           if (!row) return null;
@@ -104,7 +104,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
 
           return (
             <View key={key}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", flex: 1 }}>{row.label}</Text>
                 <Text style={{ color: statusColor, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>
                   {row.current} {row.unit}
@@ -115,15 +115,15 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
               </View>
 
               {row.low ? (
-                <View style={{ marginTop: 8 }}>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <View style={{ marginTop: space.sm }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                     <TextInput
                       value={String(strengths[key] ?? "")}
                       onChangeText={(v) => setStrength(key, v)}
                       placeholder="0.0"
                       placeholderTextColor={theme.secondaryText}
                       keyboardType="decimal-pad"
-                      style={{ width: 78, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, borderRadius: radius.sm, paddingHorizontal: 10, paddingVertical: 8, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
+                      style={{ width: 78, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, borderRadius: radius.sm, paddingHorizontal: space.md, paddingVertical: space.sm, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}
                       accessibilityLabel={`${row.label} product strength`}
                     
             maxLength={TEXT_LIMITS.number}
@@ -134,13 +134,13 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                   </View>
 
                   {row.plan && row.plan.ok && row.plan.totalMl > 0 ? (
-                    <View style={{ marginTop: 10, backgroundColor: "rgba(56,225,198,0.08)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", borderRadius: radius.md, padding: 12 }}>
+                    <View style={{ marginTop: space.md, backgroundColor: "rgba(56,225,198,0.08)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", borderRadius: radius.md, padding: space.md }}>
                       <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                         {row.plan.capped
                           ? `${row.plan.perDayMl} ml per day for ${row.plan.days} days`
                           : `${row.plan.totalMl} ml, one dose`}
                       </Text>
-                      <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 16 }}>
+                      <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 16 }}>
                         Raises {row.plan.needed} {row.unit} across {formatVolume(row.plan.volume)} of actual water
                         (your {formatVolume(tankGallons)} tank, less rock and sand).
                         {row.plan.capped
@@ -149,7 +149,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                       </Text>
                     </View>
                   ) : row.plan && !row.plan.ok ? (
-                    <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8, lineHeight: 16 }}>
+                    <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.sm, lineHeight: 16 }}>
                       {row.plan.reason}
                     </Text>
                   ) : null}
@@ -157,7 +157,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
               ) : null}
 
               {row.high ? (
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.sm, lineHeight: 17 }}>
                   Above target. Don't dose — let it drift down with water changes and consumption.
                 </Text>
               ) : null}

@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles, theme, type } from "../styles";
+import { styles, theme, type, space } from "../styles";
 import { fmtMoney } from "../lib/format";
 
 // Career totals across every tank — the long-term progress view that makes a
@@ -25,7 +25,7 @@ export function LifetimeStatsCard({ stats }) {
         ))}
       </View>
       {stats.spend > 0 ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md }}>
           💰 ~${fmtMoney(stats.spend)} tracked across all tanks so far.
         </Text>
       ) : null}

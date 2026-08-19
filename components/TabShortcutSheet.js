@@ -1,6 +1,6 @@
 import { Modal, Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme, radius, type } from "../styles";
+import { theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { ACTIONS, TAB_SHORTCUTS } from "../lib/shortcuts";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
@@ -29,16 +29,16 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
       <Pressable style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.72)", justifyContent: "flex-end" }} onPress={onClose} accessibilityLabel="Close shortcuts">
         {/* Swallows taps so they don't close the sheet. Not a control, so it's
             hidden from VoiceOver rather than announced as an unnamed button. */}
-        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(30, insets.bottom + 12) }}>
-          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
+        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: Math.max(30, insets.bottom + 12) }}>
+          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: space.lg }} />
           <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>{tabLabel} shortcuts</Text>
 
-          <View style={{ gap: 6, marginTop: 12 }}>
+          <View style={{ gap: space.sm, marginTop: space.md }}>
             {items.map((a) => (
               <Pressable
                 key={a.id}
                 onPress={() => { tapHaptic("medium"); onRun(a); }}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 11, paddingVertical: 11 }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.md }, pressed && { opacity: 0.75, borderColor: theme.accent }]}
                 accessibilityRole="button"
                 accessibilityLabel={a.label}
               >
@@ -56,7 +56,7 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
 
             <Pressable
               onPress={() => { onClose(); onOpenTab(); }}
-              style={({ pressed }) => [{ alignItems: "center", paddingVertical: 12, marginTop: 2 }, pressed && { opacity: 0.6 }]}
+              style={({ pressed }) => [{ alignItems: "center", paddingVertical: space.md, marginTop: space.hair }, pressed && { opacity: 0.6 }]}
               accessibilityRole="button"
               accessibilityLabel={`Open the ${tabLabel} tab`}
             >

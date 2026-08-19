@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
 import { LOSS_REASONS, LOSS_CAUSES, isMortality, tenureLabel, newStockRecord } from "../lib/livestock";
 import { SpeciesThumb } from "./SpeciesThumb";
@@ -45,14 +45,14 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
       <Pressable style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.72)", justifyContent: "flex-end" }} onPress={close} accessibilityLabel="Close record">
         {/* Swallows taps so they don't close the sheet. Not a control, so it's
             hidden from VoiceOver rather than announced as an unnamed button. */}
-        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(28, insets.bottom + 12) }}>
-          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
+        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: Math.max(28, insets.bottom + 12) }}>
+          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: space.lg }} />
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, marginBottom: space.lg }}>
             <SpeciesThumb name={name} size={42} />
             <View style={{ flex: 1 }}>
               <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair }}>
                 {quantity > 1 ? `${quantity} in the tank` : "In the tank"}{tenure ? ` · ${tenure}` : ""}
               </Text>
             </View>
@@ -118,7 +118,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
           />
                 </Field>
 
-                <Pressable onPress={save} style={[styles.primaryBtn, { marginTop: 6 }]} accessibilityRole="button" accessibilityLabel={`Save record for ${name}`}>
+                <Pressable onPress={save} style={[styles.primaryBtn, { marginTop: space.sm }]} accessibilityRole="button" accessibilityLabel={`Save record for ${name}`}>
                   <Text style={styles.primaryBtnText}>Save record</Text>
                 </Pressable>
 
@@ -126,7 +126,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                     is not a destructive button, it's the record of an event. */}
                 <Pressable
                   onPress={() => { tapHaptic(); setMode("loss"); }}
-                  style={({ pressed }) => [{ alignItems: "center", paddingVertical: 14 }, pressed && { opacity: 0.6 }]}
+                  style={({ pressed }) => [{ alignItems: "center", paddingVertical: space.lg }, pressed && { opacity: 0.6 }]}
                   accessibilityRole="button"
                   accessibilityLabel={`Record that ${name} left the tank`}
                 >
@@ -135,17 +135,17 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
               </View>
             ) : (
               <View>
-                <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
+                <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>
                   What happened? This stays in your tank's history — losing the record is worse than losing the fish.
                 </Text>
 
                 <Field label="What happened">
-                  <View style={{ gap: 6 }}>
+                  <View style={{ gap: space.sm }}>
                     {LOSS_REASONS.map((r) => (
                       <Pressable
                         key={r.id}
                         onPress={() => { tapHaptic("light"); setLoss((l) => ({ ...l, reason: r.id })); }}
-                        style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 10, borderRadius: radius.md, paddingHorizontal: 11, paddingVertical: 10, borderWidth: 1, backgroundColor: loss.reason === r.id ? "rgba(56,225,198,0.14)" : theme.well, borderColor: loss.reason === r.id ? theme.accent : theme.border }, pressed && { opacity: 0.75 }]}
+                        style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.md, borderWidth: 1, backgroundColor: loss.reason === r.id ? "rgba(56,225,198,0.14)" : theme.well, borderColor: loss.reason === r.id ? theme.accent : theme.border }, pressed && { opacity: 0.75 }]}
                         accessibilityRole="radio"
                         accessibilityState={{ selected: loss.reason === r.id }}
                         accessibilityLabel={r.label}
@@ -161,7 +161,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                     healthy fish reads as an accusation. */}
                 {isMortality(loss.reason) ? (
                   <Field label="Likely cause" hint="Your best guess is worth more than a blank">
-                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
                       {LOSS_CAUSES.map((c) => (
                         <Pressable
                           key={c}
@@ -181,7 +181,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                 {/* Losing three of a school of six leaves three fish. */}
                 {quantity > 1 ? (
                   <Field label="How many" hint={`You have ${quantity}`}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: space.lg }}>
                       <Pressable onPress={() => setLoss((l) => ({ ...l, count: Math.max(1, l.count - 1) }))} hitSlop={touchSlop(34)} style={stepBtn} accessibilityRole="button" accessibilityLabel="Fewer">
                         <Ionicons name="remove" size={16} color={theme.accent} />
                       </Pressable>
@@ -210,10 +210,10 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
           />
                 </Field>
 
-                <Pressable onPress={submitLoss} style={[styles.primaryBtn, { marginTop: 6 }]} accessibilityRole="button" accessibilityLabel={`Save ${name} to tank history`}>
+                <Pressable onPress={submitLoss} style={[styles.primaryBtn, { marginTop: space.sm }]} accessibilityRole="button" accessibilityLabel={`Save ${name} to tank history`}>
                   <Text style={styles.primaryBtnText}>Save to tank history</Text>
                 </Pressable>
-                <Pressable onPress={() => setMode("edit")} style={({ pressed }) => [{ alignItems: "center", paddingVertical: 13 }, pressed && { opacity: 0.6 }]} accessibilityRole="button" accessibilityLabel="Back to the record">
+                <Pressable onPress={() => setMode("edit")} style={({ pressed }) => [{ alignItems: "center", paddingVertical: space.md }, pressed && { opacity: 0.6 }]} accessibilityRole="button" accessibilityLabel="Back to the record">
                   <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Back</Text>
                 </Pressable>
               </View>
@@ -227,7 +227,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
 }
 
 const inputStyle = {
-  backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 10,
+  backgroundColor: theme.well, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.sm,
   color: theme.text, borderWidth: 1, borderColor: theme.border, fontSize: type.bodyLg,
   fontFamily: "Inter_600SemiBold", fontWeight: "600",
 };
@@ -239,10 +239,10 @@ const stepBtn = {
 
 function Field({ label, hint, children }) {
   return (
-    <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 6 }}>{label}</Text>
+    <View style={{ marginBottom: space.lg }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: space.sm }}>{label}</Text>
       {children}
-      {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
+      {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs }}>{hint}</Text> : null}
     </View>
   );
 }

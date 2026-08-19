@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { getTreatment, getTreatmentProgress, tapHaptic, successHaptic } from "../core";
 import { ProgressBar } from "./ProgressBar";
 import { GradientButton } from "./GradientButton";
@@ -34,8 +34,8 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
   if (!progress) {
     return (
       <View>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
-          <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 4 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, marginBottom: space.md }}>
+          <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: space.xs }}>
             <Text style={{ color: urgency.color, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>{urgency.label}</Text>
           </View>
           <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{plan.durationDays}-day course</Text>
@@ -46,21 +46,21 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
           the symptoms disappear.
         </Text>
 
-        <View style={{ marginTop: 12, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: 12 }}>
-          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 4 }}>
+        <View style={{ marginTop: space.md, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: space.md }}>
+          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: space.xs }}>
             Read this first
           </Text>
           <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{plan.keyPoint}</Text>
         </View>
 
-        <GradientButton label="Start treatment" onPress={() => { tapHaptic("medium"); onStart && onStart(diseaseName); }} style={{ marginTop: 14 }} />
+        <GradientButton label="Start treatment" onPress={() => { tapHaptic("medium"); onStart && onStart(diseaseName); }} style={{ marginTop: space.lg }} />
       </View>
     );
   }
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.md }}>
         <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           Day {progress.day} of {progress.durationDays}
         </Text>
@@ -72,21 +72,21 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       <ProgressBar pct={progress.pct} height={10} glow label={`Treatment progress, ${progress.pct}%`} />
 
       {/* The fact that prevents the relapse — kept in front of them all course. */}
-      <View style={{ marginTop: 14, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: 12 }}>
+      <View style={{ marginTop: space.lg, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: space.md }}>
         <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{progress.keyPoint}</Text>
       </View>
 
       {progress.abandonedEarly ? (
-        <View style={{ marginTop: 12, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: radius.lg, padding: 12 }}>
+        <View style={{ marginTop: space.md, backgroundColor: "rgba(255,123,123,0.10)", borderWidth: 1, borderColor: "rgba(255,123,123,0.34)", borderRadius: radius.lg, padding: space.md }}>
           <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>Course ended with steps unfinished</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 17 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.xs, lineHeight: 17 }}>
             This is the most common reason an infection returns. If symptoms come back, start again
             and complete the full course.
           </Text>
         </View>
       ) : null}
 
-      <View style={{ marginTop: 16, gap: 10 }}>
+      <View style={{ marginTop: space.lg, gap: space.md }}>
         {progress.steps.map((step) => {
           const state = step.done ? "done" : step.overdue ? "overdue" : step.due ? "due" : "future";
           const color = state === "done" ? theme.accent : state === "overdue" ? theme.danger : state === "due" ? theme.warn : theme.secondaryText;
@@ -94,13 +94,13 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
             <Pressable
               key={step.id}
               onPress={() => { step.done ? tapHaptic() : successHaptic(); onToggleStep && onToggleStep(diseaseName, step.id); }}
-              style={({ pressed }) => [{ flexDirection: "row", gap: 12, alignItems: "flex-start", opacity: state === "future" ? 0.5 : 1 }, pressed && { opacity: 0.7 }]}
+              style={({ pressed }) => [{ flexDirection: "row", gap: space.md, alignItems: "flex-start", opacity: state === "future" ? 0.5 : 1 }, pressed && { opacity: 0.7 }]}
               accessibilityRole="checkbox"
               accessibilityState={{ checked: step.done }}
               accessibilityLabel={`Day ${step.day}: ${step.title}`}
             >
               <View style={{
-                width: 24, height: 24, borderRadius: radius.xs, marginTop: 1,
+                width: 24, height: 24, borderRadius: radius.xs, marginTop: space.hair,
                 backgroundColor: step.done ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)",
                 borderWidth: 1, borderColor: step.done ? theme.accent : `${color}66`,
                 alignItems: "center", justifyContent: "center",
@@ -111,13 +111,13 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                 <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>
                   {step.title}
                 </Text>
-                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 17 }}>
+                <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: space.hair, lineHeight: 17 }}>
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (
-                  <Text style={{ color: theme.danger, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>Overdue</Text>
+                  <Text style={{ color: theme.danger, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs }}>Overdue</Text>
                 ) : state === "future" ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.xs }}>
                     In {step.daysAway} day{step.daysAway === 1 ? "" : "s"}
                   </Text>
                 ) : null}
@@ -129,7 +129,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
 
       <Pressable
         onPress={() => { tapHaptic(); onStop && onStop(diseaseName); }}
-        style={({ pressed }) => [{ marginTop: 16, paddingVertical: 10, alignItems: "center" }, pressed && { opacity: 0.7 }]}
+        style={({ pressed }) => [{ marginTop: space.lg, paddingVertical: space.md, alignItems: "center" }, pressed && { opacity: 0.7 }]}
         accessibilityRole="button"
       >
         <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>End treatment</Text>

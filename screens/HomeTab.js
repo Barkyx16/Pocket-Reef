@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { iconForEmoji } from "../lib/icons";
 import { getSpecies, getTankWarnings, getStreak, getTodayActions, getWeeklyActivity, getTodayKey, getDailyChallenges, getSeasonalChallenges, getTankHealthScore, SPECIES, tapHaptic, successHaptic } from "../core";
@@ -113,7 +113,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
 
       {/* STREAK AT RISK */}
       {streak > 0 && !loggedToday ? (
-        <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
+        <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: space.lg, marginBottom: space.lg }} accessibilityRole="button">
           <Text style={{ fontSize: 22, letterSpacing: -0.4 }}>🔥</Text>
           <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
           <Text style={{ color: theme.warn, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
@@ -131,9 +131,9 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* DAILY CHALLENGES — auto-complete & disappear; fresh set every day */}
       {allDaily.length && !settingUp ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>Daily Challenges</Text>
-          <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Complete them today — a fresh set arrives tomorrow.</Text>
-          <View style={{ gap: 8 }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.xs }]}>Daily Challenges</Text>
+          <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>Complete them today — a fresh set arrives tomorrow.</Text>
+          <View style={{ gap: space.sm }}>
             {dailyChallenges.map((c) => (
               <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} done={challengeDone(c)} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
             ))}
@@ -144,9 +144,9 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* SEASONAL CHALLENGES */}
       {seasonalChallenges.length && !settingUp ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 4 }]}>{seasonal.label} Challenges</Text>
-          <Text style={[styles.cardText, { marginTop: 0, marginBottom: 10 }]}>Seasonal goals for your reef — refresh daily.</Text>
-          <View style={{ gap: 8 }}>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.xs }]}>{seasonal.label} Challenges</Text>
+          <Text style={[styles.cardText, { marginTop: 0, marginBottom: space.md }]}>Seasonal goals for your reef — refresh daily.</Text>
+          <View style={{ gap: space.sm }}>
             {seasonalChallenges.map((c) => (
               <ChallengeRow key={c.id} c={c} onNavigate={CHALLENGE_TO[c.signal] && onGoToTab ? () => onGoToTab(CHALLENGE_TO[c.signal]) : undefined} done={challengeDone(c)} onComplete={onCompleteChallenge ? () => onCompleteChallenge(c.id) : undefined} />
             ))}
@@ -168,7 +168,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* TODAY — only shown when something actually needs attention */}
       {todayActions.length ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>Needs Attention</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Needs Attention</Text>
           <TodayCard actions={todayActions} onNavigate={onGoToTab} />
         </View>
       ) : null}
@@ -183,7 +183,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* FISH OF THE DAY — disappears once viewed; a new fish returns tomorrow. */}
       {!fishOfDaySeen ? (
         <View style={styles.card}>
-          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 12 }]}>Fish of the Day</Text>
+          <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>Fish of the Day</Text>
           <FishOfDayCard waterType={tankWater} onOpenSpecies={(n) => { onSeeFishOfDay && onSeeFishOfDay(); openSpecies(n); }} />
         </View>
       ) : null}
@@ -192,13 +192,13 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
           there's something to report. */}
       {!settingUp ? (
       <View style={styles.card}>
-        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: 10 }]}>This Week</Text>
+        <Text accessibilityRole="header" style={[styles.cardEyebrow, { marginBottom: space.md }]}>This Week</Text>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Summary label="Active days" value={`${weekly.activeDays}/7`} color={weekly.activeDays >= 5 ? theme.accent : "#fff"} />
           <Summary label="Water tests" value={`${weekly.tests}`} />
           <Summary label="Journal notes" value={`${weekly.journal}`} />
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: space.md, textAlign: "center" }}>
           {weekly.activeDays >= 5 ? "Great consistency this week — your reef thanks you! 🐠" : weekly.activeDays === 0 ? "Log a test or a note to start this week off." : "Keep the momentum going — small daily touches add up."}
         </Text>
       </View>
@@ -207,12 +207,12 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* TODAY'S CARE — tap to check off; card disappears when all done, back tomorrow. */}
       {doneCount < CARE_TASKS.length ? (
         <CollapsibleCard storageKey="care" title="✅ Today's Care" defaultOpen={true} eyebrow={`${doneCount}/${CARE_TASKS.length} done`}>
-          <View style={{ gap: 8 }}>
+          <View style={{ gap: space.sm }}>
             {CARE_TASKS.filter((task) => !careDoneToday.includes(task.id)).map((task) => (
               <Pressable
                 key={task.id}
                 onPress={() => onToggleCare && onToggleCare(task.id)}
-                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: 12, padding: 12, borderRadius: radius.lg, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.04)", borderColor: theme.border }, pressed && { opacity: 0.7, backgroundColor: "rgba(56,225,198,0.10)", borderColor: theme.accent }]}
+                style={({ pressed }) => [{ flexDirection: "row", alignItems: "center", gap: space.md, padding: space.md, borderRadius: radius.lg, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.04)", borderColor: theme.border }, pressed && { opacity: 0.7, backgroundColor: "rgba(56,225,198,0.10)", borderColor: theme.accent }]}
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked: false }}
               >
@@ -248,7 +248,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
         <View style={styles.card}>
           <Text accessibilityRole="header" style={[styles.cardEyebrow, { color: theme.warn }]}>Tank Check</Text>
           {warnings.map((w, i) => (
-            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: 6 }}>• {w.text}</Text>
+            <Text key={i} style={{ color: w.level === "avoid" ? theme.danger : theme.warn, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 20, marginTop: space.sm }}>• {w.text}</Text>
           ))}
         </View>
       ) : null}
@@ -260,11 +260,11 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
 
 function ChallengeRow({ c, onNavigate, onComplete, done }) {
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 8 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: space.md, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.md, paddingVertical: space.sm }}>
       <Pressable
         onPress={onNavigate ? () => { tapHaptic("light"); onNavigate(); } : undefined}
         disabled={!onNavigate}
-        style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 }}
+        style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: space.md }}
         accessibilityRole={onNavigate ? "button" : undefined}
       >
         <View style={{ width: 34, height: 34, borderRadius: radius.sm, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", alignItems: "center", justifyContent: "center" }}>
@@ -299,7 +299,7 @@ function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
       <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: space.xs, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
     </View>
   );
 }

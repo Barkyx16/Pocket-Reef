@@ -1,7 +1,7 @@
 import { Pressable, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import { accentGradient, styles, theme, radius, type } from "../styles";
+import { accentGradient, styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 
 // The app's call-to-action.
@@ -19,11 +19,11 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
         style={({ pressed }) => [
           {
             borderRadius: radius.xl,
-            paddingVertical: 12,
+            paddingVertical: space.md,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
-            gap: 8,
+            gap: space.sm,
             backgroundColor: "rgba(56,225,198,0.10)",
             borderWidth: 1,
             borderColor: "rgba(56,225,198,0.30)",
@@ -47,7 +47,7 @@ export function GradientButton({ label, onPress, style, haptic = "medium", varia
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <LinearGradient colors={accentGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}>
+      <LinearGradient colors={accentGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ paddingVertical: space.lg, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: space.sm }}>
         {icon ? <Ionicons name={icon} size={17} color={theme.onAccent} /> : null}
         <Text style={styles.primaryBtnText}>{label}</Text>
       </LinearGradient>

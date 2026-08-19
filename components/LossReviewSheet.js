@@ -1,6 +1,6 @@
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme, radius, type } from "../styles";
+import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic } from "../core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -32,28 +32,28 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
           accessible={false}
           importantForAccessibility="no"
           onPress={(e) => e.stopPropagation()}
-          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(28, insets.bottom + 12), maxHeight: "84%" }}
+          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: Math.max(28, insets.bottom + 12), maxHeight: "84%" }}
         >
-          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
+          <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: space.lg }} />
 
           <Text style={{ color: "#fff", fontSize: 19, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {name ? `About ${name}` : "About this loss"}
           </Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>
             {review.headline}
           </Text>
 
-          <ScrollView style={{ marginTop: 14 }} showsVerticalScrollIndicator={false}>
-            <View style={{ gap: 8 }}>
+          <ScrollView style={{ marginTop: space.lg }} showsVerticalScrollIndicator={false}>
+            <View style={{ gap: space.sm }}>
               {review.findings.map((f) => {
                 const t = TONE[f.tone] || TONE.watch;
                 return (
-                  <View key={f.id} style={{ backgroundColor: `${t.color}12`, borderRadius: radius.lg, borderWidth: 1, borderColor: `${t.color}3d`, padding: 12 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
+                  <View key={f.id} style={{ backgroundColor: `${t.color}12`, borderRadius: radius.lg, borderWidth: 1, borderColor: `${t.color}3d`, padding: space.md }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                       <Ionicons name={t.icon} size={15} color={t.color} />
                       <Text style={{ flex: 1, color: t.color, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.title}</Text>
                     </View>
-                    <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 5 }}>
+                    <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: space.xs }}>
                       {f.body}
                     </Text>
                   </View>
@@ -61,7 +61,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
               })}
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 14, textAlign: "center" }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: space.lg, textAlign: "center" }}>
               Drawn from this tank's own record. Animals die of old age and of nothing at all — this is what the log can see, not a verdict.
             </Text>
           </ScrollView>
@@ -69,7 +69,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
           {review.urgent > 0 && onGoToTab ? (
             <Pressable
               onPress={() => { tapHaptic(); onClose(); onGoToTab("log"); }}
-              style={[styles.primaryBtn, { marginTop: 14 }]}
+              style={[styles.primaryBtn, { marginTop: space.lg }]}
               accessibilityRole="button"
               accessibilityLabel="Go and test the water"
             >
