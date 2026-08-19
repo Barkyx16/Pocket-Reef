@@ -14,9 +14,7 @@ const { Text } = require("react-native");
 const { TodayCard } = require("../components/TodayCard");
 const { getExtraActions, withExtras } = require("../lib/todayExtras");
 const { newInventoryItem } = require("../lib/inventory");
-const { newLightSchedule } = require("../lib/lighting");
 
-const ago = (n) => new Date(Date.now() - n * 86400000).toISOString();
 // Day keys built the way the app builds them: local calendar fields, not UTC.
 // Deriving one from toISOString() dates the fixture in UTC while every engine
 // reads it as local, so west of Greenwich after ~17:00 the fixture's "today"

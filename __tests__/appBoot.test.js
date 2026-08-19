@@ -34,8 +34,6 @@ jest.setTimeout(30000);
 const flatten = (c) =>
   Array.isArray(c) ? c.map(flatten).join("") : typeof c === "string" || typeof c === "number" ? String(c) : "";
 const textOf = (t) => t.root.findAllByType(Text).map((n) => flatten(n.props.children)).join(" | ");
-const byLabel = (t, s) =>
-  t.root.findAll((n) => typeof n.props.accessibilityLabel === "string" && n.props.accessibilityLabel.includes(s))[0];
 const btn = (t, text) =>
   t.root.findAll((n) => typeof n.props?.onPress === "function"
     && n.findAllByType(Text).map((x) => flatten(x.props.children)).join(" ").trim() === text)[0];

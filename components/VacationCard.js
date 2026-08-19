@@ -3,7 +3,7 @@ import { Pressable, Share, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { tapHaptic } from "../core";
-import { buildSitterPlan, sitterSheet, preparationSteps, SAFE_ALONE_DAYS } from "../lib/vacation";
+import { buildSitterPlan, sitterSheet, preparationSteps } from "../lib/vacation";
 import { Pill } from "./Pill";
 import { TEXT_LIMITS } from "../lib/textLimits";
 

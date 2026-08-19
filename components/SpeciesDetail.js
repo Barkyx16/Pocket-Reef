@@ -24,6 +24,7 @@ import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 export function SpeciesDetail({ name, tank = [], tankGallons = 0, onBack, onToggleTank, onOpenDisease, onOpenSpecies, inWishlist, onToggleWishlist, tanks = [], quantity = 1, onSetQuantity, onGoToTab, note = "", onChangeNote, record = null, onOpenRecord, activeTank = {}, onAddObservation, onRemoveObservation }) {
   const s = getSpecies(name);
   const [noteText, setNoteText] = useState(note);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Resets only when navigating fish-to-fish. Adding `note` would overwrite what is being typed.
   useEffect(() => { setNoteText(note); }, [name]); // reset when navigating fish-to-fish
   if (!s) return null;
 

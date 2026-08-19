@@ -34,6 +34,7 @@ export function UndoSnackbar({ undo, onUndo, onDismiss, bottom = 92 }) {
     }
     const timer = setTimeout(onDismiss, DURATION);
     return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- One timer per snackbar id. Adding onDismiss restarts it on every parent render, so it would never dismiss.
   }, [id]);
 
   if (!undo) return null;

@@ -143,6 +143,7 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
     if (timeLeft <= 0) { setOver(true); onBlitzEnd && onBlitzEnd(scoreRef.current); return; }
     const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearTimeout(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Re-runs every tick, so the closure is already fresh. Adding onBlitzEnd would restart the countdown whenever the parent re-renders.
   }, [timed, timeLeft, over]);
 
   const select = (o) => {

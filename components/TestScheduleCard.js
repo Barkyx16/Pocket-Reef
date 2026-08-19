@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { testSchedule } from "../lib/cadence";
 import { EmptyState } from "./EmptyState";
 

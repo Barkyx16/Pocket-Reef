@@ -68,7 +68,7 @@ export function RemindersCard({ prefs, onChange, tank = null, onChangeTankRemind
     if (!status) return;
     const id = setTimeout(refresh, 600);
     return () => clearTimeout(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed to the prefs that change scheduling; `refresh` is stable.
   }, [p.waterTest, p.waterChange, p.feeding]);
 
   const enable = async () => {

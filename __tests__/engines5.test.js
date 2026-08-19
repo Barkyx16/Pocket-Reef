@@ -7,7 +7,7 @@ jest.mock("@react-native-async-storage/async-storage", () =>
 // missing week of readings looks exactly like a week nobody logged. So it's
 // tested for losslessness first and for its tie-breaking rules second.
 
-const { mergeSnapshots, mergeTank, unionById, unionTests } = require("../lib/merge");
+const { mergeSnapshots, mergeTank, unionById } = require("../lib/merge");
 const { assessArrival, dayNumber, phaseFor, DEFAULT_DAYS, CRITERIA } = require("../lib/quarantine");
 const { getExtraActions, withExtras } = require("../lib/todayExtras");
 const { backupFilename, serialise, humanSize } = require("../lib/backupFile");

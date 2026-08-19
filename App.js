@@ -10,7 +10,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
-import { styles, theme, useResponsiveLayout, CONTENT_MAX_WIDTH, TWO_COLUMN_MAX_WIDTH } from "./styles";
+import { styles, theme, useResponsiveLayout, TWO_COLUMN_MAX_WIDTH } from "./styles";
 import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak, successHaptic, failureHaptic, warningHaptic, commitHaptic, resolveWaterType, assessAddition, getParamForecasts, BANNERS } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pullSnapshot, fetchServerEntitlement, buildSnapshot } from "./lib/cloudSync";
@@ -32,7 +32,6 @@ import { collectOrphanPhotos } from "./lib/photoGC";
 import { pruneDayMap, isValidDayKey } from "./lib/day";
 import { reviewLoss } from "./lib/afterLoss";
 import { newUpkeepTask } from "./lib/upkeep";
-import { newDose } from "./lib/dosingLog";
 import { pendingAcrossTanks, flattenPending } from "./lib/pending";
 import { newWaterChange } from "./lib/waterChanges";
 import { setActiveTargets } from "./lib/targets";
@@ -398,6 +397,7 @@ function PocketReef() {
      }
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- hydrateAll is a stable useStableCallback and must run exactly once, at mount.
   useEffect(() => { hydrateAll(); }, []);
 
   // Only after the splash, onboarding and the auth gate are out of the way —
@@ -425,7 +425,7 @@ function PocketReef() {
     return () => clearTimeout(id);
     // Deliberately launch-only: `tanks` changes constantly and re-running this
     // on every edit would be both wasteful and racy against undo.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- launch-only by design; see the comment above.
   }, [hydrated]);
 
   // One automatic snapshot a day, after the data is loaded and settled. Taken
@@ -463,6 +463,7 @@ function PocketReef() {
     }
     // "Later" deliberately records nothing. The next sync reschedules from the
     // tank's real state, so deferring can't leave a false entry behind.
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- The notification handler is rebuilt only when entitlement changes; the callbacks it closes over are stable.
   }), [premiumUnlocked]);
 
   // ── Premium entitlement ────────────────────────────────────────────────────
@@ -710,6 +711,7 @@ function PocketReef() {
       setSyncing(false);
     })();
     return () => { alive = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Runs once per sign-in. Listing the profile fields would re-pull the cloud copy on every local edit.
   }, [user, hydrated]);
 
   // Push changes up, debounced so a burst of edits is one write.
@@ -733,7 +735,12 @@ function PocketReef() {
       });
     }, 2500);
     return () => { if (syncTimer.current) clearTimeout(syncTimer.current); };
-  }, [user, tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs, profileName, recent, speciesNotes, challengesDone, bannerId, lang, unit]);
+  // Every field the snapshot above sends has to appear here, or changing it
+  // alone never schedules a push — it rides along with the next unrelated
+  // edit instead, which looks like the setting not syncing at all. The four
+  // that were missing (currency, since, strengths, tankSized) are exactly the
+  // ones added to the snapshot later without touching this list.
+  }, [user, tanks, activeTankId, xp, activeDays, careDone, wishlist, reminderPrefs, profileName, recent, speciesNotes, challengesDone, bannerId, lang, unit, currency, since, strengths, tankSized]);
 
   const syncNow = useStableCallback(async () => {
     if (!supabase || !user) return;
@@ -809,7 +816,6 @@ function PocketReef() {
   // every journal note would be pure waste, and `tanks` changes on all of them.
   const tankAttention = useMemo(
     () => attentionFor(tanks, { reminderPrefs, exceptId: activeTank.id }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [tanks, reminderPrefs, activeTank.id]
   );
 
@@ -980,6 +986,7 @@ function PocketReef() {
     };
     const sub = BackHandler.addEventListener("hardwareBackPress", onBack);
     return () => sub.remove();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- jumpTo is stable; the deps here are the overlays whose open state decides what back does.
   }, [showSearch, recordFor, tabMenu, showQuick, showTankMenu, showImport, tankSheet, selectedDisease, selectedSpecies, activeTab]);
 
   // Grading reads the active tank's targets from a module-level value (the

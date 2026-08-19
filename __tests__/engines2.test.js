@@ -13,7 +13,7 @@ const { createRestorePoint, listRestorePoints, restoreToPoint, deleteRestorePoin
 const { testSchedule, recommendFor, observedInterval } = require("../lib/cadence");
 const { compareFleet, profileTank } = require("../lib/fleet");
 const { activeParams } = require("../lib/targets");
-const { SPECIES, getSpecies } = require("../core");
+const { SPECIES } = require("../core");
 const AsyncStorageMod = require("@react-native-async-storage/async-storage");
 
 // Day keys built the way the app builds them: local calendar fields, not UTC.

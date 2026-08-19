@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { tapHaptic } from "../core";
 import { formatVolume } from "../lib/units";
-import { compareFleet, MEASURES } from "../lib/fleet";
+import { compareFleet } from "../lib/fleet";
 import { EmptyState } from "./EmptyState";
 
 // Every tank on one screen, ranked, with the gap explained.

@@ -72,7 +72,7 @@ describe("every typed field has a ceiling", () => {
 
 describe("the limits themselves are sane", () => {
   test("every limit is a positive integer", () => {
-    for (const [k, v] of Object.entries(TEXT_LIMITS)) {
+    for (const [_k, v] of Object.entries(TEXT_LIMITS)) {
       expect(Number.isInteger(v)).toBe(true);
       expect(v).toBeGreaterThan(0);
     }

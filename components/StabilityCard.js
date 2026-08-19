@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles, theme } from "../styles";
+import { theme } from "../styles";
 import { tapHaptic } from "../core";
 import { tankStability, stabilityHeadline } from "../lib/stability";
 import { ParameterChart } from "./ParameterChart";

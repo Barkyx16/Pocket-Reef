@@ -9,7 +9,7 @@ jest.mock("@react-native-async-storage/async-storage", () =>
 // still has a journal entry for is unrecoverable, so every uncertainty here
 // resolves toward keeping the file.
 
-const { referencedPhotos, fileNameOf, collectOrphanPhotos } = require("../lib/photoGC");
+const { referencedPhotos, fileNameOf } = require("../lib/photoGC");
 const { newObservation } = require("../lib/observations");
 
 const photo = (n) => `file:///var/mobile/Documents/journal-photos/${n}.jpg`;

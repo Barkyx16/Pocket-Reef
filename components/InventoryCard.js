@@ -31,7 +31,10 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState({ name: "", kind: "media", stock: "", perGallon: "", doseKey: null, perDay: "" });
 
-  const items = tank.inventory || [];
+  // `tank.inventory || []` built a fresh array on every render, so the memo
+  // below recomputed the whole forecast every time regardless — the memo was
+  // there and doing nothing.
+  const items = useMemo(() => tank.inventory || [], [tank.inventory]);
   const { rows, needs, shoppingList } = useMemo(() => forecastInventory(items, tank, now ? { now } : {}), [items, tank, now]);
 
   const reset = () => { setDraft({ name: "", kind: "media", stock: "", perGallon: "", doseKey: null, perDay: "" }); setAdding(false); };

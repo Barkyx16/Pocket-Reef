@@ -9,7 +9,7 @@ jest.mock("@react-native-async-storage/async-storage", () =>
 // place where one keeper's edge case blanks everybody's Home screen.
 
 const renderer = require("react-test-renderer");
-const { Text, View } = require("react-native");
+const { Text } = require("react-native");
 const { CardBoundary } = require("../components/CardBoundary");
 const { AdaptiveColumns } = require("../components/AdaptiveColumns");
 

@@ -9,7 +9,7 @@ jest.mock("@react-native-async-storage/async-storage", () =>
 // are where essentially every user is.
 
 const renderer = require("react-test-renderer");
-const { Text, View, useWindowDimensions } = require("react-native");
+const { Text, View } = require("react-native");
 const { AdaptiveColumns } = require("../components/AdaptiveColumns");
 
 // react-native's useWindowDimensions reports a fixed size under jest, so the

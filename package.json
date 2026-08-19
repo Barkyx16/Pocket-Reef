@@ -10,10 +10,10 @@
     "web": "expo start --web",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "lint:errors": "eslint . --quiet",
-    "check": "eslint . --quiet && jest && npm run test:tz",
-    "test:tz": "for tz in UTC America/Los_Angeles Pacific/Auckland Asia/Tokyo; do echo \"— $tz\"; TZ=$tz jest --silent || exit 1; done"
+    "check": "eslint . --max-warnings=0 && jest && npm run test:tz",
+    "test:tz": "for tz in UTC America/Los_Angeles Pacific/Auckland Asia/Tokyo; do echo \"\u2014 $tz\"; TZ=$tz jest --silent || exit 1; done"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",

@@ -109,6 +109,7 @@ export function TankToolboxCard({
     let alive = true;
     AsyncStorage.getItem("pr_tanktools_tab").then((v) => { if (alive && v && TOOLS.some((tt) => tt.id === v)) setSel(v); }).catch(() => {});
     return () => { alive = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- TOOLS is a module constant.
   }, []);
   const pick = (id) => { setSel(id); AsyncStorage.setItem("pr_tanktools_tab", id).catch(() => {}); };
 

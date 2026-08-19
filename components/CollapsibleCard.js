@@ -50,6 +50,7 @@ export const CollapsibleCard = memo(function CollapsibleCard({ storageKey, title
       setOpen(true);
       AsyncStorage.setItem(`pr_collapse_${storageKey}`, "1").catch(() => {});
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Fires only when the parent forces the card open. storageKey is fixed per card.
   }, [forceOpen]);
 
   function toggle() {

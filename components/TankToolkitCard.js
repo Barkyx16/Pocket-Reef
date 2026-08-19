@@ -80,6 +80,7 @@ export function TankToolkitCard({
       } catch (e) { /* a corrupt counter just means no personalisation */ }
     }).catch(() => {});
     return () => { alive = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- TOOLS is a module constant.
   }, []);
 
   const pick = (id) => {
@@ -103,6 +104,7 @@ export function TankToolkitCard({
     const rank = (t) => counts[t.id] || 0;
     // Stable: ties keep the hand-authored order, which is grouped by workflow.
     return TOOLS.map((t, i) => ({ t, i })).sort((a, b) => rank(b.t) - rank(a.t) || a.i - b.i).map((x) => x.t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- TOOLS is a module constant.
   }, [uses]);
 
   // A shortcut ("Log a feeding", "See water trends") names the tool it wants.
@@ -112,6 +114,7 @@ export function TankToolkitCard({
   // away from it.
   useEffect(() => {
     if (focusTool && focusTool.tool && TOOLS.some((t) => t.id === focusTool.tool)) pick(focusTool.tool);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- TOOLS is a module constant.
   }, [focusTool]);
 
   const active = TOOLS.find((t) => t.id === sel) || TOOLS[0];
