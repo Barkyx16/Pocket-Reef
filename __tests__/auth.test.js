@@ -46,6 +46,7 @@ const asyncStorageModule = require("@react-native-async-storage/async-storage");
 const AsyncStorage = asyncStorageModule.default || asyncStorageModule;
 const { Text, TextInput } = require("react-native");
 const { AuthScreen } = require("../screens/AuthScreen");
+const { RESET_REDIRECT } = require("../lib/supabaseConfig");
 
 function mount(element) {
   let tree;
@@ -232,7 +233,13 @@ test("a recovery code verifies as recovery and hands off to the new-password she
   type(inputByLabel(tree, "Email address"), "reef@example.com");
   await pressAsync(btn(tree, "Send code"));
 
-  expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith("reef@example.com", expect.anything());
+  // Not expect.anything(): the redirect is the half of this flow that has to
+  // match what the deep-link handler accepts, and a mismatch is silent — the
+  // email arrives, the link opens the app, and nothing happens.
+  expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+    "reef@example.com",
+    { redirectTo: RESET_REDIRECT }
+  );
 
   const codeField = byLabel(tree, "Six digit verification code");
   await renderer.act(async () => { await codeField.props.onChangeText("654321"); });

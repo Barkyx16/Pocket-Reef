@@ -103,3 +103,55 @@ describe("App routes links through the check", () => {
     expect(app).not.toContain('url.includes("reset-password")');
   });
 });
+
+describe("the redirects the app asks for are the ones it will accept", () => {
+  // Two halves that must agree, in different files, with nothing joining them.
+  // Supabase is told where to send the keeper back to; classifyLink decides
+  // what to honour on the way in. Change one and the other silently stops
+  // matching — the email arrives, the link opens the app, and nothing happens.
+  // No error, no log, and the keeper is locked out of their own account with a
+  // reset link that appears to do nothing.
+  const { AUTH_REDIRECT, RESET_REDIRECT } = require("../lib/supabaseConfig");
+
+  const withSession = (url) => `${url}#access_token=AAA&refresh_token=BBB`;
+
+  test("the sign-in redirect is honoured when it carries a session", () => {
+    // Which is the only way it ever arrives — Supabase appends the tokens.
+    const link = classifyLink(withSession(AUTH_REDIRECT));
+    expect(link).not.toBe(null);
+    expect(link.session).toEqual({ access_token: "AAA", refresh_token: "BBB" });
+  });
+
+  test("the reset redirect is honoured, and read as a recovery", () => {
+    const link = classifyLink(withSession(RESET_REDIRECT));
+    expect(link).not.toBe(null);
+    expect(link.isRecovery).toBe(true);
+    expect(link.session).toBeTruthy();
+  });
+
+  test("the reset redirect is a recovery even before any token arrives", () => {
+    expect(classifyLink(RESET_REDIRECT).isRecovery).toBe(true);
+  });
+
+  test("both use the scheme the deep-link handler allows", () => {
+    for (const url of [AUTH_REDIRECT, RESET_REDIRECT]) {
+      expect(url.startsWith(`${SCHEME}://`)).toBe(true);
+    }
+  });
+
+  test("and the paths are the two that are actually registered", () => {
+    // A redirect pointing anywhere else would be dropped by the allow-list,
+    // which is doing its job — the mistake would be upstream, here.
+    const { AUTH_PATH, RESET_PATH } = require("../lib/deepLink");
+    expect(AUTH_REDIRECT).toBe(`${SCHEME}://${AUTH_PATH}`);
+    expect(RESET_REDIRECT).toBe(`${SCHEME}://${RESET_PATH}`);
+  });
+
+  test("the auth screen sends the reset link to that exact address", () => {
+    const fs = require("fs");
+    const path = require("path");
+    const src = fs.readFileSync(path.join(__dirname, "..", "screens/AuthScreen.js"), "utf8");
+    expect(src).toMatch(/resetPasswordForEmail\([^)]*redirectTo: RESET_REDIRECT/);
+    expect(src).not.toMatch(/redirectTo: "pocketreef/);  // never a literal
+  });
+});
