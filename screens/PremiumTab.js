@@ -5,6 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { HeroBanner } from "../components/HeroBanner";
 import { GradientButton } from "../components/GradientButton";
 import { useScrollToTop } from "../lib/scrollToTop";
+import { usingTestKeys } from "../lib/purchases";
 
 // A self-contained Premium tab: what's included, a plan picker, the unlock CTA,
 // and — at the very bottom — a developer toggle to unlock/lock the gate while
@@ -154,7 +155,9 @@ export function PremiumTab({ premiumUnlocked, onSetPremium, onPurchase, onRestor
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: space.lg }}>Loading plans…</Text>
           ) : !plans.length ? (
             <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", marginTop: space.lg, lineHeight: 18 }}>
-              Plans aren't available right now. Check your connection and try again.
+              {usingTestKeys()
+                ? "This build uses RevenueCat sandbox keys, so no products load. Swap in the production keys before shipping."
+                : "Plans aren't available right now. Check your connection and try again."}
             </Text>
           ) : null}
           <GradientButton
