@@ -19,7 +19,7 @@ export function TodayCard({ actions = [], onNavigate }) {
   if (!actions.length) {
     return (
       <View style={{ alignItems: "center", paddingVertical: 6 }}>
-        <Text style={{ fontSize: 28 }}>🎉</Text>
+        <Text style={{ fontSize: 28, letterSpacing: -0.4 }}>🎉</Text>
         <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6 }}>All caught up</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Nothing needs your attention today. Nice work keeping the tank happy.</Text>
       </View>
@@ -46,7 +46,7 @@ export function TodayCard({ actions = [], onNavigate }) {
           >
             <Text style={{ fontSize: type.bodyLg }}>{a.icon}</Text>
             <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.text}</Text>
-            {tappable ? <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
+            {tappable ? <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text> : null}
           </Row>
         );
       })}

@@ -326,18 +326,18 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 {a.status !== "none" ? (
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
                     {delta ? (
-                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                         {delta.up ? "↑" : "↓"}{delta.amount}
                       </Text>
                     ) : null}
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase" }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: c, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase" }}>
                       {a.status === "good" ? "Good" : a.status === "caution" ? "Watch" : "High"}
                     </Text>
                   </View>
                 ) : prior != null ? (
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>was {prior}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>was {prior}</Text>
                 ) : (
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{p.unit}</Text>
                 )}
               </View>
               <TextInput
@@ -467,7 +467,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
               <Text style={{ color: theme.danger, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {it.label} {it.value}{it.unit ? ` ${it.unit}` : ""}
               </Text>
-              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>target {it.ideal}</Text>
+              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>target {it.ideal}</Text>
             </View>
           ))}
 
@@ -515,8 +515,8 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 const avg = tidy(vals.reduce((a, b) => a + b, 0) / vals.length);
                 return (
                   <View key={p.key} style={{ backgroundColor: theme.well, borderRadius: radius.sm, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 9, paddingVertical: 6 }}>
-                    <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase" }}>{p.label}</Text>
-                    <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase" }}>{p.label}</Text>
+                    <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                       {lo === hi ? `${lo}` : `${lo}–${hi}`}
                       <Text style={{ color: theme.secondaryText, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{`  avg ${avg}`}</Text>
                     </Text>
@@ -543,7 +543,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                 accessibilityRole={onUpdate ? "button" : undefined}
                 accessibilityLabel={onUpdate ? `Test from ${h.date}. Tap to correct it.` : undefined}
               >
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{h.date}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{h.date}</Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, flex: 1 }}>
                 {(displayParams(h.water)).map((p) => {
                   if (h.values[p.key] == null) return null;
@@ -554,8 +554,8 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
                   const c = paramStatusColor(a.status);
                   return (
                     <View key={p.key} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: `${c}18`, borderRadius: radius.xs, paddingHorizontal: 8, paddingVertical: 4 }}>
-                      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
-                      <Text style={{ color: c, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shown}</Text>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{p.label}</Text>
+                      <Text style={{ color: c, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shown}</Text>
                     </View>
                   );
                 })}
@@ -590,7 +590,7 @@ export function WaterTestCard({ waterType = "fresh", history = [], onLog, onUpda
           ) : null}
 
           {onUpdate ? (
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
               Tap a test to correct a mistyped reading.
             </Text>
           ) : null}

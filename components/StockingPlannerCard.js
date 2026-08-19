@@ -54,7 +54,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
         checked against the same engine that grades your stock.
       </Text>
 
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14, marginBottom: 6 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14, marginBottom: 6 }}>
         YOUR EXPERIENCE
       </Text>
       <View style={{ flexDirection: "row", gap: 6 }}>
@@ -79,10 +79,10 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
                       {p.count}× {p.species.name}
                     </Text>
                   </View>
-                  <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.4, textTransform: "uppercase", marginTop: 2 }}>
+                  <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginTop: 2 }}>
                     {p.roleLabel}
                   </Text>
-                  <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 15 }}>
+                  <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 15 }}>
                     {p.why}
                   </Text>
                 </View>
@@ -92,13 +92,13 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
 
           <View style={{ marginTop: 16 }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>ESTIMATED LOAD</Text>
-              <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>ESTIMATED LOAD</Text>
+              <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                 {plan.load}" of {formatVolume(plan.capacity)} · {plan.headroom}" spare
               </Text>
             </View>
             <ProgressBar pct={plan.pct} height={8} glow label={`Estimated stocking load, ${plan.pct}%`} />
-            <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
               Deliberately under-stocked — headroom is what lets fish grow and gives you room to add later.
             </Text>
           </View>
@@ -106,7 +106,7 @@ export function StockingPlannerCard({ tankGallons = 20, tankWater = "fresh", has
           {plan.notes.length ? (
             <View style={{ marginTop: 12 }}>
               {plan.notes.map((n) => (
-                <Text key={n} style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>· {n}</Text>
+                <Text key={n} style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>· {n}</Text>
               ))}
             </View>
           ) : null}

@@ -51,7 +51,7 @@ export function ForecastCard({ forecasts = [] }) {
               <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                   <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{f.label}</Text>
-                  <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: paramStatusColor(f.status), fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {f.current}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                 </View>
@@ -69,7 +69,7 @@ export function ForecastCard({ forecasts = [] }) {
                   // Deliberately not a date. The fit isn't strong enough to
                   // justify one, and a wrong countdown costs more trust than a
                   // vague one earns.
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                     Not enough of a pattern yet to predict a date
                   </Text>
                 )}

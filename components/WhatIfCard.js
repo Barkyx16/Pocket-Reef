@@ -63,11 +63,11 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
           {roomAfter ? (
             <View style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: result.overstocked ? `${theme.danger}55` : theme.border, padding: 12, marginTop: 10 }}>
               <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8 }}>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Stocking</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Stocking</Text>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {result.load.before.pct}% → <Text style={{ color: result.overstocked ? theme.danger : theme.accent }}>{result.load.after.pct}%</Text>
                 </Text>
-                <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   +{result.totalFish} fish
                 </Text>
               </View>
@@ -95,7 +95,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
                     <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       {i.count > 1 ? `${i.count}× ` : ""}{i.name}
                     </Text>
-                    <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{i.temperament}</Text>
+                    <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{i.temperament}</Text>
                   </View>
                 ))}
               </View>
@@ -120,7 +120,7 @@ export function WhatIfCard({ tank = {}, wishlist = [], onOpenSpecies }) {
                     <Ionicons name="chevron-forward" size={13} color={theme.secondaryText} />
                   </View>
                   {i.blockers.map((b, n) => (
-                    <Text key={n} style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 3 }}>• {b.text}</Text>
+                    <Text key={n} style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 3 }}>• {b.text}</Text>
                   ))}
                 </Pressable>
               ))}

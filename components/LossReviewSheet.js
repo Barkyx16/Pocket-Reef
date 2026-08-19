@@ -36,7 +36,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
         >
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
-          <Text style={{ color: "#fff", fontSize: 19, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <Text style={{ color: "#fff", fontSize: 19, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>
             {name ? `About ${name}` : "About this loss"}
           </Text>
           <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18, marginTop: 4 }}>
@@ -61,7 +61,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
               })}
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 14, textAlign: "center" }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 14, textAlign: "center" }}>
               Drawn from this tank's own record. Animals die of old age and of nothing at all — this is what the log can see, not a verdict.
             </Text>
           </ScrollView>

@@ -54,6 +54,29 @@ export const type = {
 
 // Three levels, so depth means something. The app draws on a dark ground where
 // a shadow reads as glow more than as lift, which is why these are restrained.
+// Optical tracking, keyed to size.
+//
+// Type set at one tracking for every size is type nobody adjusted. Letterforms
+// need air at caption sizes and need it taken away at display sizes: 40pt set
+// at default spacing reads loose and unresolved, which is the single most
+// recognisable mark of an interface that was assembled rather than designed.
+//
+// Measured before this: 57 styles at 20pt and above had no tracking at all,
+// while the ones that did were arbitrary — 10pt alone carried +0.3, +0.4, +0.5,
+// +0.6, +0.7 and +0.8, six answers to one question.
+//
+// Small text opens up, large text closes in, and the crossover is body size
+// where the font's own metrics are already right.
+export function tracking(size) {
+  if (!Number.isFinite(size)) return 0;
+  if (size <= 11) return 0.6;    // uppercase eyebrows, pill labels
+  if (size <= 15) return 0;      // body — leave the typeface alone
+  if (size <= 20) return -0.2;
+  if (size <= 30) return -0.4;
+  if (size <= 44) return -0.6;
+  return -1;                     // display figures
+}
+
 // Three levels, taken from values already in the app rather than invented, so
 // the most common surface — the card — does not move at all. Five hand-rolled
 // recipes collapse onto these: the hero banner and the card were within 0.04
@@ -172,8 +195,8 @@ export const styles = StyleSheet.create({
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", ...elevation.card },
   heroEyebrowPill: { alignSelf: "flex-start", backgroundColor: "rgba(127, 240, 221, 0.16)", borderColor: "rgba(127, 240, 221, 0.35)", borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 },
-  heroEyebrow: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 1.1, textTransform: "uppercase" },
-  heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.7, marginTop: 2 },
+  heroEyebrow: { color: ACCENT_LIGHT, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
+  heroTitle: { color: "#ffffff", fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: 2 },
   heroSub: { color: "#cfe6f2", fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 19 },
 
   // ── Profile hero (uncropped banner art + solid info panel below) ───────────
@@ -189,7 +212,7 @@ export const styles = StyleSheet.create({
   // A primary/feature card with a soft accent glow to draw the eye.
   cardElevated: { backgroundColor: "rgba(56,225,198,0.04)", borderRadius: radius.card, padding: 18, marginBottom: 16, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.22, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
   cardHeaderRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
-  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.7, color: ACCENT_LIGHT },
+  cardEyebrow: { fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.6, color: ACCENT_LIGHT },
   cardTitle: { fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, color: "#ffffff" },
   cardText: { marginTop: 8, fontSize: type.body, lineHeight: 22, color: theme.bodyText, fontFamily: "Inter_400Regular" },
   iconSquare: { width: 32, height: 32, borderRadius: radius.sm, marginRight: 10, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: "rgba(56,225,198,0.18)" },
@@ -200,26 +223,26 @@ export const styles = StyleSheet.create({
   cleanRow: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(9, 30, 45, 0.66)", borderRadius: 20, padding: 12, borderWidth: 1, borderColor: "rgba(96, 230, 210, 0.16)", marginBottom: 12 },
   cleanImageWrap: { width: 56, height: 56, borderRadius: radius.xl, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: theme.hairline },
   cleanImage: { width: 56, height: 56 },
-  cleanEmoji: { fontSize: 28 },
-  cleanName: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2 },
+  cleanEmoji: { fontSize: 28, letterSpacing: -0.4 },
+  cleanName: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
   cleanMeta: { color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 },
-  cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, fontFamily: "Inter_900Black", fontWeight: "900" },
+  cleanArrow: { color: ACCENT_LIGHT, fontSize: 28, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" },
 
   // ── Chips & pills ──────────────────────────────────────────────────────────
   chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: radius.pill, borderWidth: 1 },
-  chipText: { fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" },
+  chipText: { fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" },
   pill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1 },
 
   // ── Buttons ──────────────────────────────────────────────────────────────
   primaryBtn: { backgroundColor: ACCENT, borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", shadowColor: ACCENT, shadowOpacity: 0.45, shadowRadius: 16, shadowOffset: { width: 0, height: 7 }, elevation: 8 },
-  primaryBtnText: { color: "#04202a", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.2 },
+  primaryBtnText: { color: "#04202a", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
   ghostBtn: { borderRadius: radius.xl, paddingVertical: 14, alignItems: "center", backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: theme.border },
-  ghostBtnText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0.2 },
+  ghostBtnText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: 0 },
 
   // ── Stat tiles ─────────────────────────────────────────────────────────────
   statGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
   statBox: { flexGrow: 1, minWidth: "45%", backgroundColor: "rgba(56,225,198,0.06)", borderRadius: radius.xl, padding: 12, borderWidth: 1, borderColor: "rgba(56,225,198,0.14)" },
-  statLabel: { color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.2 },
+  statLabel: { color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", letterSpacing: 0.6 },
   statValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] },
 
   // ── Search input ───────────────────────────────────────────────────────────
@@ -228,8 +251,8 @@ export const styles = StyleSheet.create({
   // ── Detail ─────────────────────────────────────────────────────────────────
   detailHeroWrap: { alignItems: "center", paddingVertical: 12 },
   detailImageWrap: { width: 136, height: 136, borderRadius: 30, backgroundColor: theme.well, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: ACCENT, shadowOpacity: 0.18, shadowRadius: 20, shadowOffset: { width: 0, height: 8 }, elevation: 6 },
-  detailEmoji: { fontSize: 68 },
-  detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginTop: 12, textAlign: "center" },
+  detailEmoji: { fontSize: 68, letterSpacing: -1 },
+  detailName: { color: "#ffffff", fontSize: 27, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginTop: 12, textAlign: "center" },
   backBtn: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", paddingVertical: 8, paddingHorizontal: 4 },
   backText: { color: ACCENT, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" },
 
@@ -242,7 +265,7 @@ export const styles = StyleSheet.create({
 
   // ── Account / cloud card ───────────────────────────────────────────────────
   accountInfoBox: { backgroundColor: theme.well, borderRadius: radius.lg, padding: 14, borderWidth: 1, borderColor: theme.border, marginBottom: 10 },
-  accountInfoLabel: { color: ACCENT_LIGHT, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.7, textTransform: "uppercase" },
+  accountInfoLabel: { color: ACCENT_LIGHT, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
   accountInfoValue: { color: "#ffffff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 },
   // Hairline separator between two merged sections inside one card.
   sectionDivider: { height: 1, backgroundColor: theme.hairline, marginVertical: 18 },
@@ -257,8 +280,8 @@ export const styles = StyleSheet.create({
   // A tinted well rather than a filled, glowing capsule. The active tab should
   // be obvious at a glance without being the brightest thing on the screen.
   bottomTabButtonActive: { backgroundColor: "rgba(56,225,198,0.14)" },
-  bottomTabEmoji: { fontSize: type.titleLg },
-  bottomTabLabel: { fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", color: "#7ea6bd" },
+  bottomTabEmoji: { fontSize: type.titleLg, letterSpacing: -0.2 },
+  bottomTabLabel: { fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", color: "#7ea6bd" },
   bottomTabLabelActive: { color: ACCENT },
 });
 

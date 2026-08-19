@@ -69,14 +69,14 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
           >
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{preset.label}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{preset.blurb}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{preset.blurb}</Text>
             </View>
             <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />
           </Pressable>
         ))}
       </View>
       {/* Says plainly that a preset won't stamp on work you've already done. */}
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 17 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 17 }}>
         A preset fills in the parameters you haven't set yourself — anything you've hand-tuned is left alone.
       </Text>
 
@@ -137,12 +137,12 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
                     </Pressable>
                   </View>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 8 }}>
-                    <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
+                    <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
                       Default is {builtIn ? formatIdeal(builtIn.good, builtIn.unit) : "—"}
                     </Text>
                     {isCustom ? (
                       <Pressable onPress={() => resetOne(p.key)} hitSlop={touchSlop(28)} accessibilityRole="button" accessibilityLabel={`Reset ${p.label} to the default`}>
-                        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Use default</Text>
+                        <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Use default</Text>
                       </Pressable>
                     ) : null}
                   </View>
@@ -154,7 +154,7 @@ export function TargetsCard({ waterType = "fresh", targets = {}, onSetTarget, on
       </View>
 
       {custom.length ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
           {custom.length} parameter{custom.length === 1 ? "" : "s"} set to your tank. Trends, the health score and today's actions all use these.
         </Text>
       ) : null}

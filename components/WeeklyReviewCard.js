@@ -50,7 +50,7 @@ export function WeeklyReviewCard({ tank = {}, waterType = "fresh", onGoToTab, no
               accessibilityState={{ selected: days === d }}
               accessibilityLabel={d === 7 ? "Review the last 7 days" : "Review the last 30 days"}
             >
-              <Text style={{ color: days === d ? theme.accent : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d}d</Text>
+              <Text style={{ color: days === d ? theme.accent : theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d}d</Text>
             </Pressable>
           ))}
         </View>
@@ -63,8 +63,8 @@ export function WeeklyReviewCard({ tank = {}, waterType = "fresh", onGoToTab, no
           {counts.map((c) => (
             <View key={c.label} style={{ flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: theme.well, borderRadius: radius.pill, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 5 }}>
               <Ionicons name={c.icon} size={12} color={theme.accent} />
-              <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.n}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.label}</Text>
+              <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.n}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.label}</Text>
             </View>
           ))}
         </View>
@@ -81,7 +81,7 @@ export function WeeklyReviewCard({ tank = {}, waterType = "fresh", onGoToTab, no
               <Text style={{ color: m.direction === "up" ? theme.warn : theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                 {m.direction === "up" ? "↑" : "↓"}{Math.abs(m.delta)}{m.unit ? ` ${m.unit}` : ""}
               </Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{m.from} → {m.to}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{m.from} → {m.to}</Text>
             </View>
           ))}
         </View>

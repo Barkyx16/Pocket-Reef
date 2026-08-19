@@ -23,7 +23,7 @@ export function FirstStepsCard({ steps = [], onDo }) {
     <View style={[styles.card, { borderColor: "rgba(56,225,198,0.30)" }]}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
         <Text accessibilityRole="header" style={styles.cardEyebrow}>Get your tank set up</Text>
-        <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{done}/{steps.length}</Text>
+        <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{done}/{steps.length}</Text>
       </View>
       <Text style={[styles.cardText, { marginTop: 0, marginBottom: 12 }]}>
         Three steps and Pocket Reef can actually tell you something about your water.

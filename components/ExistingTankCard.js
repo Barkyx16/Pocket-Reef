@@ -85,7 +85,7 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
           </View>
         ))}
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
         Blanks are fine — whatever you have to hand.
       </Text>
 
@@ -104,7 +104,7 @@ export function ExistingTankCard({ tank = {}, waterType = "fresh", onApply, onGo
                 <Ionicons name="ellipse-outline" size={12} color={theme.secondaryText} style={{ marginTop: 3 }} />
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{m.label}</Text>
-                  <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>{m.why}</Text>
+                  <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>{m.why}</Text>
                 </View>
               </View>
             ))}

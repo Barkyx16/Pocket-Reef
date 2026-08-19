@@ -24,7 +24,7 @@ export function AchievementsCard({ items = [] }) {
           const on = filter === id;
           return (
             <Pressable key={id} onPress={() => { tapHaptic("light"); setFilter(id); setVisible(12); }} style={[styles.pill, { flex: 1, alignItems: "center", paddingVertical: 8, backgroundColor: on ? theme.accent : "rgba(255,255,255,0.05)", borderColor: on ? theme.accent : theme.border }]} accessibilityRole="button">
-              <Text style={{ color: on ? theme.onAccent : theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
+              <Text style={{ color: on ? theme.onAccent : theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
             </Pressable>
           );
         })}
@@ -42,9 +42,9 @@ export function AchievementsCard({ items = [] }) {
               ...(a.earned ? { shadowColor: theme.accent, shadowOpacity: 0.28, shadowRadius: 12, shadowOffset: { width: 0, height: 0 }, elevation: 3 } : null),
             }}
           >
-            <Text style={{ fontSize: 26 }}>{a.earned ? a.emoji : "🔒"}</Text>
+            <Text style={{ fontSize: 26, letterSpacing: -0.4 }}>{a.earned ? a.emoji : "🔒"}</Text>
             <Text style={{ color: a.earned ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, textAlign: "center" }}>{a.title}</Text>
-            <Text style={{ color: theme.bodyText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, textAlign: "center", lineHeight: 13 }}>{a.desc}</Text>
           </View>
         ))}
       </View>

@@ -39,7 +39,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
         <>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone}40`, padding: 14 }}>
             <View style={{ alignItems: "center", minWidth: 54 }}>
-              <Text style={{ color: tone, fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900" }}>{assessment.hours}</Text>
+              <Text style={{ color: tone, fontSize: 26, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>{assessment.hours}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>hours</Text>
             </View>
             <View style={{ flex: 1 }}>
@@ -95,7 +95,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
             </View>
           </View>
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
             {draftHours != null ? `${draftHours} hours a day` : "Use times like 10:00 and 20:00"}
           </Text>
 
@@ -105,7 +105,7 @@ export function LightScheduleCard({ tank = {}, onSave }) {
               <Pill key={p.id} label={p.label} active={profile === p.id} onPress={() => { tapHaptic("light"); setProfile(p.id); }} />
             ))}
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>
             {(PROFILES.find((p) => p.id === profile) || PROFILES[0]).blurb}
           </Text>
 

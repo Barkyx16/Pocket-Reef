@@ -124,9 +124,9 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
           <View style={styles.heroBanner}>
             <LinearGradient colors={hero.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />
             <View style={{ position: "absolute", right: -60, top: -70, width: 200, height: 200, borderRadius: 100, backgroundColor: hero.glow }} />
-            <Text style={{ position: "absolute", right: -6, top: -24, fontSize: 150, opacity: 0.16 }}>{hero.emoji}</Text>
+            <Text style={{ position: "absolute", right: -6, top: -24, fontSize: 150, letterSpacing: -1, opacity: 0.16 }}>{hero.emoji}</Text>
             <View style={styles.heroEyebrowPill}><Text style={styles.heroEyebrow}>{hero.eyebrow}</Text></View>
-            <Text accessibilityRole="header" style={[styles.heroTitle, { fontSize: 32 }]}>{hero.title}</Text>
+            <Text accessibilityRole="header" style={[styles.heroTitle, { fontSize: 32, letterSpacing: -0.6 }]}>{hero.title}</Text>
             <Text style={styles.heroSub}>{hero.text}</Text>
           </View>
 
@@ -167,7 +167,7 @@ export function OnboardingCard({ onFinish, onStartPremium }) {
               <View style={{ gap: 12 }}>
                 {picks.map((sp) => (
                   <View key={sp.name} style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
-                    <View style={styles.iconSquare}><Text style={{ fontSize: type.title }}>{sp.emoji}</Text></View>
+                    <View style={styles.iconSquare}><Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{sp.emoji}</Text></View>
                     <View style={{ flex: 1 }}>
                       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{sp.name}</Text>
                       <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 1 }}>

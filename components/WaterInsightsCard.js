@@ -30,7 +30,7 @@ export function WaterInsightsCard({ waterTests = [], waterType = "fresh", onExpo
       {inRangePct != null ? (
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14, backgroundColor: theme.well, borderRadius: radius.md, padding: 12, borderWidth: 1, borderColor: theme.border }}>
           <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Tests fully in range</Text>
-          <Text style={{ color: pctColor, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inRangePct}%</Text>
+          <Text style={{ color: pctColor, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{inRangePct}%</Text>
         </View>
       ) : null}
       <View style={styles.statGrid}>

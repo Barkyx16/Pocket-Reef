@@ -75,7 +75,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                   accessibilityLabel={`${task.label}. ${statusLabel(status)}. Tap to change how often.`}
                 >
                   <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{task.label}</Text>
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{statusLabel(status)}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{statusLabel(status)}</Text>
                 </Pressable>
 
                 {/* One tap is the whole interaction — the countdown resets and
@@ -155,7 +155,7 @@ export function UpkeepCard({ tank = {}, onLog, onAddTask, onRemoveTask, onSetInt
                 accessibilityRole="button"
                 accessibilityLabel={`Use ${s.label}, every ${s.days} days`}
               >
-                <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.emoji} {s.label}</Text>
+                <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.emoji} {s.label}</Text>
               </Pressable>
             ))}
           </View>

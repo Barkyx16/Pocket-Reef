@@ -132,3 +132,64 @@ describe("depth is a known quantity", () => {
     expect(shadows("glow").length).toBeGreaterThan(5);
   });
 });
+
+describe("type is optically tracked", () => {
+  // Type set at one tracking for every size is type nobody adjusted.
+  // Letterforms need air at caption sizes and need it taken away at display
+  // sizes — 40pt at default spacing reads loose and unresolved.
+  //
+  // Before this: 57 styles at 20pt and above had none at all, and the ones
+  // that did were arbitrary. 10pt alone carried +0.3, +0.4, +0.5, +0.6, +0.7
+  // and +0.8 — six answers to one question.
+  const { tracking } = require("../styles");
+  const SIZES = { micro: 10, caption: 11, small: 12, body: 13, bodyLg: 15,
+                  title: 17, titleLg: 20, headline: 24, display: 30, hero: 40 };
+
+  test("small text opens up and large text closes in", () => {
+    expect(tracking(10)).toBeGreaterThan(0);
+    expect(tracking(11)).toBeGreaterThan(0);
+    expect(tracking(24)).toBeLessThan(0);
+    expect(tracking(40)).toBeLessThan(0);
+  });
+
+  test("body size is left alone, because the typeface is already right there", () => {
+    expect(tracking(12)).toBe(0);
+    expect(tracking(13)).toBe(0);
+    expect(tracking(15)).toBe(0);
+  });
+
+  test("it tightens monotonically as size grows", () => {
+    const vals = [10, 12, 17, 24, 34, 60].map(tracking);
+    for (let i = 1; i < vals.length; i++) expect(vals[i]).toBeLessThanOrEqual(vals[i - 1]);
+  });
+
+  test("rubbish in gives no tracking rather than NaN", () => {
+    for (const v of [null, undefined, NaN, "big", {}]) expect(tracking(v)).toBe(0);
+  });
+
+  test("every text style matches the scale for its size", () => {
+    const offenders = [];
+    for (const f of [...FILES, "styles.js"]) {
+      const src = read(f);
+      for (const m of src.matchAll(/\{[^{}]{0,340}?\}/g)) {
+        const blk = m[0];
+        const sz = /fontSize: (?:type\.(\w+)|(\d+))/.exec(blk);
+        if (!sz) continue;
+        const pt = sz[1] ? SIZES[sz[1]] : Number(sz[2]);
+        // The OTP field is an invisible full-size capture overlay at 1pt;
+        // tracking on text nobody can see is meaningless.
+        if (!pt || pt < 8) continue;
+        const ls = /letterSpacing: (-?[\d.]+)/.exec(blk);
+        const got = ls ? Number(ls[1]) : 0;
+        if (got !== tracking(pt)) offenders.push(`${f}:${src.slice(0, m.index).split("\n").length} ${pt}pt=${got}`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  test("the scale is actually applied, not just defined", () => {
+    const n = [...FILES, "styles.js"].reduce(
+      (t, f) => t + (read(f).match(/letterSpacing:/g) || []).length, 0);
+    expect(n).toBeGreaterThan(300);
+  });
+});

@@ -56,7 +56,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
                   <Ionicons name={a.ready ? "checkmark-circle" : a.overdue ? "alert-circle" : "eye-outline"} size={18} color={tone} />
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{it.name}</Text>
-                    <Text style={{ color: tone, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{a.headline}</Text>
+                    <Text style={{ color: tone, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{a.headline}</Text>
                   </View>
                   <Pressable onPress={() => onRemove(it.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Remove ${it.name}`}>
                     <Ionicons name="close" size={14} color={theme.secondaryText} />
@@ -75,7 +75,7 @@ export function QuarantineCard({ items = [], onAdd, onRemove, onGraduate, onSetC
                   {a.phase.watch.slice(0, 2).map((w, i) => (
                     <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>• {w}</Text>
                   ))}
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 5 }}>{a.phase.doing}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 5 }}>{a.phase.doing}</Text>
                 </View>
 
                 <Pressable onPress={() => { tapHaptic("light"); setOpenId(open ? null : it.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 10 }} accessibilityRole="button" accessibilityLabel={`Clearance checks for ${it.name}, ${a.met} of ${a.criteria.length} met`}>

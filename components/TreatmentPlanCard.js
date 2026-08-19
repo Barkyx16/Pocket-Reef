@@ -36,7 +36,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
       <View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
           <View style={{ backgroundColor: `${urgency.color}22`, borderColor: `${urgency.color}66`, borderWidth: 1, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: urgency.color, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.4, textTransform: "uppercase" }}>{urgency.label}</Text>
+            <Text style={{ color: urgency.color, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>{urgency.label}</Text>
           </View>
           <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{plan.durationDays}-day course</Text>
         </View>
@@ -47,7 +47,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
         </Text>
 
         <View style={{ marginTop: 12, backgroundColor: "rgba(255,211,114,0.10)", borderWidth: 1, borderColor: "rgba(255,211,114,0.30)", borderRadius: radius.lg, padding: 12 }}>
-          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 4 }}>
+          <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase", marginBottom: 4 }}>
             Read this first
           </Text>
           <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>{plan.keyPoint}</Text>
@@ -105,7 +105,7 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                 borderWidth: 1, borderColor: step.done ? theme.accent : `${color}66`,
                 alignItems: "center", justifyContent: "center",
               }}>
-                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{step.done ? "✓" : step.day}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{step.done ? "✓" : step.day}</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: step.done ? theme.secondaryText : "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: step.done ? "line-through" : "none" }}>
@@ -115,9 +115,9 @@ export function TreatmentPlanCard({ diseaseName, treatment, onStart, onToggleSte
                   {step.detail}
                 </Text>
                 {state === "overdue" ? (
-                  <Text style={{ color: theme.danger, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>Overdue</Text>
+                  <Text style={{ color: theme.danger, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>Overdue</Text>
                 ) : state === "future" ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                     In {step.daysAway} day{step.daysAway === 1 ? "" : "s"}
                   </Text>
                 ) : null}

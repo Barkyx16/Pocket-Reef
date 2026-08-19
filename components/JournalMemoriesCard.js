@@ -51,11 +51,11 @@ function EntryLine({ entry, showDate = true }) {
         <Image source={{ uri: entry.photo }} style={{ width: 46, height: 46, borderRadius: radius.md }} resizeMode="cover" />
       ) : (
         <View style={{ width: 46, height: 46, borderRadius: radius.md, backgroundColor: theme.well, borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{entry.mood || "📓"}</Text>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title, letterSpacing: -0.2 }}>{entry.mood || "📓"}</Text>
         </View>
       )}
       <View style={{ flex: 1 }}>
-        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{entry.date}</Text> : null}
+        {showDate ? <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{entry.date}</Text> : null}
         <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18, marginTop: 1 }} numberOfLines={3}>
           {entry.text || "(photo only)"}
         </Text>
@@ -116,7 +116,7 @@ function Milestones({ entries }) {
               {!last ? <View style={{ width: 2, flex: 1, backgroundColor: "rgba(56,225,198,0.18)", marginTop: 4, minHeight: 14 }} /> : null}
             </View>
             <View style={{ flex: 1, paddingBottom: 14 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{e.date}</Text>
               {e.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19, marginTop: 2 }}>{e.text}</Text> : null}
               {e.photo ? <Image source={{ uri: e.photo }} style={{ width: "100%", height: 120, borderRadius: radius.sm, marginTop: 8 }} resizeMode="cover" /> : null}
             </View>
@@ -192,7 +192,7 @@ function Compare({ photos }) {
         <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
           {span === 0 ? "Same day" : `${span} ${span === 1 ? "day" : "days"} apart`}
         </Text>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
           Tap a photo below to set the {next === "a" ? "before" : "after"} shot
           {photos.length > STRIP_MAX ? ` · showing the oldest and newest ${STRIP_MAX} of ${photos.length}` : ""}
         </Text>

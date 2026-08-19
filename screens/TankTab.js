@@ -77,7 +77,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       </View>
       {tank.length ? <View style={{ marginTop: 12 }}><ProgressBar pct={bio.pct} color={bio.color} height={8} /></View> : null}
       {maturity && maturity.days < 42 ? (
-        <Text style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
+        <Text style={{ color: theme.warn, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>🌱 {maturity.stage} — still maturing, add livestock slowly.</Text>
       ) : null}
 
       {/* Conflicts / positives */}
@@ -105,7 +105,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
                   </Text>
                   {f.alternatives.length ? (
                     <>
-                      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
+                      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4 }}>
                         Similar and compatible:
                       </Text>
                       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
@@ -143,7 +143,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
               <SpeciesCard species={s} onPress={() => openSpecies(s.name)} inTank={true} onToggleTank={() => toggleTank(s.name)} />
               {onSetQuantity ? (
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 10, marginTop: -6, marginBottom: 12, paddingRight: 4 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? ` · group of ${s.minGroup}+` : ""}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>How many?{s.minGroup > 1 ? ` · group of ${s.minGroup}+` : ""}</Text>
                   <Stepper value={qty(s.name)} onDec={() => onSetQuantity(s.name, qty(s.name) - 1)} onInc={() => onSetQuantity(s.name, qty(s.name) + 1)} low={s.minGroup > 1 && qty(s.name) < s.minGroup} />
                 </View>
               ) : null}
@@ -330,7 +330,7 @@ function Stat({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
       <Text style={{ color: color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
     </View>
   );
 }
@@ -342,11 +342,11 @@ function Stepper({ value, onDec, onInc, low }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
       <Pressable onPress={() => { tapHaptic("light"); onDec(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Decrease count">
-        <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
+        <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>−</Text>
       </Pressable>
       <Text style={{ color: low ? theme.warn : "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 22, textAlign: "center" }}>{value}</Text>
       <Pressable onPress={() => { tapHaptic("light"); onInc(); }} hitSlop={6} style={btn} accessibilityRole="button" accessibilityLabel="Increase count">
-        <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text>
+        <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>+</Text>
       </Pressable>
     </View>
   );

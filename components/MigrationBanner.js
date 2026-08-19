@@ -32,7 +32,7 @@ export function MigrationBanner({ onRestore, restoring }) {
           {restoring ? "Restoring…" : "Restore my data"}
         </Text>
       </Pressable>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8, lineHeight: 16 }}>
         Please don't reinstall the app before restoring — that would remove the backup too.
       </Text>
     </View>

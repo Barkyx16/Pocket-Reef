@@ -23,7 +23,7 @@ export function ImportSheet({ onImport, onClose }) {
       </Pressable>
 
       <View style={styles.detailHeroWrap}>
-        <Text style={{ fontSize: 60 }}>📥</Text>
+        <Text style={{ fontSize: 60, letterSpacing: -1 }}>📥</Text>
         <Text style={styles.detailName}>Restore Backup</Text>
       </View>
 

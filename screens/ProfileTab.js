@@ -131,9 +131,9 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: on ? "rgba(6,20,32,0.15)" : "rgba(6,20,32,0.35)" }} />
                   <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 4 }}>
                     {on ? (
-                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>✓ Worn</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>✓ Worn</Text>
                     ) : (
-                      <Text style={{ color: "#fff", fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{b.name}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{b.name}</Text>
                     )}
                   </View>
                 </Pressable>
@@ -180,7 +180,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                   ) : null}
                   <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: isUnlocked ? "rgba(6,20,32,0.12)" : "rgba(6,20,32,0.55)" }} />
                   {!isUnlocked ? (
-                    <Text style={{ fontSize: type.title }}>🔒</Text>
+                    <Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>🔒</Text>
                   ) : on ? (
                     <View style={{ backgroundColor: "rgba(6,20,32,0.6)", borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4 }}>
                       <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓ Worn</Text>
@@ -189,7 +189,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
                 </View>
                 <View style={{ padding: 8, backgroundColor: "rgba(255,255,255,0.03)" }}>
                   <Text style={{ color: isUnlocked ? "#fff" : theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{b.name}</Text>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 1 }}>{b.level === 1 ? "Starter" : `Level ${b.level}`}</Text>
                 </View>
               </Pressable>
             );
@@ -319,7 +319,7 @@ export const ProfileTab = memo(function ProfileTab({ profileName, onChangeName, 
           <Text selectable style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 18 }}>
             {supportLine()}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4 }}>
             Include this line in any bug report.
           </Text>
         </View>

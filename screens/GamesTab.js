@@ -103,7 +103,7 @@ function GameHost({ gameId, onBack, onEarnXp }) {
       </Pressable>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <Ionicons name={meta.icon} size={22} color={theme.accent} />
-        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5 }}>{meta.name}</Text>
+        <Text style={{ color: "#fff", fontSize: 26, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 }}>{meta.name}</Text>
       </View>
       <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 4, marginBottom: 14 }}>{meta.desc}</Text>
 
@@ -115,11 +115,11 @@ function GameHost({ gameId, onBack, onEarnXp }) {
       <View style={{ flexDirection: "row", gap: 8, marginBottom: 14 }}>
         <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
           <Text style={{ color: theme.warn, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>🔥 {bestStreak}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BEST STREAK</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BEST STREAK</Text>
         </View>
         <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 10, alignItems: "center" }}>
           <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>⏱️ {bestBlitz}</Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BLITZ BEST</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>BLITZ BEST</Text>
         </View>
       </View>
 
@@ -163,9 +163,9 @@ function Quiz({ makeRound, timed, onEarnXp, onBestStreak, onBlitzEnd, onReplay, 
   if (timed && over) {
     return (
       <View style={[styles.card, { alignItems: "center", paddingVertical: 24 }]}>
-        <Text style={{ fontSize: type.hero }}>⏱️</Text>
-        <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Time's up!</Text>
-        <Text style={{ color: theme.accent, fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, fontVariant: ["tabular-nums"] }}>{score}</Text>
+        <Text style={{ fontSize: type.hero, letterSpacing: -0.6 }}>⏱️</Text>
+        <Text style={{ color: "#fff", fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8 }}>Time's up!</Text>
+        <Text style={{ color: theme.accent, fontSize: 34, letterSpacing: -0.6, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 6, fontVariant: ["tabular-nums"] }}>{score}</Text>
         <Text style={{ color: theme.secondaryText, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700" }}>correct in 60 seconds · +{gained} XP</Text>
         <GradientButton label="Play again" onPress={() => onReplay && onReplay()} style={{ marginTop: 18, alignSelf: "stretch" }} />
       </View>
@@ -233,7 +233,7 @@ function TwoSpecies({ a, b, question }) {
     <View>
       <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "center", gap: 14 }}>
         <SpeciesMini s={a} />
-        <Text style={{ color: theme.secondaryText, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 20 }}>+</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 20 }}>+</Text>
         <SpeciesMini s={b} />
       </View>
       <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", textAlign: "center", marginTop: 14 }}>{question}</Text>

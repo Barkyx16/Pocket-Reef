@@ -64,7 +64,7 @@ export function OtpCodeInput({ value, onChange, onComplete, editable = true, aut
               }}
             >
               {char ? (
-                <Text style={{ color: theme.text, fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900" }}>{char}</Text>
+                <Text style={{ color: theme.text, fontSize: type.headline, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>{char}</Text>
               ) : isCaret ? (
                 <View style={{ width: 16, height: 2, borderRadius: 1, backgroundColor: theme.accent }} />
               ) : null}

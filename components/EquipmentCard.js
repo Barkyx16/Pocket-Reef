@@ -94,11 +94,11 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.name}</Text>
-                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                    <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                       {bits.length ? bits.join(" · ") : "No details recorded"}
                     </Text>
                     {w.state !== "none" ? (
-                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+                      <Text style={{ color: w.state === "expired" ? theme.secondaryText : w.state === "ending" ? theme.warn : theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
                         {warrantyLabel(item)}
                       </Text>
                     ) : null}
@@ -125,7 +125,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                 accessibilityState={{ selected: draft.category === c.id }}
                 accessibilityLabel={`Category: ${c.label}`}
               >
-                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.emoji} {c.label}</Text>
+                <Text style={{ color: draft.category === c.id ? theme.onAccent : theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{c.emoji} {c.label}</Text>
               </Pressable>
             ))}
           </View>
@@ -151,7 +151,7 @@ export function EquipmentCard({ equipment = [], onAdd, onRemove }) {
                 accessibilityRole="button"
                 accessibilityLabel={`Use ${s}`}
               >
-                <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s}</Text>
+                <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s}</Text>
               </Pressable>
             ))}
           </View>
@@ -248,8 +248,8 @@ function Stat({ label, value, sub, tone }) {
   return (
     <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
       <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
-      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
     </View>
   );
 }

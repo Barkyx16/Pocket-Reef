@@ -61,7 +61,7 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
         ].map((s) => (
           <View key={s.label} style={{ flex: 1, alignItems: "center", backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 9 }}>
             <Text style={{ color: theme.text, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{s.value}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" }}>{s.label}</Text>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>{s.label}</Text>
           </View>
         ))}
       </View>
@@ -76,7 +76,7 @@ export function DataHealthCard({ tanks = [], signedIn = false, lastSyncedAt = nu
                 <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.label}</Text>
                 <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 2 }}>{c.detail}</Text>
                 {c.fix ? (
-                  <Text style={{ color: t.color, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 16, marginTop: 3 }}>{c.fix}</Text>
+                  <Text style={{ color: t.color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 16, marginTop: 3 }}>{c.fix}</Text>
                 ) : null}
               </View>
             </View>

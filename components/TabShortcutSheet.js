@@ -31,7 +31,7 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
             hidden from VoiceOver rather than announced as an unnamed button. */}
         <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(30, insets.bottom + 12) }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5 }}>{tabLabel} shortcuts</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>{tabLabel} shortcuts</Text>
 
           <View style={{ gap: 6, marginTop: 12 }}>
             {items.map((a) => (
@@ -47,7 +47,7 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
                 </View>
                 <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ flex: 1, color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{a.label}</Text>
                 {a.instant ? (
-                  <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase" }}>1 tap</Text>
+                  <Text style={{ color: theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase" }}>1 tap</Text>
                 ) : (
                   <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />
                 )}

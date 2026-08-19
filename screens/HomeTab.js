@@ -114,9 +114,9 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
       {/* STREAK AT RISK */}
       {streak > 0 && !loggedToday ? (
         <Pressable onPress={() => { tapHaptic(); onGoToTab && onGoToTab("log"); }} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,216,107,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(255,216,107,0.4)", padding: 14, marginBottom: 14 }} accessibilityRole="button">
-          <Text style={{ fontSize: 22 }}>🔥</Text>
+          <Text style={{ fontSize: 22, letterSpacing: -0.4 }}>🔥</Text>
           <Text style={{ flex: 1, color: theme.warn, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 18 }}>Keep your {streak}-day streak alive — log a water test or journal note today.</Text>
-          <Text style={{ color: theme.warn, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+          <Text style={{ color: theme.warn, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
         </Pressable>
       ) : null}
 
@@ -198,7 +198,7 @@ export const HomeTab = memo(function HomeTab({ tankGallons, tank, toggleTank, op
           <Summary label="Water tests" value={`${weekly.tests}`} />
           <Summary label="Journal notes" value={`${weekly.journal}`} />
         </View>
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10, textAlign: "center" }}>
           {weekly.activeDays >= 5 ? "Great consistency this week — your reef thanks you! 🐠" : weekly.activeDays === 0 ? "Log a test or a note to start this week off." : "Keep the momentum going — small daily touches add up."}
         </Text>
       </View>
@@ -271,7 +271,7 @@ function ChallengeRow({ c, onNavigate, onComplete, done }) {
           {iconForEmoji(c.icon) ? (
             <Ionicons name={iconForEmoji(c.icon)} size={16} color={done ? theme.secondaryText : theme.accent} />
           ) : (
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{c.icon}</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title, letterSpacing: -0.2 }}>{c.icon}</Text>
           )}
         </View>
         <Text style={{ flex: 1, color: done ? theme.secondaryText : theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textDecorationLine: done ? "line-through" : "none" }}>{c.title}</Text>
@@ -299,7 +299,7 @@ function Summary({ label, value, color, divider }) {
   return (
     <View style={{ alignItems: "center", flex: 1, borderLeftWidth: divider ? 1 : 0, borderLeftColor: theme.hairline }}>
       <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: color || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
     </View>
   );
 }

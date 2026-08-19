@@ -58,7 +58,7 @@ export function FeedingLogCard({ feedings = [], onAdd, onDelete }) {
               <Text style={{ fontSize: type.bodyLg }}>{FOOD_EMOJI[f.food] || "🍽️"}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{f.food}{f.note ? ` · ${f.note}` : ""}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{f.date}</Text>
               </View>
               <Pressable onPress={() => onDelete(f.id)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Delete feeding">
                 <Text style={{ color: theme.secondaryText, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>

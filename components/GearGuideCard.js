@@ -42,7 +42,7 @@ export function GearGuideCard({ tankGallons = 20, tank = [], tankWater }) {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{it.detail}</Text>
               </View>
             </View>
           ))}

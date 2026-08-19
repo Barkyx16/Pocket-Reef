@@ -26,7 +26,7 @@ export function WaterDeltaCard({ waterTests = [], waterType = "fresh" }) {
           </View>
         );
       })}
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Change vs your previous test.</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>Change vs your previous test.</Text>
     </View>
   );
 }

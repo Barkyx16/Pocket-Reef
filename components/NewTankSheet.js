@@ -32,7 +32,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
       </Pressable>
 
       <View style={styles.detailHeroWrap}>
-        <Text style={{ fontSize: 60 }}>{emoji}</Text>
+        <Text style={{ fontSize: 60, letterSpacing: -1 }}>{emoji}</Text>
         <Text style={styles.detailName}>{mode === "edit" ? "Edit Tank" : "New Tank"}</Text>
       </View>
 
@@ -54,7 +54,7 @@ export function NewTankSheet({ mode = "new", initial, onSave, onClose }) {
             const on = emoji === e;
             return (
               <Pressable key={e} onPress={() => { tapHaptic("light"); setEmoji(e); }} accessibilityRole="button" accessibilityState={{ selected: on }} accessibilityLabel={`Tank icon ${EMOJI_LABELS[e] || e}`} style={{ width: 44, height: 44, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: on ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: on ? theme.accent : theme.border }}>
-                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.titleLg }}>{e}</Text>
+                <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{e}</Text>
               </Pressable>
             );
           })}

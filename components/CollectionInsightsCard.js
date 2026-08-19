@@ -31,8 +31,8 @@ export function CollectionInsightsCard({ tanks = [] }) {
       {fresh && salt ? (
         <View style={{ marginTop: 14 }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
-            <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>💧 Fresh {fresh}</Text>
-            <Text style={{ color: theme.coral, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Salt {salt} 🌊</Text>
+            <Text style={{ color: theme.accentLight, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>💧 Fresh {fresh}</Text>
+            <Text style={{ color: theme.coral, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>Salt {salt} 🌊</Text>
           </View>
           <View style={{ height: 8, borderRadius: radius.pill, backgroundColor: theme.coral, overflow: "hidden", flexDirection: "row" }}>
             <View style={{ width: `${freshPct}%`, backgroundColor: theme.accent }} />

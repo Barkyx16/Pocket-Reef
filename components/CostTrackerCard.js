@@ -87,8 +87,8 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
     <View>
       <View style={{ borderRadius: radius.xl, overflow: "hidden", marginBottom: 14, borderWidth: 1, borderColor: "rgba(56,225,198,0.30)", shadowColor: theme.accent, shadowOpacity: 0.18, shadowRadius: 18, shadowOffset: { width: 0, height: 6 } }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
-          <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 1, textTransform: "uppercase" }}>Total invested</Text>
-          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(total)}</Text>
+          <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Total invested</Text>
+          <Text style={{ color: "#fff", fontSize: 34, letterSpacing: -0.6, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(total)}</Text>
           {monthTotal > 0 ? <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>{fmtMoney(monthTotal)} this month</Text> : null}
         </LinearGradient>
       </View>
@@ -102,12 +102,12 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
             <View key={s.id} style={{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 11, paddingVertical: 8 }}>
               <Text style={{ fontSize: type.body }}>{s.emoji}</Text>
               <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{s.label}</Text>
-              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.sub}</Text>
+              <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.sub}</Text>
               <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(s.value)}</Text>
             </View>
           ))}
           {mayDoubleCount ? (
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
               Gear priced in your equipment record is counted here too — if you also logged it as an Equipment expense, it's in the total twice.
             </Text>
           ) : null}
@@ -119,8 +119,8 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
           {byCat.map(([c, v]) => (
             <View key={c} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: theme.well, borderRadius: radius.pill, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: theme.border }}>
               <Text style={{ fontSize: type.small }}>{CAT_EMOJI[c]}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c}</Text>
-              <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>${v.toFixed(0)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{c}</Text>
+              <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>${v.toFixed(0)}</Text>
             </View>
           ))}
         </View>
@@ -189,7 +189,7 @@ export function CostTrackerCard({ costs = [], tank = {}, onAdd, onDelete }) {
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={1}>{c.label}</Text>
                 {costDate(c) ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{costDate(c)}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{costDate(c)}</Text>
                 ) : null}
               </View>
               <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(c.amount)}</Text>

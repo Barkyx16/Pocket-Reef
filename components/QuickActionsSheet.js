@@ -47,7 +47,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4 }}>Quick actions</Text>
+            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2 }}>Quick actions</Text>
             <Pressable onPress={onClose} hitSlop={10} style={({ pressed }) => [{ width: 34, height: 34, borderRadius: 17, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
               <Ionicons name="close" size={17} color={theme.text} />
             </Pressable>
@@ -61,10 +61,10 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
             {all.length ? (
               <View style={{ marginBottom: 18 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>
                     Needs you now
                   </Text>
-                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: summary.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {summary.text}
                   </Text>
                 </View>
@@ -77,7 +77,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                       <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 2 }}>
                         <Text style={{ fontSize: type.body }}>{group.tank.emoji || "🐠"}</Text>
                         <Text numberOfLines={1} style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{group.tank.name}</Text>
-                        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{group.items.length}</Text>
+                        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{group.items.length}</Text>
                       </View>
                     ) : null}
                   {group.items.map((item) => (
@@ -95,7 +95,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
 
                       <View style={{ flex: 1 }}>
                         <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{item.label}</Text>
-                        <Text numberOfLines={1} style={{ color: item.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{item.sub}</Text>
+                        <Text numberOfLines={1} style={{ color: item.urgent ? theme.danger : theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{item.sub}</Text>
                       </View>
 
                       {/* A job is finished here. A water test isn't — it needs
@@ -129,7 +129,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
               </View>
             ) : null}
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 8 }}>
               Log something
             </Text>
             <View style={{ gap: 8 }}>
@@ -151,7 +151,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
                   </View>
                   {a.instant ? (
                     <View style={{ backgroundColor: "rgba(56,225,198,0.14)", borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 }}>
-                      <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.3 }}>1 tap</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>1 tap</Text>
                     </View>
                   ) : (
                     <Ionicons name="chevron-forward" size={16} color={theme.secondaryText} />
@@ -195,7 +195,7 @@ export function QuickActionsFab({ onPress, onLongPress, bottom = 92, pendingCoun
             borderWidth: 2, borderColor: theme.background,
           }}
         >
-          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+          <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: urgent ? "#3a0d0d" : theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
             {pendingCount > 9 ? "9+" : pendingCount}
           </Text>
         </View>

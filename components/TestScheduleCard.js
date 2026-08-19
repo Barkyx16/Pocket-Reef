@@ -46,15 +46,15 @@ export function TestScheduleCard({ waterTests = [], waterType = "fresh", now }) 
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 5 }}>
-                <Text style={{ color: v.color, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{v.label}</Text>
+                <Text style={{ color: v.color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{v.label}</Text>
                 {it.actual != null ? (
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     · you test every {it.actual}d
                   </Text>
                 ) : null}
               </View>
 
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>
                 {it.reason}
               </Text>
             </View>

@@ -106,7 +106,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                   <Ionicons name={k.icon} size={16} color={st.color} />
                   <Text style={{ flex: 1, color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{item.name}</Text>
                   <View style={{ backgroundColor: `${st.color}1f`, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2 }}>
-                    <Text style={{ color: st.color, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{st.label}</Text>
+                    <Text style={{ color: st.color, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{st.label}</Text>
                   </View>
                   <Pressable onPress={() => onRemove && onRemove(item.id)} hitSlop={touchSlop(22)} accessibilityRole="button" accessibilityLabel={`Remove ${item.name}`}>
                     <Ionicons name="close" size={14} color={theme.secondaryText} />
@@ -116,7 +116,7 @@ export function InventoryCard({ tank = {}, waterType = "fresh", onAdd, onRemove,
                 <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>{headline}</Text>
 
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                     {item.stock} {item.unit} left
                     {/* Whether the rate was measured or merely stated changes how
                         much the date is worth, so it's never hidden. */}

@@ -29,8 +29,8 @@ export function FeedingGuideCard({ tank = [], quantities = {} }) {
                 {g.diet}s · {g.fishCount} fish · {g.timesPerDay}× daily
               </Text>
               <Text style={{ color: theme.accent, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>{g.food}</Text>
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.note}</Text>
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.portion}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.note}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2, lineHeight: 16 }}>{g.portion}</Text>
             </View>
           ))}
           <Text style={{ color: theme.warn, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", lineHeight: 17 }}>{feeding.goldenRule}</Text>
@@ -41,12 +41,12 @@ export function FeedingGuideCard({ tank = [], quantities = {} }) {
       <View style={{ gap: 10, marginTop: 12 }}>
         {recs.map((r, i) => (
           <View key={i} style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
-            <Text style={{ fontSize: type.title }}>{r.icon}</Text>
+            <Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{r.icon}</Text>
             <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 19 }}>{r.text}</Text>
           </View>
         ))}
       </View>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>Tip: a weekly fasting day keeps most fish healthy and your water cleaner.</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>Tip: a weekly fasting day keeps most fish healthy and your water cleaner.</Text>
     </View>
   );
 }

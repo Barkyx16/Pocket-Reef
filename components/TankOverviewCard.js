@@ -14,10 +14,10 @@ export function TankOverviewCard({ tanks = [], activeTankId, onSwitch }) {
         const on = tk.id === activeTankId;
         return (
           <Pressable key={tk.id} onPress={() => { tapHaptic(); onSwitch(tk.id); }} style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: on ? theme.accent : theme.border }} accessibilityRole="button">
-            <Text style={{ fontSize: 22 }}>{tk.emoji || "🐠"}</Text>
+            <Text style={{ fontSize: 22, letterSpacing: -0.4 }}>{tk.emoji || "🐠"}</Text>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{tk.name}{on ? "  ·  active" : ""}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 2 }}>
                 {formatVolume(tk.gallons)} · {tk.stock ? tk.stock.length : 0} species · {tk.water === "salt" ? "🌊 Salt" : "💧 Fresh"}
               </Text>
             </View>

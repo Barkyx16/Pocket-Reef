@@ -38,10 +38,10 @@ export function FleetCard({ tanks = [], activeTankId, reminderPrefs, onSwitch, n
               accessibilityLabel={`${p.name}${on ? ", active" : ""}. ${p.score == null ? "Not enough logged to score." : `Scoring ${p.score}.`}${alert ? ` Needs attention: ${p.attention.reasons.join(", ")}.` : ""}`}
             >
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", width: 14 }}>{i + 1}</Text>
-              <Text style={{ fontSize: type.title }}>{p.emoji}</Text>
+              <Text style={{ fontSize: type.title, letterSpacing: -0.2 }}>{p.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.name}{on ? " · active" : ""}</Text>
-                <Text style={{ color: alertColor || theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                <Text style={{ color: alertColor || theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                   {alert ? p.attention.reasons.join(" · ") : `${formatVolume(p.gallons)} · ${p.stocked} stocked${p.measures.testEvery ? ` · tested every ${p.measures.testEvery}d` : ""}`}
                 </Text>
               </View>
@@ -61,8 +61,8 @@ export function FleetCard({ tanks = [], activeTankId, reminderPrefs, onSwitch, n
           </Text>
           <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 4 }}>
             <Text style={{ flex: 1 }} />
-            <Text style={{ width: 62, textAlign: "right", color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.best.name}</Text>
-            <Text style={{ width: 62, textAlign: "right", color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.worst.name}</Text>
+            <Text style={{ width: 62, textAlign: "right", color: theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.best.name}</Text>
+            <Text style={{ width: 62, textAlign: "right", color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }} numberOfLines={1}>{fleet.worst.name}</Text>
           </View>
           {fleet.differences.slice(0, 4).map((d) => (
             <View key={d.id} style={{ flexDirection: "row", alignItems: "center", paddingVertical: 4, borderTopWidth: 1, borderTopColor: theme.hairline }}>
@@ -71,7 +71,7 @@ export function FleetCard({ tanks = [], activeTankId, reminderPrefs, onSwitch, n
               <Text style={{ width: 62, textAlign: "right", color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{d.worst}</Text>
             </View>
           ))}
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
             The habits are the difference far more often than the equipment is.
           </Text>
         </View>

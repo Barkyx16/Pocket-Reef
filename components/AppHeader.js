@@ -34,7 +34,7 @@ export function AppHeader({ tank, tankCount = 1, onOpenTankMenu, onOpenSearch, s
         {tankCount > 1 ? (
           <View style={{ backgroundColor: alertColor ? `${alertColor}22` : "rgba(56,225,198,0.14)", borderRadius: radius.pill, paddingHorizontal: 6, paddingVertical: 1, flexDirection: "row", alignItems: "center", gap: 4 }}>
             {alertColor ? <View style={{ width: 5, height: 5, borderRadius: 3, backgroundColor: alertColor }} /> : null}
-            <Text style={{ color: alertColor || theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{tankCount}</Text>
+            <Text style={{ color: alertColor || theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{tankCount}</Text>
           </View>
         ) : null}
         <Ionicons name="chevron-down" size={13} color={theme.secondaryText} />
@@ -65,7 +65,7 @@ export function TankMenu({ visible, tanks = [], activeTankId, onClose, onSwitch,
             hidden from VoiceOver rather than announced as an unnamed button. */}
         <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: 30 }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
-          <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginBottom: 14 }}>Switch tank</Text>
+          <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.2, marginBottom: 14 }}>Switch tank</Text>
 
           <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
             <View style={{ gap: 8 }}>
@@ -92,7 +92,7 @@ export function TankMenu({ visible, tanks = [], activeTankId, onClose, onSwitch,
                       (alert ? ` Needs attention: ${alert.reasons.join(", ")}.` : "")
                     }
                   >
-                    <Text style={{ fontSize: type.titleLg }}>{tk.emoji || "🐠"}</Text>
+                    <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{tk.emoji || "🐠"}</Text>
                     <View style={{ flex: 1 }}>
                       <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
                         <Text numberOfLines={1} style={{ flexShrink: 1, color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{tk.name}</Text>

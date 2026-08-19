@@ -27,12 +27,12 @@ export function DiseaseDetail({ name, tank = [], onBack, onOpenSpecies, treatmen
           {img ? (
             <Image source={img} style={{ width: 108, height: 108 }} resizeMode="cover" />
           ) : (
-            <Text style={{ fontSize: 56 }}>{d.emoji}</Text>
+            <Text style={{ fontSize: 56, letterSpacing: -1 }}>{d.emoji}</Text>
           )}
         </View>
         <Text style={styles.detailName}>{d.name}</Text>
         <View style={{ backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4, marginTop: 8 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.6 }}>
             {d.water === "salt" ? "🌊 Saltwater" : d.water === "fresh" ? "💧 Freshwater" : "💧🌊 Fresh & salt"}
           </Text>
         </View>

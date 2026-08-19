@@ -75,15 +75,15 @@ export function CsvImportCard({ waterType = "fresh", existing = [], onImport }) 
 
           {report.ok ? (
             <>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
                 Columns understood: {report.matched.join(", ")}
               </Text>
               {report.unmatched.length ? (
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
                   Ignored: {report.unmatched.join(", ")}
                 </Text>
               ) : null}
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
                 {report.entries[report.entries.length - 1].date} to {report.entries[0].date}
               </Text>
             </>
@@ -94,12 +94,12 @@ export function CsvImportCard({ waterType = "fresh", existing = [], onImport }) 
           {report.skipped && report.skipped.length ? (
             <View style={{ marginTop: 8 }}>
               {report.skipped.slice(0, 4).map((s, i) => (
-                <Text key={i} style={{ color: theme.warn, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>
+                <Text key={i} style={{ color: theme.warn, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16 }}>
                   Line {s.line}: {s.reason}
                 </Text>
               ))}
               {report.skipped.length > 4 ? (
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600" }}>
                   …and {report.skipped.length - 4} more
                 </Text>
               ) : null}

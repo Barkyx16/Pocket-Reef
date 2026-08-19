@@ -109,7 +109,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                 <Text style={{ color: statusColor, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>
                   {row.current} {row.unit}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   target {target.min}–{target.max}
                 </Text>
               </View>
@@ -128,7 +128,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                     
             maxLength={TEXT_LIMITS.number}
           />
-                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15 }}>
+                    <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15 }}>
                       {STRENGTH_HINT[key]} — from your product label
                     </Text>
                   </View>
@@ -140,7 +140,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                           ? `${row.plan.perDayMl} ml per day for ${row.plan.days} days`
                           : `${row.plan.totalMl} ml, one dose`}
                       </Text>
-                      <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 16 }}>
+                      <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 4, lineHeight: 16 }}>
                         Raises {row.plan.needed} {row.unit} across {formatVolume(row.plan.volume)} of actual water
                         (your {formatVolume(tankGallons)} tank, less rock and sand).
                         {row.plan.capped
@@ -149,7 +149,7 @@ export function DosingCard({ latestValues = {}, tankGallons = 0 }) {
                       </Text>
                     </View>
                   ) : row.plan && !row.plan.ok ? (
-                    <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8, lineHeight: 16 }}>
+                    <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8, lineHeight: 16 }}>
                       {row.plan.reason}
                     </Text>
                   ) : null}

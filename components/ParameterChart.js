@@ -100,11 +100,11 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
             <Ionicons name="chevron-back" size={24} color={theme.accent} />
           </Pressable>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
+            <Text style={{ color: "#fff", fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{p.label}</Text>
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Target {p.ideal}</Text>
           </View>
           {latest ? (
-            <Text style={{ color: paramStatusColor(status), fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+            <Text style={{ color: paramStatusColor(status), fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>
               {latest.value}{p.unit ? ` ${p.unit}` : ""}
             </Text>
           ) : null}
@@ -142,7 +142,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
                     without turning the chart into a spreadsheet. */}
                 <View style={{ width: 40, height: plotH, justifyContent: "space-between", alignItems: "flex-end", paddingRight: 6 }}>
                   {[view.layout.scale.max, (view.layout.scale.max + view.layout.scale.min) / 2, view.layout.scale.min].map((v, i) => (
-                    <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+                    <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                       {Math.round(v * 100) / 100}
                     </Text>
                   ))}
@@ -210,7 +210,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
               {/* X axis */}
               <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 40, marginTop: 6 }}>
                 {(view.ticks || []).map((d, i) => (
-                  <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{short(d)}</Text>
+                  <Text key={i} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{short(d)}</Text>
                 ))}
               </View>
 
@@ -222,14 +222,14 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
                     return (
                       <View key={t} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                         <View style={{ width: 2, height: 11, backgroundColor: st.color, borderRadius: 1 }} />
-                        <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{st.label}</Text>
+                        <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{st.label}</Text>
                       </View>
                     );
                   })}
                 </View>
               ) : null}
 
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 12 }}>
                 {view.layout.dots.length} readings · {short(view.layout.span.from)} to {short(view.layout.span.to)}
               </Text>
             </View>
@@ -240,7 +240,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
             <View style={[styles.card, { marginTop: 12 }]}>
               <Text accessibilityRole="header" style={styles.cardEyebrow}>How steady it is</Text>
               <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 4 }}>
-                <Text style={{ color: stability.grade === "unstable" ? theme.danger : stability.grade === "swinging" ? theme.warn : theme.accent, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+                <Text style={{ color: stability.grade === "unstable" ? theme.danger : stability.grade === "swinging" ? theme.warn : theme.accent, fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>
                   {stability.gradeLabel}
                 </Text>
                 <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
@@ -268,7 +268,7 @@ export function ParameterChart({ visible, paramKey, tank = {}, waterType = "fres
                   </View>
                 );
               })}
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15, marginTop: 10 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 15, marginTop: 10 }}>
                 Patterns in your own log, not proof of cause.
               </Text>
             </View>

@@ -42,15 +42,15 @@ export function GameRecordsCard() {
           const blitz = records[`pr_game_${g.id}_blitz`] || 0;
           return (
             <View key={g.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, paddingVertical: 10, paddingHorizontal: 12 }}>
-              <Text style={{ fontSize: type.titleLg }}>{g.emoji}</Text>
+              <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{g.emoji}</Text>
               <Text style={{ flex: 1, color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{g.name}</Text>
               <View style={{ alignItems: "center", minWidth: 46 }}>
                 <Text style={{ color: theme.warn, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>🔥 {streak}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 9, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>STREAK</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 9, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>STREAK</Text>
               </View>
               <View style={{ alignItems: "center", minWidth: 46 }}>
                 <Text style={{ color: theme.accent, fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>⏱️ {blitz}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: 9, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>BLITZ</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: 9, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>BLITZ</Text>
               </View>
             </View>
           );

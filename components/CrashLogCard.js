@@ -41,7 +41,7 @@ export function CrashLogCard() {
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }} numberOfLines={2}>
               {c.message}
             </Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
               {c.at.slice(0, 16).replace("T", " ")}{c.screen ? ` · ${c.screen}` : ""}
             </Text>
           </View>

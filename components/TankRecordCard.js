@@ -55,7 +55,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
       {/* The honest caveat. A record that's 40% filled shouldn't imply the
           other 60% is a clean bill of health. */}
       {documented.total && documented.pct < 100 ? (
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 10, lineHeight: 17 }}>
           {documented.documented} of {documented.total} animals dated. Tap one below to fill in where it came from and when.
         </Text>
       ) : null}
@@ -99,7 +99,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
                     <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                       {qty > 1 ? `${qty}× ` : ""}{name}
                     </Text>
-                    <Text numberOfLines={1} style={{ color: bits.length ? theme.secondaryText : theme.accent, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                    <Text numberOfLines={1} style={{ color: bits.length ? theme.secondaryText : theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                       {bits.length ? bits.join(" · ") : "Add details"}
                     </Text>
                   </View>
@@ -143,7 +143,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
                   <Text numberOfLines={1} style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>
                     {l.count > 1 ? `${l.count}× ` : ""}{l.name}
                   </Text>
-                  <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
+                  <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                     {l.date}{l.cause ? ` · ${l.cause}` : ""}{l.tenure ? ` · kept ${l.tenure}` : ""}
                   </Text>
                 </View>
@@ -156,7 +156,7 @@ export function TankRecordCard({ stock = [], stockMeta = {}, quantities = {}, lo
             ))}
           </View>
           {losses.length > recent.length ? (
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 8 }}>
               +{losses.length - recent.length} more in your history
             </Text>
           ) : null}
@@ -170,8 +170,8 @@ function Stat({ label, value, sub, tone }) {
   return (
     <View style={{ flex: 1, backgroundColor: theme.well, borderRadius: radius.lg, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 10, paddingVertical: 10 }}>
       <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: tone || "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.3 }}>{label}</Text>
-      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={2} style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4, textTransform: "uppercase", letterSpacing: 0.6 }}>{label}</Text>
+      {sub ? <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 3 }}>{sub}</Text> : null}
     </View>
   );
 }

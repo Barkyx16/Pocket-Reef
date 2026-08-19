@@ -72,7 +72,7 @@ export function DoseLogCard({
               {doneToday ? (
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                   <Ionicons name="checkmark-circle" size={13} color={theme.accent} />
-                  <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Dosed today</Text>
+                  <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>Dosed today</Text>
                 </View>
               ) : null}
             </View>
@@ -130,7 +130,7 @@ export function DoseLogCard({
 
             {showStrength === key ? (
               <View style={{ marginTop: 10 }}>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 17 }}>
                   How much does 1 ml raise {target.label.toLowerCase()} in 1 gallon? It's on the bottle — every product differs, so there's no sensible default.
                 </Text>
                 <TextInput
@@ -157,7 +157,7 @@ export function DoseLogCard({
           <View style={{ gap: 6 }}>
             {recent.map((d) => (
               <View key={d.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: radius.md, borderWidth: 1, borderColor: theme.hairline, paddingHorizontal: 10, paddingVertical: 8 }}>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{d.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", width: 78 }}>{d.date}</Text>
                 <Text numberOfLines={1} style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {(REEF_TARGETS[d.key] || {}).label} {d.ml}ml
                 </Text>

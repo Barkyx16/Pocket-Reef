@@ -20,7 +20,7 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
         <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.6 }}>More</Text>
         {onClose ? (
           <Pressable onPress={() => { tapHaptic(); onClose(); }} hitSlop={10} style={({ pressed }) => [{ width: 38, height: 38, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: theme.border }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Close">
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.text, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ color: theme.text, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>✕</Text>
           </Pressable>
         ) : null}
       </View>
@@ -38,7 +38,7 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
               <Ionicons name={it.icon} size={20} color={theme.accent} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
+              <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", opacity: isLocked(it.id) ? 0.6 : 1 }}>{it.label}</Text>
               {/* The description lived in MORE_ITEMS all along and was never
                   rendered, which is why this sheet read as five bare words. */}
               {isLocked(it.id) ? (
@@ -50,7 +50,7 @@ export const MoreTab = memo(function MoreTab({ items = [], onNavigate, onClose, 
                 <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{it.desc}</Text>
               ) : null}
             </View>
-            <Text style={{ color: theme.accent, fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+            <Text style={{ color: theme.accent, fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
           </Pressable>
         ))}
       </View>

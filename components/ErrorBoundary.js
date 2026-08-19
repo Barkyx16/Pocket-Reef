@@ -59,8 +59,8 @@ export class ErrorBoundary extends Component {
     if (this.props.compact) {
       return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 28 }}>
-          <Text style={{ fontSize: 34 }}>🐠</Text>
-          <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12, textAlign: "center" }}>
+          <Text style={{ fontSize: 34, letterSpacing: -0.6 }}>🐠</Text>
+          <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 12, textAlign: "center" }}>
             This screen hit a problem
           </Text>
           <Text style={{ color: "#a5d4ea", fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 19, marginTop: 8, textAlign: "center" }}>
@@ -74,7 +74,7 @@ export class ErrorBoundary extends Component {
           >
             <Text style={{ color: "#04202a", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Try again</Text>
           </Pressable>
-          <Text style={{ color: "#6f8ea3", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
+          <Text style={{ color: "#6f8ea3", fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 14, textAlign: "center" }}>
             {String((error && error.message) || error || "Unknown error").slice(0, 140)}
           </Text>
         </View>
@@ -87,8 +87,8 @@ export class ErrorBoundary extends Component {
       <View style={{ flex: 1, backgroundColor: "#061826" }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 24 }}>
           <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 46 }}>🐠</Text>
-            <Text style={{ color: "#fff", fontSize: 22, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 16, textAlign: "center" }}>
+            <Text style={{ fontSize: 46, letterSpacing: -1 }}>🐠</Text>
+            <Text style={{ color: "#fff", fontSize: 22, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 16, textAlign: "center" }}>
               Something went wrong
             </Text>
             {/* The most important sentence on this screen. */}
@@ -126,10 +126,10 @@ export class ErrorBoundary extends Component {
 
           {/* Shown so a user can tell us what happened, not to explain it. */}
           <View style={{ marginTop: 24, padding: 12, borderRadius: radius.md, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.10)" }}>
-            <Text style={{ color: "#6f93a8", fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" }}>
+            <Text style={{ color: "#6f93a8", fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>
               Details
             </Text>
-            <Text style={{ color: "#8fb3c7", fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
+            <Text style={{ color: "#8fb3c7", fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, lineHeight: 16 }} selectable>
               {detail}
             </Text>
           </View>

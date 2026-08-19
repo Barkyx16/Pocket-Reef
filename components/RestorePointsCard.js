@@ -83,7 +83,7 @@ export function RestorePointsCard({ onRestored }) {
               <Ionicons name={e.auto ? "time-outline" : "bookmark-outline"} size={15} color={theme.accent} />
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{describeAge(e.at)}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                   {e.reason} · {describeSize(e.bytes)}
                 </Text>
               </View>

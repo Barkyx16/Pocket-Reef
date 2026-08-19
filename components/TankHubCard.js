@@ -20,7 +20,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
 
   return (
     <View style={styles.card}>
-      <Text style={{ color: "#fff", fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.5, marginBottom: 14 }}>Your Tanks</Text>
+      <Text style={{ color: "#fff", fontSize: type.headline, fontFamily: "Inter_900Black", fontWeight: "900", letterSpacing: -0.4, marginBottom: 14 }}>Your Tanks</Text>
 
       <GradientButton label="Add a Tank" icon="add" variant="secondary" onPress={onAdd} />
 
@@ -39,7 +39,7 @@ export function TankHubCard({ tanks = [], activeTankId, onSwitch, onAdd, onQuick
                 accessibilityLabel={`${tk.name}, ${n} stocked, ${h.score == null ? "health not yet measurable" : `${h.score} percent healthy`}, ${expanded ? "collapse" : "open"}`}
               >
                 <View style={{ width: 48, height: 48, borderRadius: radius.lg, backgroundColor: "rgba(56,225,198,0.14)", borderWidth: 1, borderColor: theme.border, alignItems: "center", justifyContent: "center" }}>
-                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.headline }}>{tk.emoji || "🐠"}</Text>
+                  <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.headline, letterSpacing: -0.4 }}>{tk.emoji || "🐠"}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{tk.name}{on ? " · active" : ""}</Text>

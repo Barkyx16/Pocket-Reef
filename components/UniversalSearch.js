@@ -290,7 +290,7 @@ export function UniversalSearch({
 function Section({ title, children }) {
   return (
     <View style={{ marginBottom: 18 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>{title}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 8 }}>{title}</Text>
       <View style={{ gap: 6 }}>{children}</View>
     </View>
   );
@@ -313,7 +313,7 @@ function Row({ icon, thumb, title, sub, onPress }) {
       )}
       <View style={{ flex: 1 }}>
         <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} numberOfLines={1} style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{title}</Text>
-        {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
+        {sub ? <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>{sub}</Text> : null}
       </View>
       <Ionicons name="chevron-forward" size={15} color={theme.secondaryText} />
     </Pressable>

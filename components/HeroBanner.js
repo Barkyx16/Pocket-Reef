@@ -29,7 +29,7 @@ export function HeroBanner({ eyebrow, title, subtitle, emoji, colors, image, chi
       {/* Soft accent glow in the upper-right — dialed back over artwork. */}
       <View style={{ position: "absolute", right: -60, top: -70, width: 200, height: 200, borderRadius: 100, backgroundColor: image ? "rgba(56,225,198,0.10)" : "rgba(56,225,198,0.18)", pointerEvents: "none" }} />
       {emoji ? (
-        <Text style={{ position: "absolute", right: -4, top: -14, fontSize: 124, opacity: image ? 0.1 : 0.16, pointerEvents: "none" }}>{emoji}</Text>
+        <Text style={{ position: "absolute", right: -4, top: -14, fontSize: 124, letterSpacing: -1, opacity: image ? 0.1 : 0.16, pointerEvents: "none" }}>{emoji}</Text>
       ) : null}
       {/* Bottom scrim keeps the title legible over artwork/watermark. */}
       <LinearGradient

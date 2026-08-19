@@ -90,9 +90,9 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
 
       {plan.ok ? (
         <View style={{ backgroundColor: "rgba(56,225,198,0.10)", borderRadius: radius.xl, borderWidth: 1, borderColor: "rgba(56,225,198,0.32)", padding: 14, marginTop: 14 }}>
-          <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.8, textTransform: "uppercase" }}>Full dose</Text>
-          <Text style={{ color: "#fff", fontSize: type.display, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
+          <Text style={{ color: theme.accentLight, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Full dose</Text>
+          <Text style={{ color: "#fff", fontSize: type.display, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 2 }}>{plan.fullDose} {plan.unit}</Text>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.volumeNote}</Text>
         </View>
       ) : (
         <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 14 }}>{plan.reason}</Text>
@@ -119,7 +119,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
             </Text>
           </View>
           {plan.topUpNote ? (
-            <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.topUpNote}</Text>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 6 }}>{plan.topUpNote}</Text>
           ) : null}
         </View>
       ) : null}
@@ -163,7 +163,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
                 <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
                   {d.name} · {d.amount} {d.unit}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{d.date}</Text>
                 {onDeleteMedDose ? (
                   <Pressable onPress={() => onDeleteMedDose(d.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the ${fmt(d.amount)} ml dose from ${d.date}`}>
                     <Ionicons name="close" size={13} color={theme.secondaryText} />
@@ -183,7 +183,7 @@ export function MedDoseCard({ tank = {}, tankGallons = 0, onLogMedDose, onDelete
         {warnings.map((w, i) => (
           <Text key={i} style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 5 }}>• {w}</Text>
         ))}
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 8 }}>
           {classOf(cls).label} · these are general to the class. The product label overrides everything here.
         </Text>
       </View>

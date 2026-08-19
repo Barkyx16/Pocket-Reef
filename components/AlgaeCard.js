@@ -33,10 +33,10 @@ export function AlgaeCard({ tank = {}, waterType = "fresh", onGoToTab }) {
             >
               <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <Text style={{ flex: 1, color: on ? theme.accent : theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{t.label}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{t.also}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{t.also}</Text>
                 <Ionicons name={on ? "chevron-down" : "chevron-forward"} size={13} color={theme.secondaryText} />
               </View>
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 3 }}>{t.looks}</Text>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 3 }}>{t.looks}</Text>
             </Pressable>
           );
         })}
@@ -65,11 +65,11 @@ export function AlgaeCard({ tank = {}, waterType = "fresh", onGoToTab }) {
                 {result.confirmed.map((c, i) => (
                   <View key={c.id} style={{ backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: i === 0 ? "rgba(56,225,198,0.42)" : theme.border, padding: 11 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                      <Text style={{ color: theme.accent, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{i + 1}</Text>
+                      <Text style={{ color: theme.accent, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{i + 1}</Text>
                       <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{c.label}</Text>
                       {c.free ? (
                         <View style={{ backgroundColor: "rgba(56,225,198,0.16)", borderRadius: radius.pill, paddingHorizontal: 7, paddingVertical: 1 }}>
-                          <Text style={{ color: theme.accent, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>FREE</Text>
+                          <Text style={{ color: theme.accent, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>FREE</Text>
                         </View>
                       ) : null}
                     </View>

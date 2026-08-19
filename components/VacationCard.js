@@ -54,7 +54,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
         <View style={{ gap: 7, marginTop: 8 }}>
           {prep.map((s, i) => (
             <View key={i} style={{ flexDirection: "row", gap: 8 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", width: 78 }}>{s.when}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", width: 78 }}>{s.when}</Text>
               <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>{s.text}</Text>
             </View>
           ))}
@@ -103,7 +103,7 @@ export function VacationCard({ tank = {}, waterType = "fresh" }) {
       <Pressable onPress={share} style={[styles.primaryBtn, { marginTop: 16 }]} accessibilityRole="button" accessibilityLabel="Share the care notes">
         <Text style={styles.primaryBtnText}>Share the care notes</Text>
       </Pressable>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, textAlign: "center", marginTop: 8 }}>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, textAlign: "center", marginTop: 8 }}>
         Plain text — send it, print it, or stick it on the cabinet.
       </Text>
     </View>

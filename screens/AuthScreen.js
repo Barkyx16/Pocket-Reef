@@ -340,11 +340,11 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             {mode === "verify" ? (
               <Ionicons name="mail-unread-outline" size={34} color={theme.accent} />
             ) : (
-              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 38 }}>🐠</Text>
+              <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: 38, letterSpacing: -0.6 }}>🐠</Text>
             )}
           </View>
           <Text style={[styles.heroEyebrow, { marginTop: 16 }]}>Pocket Reef</Text>
-          <Text accessibilityRole="header" style={[styles.heroTitle, { textAlign: "center", fontSize: 29, marginTop: 8 }]}>{heading}</Text>
+          <Text accessibilityRole="header" style={[styles.heroTitle, { textAlign: "center", fontSize: 29, letterSpacing: -0.4, marginTop: 8 }]}>{heading}</Text>
           <Text style={[styles.heroSub, { textAlign: "center", maxWidth: 330 }]}>{sub}</Text>
         </View>
 
@@ -396,7 +396,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
               </Text>
             </Pressable>
 
-            <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, textAlign: "center" }}>
+            <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, textAlign: "center" }}>
               Check your spam folder too. The code expires after about an hour — the link in the same email works as well.
             </Text>
 
@@ -471,7 +471,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
             ) : null}
 
             {mode === "signup" ? (
-              <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
+              <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 10 }}>
                 At least 8 characters. We'll email you a 6-digit code to verify the address.
               </Text>
             ) : null}
@@ -563,7 +563,7 @@ export function AuthScreen({ onContinueOffline, onPasswordRecovered }) {
           </View>
         )}
 
-        <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
+        <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", textAlign: "center", lineHeight: 17, marginTop: 4 }}>
           Your reef data is stored under your account and only readable by you.
         </Text>
       </ScrollView>

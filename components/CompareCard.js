@@ -43,7 +43,7 @@ export function CompareCard({ a, b }) {
       <View style={{ marginTop: 10 }}>
         {rows.map(([label, va, vb], i) => (
           <View key={label} style={{ flexDirection: "row", alignItems: "center", paddingVertical: 8, borderTopWidth: i ? 1 : 0, borderTopColor: theme.border }}>
-            <Text style={{ width: 96, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{label}</Text>
+            <Text style={{ width: 96, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800" }}>{label}</Text>
             <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}>{va}</Text>
             <Text style={{ flex: 1, color: theme.text, fontSize: type.small, fontFamily: "Inter_800ExtraBold", fontWeight: "800", textAlign: "center" }}>{vb}</Text>
           </View>

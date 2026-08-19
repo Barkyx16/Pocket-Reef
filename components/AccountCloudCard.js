@@ -223,7 +223,7 @@ export function AccountCloudCard({
                   : "Cloud accounts aren't configured yet — Export keeps a copy you can restore anywhere."}
           </Text>
         </View>
-        {syncing ? <ActivityIndicator color={theme.accent} /> : lastSyncedAt && !syncError ? <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
+        {syncing ? <ActivityIndicator color={theme.accent} /> : lastSyncedAt && !syncError ? <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>✓</Text> : null}
       </View>
 
       {configured && onSyncNow ? (
@@ -274,11 +274,11 @@ export function AccountCloudCard({
           <Text style={{ color: premiumUnlocked ? theme.accent : "#ffd36f", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4 }}>
             {premiumUnlocked ? "Active" : "Inactive"}
           </Text>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
             {premiumUnlocked ? "Every feature unlocked — thank you!" : "Unlock the full reef toolkit."}
           </Text>
         </View>
-        <Text style={{ color: theme.accent, fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+        <Text style={{ color: theme.accent, fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
       </Pressable>
 
       {/* Stats grid */}
@@ -296,10 +296,10 @@ export function AccountCloudCard({
 
           {bioAvailable ? (
             <Pressable onPress={toggleBiometric} style={[styles.accountInfoBox, { flexDirection: "row", alignItems: "center", gap: 12 }]} accessibilityRole="button" accessibilityState={{ checked: bioEnabled }}>
-              <Text style={{ fontSize: type.titleLg }}>{bioLabel === "Touch ID" ? "👆" : "🙂"}</Text>
+              <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{bioLabel === "Touch ID" ? "👆" : "🙂"}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{bioLabel} sign-in</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
                   {bioEnabled ? "On — tap to turn off and forget the saved credentials." : "Off — offered next time you log in with your password."}
                 </Text>
               </View>
@@ -368,7 +368,7 @@ export function AccountCloudCard({
             
             maxLength={TEXT_LIMITS.password}
           />
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 8 }}>
               At least 8 characters.{bioEnabled ? ` ${bioLabel} updates automatically.` : ""}
             </Text>
             <Pressable
@@ -416,7 +416,7 @@ export function AccountCloudCard({
           <Pressable onPress={deleteAccount} style={styles.accountDangerBtn} accessibilityRole="button">
             <Text style={styles.accountDangerText}>🗑 Delete account</Text>
           </Pressable>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 15, marginTop: 8, textAlign: "center" }}>
             Logging out keeps everything in the cloud. Deleting removes your account and its data for good.
           </Text>
         </>
@@ -429,7 +429,7 @@ function Stat({ value, label, small }) {
   return (
     <View style={{ flexGrow: 1, minWidth: "45%", backgroundColor: theme.well, borderRadius: radius.xl, padding: 14, borderWidth: 1, borderColor: theme.border, alignItems: "center" }}>
       <Text style={{ color: "#fff", fontSize: small ? 15 : 24, fontFamily: "Inter_900Black", fontWeight: "900" }}>{value}</Text>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>{label}</Text>
     </View>
   );
 }

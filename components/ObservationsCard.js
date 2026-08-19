@@ -64,7 +64,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
           <Ionicons name={g.direction === "shrank" ? "trending-down" : "trending-up"} size={15} color={g.direction === "shrank" ? theme.warn : theme.accent} />
           <View style={{ flex: 1 }}>
             <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }}>{g.summary}</Text>
-            <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
               {g.first.size} → {g.last.size} {g.unit} across {g.points} measurements
             </Text>
           </View>
@@ -80,13 +80,13 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             {[shots.first, shots.last].map((shot, i) => (
               <View key={shot.id} style={{ flex: 1 }}>
                 <Image source={{ uri: shot.photo }} style={{ width: "100%", aspectRatio: 1, borderRadius: radius.md, backgroundColor: theme.well }} resizeMode="cover" accessibilityLabel={`${name} on ${shot.date}`} />
-                <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginTop: 4 }}>
                   {i === 0 ? "Then" : "Now"} · {shot.date}
                 </Text>
               </View>
             ))}
           </View>
-          <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
+          <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 6 }}>
             {shots.days} days apart{shots.shots.length > 2 ? ` · ${shots.shots.length} photos` : ""}
           </Text>
         </View>
@@ -122,7 +122,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
             
             maxLength={TEXT_LIMITS.number}
           />
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
+            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
               inches — optional, but it's the only thing growth can be measured from.
             </Text>
           </View>
@@ -150,7 +150,7 @@ export function ObservationsCard({ tank = {}, name, onAdd, onRemove }) {
                 <Text style={{ color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17 }}>
                   {o.text}{o.size ? `${o.text ? " · " : ""}${o.size} ${o.unit}` : ""}
                 </Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{o.date}</Text>
+                <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>{o.date}</Text>
               </View>
               {onRemove ? (
                 <Pressable onPress={() => onRemove(name, o.id)} hitSlop={touchSlop(20)} accessibilityRole="button" accessibilityLabel={`Delete the observation from ${o.date}`}>

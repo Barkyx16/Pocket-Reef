@@ -72,7 +72,7 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
       <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
         {MOODS.map((m) => (
           <Pressable key={m} hitSlop={touchSlop(40)} onPress={() => { tapHaptic("light"); setMood(m); }} accessibilityRole="button" accessibilityState={{ selected: mood === m }} accessibilityLabel={`${MOOD_LABELS[m] || "Mood"} entry`} style={{ width: 40, height: 40, borderRadius: radius.md, alignItems: "center", justifyContent: "center", backgroundColor: mood === m ? "rgba(56,225,198,0.18)" : "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: mood === m ? theme.accent : theme.border }}>
-            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title }}>{m}</Text>
+            <Text maxFontSizeMultiplier={MAX_FONT_SCALE_COMPACT} style={{ fontSize: type.title, letterSpacing: -0.2 }}>{m}</Text>
           </Pressable>
         ))}
       </View>
@@ -146,9 +146,9 @@ export function JournalCard({ entries = [], onAdd, onDelete, onEdit }) {
           {shown.slice(0, visible).map((e) => (
             <View key={e.id} style={{ backgroundColor: theme.well, borderRadius: radius.lg, padding: 12, borderWidth: 1, borderColor: theme.border }}>
               <View style={{ flexDirection: "row", gap: 10 }}>
-                <Text style={{ fontSize: type.titleLg }}>{e.mood}</Text>
+                <Text style={{ fontSize: type.titleLg, letterSpacing: -0.2 }}>{e.mood}</Text>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
+                  <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_800ExtraBold", fontWeight: "800", marginBottom: 4 }}>{e.date}</Text>
                   {e.text ? <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 20 }}>{e.text}</Text> : null}
                 </View>
                 <View style={{ flexDirection: "row", gap: 12 }}>

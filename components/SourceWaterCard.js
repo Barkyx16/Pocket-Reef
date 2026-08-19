@@ -47,7 +47,7 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
             <Text style={{ flex: 1, color: theme.bodyText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{analysis.headline}</Text>
           </View>
 
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>
             {analysis.kindLabel} · tested {analysis.testedAt}
           </Text>
 
@@ -60,10 +60,10 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
                     {f.source}{f.unit ? ` ${f.unit}` : ""}
                   </Text>
                   {f.tankNow != null ? (
-                    <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>tank {f.tankNow}</Text>
+                    <Text style={{ flex: 1, textAlign: "right", color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>tank {f.tankNow}</Text>
                   ) : null}
                 </View>
-                <Text style={{ color: theme.bodyText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>{f.note}</Text>
+                <Text style={{ color: theme.bodyText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", lineHeight: 16, marginTop: 4 }}>{f.note}</Text>
               </View>
             ))}
           </View>
@@ -87,7 +87,7 @@ export function SourceWaterCard({ tank = {}, waterType = "fresh", onSave }) {
               <Pill key={k.id} label={k.label} active={kind === k.id} onPress={() => { tapHaptic("light"); setKind(k.id); }} />
             ))}
           </View>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 6 }}>{kindOf(kind).blurb}</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16, marginTop: 6 }}>{kindOf(kind).blurb}</Text>
 
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
             {params.map((p) => (

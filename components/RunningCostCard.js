@@ -49,8 +49,8 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
     <View>
       <View style={{ borderRadius: radius.xl, overflow: "hidden", borderWidth: 1, borderColor: "rgba(56,225,198,0.30)" }}>
         <LinearGradient colors={["rgba(56,225,198,0.14)", "rgba(56,225,198,0.04)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ alignItems: "center", paddingVertical: 18 }}>
-          <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 1, textTransform: "uppercase" }}>Electricity, per month</Text>
-          <Text style={{ color: "#fff", fontSize: 34, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(running.perMonth)}</Text>
+          <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Electricity, per month</Text>
+          <Text style={{ color: "#fff", fontSize: 34, letterSpacing: -0.6, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 4, fontVariant: ["tabular-nums"] }}>{fmtMoney(running.perMonth)}</Text>
           <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 2 }}>
             {running.kWhPerMonth} kWh · {fmtMoney(running.perYear)} a year
           </Text>
@@ -61,7 +61,7 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
       {running.confidence !== "measured" ? (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}>
           <Ionicons name="information-circle-outline" size={14} color={theme.secondaryText} />
-          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
+          <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 16 }}>
             {running.estimatedCount} item{running.estimatedCount === 1 ? "" : "s"} use a typical wattage for their type. Add real figures in the equipment record for an accurate bill.
           </Text>
         </View>
@@ -88,7 +88,7 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
           <View key={r.id} style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: theme.well, borderRadius: radius.md, borderWidth: 1, borderColor: theme.border, padding: 11 }}>
             <View style={{ flex: 1 }}>
               <Text style={{ color: theme.text, fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900" }} numberOfLines={1}>{r.name}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+              <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                 {r.watts}W{r.estimated ? " (typical)" : ""} · {r.hoursPerDay}h a day · {categoryLabel(r.category)}
               </Text>
             </View>
@@ -112,8 +112,8 @@ export function RunningCostCard({ tank = {}, costs = [], onGoToTab }) {
         <View style={{ marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Since you set it up</Text>
           <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginTop: 6 }}>
-            <Text style={{ color: "#fff", fontSize: type.titleLg, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(ownership.total)}</Text>
-            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
+            <Text style={{ color: "#fff", fontSize: type.titleLg, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{fmtMoney(ownership.total)}</Text>
+            <Text style={{ flex: 1, color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
               {fmtMoney(ownership.spent)} bought · {fmtMoney(ownership.electricity)} run · {ownership.months} months
             </Text>
           </View>

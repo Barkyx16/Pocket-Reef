@@ -142,7 +142,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
   const FilterRow = ({ label, opts, value, onChange }) => (
     <View style={{ marginTop: 12 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>{label}</Text>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         {opts.map(([id, lab]) => (
           <Pill key={id} label={String(lab)} active={value === id} onPress={() => onChange(id)} />
@@ -259,7 +259,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
 
       {!compareMode && !q && recent.length ? (
         <View style={{ marginTop: 14 }}>
-          <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>RECENTLY VIEWED</Text>
+          <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginBottom: 6 }}>RECENTLY VIEWED</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {recent.map((n) => {
               const sp = getSpecies(n);
@@ -314,8 +314,8 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
           accessibilityRole="button"
           accessibilityLabel="Unlock the full species catalog with Premium"
         >
-          <Text style={{ fontSize: type.display }}>🔒</Text>
-          <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
+          <Text style={{ fontSize: type.display, letterSpacing: -0.4 }}>🔒</Text>
+          <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 10, textAlign: "center" }}>
             {list.length - shown} more species
           </Text>
           <Text style={{ color: theme.bodyText, fontSize: type.body, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 6, textAlign: "center", lineHeight: 19 }}>

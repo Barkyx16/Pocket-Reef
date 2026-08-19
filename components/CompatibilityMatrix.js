@@ -18,7 +18,7 @@ export function CompatibilityMatrix({ tank = [] }) {
 
   const Head = ({ label }) => (
     <View style={{ width: CELL, height: CELL, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: theme.accentLight, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
+      <Text style={{ color: theme.accentLight, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{label}</Text>
     </View>
   );
 
@@ -62,14 +62,14 @@ export function CompatibilityMatrix({ tank = [] }) {
           <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 18 }}>{getSpecies(sel.a)?.emoji} {sel.a} + {getSpecies(sel.b)?.emoji} {sel.b}: {sel.reason}</Text>
         </View>
       ) : (
-        <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>Tap any square to see why that pair scores the way it does.</Text>
+        <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 10 }}>Tap any square to see why that pair scores the way it does.</Text>
       )}
 
       {/* Legend: numbers → names */}
       <View style={{ marginTop: 12, gap: 6 }}>
         {species.map((s, i) => (
           <View key={s.name} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <Text style={{ color: theme.text, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", width: 14 }}>{i + 1}</Text>
+            <Text style={{ color: theme.text, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", width: 14 }}>{i + 1}</Text>
             <SpeciesThumb species={s} size={20} radius={7} />
             <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{s.name}</Text>
           </View>

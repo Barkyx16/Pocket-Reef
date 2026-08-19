@@ -70,7 +70,7 @@ export function PremiumTeaserCard({ warnings = [], healthScore = null, tankName 
 
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.border }}>
         <Text style={{ color: theme.accent, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>Unlock with Premium</Text>
-        <Text style={{ color: theme.accent, fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
+        <Text style={{ color: theme.accent, fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>›</Text>
       </View>
     </Pressable>
   );

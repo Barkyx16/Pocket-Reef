@@ -35,7 +35,7 @@ export function StabilityCard({ tank = {}, waterType = "fresh", now }) {
     <View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: `${tone.color}14`, borderRadius: radius.xl, borderWidth: 1, borderColor: `${tone.color}44`, padding: 14 }}>
         <View style={{ alignItems: "center", minWidth: 58 }}>
-          <Text style={{ color: tone.color, fontSize: type.display, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{result.score}</Text>
+          <Text style={{ color: tone.color, fontSize: type.display, letterSpacing: -0.4, fontFamily: "Inter_900Black", fontWeight: "900", fontVariant: ["tabular-nums"] }}>{result.score}</Text>
           <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" }}>Steady</Text>
         </View>
         <View style={{ flex: 1 }}>
@@ -67,11 +67,11 @@ export function StabilityCard({ tank = {}, waterType = "fresh", now }) {
               <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: t.color }} />
               <View style={{ flex: 1 }}>
                 <Text style={{ color: theme.text, fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>{it.label}</Text>
-                <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
+                <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 1 }}>
                   {it.low}–{it.high}{it.unit ? ` ${it.unit}` : ""} · {it.perDay}/day of {it.limit} allowed
                 </Text>
               </View>
-              <Text style={{ color: t.color, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{it.gradeLabel}</Text>
+              <Text style={{ color: t.color, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{it.gradeLabel}</Text>
               <Ionicons name="chevron-forward" size={14} color={theme.secondaryText} />
             </Pressable>
           );

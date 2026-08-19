@@ -51,7 +51,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <SpeciesThumb name={name} size={42} />
             <View style={{ flex: 1 }}>
-              <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
+              <Text numberOfLines={1} style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900" }}>{name}</Text>
               <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 2 }}>
                 {quantity > 1 ? `${quantity} in the tank` : "In the tank"}{tenure ? ` · ${tenure}` : ""}
               </Text>
@@ -185,7 +185,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                       <Pressable onPress={() => setLoss((l) => ({ ...l, count: Math.max(1, l.count - 1) }))} hitSlop={touchSlop(34)} style={stepBtn} accessibilityRole="button" accessibilityLabel="Fewer">
                         <Ionicons name="remove" size={16} color={theme.accent} />
                       </Pressable>
-                      <Text style={{ color: "#fff", fontSize: type.title, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 28, textAlign: "center" }}>{loss.count}</Text>
+                      <Text style={{ color: "#fff", fontSize: type.title, letterSpacing: -0.2, fontFamily: "Inter_900Black", fontWeight: "900", minWidth: 28, textAlign: "center" }}>{loss.count}</Text>
                       <Pressable onPress={() => setLoss((l) => ({ ...l, count: Math.min(quantity, l.count + 1) }))} hitSlop={touchSlop(34)} style={stepBtn} accessibilityRole="button" accessibilityLabel="More">
                         <Ionicons name="add" size={16} color={theme.accent} />
                       </Pressable>
@@ -240,9 +240,9 @@ const stepBtn = {
 function Field({ label, hint, children }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 6 }}>{label}</Text>
+      <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_700Bold", fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 6 }}>{label}</Text>
       {children}
-      {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
+      {hint ? <Text style={{ color: theme.secondaryText, fontSize: type.caption, letterSpacing: 0.6, fontFamily: "Inter_600SemiBold", fontWeight: "600", marginTop: 5 }}>{hint}</Text> : null}
     </View>
   );
 }

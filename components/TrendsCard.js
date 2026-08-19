@@ -56,7 +56,7 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
   if (!premiumUnlocked) {
     return (
       <View style={{ alignItems: "center", paddingVertical: 8 }}>
-        <Text style={{ fontSize: 34 }}>📈</Text>
+        <Text style={{ fontSize: 34, letterSpacing: -0.6 }}>📈</Text>
         <Text style={{ color: "#fff", fontSize: type.bodyLg, fontFamily: "Inter_900Black", fontWeight: "900", marginTop: 8, textAlign: "center" }}>See your water trends</Text>
         <Text style={[styles.cardText, { textAlign: "center" }]}>Premium charts each parameter over time and warns you when a reading drifts the wrong way.</Text>
         <Pressable onPress={() => { tapHaptic(); onOpenPremium && onOpenPremium(); }} style={[styles.primaryBtn, { marginTop: 12, alignSelf: "stretch" }]} accessibilityRole="button">
@@ -137,11 +137,11 @@ export function TrendsCard({ waterTests = [], waterType = "fresh", premiumUnlock
             {/* The axis the chart never had. Sixteen unlabelled bars could have
                 covered a fortnight or two years. */}
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[0].date)}</Text>
-              <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[bars.length - 1].date)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[0].date)}</Text>
+              <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700" }}>{shortDate(bars[bars.length - 1].date)}</Text>
             </View>
 
-            <Text style={{ color: theme.secondaryText, fontSize: type.micro, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
+            <Text style={{ color: theme.secondaryText, fontSize: type.micro, letterSpacing: 0.6, fontFamily: "Inter_700Bold", fontWeight: "700", marginTop: 3 }}>
               <Text style={{ color: move.warn ? theme.warn : theme.secondaryText, fontFamily: "Inter_900Black", fontWeight: "900" }}>{move.text}</Text>
               {`  ·  target ${p.ideal}`}
             </Text>
