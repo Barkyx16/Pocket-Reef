@@ -6,6 +6,7 @@ import { ACTIONS, QUICK_ACTION_IDS } from "../lib/shortcuts";
 import { pendingSummary } from "../lib/pending";
 import { iconForEmoji } from "../lib/icons";
 import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // The quick-action sheet, opened by the floating button that rides above the
 // tab bar on every screen.
@@ -20,6 +21,9 @@ import { touchSlop, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 // invisible; with several, each tank gets a heading so a job can never be
 // ticked off against the wrong one.
 export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending = [], roundEnabled = true, ids = QUICK_ACTION_IDS }) {
+  // A sheet sits on the bottom edge, where the home indicator lives. The
+  // designed gap is kept on devices without one.
+  const insets = useSafeAreaInsets();
   const items = ids.map((id) => ACTIONS.find((a) => a.id === id)).filter(Boolean);
   const groups = pending;
   const all = groups.flatMap((g) => g.items);
@@ -38,7 +42,7 @@ export function QuickActionsSheet({ visible, onClose, onRun, onComplete, pending
           accessible={false}
           importantForAccessibility="no"
           onPress={(e) => e.stopPropagation()}
-          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: 30 }}
+          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(30, insets.bottom + 12) }}
         >
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 

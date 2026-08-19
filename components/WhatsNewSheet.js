@@ -3,12 +3,16 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { tapHaptic } from "../core";
 import { itemsToShow, unseenReleases } from "../lib/whatsNew";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Shown once, to somebody who already had the app.
 //
 // Not on a fresh install: a tour of features you have never met is noise, and
 // the onboarding already does that job.
 export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss }) {
+  // A sheet sits on the bottom edge, where the home indicator lives. The
+  // designed gap is kept on devices without one.
+  const insets = useSafeAreaInsets();
   const releases = unseenReleases(seenVersion, currentVersion);
   const items = itemsToShow(seenVersion, currentVersion);
   if (!items.length) return null;
@@ -18,7 +22,7 @@ export function WhatsNewSheet({ visible, seenVersion, currentVersion, onDismiss 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onDismiss}>
       <View style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.82)", justifyContent: "flex-end" }}>
-        <View style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 18, paddingTop: 12, paddingBottom: 26, maxHeight: "86%" }}>
+        <View style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 18, paddingTop: 12, paddingBottom: Math.max(26, insets.bottom + 12), maxHeight: "86%" }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
           <Text accessibilityRole="header" style={styles.cardEyebrow}>Updated to {currentVersion}</Text>

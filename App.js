@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Alert, AppState, BackHandler, Image, KeyboardAvoidingView, Linking, Platform, Pressable, Share, StyleSheet, Text, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import {
   useFonts,
@@ -201,6 +201,8 @@ function PocketReef() {
   // Capping the content column here means every screen inherits it from one
   // place instead of each ScrollView carrying its own stale snapshot.
   const layout = useResponsiveLayout();
+  // Read live: the bar moves with the device, and Split View changes it.
+  const insets = useSafeAreaInsets();
 
   // Inter, in the weights the design system actually uses. React Native needs a
   // family per weight — fontWeight alone won't select the right file on Android.
@@ -2352,7 +2354,13 @@ function PocketReef() {
           </KeyboardAvoidingView>
 
           {!detailOpen ? (
-            <View style={[styles.bottomTabs, layout.isLarge && {
+            <View style={[styles.bottomTabs, {
+              // 16pt from the edge puts the bar inside the 34pt the home
+              // indicator reserves, so on every modern iPhone the indicator
+              // line was drawn across the tab labels. Sit above it instead,
+              // keeping the original gap on devices that have no indicator.
+              bottom: Math.max(16, insets.bottom),
+            }, layout.isLarge && {
               // alignSelf is ignored on an absolutely-positioned element, so
               // the bar hugged the left edge of the content column. Auto
               // margins against left:0/right:0 is what actually centres it.

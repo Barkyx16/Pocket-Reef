@@ -4,6 +4,7 @@ import { theme } from "../styles";
 import { tapHaptic } from "../core";
 import { ACTIONS, TAB_SHORTCUTS } from "../lib/shortcuts";
 import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Long-press a tab to jump straight to what that tab is *for*, the way a
 // long-pressed home-screen icon works on both platforms.
@@ -16,6 +17,9 @@ import { MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 // shortcut here always does exactly what the same shortcut does in the quick
 // sheet and in search.
 export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onOpenTab }) {
+  // A sheet sits on the bottom edge, where the home indicator lives. The
+  // designed gap is kept on devices without one.
+  const insets = useSafeAreaInsets();
   const ids = TAB_SHORTCUTS[tabId] || [];
   const items = ids.map((id) => ACTIONS.find((a) => a.id === id)).filter(Boolean);
   if (!items.length) return null;
@@ -25,7 +29,7 @@ export function TabShortcutSheet({ tabId, tabLabel, visible, onClose, onRun, onO
       <Pressable style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.72)", justifyContent: "flex-end" }} onPress={onClose} accessibilityLabel="Close shortcuts">
         {/* Swallows taps so they don't close the sheet. Not a control, so it's
             hidden from VoiceOver rather than announced as an unnamed button. */}
-        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: 30 }}>
+        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(30, insets.bottom + 12) }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
           <Text style={{ color: theme.secondaryText, fontSize: 11, fontFamily: "Inter_900Black", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0.5 }}>{tabLabel} shortcuts</Text>
 

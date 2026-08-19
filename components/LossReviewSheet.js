@@ -2,6 +2,7 @@ import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme } from "../styles";
 import { tapHaptic } from "../core";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // What the record can tell you, shown at the moment something is recorded as
 // dead.
@@ -17,6 +18,9 @@ const TONE = {
 };
 
 export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
+  // A sheet sits on the bottom edge, where the home indicator lives. The
+  // designed gap is kept on devices without one.
+  const insets = useSafeAreaInsets();
   if (!review || !review.ok || !review.mortality || !review.findings.length) return null;
 
   return (
@@ -28,7 +32,7 @@ export function LossReviewSheet({ visible, review, name, onClose, onGoToTab }) {
           accessible={false}
           importantForAccessibility="no"
           onPress={(e) => e.stopPropagation()}
-          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: 28, maxHeight: "84%" }}
+          style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(28, insets.bottom + 12), maxHeight: "84%" }}
         >
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 

@@ -115,7 +115,13 @@ export const styles = StyleSheet.create({
   safe: { flex: 1 },
   // Clears the tab bar *and* the floating quick-action button above it. At the
   // old 132 the FAB sat on top of the last card's controls.
-  scroll: { padding: 16, paddingBottom: 168 },
+  //
+  // 186 rather than 168 because the bar now sits above the home indicator
+  // instead of inside it, which raises its top edge by the 18pt difference.
+  // Devices without an indicator get 18pt of empty space below the last card,
+  // which nobody will ever notice; the alternative is the FAB back on top of
+  // the last card's controls on every iPhone that has one.
+  scroll: { padding: 16, paddingBottom: 186 },
 
   // ── Hero banner (per-tab header) ───────────────────────────────────────────
   heroBanner: { borderRadius: 24, padding: 20, marginBottom: 16, overflow: "hidden", justifyContent: "flex-end", minHeight: 128, borderWidth: 1, borderColor: "rgba(127, 240, 221, 0.22)", shadowColor: "#000", shadowOpacity: 0.26, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 },

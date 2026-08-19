@@ -8,6 +8,7 @@ import { SpeciesThumb } from "./SpeciesThumb";
 import { touchSlop } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
 import { decimalText } from "../lib/numericInput";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // The record for one animal: what a keeper would otherwise write on a tag and
 // then lose. Two jobs in one sheet, because they're the same conversation —
@@ -17,6 +18,9 @@ import { decimalText } from "../lib/numericInput";
 // never be made to fill in a form, so the sheet opens on what's already known
 // and every field can stay blank.
 export function StockRecordSheet({ visible, name, record, quantity = 1, onClose, onSave, onRecordLoss }) {
+  // A sheet sits on the bottom edge, where the home indicator lives. The
+  // designed gap is kept on devices without one.
+  const insets = useSafeAreaInsets();
   const [mode, setMode] = useState("edit"); // "edit" | "loss"
   const [draft, setDraft] = useState(null);
   const [loss, setLoss] = useState({ reason: "died", cause: "Unknown", count: 1, notes: "" });
@@ -41,7 +45,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
       <Pressable style={{ flex: 1, backgroundColor: "rgba(3,14,24,0.72)", justifyContent: "flex-end" }} onPress={close} accessibilityLabel="Close record">
         {/* Swallows taps so they don't close the sheet. Not a control, so it's
             hidden from VoiceOver rather than announced as an unnamed button. */}
-        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: 28 }}>
+        <Pressable accessible={false} importantForAccessibility="no" onPress={(e) => e.stopPropagation()} style={{ backgroundColor: theme.cardSolid, borderTopLeftRadius: 26, borderTopRightRadius: 26, borderWidth: 1, borderColor: theme.border, paddingHorizontal: 16, paddingTop: 10, paddingBottom: Math.max(28, insets.bottom + 12) }}>
           <View style={{ alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.18)", marginBottom: 14 }} />
 
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
