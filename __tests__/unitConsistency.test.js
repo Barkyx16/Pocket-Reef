@@ -7,7 +7,7 @@ import { getTankWarnings, getCareTips, tempRange } from "../core";
 import { setUnit } from "../lib/units";
 
 const ROOT = path.join(__dirname, "..");
-const FILES = ["core.js", ...["components", "screens", "lib"].flatMap((dir) =>
+const FILES = ["core.js", "App.js", ...["components", "screens", "lib"].flatMap((dir) =>
   fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)))];
 
 afterEach(() => setUnit("imperial"));

@@ -3,8 +3,8 @@ import path from "path";
 import { MAX_FONT_SCALE, MAX_FONT_SCALE_COMPACT } from "../lib/a11y";
 
 const ROOT = path.join(__dirname, "..");
-const files = ["components", "screens"].flatMap((dir) =>
-  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)));
+const files = ["App.js", ...["components", "screens"].flatMap((dir) =>
+  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)))];
 
 describe("text inside a fixed box cannot outgrow the box", () => {
   // iOS accessibility text sizes reach roughly 310%. Text in a flexible

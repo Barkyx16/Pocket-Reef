@@ -10,7 +10,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
-import { styles, theme, useResponsiveLayout, TWO_COLUMN_MAX_WIDTH } from "./styles";
+import { styles, theme, useResponsiveLayout, TWO_COLUMN_MAX_WIDTH, type, space, radius } from "./styles";
 import { tapHaptic, getTodayKey, getSpecies, getTodayActions, getStreak, successHaptic, failureHaptic, warningHaptic, commitHaptic, resolveWaterType, assessAddition, getParamForecasts, BANNERS } from "./core";
 import { supabase, isCloudConfigured } from "./lib/supabase";
 import { pullSnapshot, fetchServerEntitlement, buildSnapshot } from "./lib/cloudSync";
@@ -55,7 +55,7 @@ import { syncReminders, requestPermission, onReminderTap, cadenceFor } from "./l
 import { AuthScreen } from "./screens/AuthScreen";
 import { ResetPasswordModal } from "./components/ResetPasswordModal";
 import { t, setLanguage, deviceLanguage, getLanguage } from "./lib/i18n";
-import { setUnit, getUnit } from "./lib/units";
+import { setUnit, getUnit, formatVolume } from "./lib/units";
 import { setCurrency, getCurrency } from "./lib/currency";
 import { BackgroundDecoration } from "./components/BackgroundDecoration";
 import { HomeTab } from "./screens/HomeTab";
@@ -1636,7 +1636,9 @@ function PocketReef() {
     addJournal({
       id: Date.now(),
       date: getTodayKey(),
-      text: `Water change${entry && entry.pct ? ` (~${entry.pct}%, ${entry.gallons || "?"} gal)` : ""}`,
+      // The journal entry is permanent and gets read back years later, so it
+      // carries the keeper's own unit rather than a hardcoded "gal".
+      text: `Water change${entry && entry.pct ? ` (~${entry.pct}%, ${entry.gallons ? formatVolume(entry.gallons) : "?"})` : ""}`,
       mood: "🛠️",
       photo: null,
     });
@@ -2163,20 +2165,20 @@ function PocketReef() {
             dismissible, because carrying on logging into a device that isn't
             storing anything is worse than being interrupted. */}
         {writeFailing ? (
-          <View style={{ backgroundColor: theme.danger, paddingTop: 52, paddingHorizontal: 16, paddingBottom: 12 }} accessibilityRole="alert">
-            <Text style={{ color: "#fff", fontSize: 13.5, fontFamily: "Inter_900Black", fontWeight: "900" }}>
+          <View style={{ backgroundColor: theme.danger, paddingTop: 52, paddingHorizontal: space.lg, paddingBottom: space.md }} accessibilityRole="alert">
+            <Text style={{ color: "#fff", fontSize: type.body, fontFamily: "Inter_900Black", fontWeight: "900" }}>
               Changes aren't saving
             </Text>
-            <Text style={{ color: "#fff", fontSize: 12, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: 3 }}>
+            <Text style={{ color: "#fff", fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700", lineHeight: 17, marginTop: space.xs }}>
               This device may be out of storage. Anything you log now could be lost — free up space, then reopen Pocket Reef. Your existing records are untouched.
             </Text>
             <Pressable
               onPress={() => { tapHaptic(); setWriteFailing(!writeHealth().ok); }}
-              style={{ marginTop: 8, alignSelf: "flex-start" }}
+              style={{ marginTop: space.sm, alignSelf: "flex-start" }}
               accessibilityRole="button"
               accessibilityLabel="Check whether saving works again"
             >
-              <Text style={{ color: "#fff", fontSize: 12.5, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: "underline" }}>
+              <Text style={{ color: "#fff", fontSize: type.small, fontFamily: "Inter_900Black", fontWeight: "900", textDecorationLine: "underline" }}>
                 Check again
               </Text>
             </Pressable>
@@ -2253,7 +2255,7 @@ function PocketReef() {
           {/* A failed upgrade is the one thing worth interrupting every screen
               for — the backup is only useful while the app is still installed. */}
           {migrationFailed && shellVisible ? (
-            <View style={{ paddingHorizontal: 16 }}>
+            <View style={{ paddingHorizontal: space.lg }}>
               <MigrationBanner onRestore={restoreBackup} restoring={restoringBackup} />
             </View>
           ) : null}
@@ -2404,7 +2406,7 @@ function PocketReef() {
                         style={locked ? { opacity: 0.45 } : null}
                       />
                       {locked ? (
-                        <View style={{ position: "absolute", right: -7, top: -4, backgroundColor: theme.cardSolid, borderRadius: 8 }}>
+                        <View style={{ position: "absolute", right: -7, top: -4, backgroundColor: theme.cardSolid, borderRadius: radius.xs }}>
                           <Ionicons name="lock-closed" size={11} color={theme.secondaryText} />
                         </View>
                       ) : null}

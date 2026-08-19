@@ -8,8 +8,8 @@ import { Text } from "react-native";
 import { FirstStepsCard } from "../components/FirstStepsCard";
 
 const ROOT = path.join(__dirname, "..");
-const files = ["components", "screens"].flatMap((dir) =>
-  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)));
+const files = ["App.js", ...["components", "screens"].flatMap((dir) =>
+  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)))];
 
 const mount = (el) => { let t; renderer.act(() => { t = renderer.create(el); }); return t; };
 

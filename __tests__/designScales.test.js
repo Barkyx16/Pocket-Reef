@@ -3,8 +3,10 @@ import path from "path";
 import { type, radius, space, elevation, theme, styles } from "../styles";
 
 const ROOT = path.join(__dirname, "..");
-const FILES = ["components", "screens"].flatMap((dir) =>
-  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)));
+// App.js renders real chrome — the sync banner, the tab bar — and was
+// outside every one of these checks until a hardcoded unit turned up in it.
+const FILES = ["App.js", ...["components", "screens"].flatMap((dir) =>
+  fs.readdirSync(path.join(ROOT, dir)).filter((f) => f.endsWith(".js")).map((f) => path.join(dir, f)))];
 
 const read = (f) => fs.readFileSync(path.join(ROOT, f), "utf8");
 const raw = (re) => FILES.flatMap((f) => [...read(f).matchAll(re)].map((m) => ({ f, v: Number(m[1]) })));
