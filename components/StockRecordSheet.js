@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, Tex
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { styles, theme, radius, type, space } from "../styles";
 import { tapHaptic, successHaptic } from "../core";
-import { LOSS_REASONS, LOSS_CAUSES, isMortality, tenureLabel, newStockRecord } from "../lib/livestock";
+import { LOSS_REASONS, LOSS_CAUSES, isMortality, tenureLabel, newStockRecord, countOf } from "../lib/livestock";
 import { SpeciesThumb } from "./SpeciesThumb";
 import { touchSlop } from "../lib/a11y";
 import { TEXT_LIMITS } from "../lib/textLimits";
@@ -190,7 +190,7 @@ export function StockRecordSheet({ visible, name, record, quantity = 1, onClose,
                         <Ionicons name="add" size={16} color={theme.accent} />
                       </Pressable>
                       <Text style={{ color: theme.secondaryText, fontSize: type.small, fontFamily: "Inter_700Bold", fontWeight: "700" }}>
-                        {loss.count >= quantity ? "all of them" : `${quantity - loss.count} left`}
+                        {countOf(loss) >= quantity ? "all of them" : `${quantity - countOf(loss)} left`}
                       </Text>
                     </View>
                   </Field>
