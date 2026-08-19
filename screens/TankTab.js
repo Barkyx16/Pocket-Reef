@@ -26,6 +26,7 @@ import { t } from "../lib/i18n";
 import { formatVolume } from "../lib/units";
 import { activeParams } from "../lib/targets";
 import { AdaptiveColumns } from "../components/AdaptiveColumns";
+import { CardBoundary } from "../components/CardBoundary";
 
 const TANK_PRESETS = [5, 10, 20, 30, 55, 75, 125];
 
@@ -125,7 +126,7 @@ export const TankTab = memo(function TankTab({ tankGallons, setTankGallons, tank
       {tank.length ? (
         <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: theme.hairline }}>
           <Text style={[styles.cardEyebrow, { marginBottom: 10 }]}>Tank Health</Text>
-          <TankHealthCard health={health} onGoToTab={onGoToTab} />
+          <CardBoundary name="Tank Health"><TankHealthCard health={health} onGoToTab={onGoToTab} /></CardBoundary>
         </View>
       ) : null}
 

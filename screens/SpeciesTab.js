@@ -14,6 +14,7 @@ import { usePersistedState } from "../lib/usePersistedState";
 import { matchesQuery, scoreMatch, buildHaystack } from "../lib/search";
 import { formatVolume } from "../lib/units";
 import { TEXT_LIMITS } from "../lib/textLimits";
+import { CardBoundary } from "../components/CardBoundary";
 
 const WATER_FILTERS = [
   { id: "all", label: "All" },
@@ -225,7 +226,7 @@ export const SpeciesTab = memo(function SpeciesTab({ tankGallons, tank, toggleTa
       {compareMode ? (
         <View style={{ marginTop: 12 }}>
           {compareSel.length === 2 ? (
-            <CompareCard a={compareSel[0]} b={compareSel[1]} />
+            <CardBoundary name="Compare"><CompareCard a={compareSel[0]} b={compareSel[1]} /></CardBoundary>
           ) : (
             <View style={[styles.card, { marginBottom: 0 }]}>
               <Text style={styles.cardEyebrow}>Compare mode</Text>

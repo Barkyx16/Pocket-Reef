@@ -43,8 +43,6 @@ const bigTank = () => ({
   journal: [], costs: [], maintenance: {}, quarantine: [], inventory: [], observations: {},
 });
 
-// Median of several runs: a single timing on a loaded box is mostly noise.
-//
 // Each measurement times a BATCH rather than one call. The one-year case runs
 // in about 0.2ms, and this suite executes alongside fifty others — a single GC
 // pause is several times that, so a lone timing measures pauses rather than
@@ -56,7 +54,11 @@ const bigTank = () => ({
 // The batch size is found rather than fixed: doubling until the run clears a
 // few milliseconds keeps a fast function accurate without making a slow one
 // take twenty seconds to measure.
-const FLOOR_MS = 3;
+// Each measurement must clear this before it is trusted. At 3ms a single GC
+// pause under the load of fifty parallel suites was still a large fraction of
+// the reading; at 15ms it is a small one. Combined with taking the fastest of
+// five, that is what finally made this stable.
+const FLOOR_MS = 15;
 const MAX_BATCH = 256;
 
 function batchFor(fn) {
@@ -70,17 +72,30 @@ function batchFor(fn) {
   }
 }
 
-const median = (fn, runs = 5, batch = null) => {
+// The FASTEST run, not the median.
+//
+// Noise in a timing measurement is one-directional: a GC pause, a context
+// switch or a busy core can only ever make a run slower, never faster. The
+// quickest observation is therefore the one least contaminated by everything
+// that isn't the algorithm — which is why microbenchmarks take the minimum.
+//
+// The median was the obvious choice and still flaked, because under the load of
+// fifty parallel suites a stall lands on several consecutive iterations and
+// drags the middle of the distribution with it. Taking the minimum of both
+// sides makes the ratio a comparison of two best cases, which is what the test
+// is actually asking about.
+const fastest = (fn, runs = 5, batch = null) => {
   // The first pass through a function is the optimiser's, not the algorithm's.
   fn();
   const n = batch || batchFor(fn);
-  const times = [];
+  let best = Infinity;
   for (let i = 0; i < runs; i++) {
     const t = process.hrtime.bigint();
     for (let j = 0; j < n; j++) fn();
-    times.push(Number(process.hrtime.bigint() - t) / 1e6 / n);
+    const per = Number(process.hrtime.bigint() - t) / 1e6 / n;
+    if (per < best) best = per;
   }
-  return times.sort((a, b) => a - b)[Math.floor(runs / 2)];
+  return best;
 };
 
 describe("the analysis scales with how long you've kept the tank", () => {
@@ -98,8 +113,8 @@ describe("the analysis scales with how long you've kept the tank", () => {
     const large = build(208);  // four years
     // The same batch for both, so the ratio compares work and not bookkeeping.
     const batch = batchFor(() => run(large));
-    const t1 = median(() => run(small), 5, batch);
-    const t2 = median(() => run(large), 5, batch);
+    const t1 = fastest(() => run(small), 5, batch);
+    const t2 = fastest(() => run(large), 5, batch);
     // The batch makes both numbers comfortably measurable, so this guard is
     // now only for the impossible case rather than load-bearing.
     return t2 / Math.max(t1, 0.001);
